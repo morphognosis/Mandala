@@ -1,1 +1,8 @@
 /target/
+/src/main/c++/pattern_detector/.vs/
+/src/main/c++/pattern_detector/Eigen/
+/src/main/c++/pattern_detector/Debug/
+/src/main/c++/pattern_detector/Release/
+/src/main/c++/pattern_detector/x64/
+/src/main/c++/pattern_detector/pattern_detector.vcxproj.user
+/src/main/c++/pattern_detector/*.o
