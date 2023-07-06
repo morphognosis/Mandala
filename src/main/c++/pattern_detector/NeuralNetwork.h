@@ -1,4 +1,5 @@
 // https://www.codeproject.com/Articles/5292985/Artificial-Neural-Network-Cplusplus-Class
+// Requires Eigen package: https://eigen.tuxfamily.org
 
 #pragma once
 

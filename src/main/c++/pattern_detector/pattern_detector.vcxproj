@@ -146,7 +146,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="pattern_detector.cpp" />
   </ItemGroup>

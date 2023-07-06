@@ -1,34 +1,19 @@
-/*
-Pattern detector.
-Detect patterns in input.
-Reference: "How to measure importance of inputs" by Warren S. Sarle, SAS Institute Inc., Cary, NC, USA 
-     ftp://ftp.sas.com/pub/neural/importance.html
-*/
+// main.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
 
-/*
 #include <iostream>
-#include <vector>
-#include <set>
-#include <string>
-#include <fstream>
-#include <regex>
-#include <iterator>
-#include <map>
-#include <numeric>
-#include <cmath>
 #include "NeuralNetwork.h"
-using namespace std;
 
 // Dimensions.
 int input_dim = 8;
 int hidden_dim = 32;
+int output_dim;
 
 // Patterns.
-vector<vector<int>> pattern_idxs = { {1, 4}, {3} };
+vector<vector<int>> pattern_idxs = { {1}, {1, 4}, {3} };
 
-// Signal quantizer.
-float signal_quantizer_min = .5f;
-float signal_quantizer_incr = .6f;
+// Signal range percentage.
+double signal_range = 1.0;
 
 // Noise probability.
 float noise_probability = .05f;
@@ -45,37 +30,159 @@ int epochs = 500;
 // Random seed.
 int random_seed = 4517;
 
-// Declarations.
-float accuracy_metric(std::vector<int> expect, std::vector<int> predict);
 int split(string const& str, const char delim, vector<string>& out);
 
 // Usage.
-const char* usage = "pattern_detector [--pattern_dimensions <input_dimension>, <hidden_dimension>] [--pattern_indexes <indexes> :: = <pattern>; <pattern>; ... where <pattern> :: = <index>, <index>, ...] [--signal_quantizer <quantizer> :: = <minimum>, <increment>] [--noise_probability <probability>] [--dataset_size <size>] [--learning_rate <rate>] [--epochs <epochs>] [--random_seed <seed>]\n";
+const char* usage = "pattern_detector [--network_dimensions <input_dimension>, <hidden_dimension>] [--pattern_indexes <indexes> :: = <pattern>; <pattern>; ... where <pattern> :: = <index>, <index>, ...] [--signal_range <range percent>] [--noise_probability <probability>] [--dataset_size <size>] [--learning_rate <rate>] [--epochs <epochs>] [--random_seed <seed>]\n";
 
-// Main.
-int main3(int argc, char* args[])
+double unary(double x) 
+{
+	return x > .8 ? 1 : x < .2 ? 0 : x;
+}
+
+// Detect pattern.
+vector<int> detectPattern(NeuralNetwork& net, RowVector& input, RowVector& output)
+{
+    vector<int> pattern(input_dim);
+    RowVector *activations = net.mNeurons.back();
+    int maxOutIdx = -1;
+    double maxOutVal = 0.0;
+    for (int i = 0; i < output_dim; i++)
+    {
+        double v = activations->coeffRef(i);
+        if (maxOutIdx == -1 || v > maxOutVal)
+        {
+            maxOutIdx = i;
+            maxOutVal = v;
+        }
+    }
+    cout << "activations: [ ";
+    for (int i = 0; i < output_dim; i++)
+    {
+        cout << activations->coeffRef(i) << " ";
+    }
+    cout << "]" << endl;
+    cout << "maxOutIdx=" << maxOutIdx << ", maxOutVal=" << maxOutVal << endl;
+    if (maxOutIdx != -1 && maxOutVal > 0.0)
+    {
+        int maxInIdx = -1;
+        double maxInDelta = 0.0;
+        for (int i = 0; i < input_dim; i++)
+        {
+            if (input.coeffRef(i) > 0.0)
+            {
+                double v = input.coeffRef(i);
+                input.coeffRef(i) = 0.0;
+                net.test(input, output);
+                activations = net.mNeurons.back();
+                input.coeffRef(i) = v;
+                cout << "zero index=" << i << ", activations: [ ";
+                for (int j = 0; j < output_dim; j++)
+                {
+                    cout << activations->coeffRef(j) << " ";
+                }
+                cout << "]" << endl;
+                double d = maxOutVal - activations->coeffRef(maxOutIdx);
+                if (d > maxOutVal) d = maxOutVal;
+                if (d > 0.0 && (maxInIdx == -1 || d > maxInDelta))
+                {
+                    maxInIdx = i;
+                    maxInDelta = d;
+                }
+            }
+        }
+        if (maxInIdx != -1)
+        {
+            cout << "maxInIdx=" << maxInIdx << ", maxInDelta=" << maxInDelta << endl;
+            for (int i = 0; i < input_dim; i++)
+            {
+                if (input.coeffRef(i) > 0.0)
+                {
+                    double v = input.coeffRef(i);
+                    input.coeffRef(i) = 0.0;
+                    net.test(input, output);
+                    activations = net.mNeurons.back();
+                    input.coeffRef(i) = v;
+                    double d = maxOutVal - activations->coeffRef(maxOutIdx);
+                    if (d > maxOutVal) d = maxOutVal;
+                    if (d > 0.0 && (d / maxInDelta) >= signal_range)
+                    {
+                        pattern[i] = 1;
+                    }
+                }
+            }
+        }
+    }
+    cout << "Pattern [ ";
+    for (int i : pattern)
+    {
+        cout << i << " ";
+    }
+    cout << "]" << endl;
+    return pattern;
+}
+
+void test(NeuralNetwork& net, vector<RowVector *>& input, vector<RowVector *>& output) 
+{
+	cout << "Testing:" << endl;
+
+	for (int num = 0; num < dataset_size; num++) {
+
+		net.test(*input[num], *output[num]);
+
+		double mse = net.mse();
+		cout << "In [" << *input[num] << "] "
+			<< " Desired [" << *output[num] << "] "
+			<< " Out [" << net.mNeurons.back()->unaryExpr(ptr_fun(unary)) << "] "
+			<< " MSE [" << mse << "]" << endl;
+
+        // Pattern detection.
+        vector<int> patttern = detectPattern(net, *input[num], *output[num]);
+	}
+}
+
+void train(NeuralNetwork& net, vector<RowVector *>& input, vector<RowVector *>& output)
+{
+	cout << "Training:" << endl;
+
+    int stop = 0;
+	for (int i = 0; stop < 8 && i < epochs; i++) {
+		cout << i + 1 << endl;
+		for (int num = 0; stop < 8 && num < dataset_size; num++) {
+			net.train(*input[num], *output[num]);
+			double mse = net.mse();
+			cout << "In [" << *input[num] << "] "
+				<< " Desired [" << *output[num] << "] "
+				<< " Out [" << net.mNeurons.back()->unaryExpr(ptr_fun(unary)) << "] "
+				<< " MSE [" << mse << "]" << endl;
+			stop = mse < 0.2 ? stop + 1 : 0;
+		}
+	}
+}
+
+int main(int argc, char *args[]) 
 {
     // Get options.
     for (int i = 1; i < argc; i++)
     {
-        if (strcmp(args[i], "-?") == 0 || strcmp(args[i], "--help") == 0)
+        if (strcmp(args[i], "-h") == 0 || strcmp(args[i], "--help") == 0)
         {
             printf(usage);
             exit(0);
         }
-        if (strcmp(args[i], "-d") == 0 || strcmp(args[i], "--pattern_dimensions") == 0)
+        if (strcmp(args[i], "-d") == 0 || strcmp(args[i], "--network_dimensions") == 0)
         {
             i++;
             if (i >= argc)
             {
-                fprintf(stderr, "Invalid pattern_dimensions option\n");
+                fprintf(stderr, "Invalid network_dimensions option\n");
                 fprintf(stderr, usage);
                 exit(1);
             }
             vector<string> dimensions;
             if (split(string(args[i]), ',', dimensions) != 2)
             {
-                fprintf(stderr, "invalid pattern_dimensions");
+                fprintf(stderr, "invalid network_dimensions");
                 fprintf(stderr, usage);
                 exit(1);
             }
@@ -118,32 +225,19 @@ int main3(int argc, char* args[])
             }
             continue;
         }
-        if (strcmp(args[i], "-q") == 0 || strcmp(args[i], "--signal_quantizer") == 0)
+        if (strcmp(args[i], "-s") == 0 || strcmp(args[i], "--signal_range") == 0)
         {
             i++;
             if (i >= argc)
             {
-                fprintf(stderr, "Invalid signal_quantizer option\n");
+                fprintf(stderr, "Invalid signal_range option\n");
                 fprintf(stderr, usage);
                 exit(1);
             }
-            vector<string> quantizers;
-            if (split(string(args[i]), ',', quantizers) != 2)
+            signal_range = (float)atof(args[i]);
+            if (signal_range < 0.0f)
             {
-                fprintf(stderr, "invalid signal_quantizer");
-                fprintf(stderr, usage);
-                exit(1);
-            }
-            signal_quantizer_min = (float)atof(quantizers[0].c_str());
-            if (signal_quantizer_min < 0.0f || signal_quantizer_min > 1.0f)
-            {
-                fprintf(stderr, "invalid signal_quantizer_min");
-                exit(1);
-            }
-            signal_quantizer_incr = (float)atof(quantizers[1].c_str());
-            if (signal_quantizer_incr <= 0.0f)
-            {
-                fprintf(stderr, "signal_quantizer increment must be > 0");
+                fprintf(stderr, "invalid signal_range");
                 exit(1);
             }
             continue;
@@ -237,109 +331,73 @@ int main3(int argc, char* args[])
         printf(usage);
         exit(1);
     }
-    int n_outputs = pattern_idxs.size();
+    output_dim = (int)pattern_idxs.size();
 
     // Seed random numbers.
     srand(random_seed);
 
     // Generate pattern dataset.
     // off = 0.0, on = 1.0
-    vector<vector<float>> dataset;
+    vector<RowVector *> input, output;
     for (int i = 0; i < dataset_size; i++)
-    {
-        vector<float> row;
+    {  
+        RowVector *rowIn = new RowVector(input_dim);
         for (int j = 0; j < input_dim; j++)
         {
             if ((rand() % 100) < (int)(noise_probability * 100.0f))
             {
-                row.push_back(1.0f);
+                rowIn->coeffRef(j) = 1.0f;
             }
             else {
-                row.push_back(0.0f);
+                rowIn->coeffRef(j) = 0.0f;
             }
         }
         int idx = rand() % (int)(pattern_idxs.size());
+        for (int j = 0; j < pattern_idxs.size(); j++)
+        {
+            if (j != idx)
+            {
+                for (int k : pattern_idxs[j])
+                {
+                    rowIn->coeffRef(k) = 0.0f;
+                }
+            }
+        }
         for (int j : pattern_idxs[idx])
         {
-            row[j] = 1.0f;
+            rowIn->coeffRef(j) = 1.0f;
         }
-        row.push_back((float)idx);
-        dataset.push_back(row);
-    }
-
-    // Train the network.
-    //Network* network = new Network();
-    //network->initialize_network(input_dim, hidden_dim, n_outputs);
-    //network->train(dataset, learning_rate, epochs, n_outputs);
-
-    // Predict.
-    vector<int> expected;
-    for (auto& row : dataset)
-    {
-        expected.push_back(static_cast<int>(row.back()));
-        //row.back() = 42;
-    }
-    vector<int> predicted;
-    for (const auto& row : dataset)
-    {
-        vector<float> outputs;
-        //outputs = network->forward_propagate(row);
-        for (float i : row)
+        input.push_back(rowIn);
+        RowVector *rowOut = new RowVector(output_dim);
+        for (int j = 0; j < output_dim; j++)
         {
-            printf("%f ", i);
+            if (j == idx)
+            {
+                rowOut->coeffRef(j) = 1.0f;
+            }
+            else {
+                rowOut->coeffRef(j) = 0.0f;
+            }
         }
-        printf("\n");
-        for (float o : outputs)
-        {
-            printf("%f ", o);
-        }
-        printf("\n");
-        int n = std::max_element(outputs.begin(), outputs.end()) - outputs.begin();
-        predicted.push_back(n);
-        printf("%d/%d\n", static_cast<int>(row.back()), n);
+        output.push_back(rowOut);
     }
-    printf("Accuracy=%f\n", accuracy_metric(expected, predicted));
 
-                            # Detect patterns.
-                            print('patterns:')
-                            for i in range(dataset_size) :
-                                print('pattern #', i, ':', sep = '')
-                                threshold = signal_quantizer_min
-                                while threshold <= 1.0 :
-                                    print('signal threshold=', threshold, sep = '')
-                                    input_pattern = np.array([input_data[i]])
-                                    predicted_pattern = pattern_model.predict(input_pattern)
-                                    print('input:', input_pattern[0])
-                                    print('prediction:', predicted_pattern[0])
-                                    print('pattern: [', end = '')
-                                    for j in range(output_dim) :
-                                        if predicted_pattern[0][j] >= threshold :
-                                            print('1', end = '')
-                                        else :
-                                            print('0', end = '')
-                                            if j < output_dim - 1 :
-                                                print(', ', end = '')
-                                                print(']')
-                                                print('input importance detection:')
-                                                idx = 0
-                                                max = predicted_pattern[0][0]
-                                                for j in range(output_dim) :
-                                                    if predicted_pattern[0][j] > max:
-    idx = j
-        max = predicted_pattern[0][j]
-        for j in range(input_dim) :
-            if input_pattern[0][j] == 1 :
-                print('input idx=', j, sep = '')
-                input_pattern[0][j] = 0
-                predicted_pattern = pattern_model.predict(input_pattern)
-                print('input:', input_pattern[0])
-                print('prediction:', predicted_pattern[0])
-                print('delta=', (max - predicted_pattern[0][idx]), sep = '')
-                input_pattern[0][j] = 1
-                threshold += signal_quantizer_incr
- 
-    return 0;
+	NeuralNetwork net({ input_dim, hidden_dim, output_dim }, 0.05, NeuralNetwork::Activation::TANH);
+	
+	train(net, input, output);
+	test(net, input, output);
+	net.save("params.txt");
+
+	cout << endl << "Neurons:" << endl;
+	for(int i = 0; i < net.mNeurons.size(); i++)
+		cout << *net.mNeurons[i] << endl;
+	cout << endl << "Weights:" << endl;
+	for (int i = 0; i < net.mWeights.size(); i++)
+		cout << *net.mWeights[i] << endl;
+
+	return 0;
 }
+
 
 // Split string.
 int split(string const& str, const char delim, vector<string>& out)
@@ -355,5 +413,4 @@ int split(string const& str, const char delim, vector<string>& out)
     }
     return (int)out.size();
 }
-*/
 
