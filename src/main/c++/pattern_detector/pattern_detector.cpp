@@ -13,16 +13,13 @@ int output_dim;
 vector<vector<int>> pattern_idxs = { {1}, {4}, {1, 4}, {3} };
 
 // Signal range percentage.
-double signal_range = 0.9;
+double signal_range = 0.8;
 
 // Noise probability.
 double noise_probability = 0.0;
 
 // Dataset size.
 int dataset_size = 20;
-
-// Learning rate.
-double learning_rate = 0.3;
 
 // Training epochs.
 int epochs = 500;
@@ -302,8 +299,8 @@ int main(int argc, char *args[])
                 fprintf(stderr, usage);
                 exit(1);
             }
-            learning_rate = atof(args[i]);
-            if (learning_rate <= 0.0)
+            LEARNING_RATE = atof(args[i]);
+            if (LEARNING_RATE <= 0.0)
             {
                 fprintf(stderr, "invalid learning_rate");
                 exit(1);

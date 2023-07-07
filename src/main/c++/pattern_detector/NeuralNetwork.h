@@ -10,7 +10,7 @@ typedef Eigen::RowVectorXd RowVector;
 typedef Eigen::MatrixXd Matrix;
 using namespace std;
 
-#define LEARNING_RATE   0.01
+extern double LEARNING_RATE;
 
 class NeuralNetwork {
 public:

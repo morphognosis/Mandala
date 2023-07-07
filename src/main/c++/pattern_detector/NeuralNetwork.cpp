@@ -1,7 +1,9 @@
-#include <iostream> 
+#include <iostream>
 #include <fstream> 
 #include "NeuralNetwork.h"
 #include "math.h"
+
+double LEARNING_RATE = 0.01;
 
 NeuralNetwork::NeuralNetwork() {
 	mConfusion = nullptr;
