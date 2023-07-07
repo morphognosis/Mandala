@@ -1,5 +1,5 @@
-// main.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// Pattern detector.
+// Detect input patterns having only signals that are important to the output.
 
 #include <iostream>
 #include "NeuralNetwork.h"
