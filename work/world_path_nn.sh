@@ -1,1 +1,1 @@
- java -Xmx1024m -cp ../bin/nestingbirds.jar mandala.WorldPathNN $*
+ java -Xmx1024m -cp ../bin/mandala.jar mandala.WorldPathNN $*

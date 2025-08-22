@@ -1,1 +1,1 @@
-java -Xmx1024m -cp ../bin/nestingbirds.jar mandala.Mandala %*
+java -Xmx1024m -cp ../bin/mandala.jar mandala.Mandala %*
