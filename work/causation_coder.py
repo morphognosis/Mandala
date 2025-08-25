@@ -1,4 +1,4 @@
-# Caustion coder.
+# Causation coder.
 # Map input cause to output effect, encoding relationship in the process.
 # ref: https://blog.keras.io/building-autoencoders-in-keras.html
 

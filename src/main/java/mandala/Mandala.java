@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2025 Tom Portegys (portegys@gmail.com). All rights reserved.
+ * Copyright (c) 2022-2026 Tom Portegys (portegys@gmail.com). All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -57,7 +57,7 @@ public class Mandala
         // off=0.0, on=1.0
         ArrayList<ArrayList<Integer>> cause_feature_idxs = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> shuffle_idxs = new ArrayList<Integer>();
-        for (int i = 0; i < mandalaNN.CAUSE_DIMENSION; i++)
+        for (int i = 0; i < MandalaNN.CAUSE_DIMENSION; i++)
         {
         	shuffle_idxs.add(i);
         }
@@ -94,7 +94,7 @@ public class Mandala
         }
         ArrayList<ArrayList<Integer>> effect_feature_idxs = new ArrayList<ArrayList<Integer>>();
         shuffle_idxs = new ArrayList<Integer>();
-        for (int i = 0; i < mandalaNN.EFFECT_DIMENSION; i++)
+        for (int i = 0; i < MandalaNN.EFFECT_DIMENSION; i++)
         {
         	shuffle_idxs.add(i);
         }
@@ -129,16 +129,16 @@ public class Mandala
                 }
             }
         }        
-        INDArray cause_data = Nd4j.create(dataset_size, mandalaNN.CAUSE_DIMENSION);
-        float[] vals = new float[mandalaNN.CAUSE_DIMENSION];
-        float[] accum_vals = new float[mandalaNN.CAUSE_DIMENSION];
-    	for (int j = 0; j < mandalaNN.CAUSE_DIMENSION; j++)
+        INDArray cause_data = Nd4j.create(dataset_size, MandalaNN.CAUSE_DIMENSION);
+        float[] vals = new float[MandalaNN.CAUSE_DIMENSION];
+        float[] accum_vals = new float[MandalaNN.CAUSE_DIMENSION];
+    	for (int j = 0; j < MandalaNN.CAUSE_DIMENSION; j++)
     	{       
     		accum_vals[j] = 0.0f;
     	}                
         for (int i = 0; i < cause_feature_idxs.size(); i++)
         {
-        	for (int j = 0; j < mandalaNN.CAUSE_DIMENSION; j++)
+        	for (int j = 0; j < MandalaNN.CAUSE_DIMENSION; j++)
         	{       
         		vals[j] = 0.0f;
         	}            	
@@ -152,16 +152,16 @@ public class Mandala
         	cause_data.putRow(i, Nd4j.createFromArray(vals));
         }
     	cause_data.putRow(dataset_size - 1, Nd4j.createFromArray(accum_vals));        
-        INDArray effect_data = Nd4j.create(dataset_size, mandalaNN.EFFECT_DIMENSION);        
-        vals = new float[mandalaNN.EFFECT_DIMENSION];
-        accum_vals = new float[mandalaNN.EFFECT_DIMENSION];
-    	for (int j = 0; j < mandalaNN.EFFECT_DIMENSION; j++)
+        INDArray effect_data = Nd4j.create(dataset_size, MandalaNN.EFFECT_DIMENSION);        
+        vals = new float[MandalaNN.EFFECT_DIMENSION];
+        accum_vals = new float[MandalaNN.EFFECT_DIMENSION];
+    	for (int j = 0; j < MandalaNN.EFFECT_DIMENSION; j++)
     	{       
     		accum_vals[j] = 0.0f;
     	}                
         for (int i = 0; i < effect_feature_idxs.size(); i++)
         {
-        	for (int j = 0; j < mandalaNN.EFFECT_DIMENSION; j++)
+        	for (int j = 0; j < MandalaNN.EFFECT_DIMENSION; j++)
         	{       
         		vals[j] = 0.0f;
         	}            	
