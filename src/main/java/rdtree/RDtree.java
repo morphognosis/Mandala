@@ -736,7 +736,7 @@ public class RDtree
       s = new float[NUM_VALS];
       for (i = 0; i < NUM_VALS; i++)
       {
-         s[i] = (float)((randomizer.nextInt() % 27) + (int)'a');
+         s[i] = (float)((randomizer.nextInt(27)) + (int)'a');
       }
       searchClient = new TestClient(s);
       System.out.println("Search pattern:");
@@ -749,7 +749,7 @@ public class RDtree
          p = new float[NUM_VALS];
          for (j = 0; j < NUM_VALS; j++)
          {
-            p[j] = (float)((randomizer.nextInt() % 27) + (int)'a');
+            p[j] = (float)((randomizer.nextInt(27)) + (int)'a');
          }
          client = new TestClient(p);
          tree.insert(client);
@@ -760,9 +760,9 @@ public class RDtree
       for (i = 0; i < NUM_VALS; i++)
       {
          t[i] = s[i];
-         if ((randomizer.nextInt() % 5) == 0)
+         if ((randomizer.nextInt(5)) == 0)
          {
-            if (randomizer.nextBoolean()) { t[i] += randomizer.nextInt() % 5; } else{ t[i] -= randomizer.nextInt() % 5; }
+            if (randomizer.nextBoolean()) { t[i] += randomizer.nextInt(5); } else{ t[i] -= randomizer.nextInt(5); }
          }
       }
       targetClient = new TestClient(t);

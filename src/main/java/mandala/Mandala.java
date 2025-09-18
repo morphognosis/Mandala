@@ -21,7 +21,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 // Mandala is a hybrid of Morphognosis and Mona.
 
 package mandala;
@@ -34,160 +34,160 @@ import org.nd4j.linalg.factory.Nd4j;
 
 public class Mandala
 {
-    // Version.
-    public static final String VERSION = "1.0";
-	
-	// Causations.
-	public static int num_causations = 2;
-	public static int num_cause_features = 2;
-	public static int num_effect_features = 2;
-	
-	// Dataset size.
-	public static int dataset_size = num_causations + 1;
-	
-	// Neural network.
-	public static MandalaNN mandalaNN;
-	
-    public static void main(String[] args) 
-    {
-    	// Create network.
-    	mandalaNN = new MandalaNN();
+   // Version.
+   public static final String VERSION = "1.0";
 
-        // Generate cause and effect pairs.
-        // off=0.0, on=1.0
-        ArrayList<ArrayList<Integer>> cause_feature_idxs = new ArrayList<ArrayList<Integer>>();
-        ArrayList<Integer> shuffle_idxs = new ArrayList<Integer>();
-        for (int i = 0; i < MandalaNN.CAUSE_DIMENSION; i++)
-        {
-        	shuffle_idxs.add(i);
-        }
-        for (int i = 0; i < num_causations; i++)
-        {
-            while (true)
+   // Causations.
+   public static int num_causations      = 2;
+   public static int num_cause_features  = 2;
+   public static int num_effect_features = 2;
+
+   // Dataset size.
+   public static int dataset_size = num_causations + 1;
+
+   // Neural network.
+   public static MandalaNN mandalaNN;
+
+   public static void main(String[] args)
+   {
+      // Create network.
+      mandalaNN = new MandalaNN();
+
+      // Generate cause and effect pairs.
+      // off=0.0, on=1.0
+      ArrayList < ArrayList < Integer >> cause_feature_idxs = new ArrayList < ArrayList < Integer >> ();
+      ArrayList<Integer> shuffle_idxs = new ArrayList<Integer>();
+      for (int i = 0; i < MandalaNN.CAUSE_DIMENSION; i++)
+      {
+         shuffle_idxs.add(i);
+      }
+      for (int i = 0; i < num_causations; i++)
+      {
+         while (true)
+         {
+            Collections.shuffle(shuffle_idxs);
+            ArrayList<Integer> test_idxs = new ArrayList<Integer>();
+            for (int j = 0; j < num_cause_features; j++)
             {
-        		Collections.shuffle(shuffle_idxs);
-                ArrayList<Integer> test_idxs = new ArrayList<Integer>();
-                for (int j = 0; j < num_cause_features; j++)
-                {
-                	test_idxs.add(shuffle_idxs.get(j));
-                }
-                Collections.sort(test_idxs);
-                boolean found = false;
-                for (int j = 0; j < cause_feature_idxs.size() && !found; j++)
-                {
-                	ArrayList<Integer> idxs = cause_feature_idxs.get(j);
-                	for (int k = 0; k < test_idxs.size(); k++)
-                	{
-                		if (idxs.contains(test_idxs.get(k)))
-                		{
-                			found = true;
-                			break;
-                		}
-                	}
-                }
-                if (!found)
-                {
-                    cause_feature_idxs.add(test_idxs);
-                    break;
-                }
+               test_idxs.add(shuffle_idxs.get(j));
             }
-        }
-        ArrayList<ArrayList<Integer>> effect_feature_idxs = new ArrayList<ArrayList<Integer>>();
-        shuffle_idxs = new ArrayList<Integer>();
-        for (int i = 0; i < MandalaNN.EFFECT_DIMENSION; i++)
-        {
-        	shuffle_idxs.add(i);
-        }
-        for (int i = 0; i < num_causations; i++)
-        {
-            while (true)
+            Collections.sort(test_idxs);
+            boolean found = false;
+            for (int j = 0; j < cause_feature_idxs.size() && !found; j++)
             {
-        		Collections.shuffle(shuffle_idxs);
-                ArrayList<Integer> test_idxs = new ArrayList<Integer>();
-                for (int j = 0; j < num_effect_features; j++)
-                {
-                	test_idxs.add(shuffle_idxs.get(j));
-                }
-                Collections.sort(test_idxs);
-                boolean found = false;
-                for (int j = 0; j < effect_feature_idxs.size() && !found; j++)
-                {
-                	ArrayList<Integer> idxs = effect_feature_idxs.get(j);
-                	for (int k = 0; k < idxs.size(); k++)
-                	{
-                		if (idxs.contains(test_idxs.get(k)))
-                		{
-                			found = true;
-                			break;
-                		}
-                	}
-                }
-                if (!found)
-                {
-                    effect_feature_idxs.add(test_idxs);
-                    break;
-                }
+               ArrayList<Integer> idxs = cause_feature_idxs.get(j);
+               for (int k = 0; k < test_idxs.size(); k++)
+               {
+                  if (idxs.contains(test_idxs.get(k)))
+                  {
+                     found = true;
+                     break;
+                  }
+               }
             }
-        }        
-        INDArray cause_data = Nd4j.create(dataset_size, MandalaNN.CAUSE_DIMENSION);
-        float[] vals = new float[MandalaNN.CAUSE_DIMENSION];
-        float[] accum_vals = new float[MandalaNN.CAUSE_DIMENSION];
-    	for (int j = 0; j < MandalaNN.CAUSE_DIMENSION; j++)
-    	{       
-    		accum_vals[j] = 0.0f;
-    	}                
-        for (int i = 0; i < cause_feature_idxs.size(); i++)
-        {
-        	for (int j = 0; j < MandalaNN.CAUSE_DIMENSION; j++)
-        	{       
-        		vals[j] = 0.0f;
-        	}            	
-        	ArrayList<Integer> idxs = cause_feature_idxs.get(i);    	
-        	for (int j = 0; j < num_cause_features; j++)
-        	{
-        		int k = idxs.get(j);
-        		vals[k] = 1.0f;
-        		accum_vals[k] = 1.0f;
-        	}
-        	cause_data.putRow(i, Nd4j.createFromArray(vals));
-        }
-    	cause_data.putRow(dataset_size - 1, Nd4j.createFromArray(accum_vals));        
-        INDArray effect_data = Nd4j.create(dataset_size, MandalaNN.EFFECT_DIMENSION);        
-        vals = new float[MandalaNN.EFFECT_DIMENSION];
-        accum_vals = new float[MandalaNN.EFFECT_DIMENSION];
-    	for (int j = 0; j < MandalaNN.EFFECT_DIMENSION; j++)
-    	{       
-    		accum_vals[j] = 0.0f;
-    	}                
-        for (int i = 0; i < effect_feature_idxs.size(); i++)
-        {
-        	for (int j = 0; j < MandalaNN.EFFECT_DIMENSION; j++)
-        	{       
-        		vals[j] = 0.0f;
-        	}            	
-        	ArrayList<Integer> idxs = effect_feature_idxs.get(i);    	
-        	for (int j = 0; j < num_effect_features; j++)
-        	{
-        		int k = idxs.get(j);
-        		vals[k] = 1.0f;
-        		accum_vals[k] = 1.0f;
-        	}
-        	effect_data.putRow(i, Nd4j.createFromArray(vals));
-        }
-    	effect_data.putRow(dataset_size - 1, Nd4j.createFromArray(accum_vals));
-        mandalaNN.trainDataset = new DataSet(cause_data, effect_data);
-        mandalaNN.trainCauseData = cause_data;
-        mandalaNN.trainEffectData = effect_data;
-        mandalaNN.testCauseData = cause_data;
-        mandalaNN.testEffectData = effect_data;
-        
-        // Build network.
-        mandalaNN.build();
-        		
-        // Train network.
-    	mandalaNN.train(100);
-       
-        // Test.      
-        mandalaNN.test();
-    }
+            if (!found)
+            {
+               cause_feature_idxs.add(test_idxs);
+               break;
+            }
+         }
+      }
+      ArrayList < ArrayList < Integer >> effect_feature_idxs = new ArrayList < ArrayList < Integer >> ();
+      shuffle_idxs = new ArrayList<Integer>();
+      for (int i = 0; i < MandalaNN.EFFECT_DIMENSION; i++)
+      {
+         shuffle_idxs.add(i);
+      }
+      for (int i = 0; i < num_causations; i++)
+      {
+         while (true)
+         {
+            Collections.shuffle(shuffle_idxs);
+            ArrayList<Integer> test_idxs = new ArrayList<Integer>();
+            for (int j = 0; j < num_effect_features; j++)
+            {
+               test_idxs.add(shuffle_idxs.get(j));
+            }
+            Collections.sort(test_idxs);
+            boolean found = false;
+            for (int j = 0; j < effect_feature_idxs.size() && !found; j++)
+            {
+               ArrayList<Integer> idxs = effect_feature_idxs.get(j);
+               for (int k = 0; k < idxs.size(); k++)
+               {
+                  if (idxs.contains(test_idxs.get(k)))
+                  {
+                     found = true;
+                     break;
+                  }
+               }
+            }
+            if (!found)
+            {
+               effect_feature_idxs.add(test_idxs);
+               break;
+            }
+         }
+      }
+      INDArray cause_data = Nd4j.create(dataset_size, MandalaNN.CAUSE_DIMENSION);
+      float[] vals       = new float[MandalaNN.CAUSE_DIMENSION];
+      float[] accum_vals = new float[MandalaNN.CAUSE_DIMENSION];
+      for (int j = 0; j < MandalaNN.CAUSE_DIMENSION; j++)
+      {
+         accum_vals[j] = 0.0f;
+      }
+      for (int i = 0; i < cause_feature_idxs.size(); i++)
+      {
+         for (int j = 0; j < MandalaNN.CAUSE_DIMENSION; j++)
+         {
+            vals[j] = 0.0f;
+         }
+         ArrayList<Integer> idxs = cause_feature_idxs.get(i);
+         for (int j = 0; j < num_cause_features; j++)
+         {
+            int k = idxs.get(j);
+            vals[k]       = 1.0f;
+            accum_vals[k] = 1.0f;
+         }
+         cause_data.putRow(i, Nd4j.createFromArray(vals));
+      }
+      cause_data.putRow(dataset_size - 1, Nd4j.createFromArray(accum_vals));
+      INDArray effect_data = Nd4j.create(dataset_size, MandalaNN.EFFECT_DIMENSION);
+      vals       = new float[MandalaNN.EFFECT_DIMENSION];
+      accum_vals = new float[MandalaNN.EFFECT_DIMENSION];
+      for (int j = 0; j < MandalaNN.EFFECT_DIMENSION; j++)
+      {
+         accum_vals[j] = 0.0f;
+      }
+      for (int i = 0; i < effect_feature_idxs.size(); i++)
+      {
+         for (int j = 0; j < MandalaNN.EFFECT_DIMENSION; j++)
+         {
+            vals[j] = 0.0f;
+         }
+         ArrayList<Integer> idxs = effect_feature_idxs.get(i);
+         for (int j = 0; j < num_effect_features; j++)
+         {
+            int k = idxs.get(j);
+            vals[k]       = 1.0f;
+            accum_vals[k] = 1.0f;
+         }
+         effect_data.putRow(i, Nd4j.createFromArray(vals));
+      }
+      effect_data.putRow(dataset_size - 1, Nd4j.createFromArray(accum_vals));
+      mandalaNN.trainDataset    = new DataSet(cause_data, effect_data);
+      mandalaNN.trainCauseData  = cause_data;
+      mandalaNN.trainEffectData = effect_data;
+      mandalaNN.testCauseData   = cause_data;
+      mandalaNN.testEffectData  = effect_data;
+
+      // Build network.
+      mandalaNN.build();
+
+      // Train network.
+      mandalaNN.train(100);
+
+      // Test.
+      mandalaNN.test();
+   }
 }
