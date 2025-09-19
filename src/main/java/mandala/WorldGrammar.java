@@ -86,7 +86,7 @@ public class WorldGrammar
       "          [-exportPathTCNdataset [<file name (default=\"" + PATH_TCN_DATASET_FILENAME + "\")>]\n" +
       "              [-TCNdatasetTrainFraction <fraction> (default=" + PATH_TCN_DATASET_TRAIN_FRACTION + ")]]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
-      "      [-verbose <\"true\" | \"false\"> (verbosity, default=" + VERBOSE + ")]\n" +
+      "      [-verbose]\n" +
       "  Help:\n" +
       "    java mandala.WorldGrammar -help\n" +
       "Exit codes:\n" +

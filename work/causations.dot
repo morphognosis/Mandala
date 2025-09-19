@@ -53,16 +53,4 @@ hierarchies -> h0
 h0_nt5 -> h0_t2 [label="0/0.85"];
 h0_nt3 -> h0_nt7 [label="0/0.20"];
 h0_nt0 -> h0_nt8 [label="3/0.68"];
-h1_nt0 [label="0", shape=circle];
-h1_t3 [label="3", shape=square];
-h1_t8 [label="8", shape=square];
-h1_t2 [label="2", shape=square];
-h1 [label="hierarchy_1", shape=triangle];
-hierarchies -> h1
-h1 -> h1_nt0
-h1_nt0 -> h1_t8 [label="0/0.86"];
-h1_nt0 -> h1_t2 [label="3/0.23"];
-h1_nt0 -> h1_t8 [label="4"];
-h1_nt0 -> h1_t8 [label="1/0.85"];
-h1_nt0 -> h1_t3 [label="2/0.45"];
 }
