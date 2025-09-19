@@ -13,5 +13,5 @@ Morphognosis:
 Honey bees forage for flower nectar cooperatively.
 See: http://tom.portegys.com/research.html#honey_bees
 
-Build with Eclipse project and export to bin/mandala.jar to run with scripts in the work directory.
+Build with Eclipse project or build.sh and export to bin/mandala.jar to run with scripts in the work directory.
 
