@@ -95,6 +95,7 @@ public class Causations
 
    // Graph.
    public static String CAUSATIONS_GRAPH_FILENAME = "causations.dot";
+   public static boolean TREE_FORMAT = false;
 
    // Causation paths.
    public static int NUM_CAUSATION_PATHS = 5;
@@ -131,7 +132,8 @@ public class Causations
       "      [-numNonterminalFeatures <quantity> (default=" + NUM_NONTERMINAL_FEATURES + ")]\n" +
       "      [-numTerminalDimensions <quantity> (default=" + NUM_TERMINAL_DIMENSIONS + ")]\n" +
       "      [-numTerminalFeatures <quantity> (default=" + NUM_TERMINAL_FEATURES + ")]\n" +
-      "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]]\n" +
+      "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
+      "          [-treeFormat true | false (default=" + TREE_FORMAT + ")]]\n" +     
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-exportPathNNdataset [<file name (default=\"" + PATH_NN_DATASET_FILENAME + "\")>]\n" +
       "          [-NNdatasetTrainFraction <fraction> (default=" + PATH_NN_DATASET_TRAIN_FRACTION + ")]]\n" +
@@ -150,6 +152,7 @@ public class Causations
    public static void main(String[] args)
    {
       boolean gotExportCausationsGraph   = false;
+      boolean gotTreeFormat = false;     
       boolean gotExportPathNNdataset     = false;
       boolean gotExportPathRNNdataset    = false;
       boolean gotExportPathTCNdataset    = false;
@@ -429,6 +432,29 @@ public class Causations
             gotExportCausationsGraph = true;
             continue;
          }
+         if (args[i].equals("-treeFormat"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid treeFormat option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (args[i].equals("true"))
+            {
+            	TREE_FORMAT = true;
+            } else if (args[i].equals("false"))
+            {
+            	TREE_FORMAT = false;
+            } else {
+               System.err.println("Invalid treeFormat option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            gotTreeFormat = true;
+            continue;
+         }                  
          if (args[i].equals("-numCausationPaths"))
          {
             i++;
@@ -617,6 +643,11 @@ public class Causations
          System.err.println(Usage);
          System.exit(1);
       }
+      if (!gotExportCausationsGraph && gotTreeFormat)
+      {
+          System.err.println(Usage);
+          System.exit(1);    	  
+      }
       if (!gotExportPathNNdataset && gotNNdatasetTrainFraction)
       {
          System.err.println(Usage);
@@ -653,7 +684,7 @@ public class Causations
       // Export causations graph.
       if (gotExportCausationsGraph)
       {
-         exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME);
+         exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME, TREE_FORMAT);
       }
 
       // Produce causation paths.
@@ -830,7 +861,7 @@ public class Causations
 
 
    // Export causations graph (Graphviz dot format).
-   public static void exportCausationsGraph(String filename)
+   public static void exportCausationsGraph(String filename, boolean treeFormat)
    {
       try
       {
