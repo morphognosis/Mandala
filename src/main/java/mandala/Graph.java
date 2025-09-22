@@ -1,5 +1,4 @@
-// Graph class representing a directed
-// graph using adjacency list
+// Graph class representing a directed graph using adjacency list.
 // See: https://www.geeksforgeeks.org/java/java-program-for-detect-cycle-in-a-directed-graph/
 
 package mandala;
@@ -97,20 +96,5 @@ class Graph {
          }
       }
       return(false);
-   }
-
-
-   public void audit()  // flibber
-   {
-      for (int i = 0; i < vertices; i++)
-      {
-         List<Integer> n = getNeighbors(i);
-         System.out.print("edges of " + i + ": ");
-         for (Integer x : n)
-         {
-            System.out.print(x + " ");
-         }
-         System.out.println();
-      }
    }
 }
