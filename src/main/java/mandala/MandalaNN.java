@@ -361,13 +361,13 @@ public class MandalaNN
       {
          if (args[i].equals("-datasetFilename"))
          {
-             i++;
-             if (i >= args.length)
-             {
-                System.err.println("Invalid datasetFilename option");
-                System.err.println(Usage);
-                System.exit(1);
-             }
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid datasetFilename option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
             datasetFilename = args[i];
             continue;
          }

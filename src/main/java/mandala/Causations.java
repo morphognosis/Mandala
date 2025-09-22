@@ -94,7 +94,7 @@ public class Causations
    public static ArrayList<Causation> causations;
 
    // Graph.
-   public static String CAUSATIONS_GRAPH_FILENAME = "causations.dot";
+   public static String  CAUSATIONS_GRAPH_FILENAME = "causations.dot";
    public static boolean TREE_FORMAT = false;
 
    // Causation paths.
@@ -133,7 +133,7 @@ public class Causations
       "      [-numTerminalDimensions <quantity> (default=" + NUM_TERMINAL_DIMENSIONS + ")]\n" +
       "      [-numTerminalFeatures <quantity> (default=" + NUM_TERMINAL_FEATURES + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
-      "          [-treeFormat true | false (default=" + TREE_FORMAT + ")]]\n" +     
+      "          [-treeFormat true | false (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-exportPathNNdataset [<file name (default=\"" + PATH_NN_DATASET_FILENAME + "\")>]\n" +
       "          [-NNdatasetTrainFraction <fraction> (default=" + PATH_NN_DATASET_TRAIN_FRACTION + ")]]\n" +
@@ -152,7 +152,7 @@ public class Causations
    public static void main(String[] args)
    {
       boolean gotExportCausationsGraph   = false;
-      boolean gotTreeFormat = false;     
+      boolean gotTreeFormat              = false;
       boolean gotExportPathNNdataset     = false;
       boolean gotExportPathRNNdataset    = false;
       boolean gotExportPathTCNdataset    = false;
@@ -426,8 +426,8 @@ public class Causations
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
-               CAUSATIONS_GRAPH_FILENAME = args[i];
                i++;
+               CAUSATIONS_GRAPH_FILENAME = args[i];
             }
             gotExportCausationsGraph = true;
             continue;
@@ -443,18 +443,21 @@ public class Causations
             }
             if (args[i].equals("true"))
             {
-            	TREE_FORMAT = true;
-            } else if (args[i].equals("false"))
+               TREE_FORMAT = true;
+            }
+            else if (args[i].equals("false"))
             {
-            	TREE_FORMAT = false;
-            } else {
+               TREE_FORMAT = false;
+            }
+            else
+            {
                System.err.println("Invalid treeFormat option");
                System.err.println(Usage);
                System.exit(1);
             }
             gotTreeFormat = true;
             continue;
-         }                  
+         }
          if (args[i].equals("-numCausationPaths"))
          {
             i++;
@@ -485,8 +488,8 @@ public class Causations
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
-               PATH_NN_DATASET_FILENAME = args[i];
                i++;
+               PATH_NN_DATASET_FILENAME = args[i];
             }
             gotExportPathNNdataset = true;
             continue;
@@ -522,8 +525,8 @@ public class Causations
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
-               PATH_RNN_DATASET_FILENAME = args[i];
                i++;
+               PATH_RNN_DATASET_FILENAME = args[i];
             }
             gotExportPathRNNdataset = true;
             continue;
@@ -559,8 +562,8 @@ public class Causations
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
-               PATH_TCN_DATASET_FILENAME = args[i];
                i++;
+               PATH_TCN_DATASET_FILENAME = args[i];
             }
             gotExportPathTCNdataset = true;
             continue;
@@ -645,8 +648,8 @@ public class Causations
       }
       if (!gotExportCausationsGraph && gotTreeFormat)
       {
-          System.err.println(Usage);
-          System.exit(1);    	  
+         System.err.println(Usage);
+         System.exit(1);
       }
       if (!gotExportPathNNdataset && gotNNdatasetTrainFraction)
       {
@@ -884,7 +887,7 @@ public class Causations
             {
                edges.add("h" + i + " -> h" + i + "_nt" + root.id);
             }
-            listGraph(i, root, vertices, edges);
+            listGraph(i, root, "", vertices, edges);
             for (String vertex : vertices)
             {
                printWriter.println(vertex);
@@ -906,15 +909,15 @@ public class Causations
 
 
    // List graph elements.
-   private static void listGraph(int hierarchy, Causation vertex, HashSet<String> vertices, HashSet<String> edges)
+   private static void listGraph(int hierarchy, Causation vertex, String pathPrefix, HashSet<String> vertices, HashSet<String> edges)
    {
       if (vertex.terminal)
       {
-         vertices.add("h" + hierarchy + "_t" + vertex.id + " [label=\"" + vertex.id + "\", shape=square];");
+         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + "\", shape=square];");
       }
       else
       {
-         vertices.add("h" + hierarchy + "_nt" + vertex.id + " [label=\"" + vertex.id + "\", shape=circle];");
+         vertices.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " [label=\"" + vertex.id + "\", shape=circle];");
          for (int i = 0; i < vertex.children.size(); i++)
          {
             Causation child = vertex.children.get(i);
@@ -923,15 +926,20 @@ public class Causations
             {
                p = "/" + String.format("%.2f", vertex.probabilities.get(i));
             }
+            String childPathPrefix = "";
+            if (TREE_FORMAT)
+            {
+               childPathPrefix = new String(pathPrefix) + vertex.id + "_" + i + "_";
+            }
             if (child.terminal)
             {
-               edges.add("h" + hierarchy + "_nt" + vertex.id + " -> h" + hierarchy + "_t" + child.id + " [label=\"" + i + p + "\"];");
+               edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_t" + childPathPrefix + child.id + " [label=\"" + i + p + "\"];");
             }
             else
             {
-               edges.add("h" + hierarchy + "_nt" + vertex.id + " -> h" + hierarchy + "_nt" + child.id + " [label=\"" + i + p + "\"];");
+               edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_nt" + childPathPrefix + child.id + " [label=\"" + i + p + "\"];");
             }
-            listGraph(hierarchy, child, vertices, edges);
+            listGraph(hierarchy, child, childPathPrefix, vertices, edges);
          }
       }
    }
