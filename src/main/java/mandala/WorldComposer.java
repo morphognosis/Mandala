@@ -87,10 +87,10 @@ public class WorldComposer
       "        [-dilateEvents <\"overlay\" | \"accumulate\" | \"normalize\"> (stretch events over time)\n" +
       "            [-consolidateIntervals <factor> (consolidate time interval sizes, default=" + INTERVAL_SIZE_CONSOLIDATION + ")]\n" +
       "            [-skewIntervals <skew> (skew interval sizes into past, larger intervals contain more events, default=" + INTERVAL_SIZE_SKEW + ")]]\n" +
-      "        [-exportPathNNdatasetCSV (default=\"" + PATH_NN_DATASET_CSV_FILENAME + "\")>]\n" +
-      "        [-exportPathNNdataset (default=\"" + PATH_NN_DATASET_FILENAME + "\")>]\n" +
-      "        [-exportPathRNNdataset (default=\"" + PATH_RNN_DATASET_FILENAME + "\")>]\n" +
-      "        [-exportPathTCNdataset (default=\"" + PATH_TCN_DATASET_FILENAME + "\")>]\n" +
+      "        [-exportPathNNdatasetCSV [<file name> (default=\"" + PATH_NN_DATASET_CSV_FILENAME + "\")]]\n" +
+      "        [-exportPathNNdataset [<file name> (default=\"" + PATH_NN_DATASET_FILENAME + "\")]]\n" +
+      "        [-exportPathRNNdataset [<file name> (default=\"" + PATH_RNN_DATASET_FILENAME + "\")]]\n" +
+      "        [-exportPathTCNdataset [<file name> (default=\"" + PATH_TCN_DATASET_FILENAME + "\")]]\n" +
       "        [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "  Help:\n" +
       "    java mandala.WorldComposer -help\n" +

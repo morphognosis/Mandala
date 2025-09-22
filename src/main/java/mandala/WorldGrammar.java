@@ -73,7 +73,7 @@ public class WorldGrammar
       "          [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "          [-saveGrammar <file name>]\n" +
       "        | -loadGrammar <file name>\n" +
-      "        [-exportGrammarGraph <file name> (Graphviz dot format, default=" + GRAMMAR_GRAPH_FILENAME + ")]\n" +
+      "        [-exportGrammarGraph [<file name> (Graphviz dot format, default=" + GRAMMAR_GRAPH_FILENAME + ")]]\n" +
       "      World path expansion:\n" +
       "          [-initialPath <string of terminals and nonterminals>\n" +
       "              (starting with unique terminal \"s\"tart and ending with unique terminal \"g\"oal, default=\"" + INITIAL_WORLD_PATH + "\")]\n" +
@@ -283,9 +283,9 @@ public class WorldGrammar
          }
          if (args[i].equals("-exportGrammarGraph"))
          {
-            i++;
-            if ((i < args.length) && !args[i].startsWith("-"))
+            if ((i < args.length - 1) && !args[i + 1].startsWith("-"))
             {
+               i++;
                GRAMMAR_GRAPH_FILENAME = args[i];
             }
             exportGrammarGraph = true;
@@ -357,12 +357,12 @@ public class WorldGrammar
          }
          if (args[i].equals("-exportPathNNdataset"))
          {
-            gotExportPathNNdataset = true;
             if ((i < args.length - 1) && !args[i + 1].startsWith("-"))
             {
                i++;
                PATH_NN_DATASET_FILENAME = args[i];
             }
+            gotExportPathNNdataset = true;
             continue;
          }
          if (args[i].equals("-pathNNdatasetTrainFraction"))
@@ -394,12 +394,12 @@ public class WorldGrammar
          }
          if (args[i].equals("-exportPathRNNdataset"))
          {
-            gotExportPathRNNdataset = true;
             if ((i < args.length - 1) && !args[i + 1].startsWith("-"))
             {
                i++;
                PATH_RNN_DATASET_FILENAME = args[i];
             }
+            gotExportPathRNNdataset = true;
             continue;
          }
          if (args[i].equals("-pathRNNdatasetTrainFraction"))
@@ -431,12 +431,12 @@ public class WorldGrammar
          }
          if (args[i].equals("-exportPathTCNdataset"))
          {
-            gotExportPathTCNdataset = true;
             if ((i < args.length - 1) && !args[i + 1].startsWith("-"))
             {
                i++;
-               PATH_RNN_DATASET_FILENAME = args[i];
+               PATH_TCN_DATASET_FILENAME = args[i];
             }
+            gotExportPathTCNdataset = true;
             continue;
          }
          if (args[i].equals("-pathTCNdatasetTrainFraction"))

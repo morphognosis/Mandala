@@ -135,11 +135,11 @@ public class Causations
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat true | false (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
-      "      [-exportPathNNdataset [<file name (default=\"" + PATH_NN_DATASET_FILENAME + "\")>]\n" +
+      "      [-exportPathNNdataset [<file name> (default=\"" + PATH_NN_DATASET_FILENAME + "\")]\n" +
       "          [-NNdatasetTrainFraction <fraction> (default=" + PATH_NN_DATASET_TRAIN_FRACTION + ")]]\n" +
-      "      [-exportPathRNNdataset [<file name (default=\"" + PATH_RNN_DATASET_FILENAME + "\")>]\n" +
+      "      [-exportPathRNNdataset [<file name> (default=\"" + PATH_RNN_DATASET_FILENAME + "\")]\n" +
       "          [-RNNdatasetTrainFraction <fraction> (default=" + PATH_RNN_DATASET_TRAIN_FRACTION + ")]]\n" +
-      "      [-exportPathTCNdataset [<file name (default=\"" + PATH_TCN_DATASET_FILENAME + "\")>]\n" +
+      "      [-exportPathTCNdataset [<file name> (default=\"" + PATH_TCN_DATASET_FILENAME + "\")]\n" +
       "          [-TCNdatasetTrainFraction <fraction> (default=" + PATH_TCN_DATASET_TRAIN_FRACTION + ")]]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "  Help:\n" +
