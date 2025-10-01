@@ -25,45 +25,108 @@ public class Causations
    public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
 
    // Feature dimensions.
-   public static int NUM_NONTERMINAL_DIMENSIONS = 64;
-   public static int NUM_NONTERMINAL_FEATURES   = 3;
-   public static int NUM_TERMINAL_DIMENSIONS    = 16;
-   public static int NUM_TERMINAL_FEATURES      = 3;
+   public static int NUM_DIMENSIONS = 16;
+   public static int NUM_FEATURES   = 3;
 
    // Causation.
    public static class Causation
    {
-      public int                  id;
-      public ArrayList<Boolean>   features;
-      public boolean              terminal;
-      public ArrayList<Causation> parents;
-      public ArrayList<Causation> children;
-      public ArrayList<Float>     probabilities;
+      public int id;
+      public ArrayList<NonterminalCausation> parents;
 
-      public Causation(int id, boolean terminal)
+      public Causation(int id)
       {
-         this.id       = id;
-         this.terminal = terminal;
-         parents       = new ArrayList<Causation>();
-         if (terminal)
-         {
-            features      = encodeFeatures(id, NUM_TERMINAL_DIMENSIONS, NUM_TERMINAL_FEATURES);
-            children      = null;
-            probabilities = null;
-         }
-         else
-         {
-            features      = encodeFeatures(id, NUM_NONTERMINAL_DIMENSIONS, NUM_NONTERMINAL_FEATURES);
-            children      = new ArrayList<Causation>();
-            probabilities = new ArrayList<Float>();
-         }
+         this.id = id;
+         parents = new ArrayList<NonterminalCausation>();
       }
 
 
       public void print()
       {
          System.out.print("id=" + id);
-         System.out.print(", terminal=" + terminal);
+         if (parents != null)
+         {
+            System.out.print(", parents:");
+            for (Causation p : parents)
+            {
+               System.out.print(" " + p.id);
+            }
+         }
+         System.out.println();
+      }
+   };
+
+   // Terminal causation.
+   public static class TerminalCausation extends Causation
+   {
+      public ArrayList<Boolean> features;
+
+      public TerminalCausation(int id)
+      {
+         super(id);
+         features = encodeFeatures(id, NUM_DIMENSIONS, NUM_FEATURES);
+      }
+
+
+      // Encode features.
+      public ArrayList<Boolean> encodeFeatures(int id, int numDimensions, int numFeatures)
+      {
+         Random r = new Random(id);
+
+         ArrayList<Boolean> features = new ArrayList<Boolean>();
+         for (int i = 0; i < numDimensions; i++)
+         {
+            features.add(false);
+         }
+         ArrayList<Integer> idxs = new ArrayList<Integer>();
+         for (int i = 0; i < numFeatures; i++)
+         {
+            while (true)
+            {
+               int n = r.nextInt(numDimensions);
+               int j = 0;
+               for ( ; j < idxs.size(); j++)
+               {
+                  if (n == idxs.get(j))
+                  {
+                     break;
+                  }
+               }
+               if (j == idxs.size())
+               {
+                  idxs.add(n);
+                  break;
+               }
+            }
+         }
+         for (int n : idxs)
+         {
+            features.set(n, true);
+         }
+         return(features);
+      }
+   };
+
+   // Nonterminal causation.
+   public static class NonterminalCausation extends Causation
+   {
+      public ArrayList<Causation> children;
+      public ArrayList<Float>     probabilities;
+      public int currentChild;
+
+      public NonterminalCausation(int id)
+      {
+         super(id);
+         children      = new ArrayList<Causation>();
+         probabilities = new ArrayList<Float>();
+         currentChild  = -1;
+      }
+
+
+      @Override
+      public void print()
+      {
+         System.out.print("id=" + id);
          if (parents != null)
          {
             System.out.print(", parents:");
@@ -88,6 +151,7 @@ public class Causations
                System.out.print(" " + p);
             }
          }
+         System.out.print(", current child = " + currentChild);
          System.out.println();
       }
    };
@@ -128,12 +192,10 @@ public class Causations
       "      [-minCausationProbability <probability> (default=" + MIN_CAUSATION_PROBABILITY + ")]\n" +
       "      [-maxCausationProbability <probability> (default=" + MAX_CAUSATION_PROBABILITY + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
-      "      [-numNonterminalDimensions <quantity> (default=" + NUM_NONTERMINAL_DIMENSIONS + ")]\n" +
-      "      [-numNonterminalFeatures <quantity> (default=" + NUM_NONTERMINAL_FEATURES + ")]\n" +
-      "      [-numTerminalDimensions <quantity> (default=" + NUM_TERMINAL_DIMENSIONS + ")]\n" +
-      "      [-numTerminalFeatures <quantity> (default=" + NUM_TERMINAL_FEATURES + ")]\n" +
+      "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
+      "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
-      "          [-treeFormat true | false (default=" + TREE_FORMAT + ")]]\n" +
+      "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-exportPathNNdataset [<file name> (default=\"" + PATH_NN_DATASET_FILENAME + "\")]\n" +
       "          [-NNdatasetTrainFraction <fraction> (default=" + PATH_NN_DATASET_TRAIN_FRACTION + ")]]\n" +
@@ -318,105 +380,53 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-numNonterminalDimensions"))
+         if (args[i].equals("-numDimensions"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid numNonterminalDimensions option");
+               System.err.println("Invalid numDimensions option");
                System.err.println(Usage);
                System.exit(1);
             }
             try
             {
-               NUM_NONTERMINAL_DIMENSIONS = Integer.parseInt(args[i]);
+               NUM_DIMENSIONS = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid numNonterminalDimensions option");
+               System.err.println("Invalid numDimensions option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (NUM_NONTERMINAL_DIMENSIONS < 1)
+            if (NUM_DIMENSIONS < 1)
             {
-               System.err.println("Invalid numNonterminalDimensions option");
+               System.err.println("Invalid numDimensions option");
                System.err.println(Usage);
                System.exit(1);
             }
             continue;
          }
-         if (args[i].equals("-numNonterminalFeatures"))
+         if (args[i].equals("-numFeatures"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid numNonterminalFeatures option");
+               System.err.println("Invalid numFeatures option");
                System.err.println(Usage);
                System.exit(1);
             }
             try
             {
-               NUM_NONTERMINAL_FEATURES = Integer.parseInt(args[i]);
+               NUM_FEATURES = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid numNonterminalFeatures option");
+               System.err.println("Invalid numFeatures option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (NUM_NONTERMINAL_FEATURES < 1)
+            if (NUM_FEATURES < 1)
             {
-               System.err.println("Invalid numNonterminalFeatures option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-numTerminalDimensions"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid numTerminalDimensions option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               NUM_TERMINAL_DIMENSIONS = Integer.parseInt(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid numTerminalDimensions option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (NUM_TERMINAL_DIMENSIONS < 1)
-            {
-               System.err.println("Invalid numTerminalDimensions option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-numTerminalFeatures"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid numTerminalFeatures option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               NUM_TERMINAL_FEATURES = Integer.parseInt(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid numTerminalFeatures option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (NUM_TERMINAL_FEATURES < 1)
-            {
-               System.err.println("Invalid numTerminalFeatures option");
+               System.err.println("Invalid numFeatures option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -636,12 +646,7 @@ public class Causations
          System.err.println(Usage);
          System.exit(1);
       }
-      if (NUM_NONTERMINAL_FEATURES > NUM_NONTERMINAL_DIMENSIONS)
-      {
-         System.err.println(Usage);
-         System.exit(1);
-      }
-      if (NUM_TERMINAL_FEATURES > NUM_TERMINAL_DIMENSIONS)
+      if (NUM_FEATURES > NUM_DIMENSIONS)
       {
          System.err.println(Usage);
          System.exit(1);
@@ -680,7 +685,7 @@ public class Causations
          }
          else if (NUM_TERMINALS > 0)
          {
-            causations.add(new Causation(0, true));
+            causations.add(new TerminalCausation(0));
          }
       }
 
@@ -711,53 +716,14 @@ public class Causations
    }
 
 
-   // Encode features.
-   public static ArrayList<Boolean> encodeFeatures(int id, int numDimensions, int numFeatures)
-   {
-      Random r = new Random(id);
-
-      ArrayList<Boolean> features = new ArrayList<Boolean>();
-      for (int i = 0; i < numDimensions; i++)
-      {
-         features.add(false);
-      }
-      ArrayList<Integer> idxs = new ArrayList<Integer>();
-      for (int i = 0; i < numFeatures; i++)
-      {
-         while (true)
-         {
-            int n = r.nextInt(numDimensions);
-            int j = 0;
-            for ( ; j < idxs.size(); j++)
-            {
-               if (n == idxs.get(j))
-               {
-                  break;
-               }
-            }
-            if (j == idxs.size())
-            {
-               idxs.add(n);
-               break;
-            }
-         }
-      }
-      for (int n : idxs)
-      {
-         features.set(n, true);
-      }
-      return(features);
-   }
-
-
    // Generate causation hierarchy.
    public static Causation generateCausationHierarchy()
    {
-      Causation root = new Causation(0, false);
+      NonterminalCausation root = new NonterminalCausation(0);
 
-      ArrayList<Causation> open = new ArrayList<Causation>();
+      ArrayList<NonterminalCausation> open = new ArrayList<NonterminalCausation>();
       open.add(root);
-      ArrayList<Causation> instances = new ArrayList<Causation>();
+      ArrayList<NonterminalCausation> instances = new ArrayList<NonterminalCausation>();
       instances.add(root);
       for (int i = 1; i < NUM_NONTERMINALS; i++)
       {
@@ -770,10 +736,10 @@ public class Causations
 
 
    // Expand nonterminal causation.
-   public static void expandNonterminal(ArrayList<Causation> open, ArrayList<Causation> instances, Graph graph)
+   public static void expandNonterminal(ArrayList<NonterminalCausation> open, ArrayList<NonterminalCausation> instances, Graph graph)
    {
-      int       n      = randomizer.nextInt(open.size());
-      Causation parent = open.get(n);
+      int n = randomizer.nextInt(open.size());
+      NonterminalCausation parent = open.get(n);
 
       open.remove(n);
       if (randomizer.nextFloat() < TERMINAL_PRODUCTION_PROBABILITY)
@@ -791,7 +757,7 @@ public class Causations
             {
                available.add(j);
             }
-            Causation child = null;
+            NonterminalCausation child = null;
             for (int j = 0; j < NUM_NONTERMINALS && child == null; j++)
             {
                int a = randomizer.nextInt(available.size());
@@ -807,7 +773,7 @@ public class Causations
                   child = instances.get(k);
                   if (child == null)
                   {
-                     child = new Causation(k, false);
+                     child = new NonterminalCausation(k);
                      instances.set(k, child);
                      newChildren.add(child);
                      open.add(child);
@@ -845,13 +811,13 @@ public class Causations
 
 
    // Expand causation to terminals.
-   public static void expandTerminal(Causation parent)
+   public static void expandTerminal(NonterminalCausation parent)
    {
       int n = randomizer.nextInt(MAX_PRODUCTION_RHS_LENGTH - MIN_PRODUCTION_RHS_LENGTH + 1) + MIN_PRODUCTION_RHS_LENGTH;
 
       for (int i = 0; i < n; i++)
       {
-         Causation child = new Causation(randomizer.nextInt(NUM_TERMINALS), true);
+         TerminalCausation child = new TerminalCausation(randomizer.nextInt(NUM_TERMINALS));
          child.parents.add(parent);
          parent.children.add(child);
          if (i < n - 1)
@@ -879,7 +845,7 @@ public class Causations
             vertices.add("h" + i + " [label=\"hierarchy_" + i + "\", shape=triangle];");
             HashSet<String> edges = new HashSet<String>();
             edges.add("hierarchies -> h" + i);
-            if (root.terminal)
+            if (root instanceof TerminalCausation)
             {
                edges.add("h" + i + " -> h" + i + "_t" + root.id);
             }
@@ -911,27 +877,28 @@ public class Causations
    // List graph elements.
    private static void listGraph(int hierarchy, Causation vertex, String pathPrefix, HashSet<String> vertices, HashSet<String> edges)
    {
-      if (vertex.terminal)
+      if (vertex instanceof TerminalCausation)
       {
          vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + "\", shape=square];");
       }
       else
       {
          vertices.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " [label=\"" + vertex.id + "\", shape=circle];");
-         for (int i = 0; i < vertex.children.size(); i++)
+         NonterminalCausation parent = (NonterminalCausation)vertex;
+         for (int i = 0; i < parent.children.size(); i++)
          {
-            Causation child = vertex.children.get(i);
+            Causation child = parent.children.get(i);
             String    p     = "";
-            if (i < vertex.probabilities.size())
+            if (i < parent.probabilities.size())
             {
-               p = "/" + String.format("%.2f", vertex.probabilities.get(i));
+               p = "/" + String.format("%.2f", parent.probabilities.get(i));
             }
             String childPathPrefix = "";
             if (TREE_FORMAT)
             {
                childPathPrefix = new String(pathPrefix) + vertex.id + "_" + i + "_";
             }
-            if (child.terminal)
+            if (child instanceof TerminalCausation)
             {
                edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_t" + childPathPrefix + child.id + " [label=\"" + i + p + "\"];");
             }
