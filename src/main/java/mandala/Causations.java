@@ -31,19 +31,22 @@ public class Causations
    // Causation.
    public static class Causation
    {
+      public int hierarchy;
       public int id;
       public ArrayList<NonterminalCausation> parents;
 
-      public Causation(int id)
+      public Causation(int hierarchy, int id)
       {
-         this.id = id;
-         parents = new ArrayList<NonterminalCausation>();
+         this.hierarchy = hierarchy;
+         this.id        = id;
+         parents        = new ArrayList<NonterminalCausation>();
       }
 
 
       public void print()
       {
-         System.out.print("id=" + id);
+         System.out.print("hierarchy=" + hierarchy);
+         System.out.print(", id=" + id);
          if (parents != null)
          {
             System.out.print(", parents:");
@@ -61,17 +64,19 @@ public class Causations
    {
       public ArrayList<Boolean> features;
 
-      public TerminalCausation(int id)
+      public TerminalCausation(int hierarchy, int id)
       {
-         super(id);
-         features = encodeFeatures(id, NUM_DIMENSIONS, NUM_FEATURES);
+         super(hierarchy, id);
+         features = encodeFeatures(hierarchy, id, NUM_DIMENSIONS, NUM_FEATURES);
       }
 
 
       // Encode features.
-      public ArrayList<Boolean> encodeFeatures(int id, int numDimensions, int numFeatures)
+      public ArrayList<Boolean> encodeFeatures(int hierarchy, int id, int numDimensions, int numFeatures)
       {
-         Random r = new Random(id);
+         String seedString = hierarchy + "_" + id;
+         long   seed       = seedString.hashCode();
+         Random r          = new Random(seed);
 
          ArrayList<Boolean> features = new ArrayList<Boolean>();
          for (int i = 0; i < numDimensions; i++)
@@ -105,6 +110,31 @@ public class Causations
          }
          return(features);
       }
+
+
+      @Override
+      public void print()
+      {
+         System.out.print("hierarchy=" + hierarchy);
+         System.out.print(", id=" + id);
+         System.out.print(", features:");
+         for (int i = 0; i < features.size(); i++)
+         {
+            if (features.get(i))
+            {
+               System.out.print(" " + i);
+            }
+         }
+         if (parents != null)
+         {
+            System.out.print(", parents:");
+            for (Causation p : parents)
+            {
+               System.out.print(" " + p.id);
+            }
+         }
+         System.out.println();
+      }
    };
 
    // Nonterminal causation.
@@ -114,9 +144,9 @@ public class Causations
       public ArrayList<Float>     probabilities;
       public int currentChild;
 
-      public NonterminalCausation(int id)
+      public NonterminalCausation(int hierarchy, int id)
       {
-         super(id);
+         super(hierarchy, id);
          children      = new ArrayList<Causation>();
          probabilities = new ArrayList<Float>();
          currentChild  = -1;
@@ -126,7 +156,8 @@ public class Causations
       @Override
       public void print()
       {
-         System.out.print("id=" + id);
+         System.out.print("hierarchy=" + hierarchy);
+         System.out.print(", id=" + id);
          if (parents != null)
          {
             System.out.print(", parents:");
@@ -681,11 +712,11 @@ public class Causations
       {
          if (NUM_NONTERMINALS > 0)
          {
-            causations.add(generateCausationHierarchy());
+            causations.add(generateCausationHierarchy(i));
          }
          else if (NUM_TERMINALS > 0)
          {
-            causations.add(new TerminalCausation(0));
+            causations.add(new TerminalCausation(i, 0));
          }
       }
 
@@ -717,9 +748,9 @@ public class Causations
 
 
    // Generate causation hierarchy.
-   public static Causation generateCausationHierarchy()
+   public static Causation generateCausationHierarchy(int hierarchy)
    {
-      NonterminalCausation root = new NonterminalCausation(0);
+      NonterminalCausation root = new NonterminalCausation(hierarchy, 0);
 
       ArrayList<NonterminalCausation> open = new ArrayList<NonterminalCausation>();
       open.add(root);
@@ -773,7 +804,7 @@ public class Causations
                   child = instances.get(k);
                   if (child == null)
                   {
-                     child = new NonterminalCausation(k);
+                     child = new NonterminalCausation(parent.hierarchy, k);
                      instances.set(k, child);
                      newChildren.add(child);
                      open.add(child);
@@ -817,7 +848,7 @@ public class Causations
 
       for (int i = 0; i < n; i++)
       {
-         TerminalCausation child = new TerminalCausation(randomizer.nextInt(NUM_TERMINALS));
+         TerminalCausation child = new TerminalCausation(parent.hierarchy, randomizer.nextInt(NUM_TERMINALS));
          child.parents.add(parent);
          parent.children.add(child);
          if (i < n - 1)
@@ -879,19 +910,33 @@ public class Causations
    {
       if (vertex instanceof TerminalCausation)
       {
-         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + "\", shape=square];");
+         TerminalCausation terminal = (TerminalCausation)vertex;
+         String            s        = "(";
+         for (int i = 0, j = terminal.features.size(); i < j; i++)
+         {
+            if (terminal.features.get(i))
+            {
+               s += i + ",";
+            }
+         }
+         if (s.length() > 0)
+         {
+            s = s.substring(0, s.length() - 1);
+         }
+         s += ")";
+         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + s + "\", shape=square];");
       }
       else
       {
          vertices.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " [label=\"" + vertex.id + "\", shape=circle];");
-         NonterminalCausation parent = (NonterminalCausation)vertex;
-         for (int i = 0; i < parent.children.size(); i++)
+         NonterminalCausation nonTerminal = (NonterminalCausation)vertex;
+         for (int i = 0; i < nonTerminal.children.size(); i++)
          {
-            Causation child = parent.children.get(i);
+            Causation child = nonTerminal.children.get(i);
             String    p     = "";
-            if (i < parent.probabilities.size())
+            if (i < nonTerminal.probabilities.size())
             {
-               p = "/" + String.format("%.2f", parent.probabilities.get(i));
+               p = "(" + String.format("%.2f", nonTerminal.probabilities.get(i)) + ")";
             }
             String childPathPrefix = "";
             if (TREE_FORMAT)
