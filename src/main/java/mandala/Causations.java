@@ -135,6 +135,29 @@ public class Causations
          }
          System.out.println();
       }
+      
+      public void printHierarchical(String indent, int childNum, float probability)
+      {
+    	 System.out.print(indent);
+         System.out.print("terminal id=" + id);
+         if (childNum >= 0)
+         {
+             System.out.print(", child number=" + childNum);        	 
+         }
+         if (probability >= 0.0f)
+         {
+        	 System.out.print(", probability=" + probability);
+         }
+         System.out.print(", features:");
+         for (int i = 0; i < features.size(); i++)
+         {
+            if (features.get(i))
+            {
+               System.out.print(" " + i);
+            }
+         }
+         System.out.println();
+      }      
    };
 
    // Nonterminal causation.
@@ -185,12 +208,44 @@ public class Causations
          System.out.print(", current child = " + currentChild);
          System.out.println();
       }
+      
+      public void printHierarchical(String indent, int childNum, float probability)
+      {
+     	 System.out.print(indent);
+         System.out.print("nonterminal id=" + id);
+         if (childNum >= 0)
+         {
+             System.out.print(", child number=" + childNum);        	 
+         }
+         if (probability >= 0.0f)
+         {
+        	 System.out.print(", probability=" + probability);
+         }
+         System.out.println();
+    	 for (int i = 0, j = children.size(); i < j; i++)
+    	 {
+    		 float p = -1.0f;
+    		 if (i < j - 1)
+    		 {
+    			 p = probabilities.get(i);
+    		 }
+    		 Causation child = children.get(i);
+    		 if (child instanceof TerminalCausation)
+    		 {
+    			 TerminalCausation terminal = (TerminalCausation)child;
+    			 terminal.printHierarchical(indent + "  ", i, p);
+    		 } else {
+    			 NonterminalCausation nonterminal = (NonterminalCausation)child;
+    			 nonterminal.printHierarchical(indent + "  ", i, p);    			 
+    		 }  		 
+    	 }
+      }            
    };
    public static ArrayList<Causation> causations;
 
    // Graph.
    public static String  CAUSATIONS_GRAPH_FILENAME = "causations.dot";
-   public static boolean TREE_FORMAT = false;
+   public static boolean TREE_FORMAT = true;
 
    // Causation paths.
    public static int NUM_CAUSATION_PATHS = 5;
@@ -209,7 +264,7 @@ public class Causations
    public static Random randomizer  = null;
 
    // Verbosity.
-   public static boolean VERBOSE = true;
+   public static boolean VERBOSE = false;
 
    // Usage.
    public static final String Usage =
@@ -235,6 +290,7 @@ public class Causations
       "      [-exportPathTCNdataset [<file name> (default=\"" + PATH_TCN_DATASET_FILENAME + "\")]\n" +
       "          [-TCNdatasetTrainFraction <fraction> (default=" + PATH_TCN_DATASET_TRAIN_FRACTION + ")]]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
+      "      [-verbose]\n" +      
       "  Help:\n" +
       "    java mandala.Causations -help\n" +
       "Exit codes:\n" +
@@ -656,6 +712,11 @@ public class Causations
             }
             continue;
          }
+         if (args[i].equals("-verbose"))
+         {
+            VERBOSE = true;
+            continue;
+         }         
          if (args[i].equals("-help") || args[i].equals("-h") || args[i].equals("-?"))
          {
             System.out.println(Usage);
@@ -718,6 +779,12 @@ public class Causations
          {
             causations.add(new TerminalCausation(i, 0));
          }
+      }
+      
+      // Print causations?
+      if (VERBOSE)
+      {
+    	  printCausations();
       }
 
       // Export causations graph.
@@ -858,6 +925,28 @@ public class Causations
          }
       }
    }
+   
+   // Print causations.
+   public static void printCausations()
+   {
+	   System.out.println("hierarchies");
+	   for (int i = 0; i < causations.size(); i++)
+	   {
+		   System.out.println("  hierarchy_" + i);
+		   Causation root = causations.get(i);
+		   if (root != null)
+		   {
+	    		 if (root instanceof TerminalCausation)
+	    		 {
+	    			 TerminalCausation terminal = (TerminalCausation)root;
+	    			 terminal.printHierarchical("    ", -1, -1.0f);
+	    		 } else {
+	    			 NonterminalCausation nonterminal = (NonterminalCausation)root;
+	    			 nonterminal.printHierarchical("    ", -1, -1.0f);    			 
+	    		 }  		 
+	    	 }
+	   }
+   }
 
 
    // Export causations graph (Graphviz dot format).
@@ -960,6 +1049,7 @@ public class Causations
    // Produce causation paths.
    public static void produceCausationPaths(int numPaths)
    {
+	   
    }
 
 
