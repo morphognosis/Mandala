@@ -16,7 +16,7 @@ public class Causations
 {
    // Generation parameters.
    public static int   NUM_CAUSATION_HIERARCHIES       = 1;
-   public static int   NUM_NONTERMINALS                = 10;
+   public static int   NUM_NONTERMINALS                = 5;
    public static int   NUM_TERMINALS                   = 10;
    public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH       = 5;
@@ -135,18 +135,19 @@ public class Causations
          }
          System.out.println();
       }
-      
+
+
       public void printHierarchical(String indent, int childNum, float probability)
       {
-    	 System.out.print(indent);
+         System.out.print(indent);
          System.out.print("terminal id=" + id);
          if (childNum >= 0)
          {
-             System.out.print(", child number=" + childNum);        	 
+            System.out.print(", child number=" + childNum);
          }
          if (probability >= 0.0f)
          {
-        	 System.out.print(", probability=" + probability);
+            System.out.print(", probability=" + probability);
          }
          System.out.print(", features:");
          for (int i = 0; i < features.size(); i++)
@@ -157,7 +158,7 @@ public class Causations
             }
          }
          System.out.println();
-      }      
+      }
    };
 
    // Nonterminal causation.
@@ -208,40 +209,43 @@ public class Causations
          System.out.print(", current child = " + currentChild);
          System.out.println();
       }
-      
+
+
       public void printHierarchical(String indent, int childNum, float probability)
       {
-     	 System.out.print(indent);
+         System.out.print(indent);
          System.out.print("nonterminal id=" + id);
          if (childNum >= 0)
          {
-             System.out.print(", child number=" + childNum);        	 
+            System.out.print(", child number=" + childNum);
          }
          if (probability >= 0.0f)
          {
-        	 System.out.print(", probability=" + probability);
+            System.out.print(", probability=" + probability);
          }
          System.out.println();
-    	 for (int i = 0, j = children.size(); i < j; i++)
-    	 {
-    		 float p = -1.0f;
-    		 if (i < j - 1)
-    		 {
-    			 p = probabilities.get(i);
-    		 }
-    		 Causation child = children.get(i);
-    		 if (child instanceof TerminalCausation)
-    		 {
-    			 TerminalCausation terminal = (TerminalCausation)child;
-    			 terminal.printHierarchical(indent + "  ", i, p);
-    		 } else {
-    			 NonterminalCausation nonterminal = (NonterminalCausation)child;
-    			 nonterminal.printHierarchical(indent + "  ", i, p);    			 
-    		 }  		 
-    	 }
-      }            
+         for (int i = 0, j = children.size(); i < j; i++)
+         {
+            float p = -1.0f;
+            if (i < j - 1)
+            {
+               p = probabilities.get(i);
+            }
+            Causation child = children.get(i);
+            if (child instanceof TerminalCausation)
+            {
+               TerminalCausation terminal = (TerminalCausation)child;
+               terminal.printHierarchical(indent + "  ", i, p);
+            }
+            else
+            {
+               NonterminalCausation nonterminal = (NonterminalCausation)child;
+               nonterminal.printHierarchical(indent + "  ", i, p);
+            }
+         }
+      }
    };
-   public static ArrayList<Causation> causations;
+   public static ArrayList < ArrayList < Causation >> causationHierarchies;
 
    // Graph.
    public static String  CAUSATIONS_GRAPH_FILENAME = "causations.dot";
@@ -249,7 +253,7 @@ public class Causations
 
    // Causation paths.
    public static int NUM_CAUSATION_PATHS = 5;
-   public static ArrayList<Causation> causationPaths;
+   public static     ArrayList < ArrayList < ArrayList < Causation >>> causationPaths;
 
    // Dataset exports.
    public static String PATH_RNN_DATASET_FILENAME       = "causation_paths_rnn_dataset.py";
@@ -290,7 +294,7 @@ public class Causations
       "      [-exportPathTCNdataset [<file name> (default=\"" + PATH_TCN_DATASET_FILENAME + "\")]\n" +
       "          [-TCNdatasetTrainFraction <fraction> (default=" + PATH_TCN_DATASET_TRAIN_FRACTION + ")]]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
-      "      [-verbose]\n" +      
+      "      [-verbose]\n" +
       "  Help:\n" +
       "    java mandala.Causations -help\n" +
       "Exit codes:\n" +
@@ -716,7 +720,7 @@ public class Causations
          {
             VERBOSE = true;
             continue;
-         }         
+         }
          if (args[i].equals("-help") || args[i].equals("-h") || args[i].equals("-?"))
          {
             System.out.println(Usage);
@@ -768,23 +772,32 @@ public class Causations
       randomizer = new Random(RANDOM_SEED);
 
       // Generate causations.
-      causations = new ArrayList<Causation>();
+      causationHierarchies = new ArrayList < ArrayList < Causation >> ();
       for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
       {
+         ArrayList<Causation> causations = new ArrayList<Causation>();
          if (NUM_NONTERMINALS > 0)
          {
-            causations.add(generateCausationHierarchy(i));
+            ArrayList<NonterminalCausation> nonterminalCausations = generateCausationHierarchy(i);
+            for (NonterminalCausation causation : nonterminalCausations)
+            {
+               if (causation != null)
+               {
+                  causations.add((Causation)causation);
+               }
+            }
          }
          else if (NUM_TERMINALS > 0)
          {
             causations.add(new TerminalCausation(i, 0));
          }
+         causationHierarchies.add(causations);
       }
-      
+
       // Print causations?
       if (VERBOSE)
       {
-    	  printCausations();
+         printCausations();
       }
 
       // Export causations graph.
@@ -815,7 +828,7 @@ public class Causations
 
 
    // Generate causation hierarchy.
-   public static Causation generateCausationHierarchy(int hierarchy)
+   public static ArrayList<NonterminalCausation> generateCausationHierarchy(int hierarchy)
    {
       NonterminalCausation root = new NonterminalCausation(hierarchy, 0);
 
@@ -829,7 +842,7 @@ public class Causations
       }
       Graph graph = new Graph(NUM_NONTERMINALS);
       expandNonterminal(open, instances, graph);
-      return(root);
+      return(instances);
    }
 
 
@@ -925,27 +938,30 @@ public class Causations
          }
       }
    }
-   
+
+
    // Print causations.
    public static void printCausations()
    {
-	   System.out.println("hierarchies");
-	   for (int i = 0; i < causations.size(); i++)
-	   {
-		   System.out.println("  hierarchy_" + i);
-		   Causation root = causations.get(i);
-		   if (root != null)
-		   {
-	    		 if (root instanceof TerminalCausation)
-	    		 {
-	    			 TerminalCausation terminal = (TerminalCausation)root;
-	    			 terminal.printHierarchical("    ", -1, -1.0f);
-	    		 } else {
-	    			 NonterminalCausation nonterminal = (NonterminalCausation)root;
-	    			 nonterminal.printHierarchical("    ", -1, -1.0f);    			 
-	    		 }  		 
-	    	 }
-	   }
+      System.out.println("hierarchies");
+      for (int i = 0; i < causationHierarchies.size(); i++)
+      {
+         System.out.println("  hierarchy_" + i);
+         Causation root = causationHierarchies.get(i).get(0);
+         if (root != null)
+         {
+            if (root instanceof TerminalCausation)
+            {
+               TerminalCausation terminal = (TerminalCausation)root;
+               terminal.printHierarchical("    ", -1, -1.0f);
+            }
+            else
+            {
+               NonterminalCausation nonterminal = (NonterminalCausation)root;
+               nonterminal.printHierarchical("    ", -1, -1.0f);
+            }
+         }
+      }
    }
 
 
@@ -958,9 +974,9 @@ public class Causations
          PrintWriter printWriter = new PrintWriter(fileWriter);
          printWriter.println("digraph causations {");
          printWriter.println("hierarchies [label=\"hierarchies\", shape=triangle];");
-         for (int i = 0; i < causations.size(); i++)
+         for (int i = 0; i < causationHierarchies.size(); i++)
          {
-            Causation       root     = causations.get(i);
+            Causation       root     = causationHierarchies.get(i).get(0);
             HashSet<String> vertices = new HashSet<String>();
             vertices.add("h" + i + " [label=\"hierarchy_" + i + "\", shape=triangle];");
             HashSet<String> edges = new HashSet<String>();
@@ -1049,7 +1065,36 @@ public class Causations
    // Produce causation paths.
    public static void produceCausationPaths(int numPaths)
    {
-	   
+      causationPaths = new ArrayList < ArrayList < ArrayList < Causation >>> ();
+      if (causationHierarchies.size() == 0)
+      {
+         return;
+      }
+      for (int i = 0; i < numPaths; i++)
+      {
+         ArrayList < ArrayList < Causation >> path = new ArrayList < ArrayList < Causation >> ();
+         causationPaths.add(path);
+         int hierarchy = randomizer.nextInt(causationHierarchies.size());
+         ArrayList<Causation> causationHierarchy = causationHierarchies.get(hierarchy);
+         Causation            root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
+         ArrayList<Causation> step = new ArrayList<Causation>();
+         step.add(root);
+         path.add(step);
+         while (root instanceof NonterminalCausation)
+         {
+            NonterminalCausation nonterminalRoot = (NonterminalCausation)root;
+            nonterminalRoot.currentChild = 0;
+            root = nonterminalRoot.children.get(0);
+            step.add(root);
+         }
+         stepPath(path);
+      }
+   }
+
+
+   // Step along path.
+   public static void stepPath(ArrayList < ArrayList < Causation >> path)
+   {
    }
 
 
