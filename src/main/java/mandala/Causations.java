@@ -166,14 +166,12 @@ public class Causations
    {
       public ArrayList<Causation> children;
       public ArrayList<Float>     probabilities;
-      public int currentChild;
 
       public NonterminalCausation(int hierarchy, int id)
       {
          super(hierarchy, id);
          children      = new ArrayList<Causation>();
          probabilities = new ArrayList<Float>();
-         currentChild  = -1;
       }
 
 
@@ -206,7 +204,6 @@ public class Causations
                System.out.print(" " + p);
             }
          }
-         System.out.print(", current child = " + currentChild);
          System.out.println();
       }
 
@@ -252,8 +249,19 @@ public class Causations
    public static boolean TREE_FORMAT = true;
 
    // Causation paths.
+   public static class CausationState
+   {
+      public Causation causation;
+      public int       currentChild;
+
+      public CausationState(Causation causation, int currentChild)
+      {
+         this.causation    = causation;
+         this.currentChild = currentChild;
+      }
+   };
    public static int NUM_CAUSATION_PATHS = 5;
-   public static     ArrayList < ArrayList < ArrayList < Causation >>> causationPaths;
+   public static     ArrayList < ArrayList < ArrayList < CausationState >>> causationPaths;
 
    // Dataset exports.
    public static String PATH_RNN_DATASET_FILENAME       = "causation_paths_rnn_dataset.py";
@@ -388,6 +396,58 @@ public class Causations
             if (NUM_TERMINALS < 0)
             {
                System.err.println("Invalid numTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-minProductionRightHandSideLength"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid minProductionRightHandSideLength option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               MIN_PRODUCTION_RHS_LENGTH = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid minProductionRightHandSideLength option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (MIN_PRODUCTION_RHS_LENGTH < 1)
+            {
+               System.err.println("Invalid minProductionRightHandSideLength option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-maxProductionRightHandSideLength"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid maxProductionRightHandSideLength option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               MAX_PRODUCTION_RHS_LENGTH = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid maxProductionRightHandSideLength option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (MAX_PRODUCTION_RHS_LENGTH < 1)
+            {
+               System.err.println("Invalid maxProductionRightHandSideLength option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1065,36 +1125,63 @@ public class Causations
    // Produce causation paths.
    public static void produceCausationPaths(int numPaths)
    {
-      causationPaths = new ArrayList < ArrayList < ArrayList < Causation >>> ();
+      causationPaths = new ArrayList < ArrayList < ArrayList < CausationState >>> ();
       if (causationHierarchies.size() == 0)
       {
          return;
       }
       for (int i = 0; i < numPaths; i++)
       {
-         ArrayList < ArrayList < Causation >> path = new ArrayList < ArrayList < Causation >> ();
+         ArrayList < ArrayList < CausationState >> path = new ArrayList < ArrayList < CausationState >> ();
          causationPaths.add(path);
          int hierarchy = randomizer.nextInt(causationHierarchies.size());
-         ArrayList<Causation> causationHierarchy = causationHierarchies.get(hierarchy);
-         Causation            root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
-         ArrayList<Causation> step = new ArrayList<Causation>();
-         step.add(root);
+         ArrayList<Causation>      causationHierarchy = causationHierarchies.get(hierarchy);
+         Causation                 root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
+         ArrayList<CausationState> step = new ArrayList<CausationState>();
+         step.add(new CausationState(root, 0));
          path.add(step);
          while (root instanceof NonterminalCausation)
          {
             NonterminalCausation nonterminalRoot = (NonterminalCausation)root;
-            nonterminalRoot.currentChild = 0;
             root = nonterminalRoot.children.get(0);
-            step.add(root);
+            step.add(new CausationState(root, 0));
          }
-         stepPath(path);
+         while (stepPath(path, 0)) {}
       }
    }
 
 
    // Step along path.
-   public static void stepPath(ArrayList < ArrayList < Causation >> path)
+   public static boolean stepPath(ArrayList < ArrayList < CausationState >> path, int context)
    {
+      ArrayList<CausationState> currentStep    = path.get(path.size() - 1);
+      CausationState            causationState = currentStep.get(context);
+      if (causationState.causation instanceof TerminalCausation)
+      {
+         return(false);
+      }
+      if (stepPath(path, context + 1))
+      {
+         return(true);
+      }
+      NonterminalCausation nonterminalCausation = (NonterminalCausation)causationState.causation;
+      if (causationState.currentChild == nonterminalCausation.children.size() - 1)
+      {
+         return(false);
+      }
+      ArrayList<CausationState> nextStep = new ArrayList<CausationState>();
+      for (int i = 0, j = currentStep.size(); i < j; i++)
+      {
+         CausationState current = currentStep.get(i);
+         CausationState next    = new CausationState(current.causation, current.currentChild);
+         if (i == context)
+         {
+            next.currentChild++;
+         }
+         nextStep.add(next);
+      }
+      path.add(nextStep);
+      return(true);
    }
 
 
