@@ -1210,17 +1210,13 @@ public class Causations
       state = new CausationState(state.causation, state.currentChild);
       state.currentChild++;
       nextStep.add(state);
-      while (true)
+      do
       {
          NonterminalCausation parent = (NonterminalCausation)state.causation;
          Causation            child  = parent.children.get(state.currentChild);
          state = new CausationState(child, 0);
          nextStep.add(state);
-         if (child instanceof TerminalCausation)
-         {
-            break;
-         }
-      }
+      } while (state.causation instanceof NonterminalCausation);
       path.add(nextStep);
       return(true);
    }
