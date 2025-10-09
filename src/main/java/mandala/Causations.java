@@ -208,7 +208,7 @@ public class Causations
       }
 
 
-      public void printHierarchical(String indent, int childNum, float probability)
+      public void printHierarchical(String indent, int childNum, float probability, boolean recursive)
       {
          System.out.print(indent);
          System.out.print("nonterminal id=" + id);
@@ -221,23 +221,26 @@ public class Causations
             System.out.print(", probability=" + probability);
          }
          System.out.println();
-         for (int i = 0, j = children.size(); i < j; i++)
+         if (recursive)
          {
-            float p = -1.0f;
-            if (i < j - 1)
+            for (int i = 0, j = children.size(); i < j; i++)
             {
-               p = probabilities.get(i);
-            }
-            Causation child = children.get(i);
-            if (child instanceof TerminalCausation)
-            {
-               TerminalCausation terminal = (TerminalCausation)child;
-               terminal.printHierarchical(indent + "  ", i, p);
-            }
-            else
-            {
-               NonterminalCausation nonterminal = (NonterminalCausation)child;
-               nonterminal.printHierarchical(indent + "  ", i, p);
+               float p = -1.0f;
+               if (i < j - 1)
+               {
+                  p = probabilities.get(i);
+               }
+               Causation child = children.get(i);
+               if (child instanceof TerminalCausation)
+               {
+                  TerminalCausation terminal = (TerminalCausation)child;
+                  terminal.printHierarchical(indent + "  ", i, p);
+               }
+               else
+               {
+                  NonterminalCausation nonterminal = (NonterminalCausation)child;
+                  nonterminal.printHierarchical(indent + "  ", i, p, true);
+               }
             }
          }
       }
@@ -866,8 +869,8 @@ public class Causations
          exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME, TREE_FORMAT);
       }
 
-      // Produce causation paths.
-      produceCausationPaths(NUM_CAUSATION_PATHS);
+      // Generate causation paths.
+      generateCausationPaths(NUM_CAUSATION_PATHS);
 
       // Export datasets.
       if (gotExportPathNNdataset)
@@ -1018,7 +1021,7 @@ public class Causations
             else
             {
                NonterminalCausation nonterminal = (NonterminalCausation)root;
-               nonterminal.printHierarchical("    ", -1, -1.0f);
+               nonterminal.printHierarchical("    ", -1, -1.0f, true);
             }
          }
       }
@@ -1122,8 +1125,8 @@ public class Causations
    }
 
 
-   // Produce causation paths.
-   public static void produceCausationPaths(int numPaths)
+   // Generate causation paths.
+   public static void generateCausationPaths(int numPaths)
    {
       causationPaths = new ArrayList < ArrayList < ArrayList < CausationState >>> ();
       if (causationHierarchies.size() == 0)
@@ -1148,6 +1151,33 @@ public class Causations
          }
          while (stepPath(path, 0)) {}
       }
+
+      if (VERBOSE)
+      {
+         System.out.println("causation paths:");
+         for (int i = 0; i < causationPaths.size(); i++)
+         {
+            ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+            System.out.println("path=" + i);
+            for (int j = 0; j < path.size(); j++)
+            {
+               System.out.println("step=" + j);
+               ArrayList<CausationState> step = path.get(j);
+               for (int k = 0; k < step.size(); k++)
+               {
+                  CausationState state = step.get(k);
+                  if (state.causation instanceof TerminalCausation)
+                  {
+                     ((TerminalCausation)state.causation).printHierarchical("", -1, -1.0f);
+                  }
+                  else
+                  {
+                     ((NonterminalCausation)state.causation).printHierarchical("", state.currentChild, -1.0f, false);
+                  }
+               }
+            }
+         }
+      }
    }
 
 
@@ -1170,15 +1200,26 @@ public class Causations
          return(false);
       }
       ArrayList<CausationState> nextStep = new ArrayList<CausationState>();
-      for (int i = 0, j = currentStep.size(); i < j; i++)
+      for (int i = 0; i < context; i++)
       {
-         CausationState current = currentStep.get(i);
-         CausationState next    = new CausationState(current.causation, current.currentChild);
-         if (i == context)
+         CausationState state = currentStep.get(i);
+         state = new CausationState(state.causation, state.currentChild);
+         nextStep.add(state);
+      }
+      CausationState state = currentStep.get(context);
+      state = new CausationState(state.causation, state.currentChild);
+      state.currentChild++;
+      nextStep.add(state);
+      while (true)
+      {
+         NonterminalCausation parent = (NonterminalCausation)state.causation;
+         Causation            child  = parent.children.get(state.currentChild);
+         state = new CausationState(child, 0);
+         nextStep.add(state);
+         if (child instanceof TerminalCausation)
          {
-            next.currentChild++;
+            break;
          }
-         nextStep.add(next);
       }
       path.add(nextStep);
       return(true);
