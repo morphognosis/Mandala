@@ -1,7 +1,6 @@
 // For conditions of distribution and use, see copyright notice in Mandala.java
 
-// World causation.
-// Generate causation hierarchies and paths through the hierarchies.
+// Generate causation hierarchies and learn paths through the hierarchies.
 
 package mandala;
 
@@ -137,11 +136,11 @@ public class Causations
       }
 
 
-      public void printHierarchical(String indent, int childNum, float probability)
+      public void printHierarchical(String indent, String childNum, float probability)
       {
          System.out.print(indent);
          System.out.print("terminal id=" + id);
-         if (childNum >= 0)
+         if (childNum != null)
          {
             System.out.print(", child number=" + childNum);
          }
@@ -208,11 +207,11 @@ public class Causations
       }
 
 
-      public void printHierarchical(String indent, int childNum, float probability, boolean recursive)
+      public void printHierarchical(String indent, String childNum, float probability, boolean recursive)
       {
          System.out.print(indent);
          System.out.print("nonterminal id=" + id);
-         if (childNum >= 0)
+         if (childNum != null)
          {
             System.out.print(", child number=" + childNum);
          }
@@ -234,12 +233,12 @@ public class Causations
                if (child instanceof TerminalCausation)
                {
                   TerminalCausation terminal = (TerminalCausation)child;
-                  terminal.printHierarchical(indent + "  ", i, p);
+                  terminal.printHierarchical(indent + "  ", i + "", p);
                }
                else
                {
                   NonterminalCausation nonterminal = (NonterminalCausation)child;
-                  nonterminal.printHierarchical(indent + "  ", i, p, true);
+                  nonterminal.printHierarchical(indent + "  ", i + "", p, true);
                }
             }
          }
@@ -1016,12 +1015,12 @@ public class Causations
             if (root instanceof TerminalCausation)
             {
                TerminalCausation terminal = (TerminalCausation)root;
-               terminal.printHierarchical("    ", -1, -1.0f);
+               terminal.printHierarchical("    ", null, -1.0f);
             }
             else
             {
                NonterminalCausation nonterminal = (NonterminalCausation)root;
-               nonterminal.printHierarchical("    ", -1, -1.0f, true);
+               nonterminal.printHierarchical("    ", null, -1.0f, true);
             }
          }
       }
@@ -1168,11 +1167,18 @@ public class Causations
                   CausationState state = step.get(k);
                   if (state.causation instanceof TerminalCausation)
                   {
-                     ((TerminalCausation)state.causation).printHierarchical("", -1, -1.0f);
+                     ((TerminalCausation)state.causation).printHierarchical("", null, -1.0f);
                   }
                   else
                   {
-                     ((NonterminalCausation)state.causation).printHierarchical("", state.currentChild, -1.0f, false);
+                     NonterminalCausation nonterminalCausation = (NonterminalCausation)state.causation;
+                     String               childInfo            = state.currentChild + "/" + nonterminalCausation.children.size();
+                     float                probability          = -1.0f;
+                     if (state.currentChild < nonterminalCausation.probabilities.size())
+                     {
+                        probability = nonterminalCausation.probabilities.get(state.currentChild);
+                     }
+                     nonterminalCausation.printHierarchical("", childInfo, probability, false);
                   }
                }
             }
