@@ -264,6 +264,40 @@ public class Causations
    };
    public static int NUM_CAUSATION_PATHS = 5;
    public static     ArrayList < ArrayList < ArrayList < CausationState >>> causationPaths;
+   public static class PathVector
+   {
+	  public int id;
+	  public ArrayList<Boolean> features;
+      public ArrayList<Boolean> childNum;
+      
+      public void print()
+      {
+    	  System.out.print("id=" + id);
+          System.out.print(", features:");
+          for (int i = 0; i < features.size(); i++)
+          {
+             if (features.get(i))
+             {
+                System.out.print(" " + i);
+             }
+          }
+          int n = -1;
+          for (int i = 0; i < childNum.size(); i++)
+          {
+             if (childNum.get(i))
+             {
+                n = i;
+                break;
+             }
+          }
+          if (n != -1)
+          {
+        	  System.out.print(", child number=" + n);
+          }
+    	  System.out.println();
+      }
+   };   
+   public static     ArrayList < ArrayList < ArrayList < PathVector >>> pathVectors;
 
    // Dataset exports.
    public static String PATH_RNN_DATASET_FILENAME       = "causation_paths_rnn_dataset.py";
@@ -395,7 +429,7 @@ public class Causations
                System.err.println(Usage);
                System.exit(1);
             }
-            if (NUM_TERMINALS < 0)
+            if (NUM_TERMINALS < 1)
             {
                System.err.println("Invalid numTerminals option");
                System.err.println(Usage);
@@ -1127,6 +1161,7 @@ public class Causations
    // Generate causation paths.
    public static void generateCausationPaths(int numPaths)
    {
+	  // Generate causation hierarchy paths.
       causationPaths = new ArrayList < ArrayList < ArrayList < CausationState >>> ();
       if (causationHierarchies.size() == 0)
       {
@@ -1148,7 +1183,7 @@ public class Causations
             root = nonterminalRoot.children.get(0);
             step.add(new CausationState(root, 0));
          }
-         while (stepPath(path, 0)) {}
+         while (stepCausationPath(path, 0)) {}
       }
 
       if (VERBOSE)
@@ -1184,11 +1219,59 @@ public class Causations
             }
          }
       }
+      
+      // Generate path vectors.
+      pathVectors = new ArrayList < ArrayList < ArrayList < PathVector >>> ();
+      for (int i = 0; i < numPaths; i++)
+      {
+         ArrayList < ArrayList < PathVector >> vectorPath = new ArrayList < ArrayList < PathVector >> ();
+         pathVectors.add(vectorPath);
+         ArrayList<PathVector> vectorStep = new ArrayList<PathVector>();
+         vectorPath.add(vectorStep);
+         PathVector vector = new PathVector();
+         vectorStep.add(vector);
+         ArrayList < ArrayList < CausationState >> causationPath = causationPaths.get(i);
+         ArrayList < CausationState > causationStep = causationPath.get(0);
+         CausationState causationState = causationStep.get(causationStep.size() - 1);
+         TerminalCausation terminalCausation = (TerminalCausation)causationState.causation;
+         vector.id = terminalCausation.id;
+         vector.features = new ArrayList<Boolean>();
+         for (int j = 0; j < NUM_DIMENSIONS; j++)
+         {
+        	 vector.features.add(terminalCausation.features.get(j));
+         }
+         vector.childNum = new ArrayList<Boolean>();
+         for (int j = 0; j < MAX_PRODUCTION_RHS_LENGTH; j++)
+         {
+        	 vector.childNum.add(false);
+         }               
+         while (stepVectorPath(vectorPath, causationPath, 0)) {}
+      }
+      
+      if (VERBOSE)
+      {
+         System.out.println("vector paths:");
+         for (int i = 0; i < pathVectors.size(); i++)
+         {
+            ArrayList < ArrayList < PathVector >> path = pathVectors.get(i);
+            System.out.println("path=" + i);
+            for (int j = 0; j < path.size(); j++)
+            {
+               System.out.println("step=" + j);
+               ArrayList<PathVector> step = path.get(j);
+               for (int k = 0; k < step.size(); k++)
+               {
+            	  PathVector vector = step.get(k);
+            	  vector.print();
+               }
+            }
+         }         
+      }      
    }
 
 
-   // Step along path.
-   public static boolean stepPath(ArrayList < ArrayList < CausationState >> path, int context)
+   // Step along causation path.
+   public static boolean stepCausationPath(ArrayList < ArrayList < CausationState >> path, int context)
    {
       ArrayList<CausationState> currentStep    = path.get(path.size() - 1);
       CausationState            causationState = currentStep.get(context);
@@ -1196,7 +1279,7 @@ public class Causations
       {
          return(false);
       }
-      if (stepPath(path, context + 1))
+      if (stepCausationPath(path, context + 1))
       {
          return(true);
       }
@@ -1227,6 +1310,13 @@ public class Causations
       return(true);
    }
 
+   // Step along causation path.
+   public static boolean stepVectorPath(ArrayList < ArrayList < PathVector >> vectorPath, 
+		   ArrayList < ArrayList < CausationState >> causationPath, int stepNum)
+   {
+	   
+      return(false);
+   }
 
    // Export path NN dataset.
    public static void exportPathNNdataset()
