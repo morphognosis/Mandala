@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -255,49 +256,38 @@ public class Causations
    {
       public Causation causation;
       public int       currentChild;
+      public boolean   valid;
 
       public CausationState(Causation causation, int currentChild)
       {
          this.causation    = causation;
          this.currentChild = currentChild;
+         valid             = false;
+      }
+
+
+      public void print()
+      {
+         System.out.print("valid=" + valid + ", ");
+         if (causation instanceof TerminalCausation)
+         {
+            ((TerminalCausation)causation).printHierarchical("", null, -1.0f);
+         }
+         else
+         {
+            NonterminalCausation nonterminalCausation = (NonterminalCausation)causation;
+            String               childInfo            = currentChild + "/" + nonterminalCausation.children.size();
+            float                probability          = -1.0f;
+            if (currentChild < nonterminalCausation.probabilities.size())
+            {
+               probability = nonterminalCausation.probabilities.get(currentChild);
+            }
+            nonterminalCausation.printHierarchical("", childInfo, probability, false);
+         }
       }
    };
    public static int NUM_CAUSATION_PATHS = 5;
    public static     ArrayList < ArrayList < ArrayList < CausationState >>> causationPaths;
-   public static class PathVector
-   {
-	  public int id;
-	  public ArrayList<Boolean> features;
-      public ArrayList<Boolean> childNum;
-      
-      public void print()
-      {
-    	  System.out.print("id=" + id);
-          System.out.print(", features:");
-          for (int i = 0; i < features.size(); i++)
-          {
-             if (features.get(i))
-             {
-                System.out.print(" " + i);
-             }
-          }
-          int n = -1;
-          for (int i = 0; i < childNum.size(); i++)
-          {
-             if (childNum.get(i))
-             {
-                n = i;
-                break;
-             }
-          }
-          if (n != -1)
-          {
-        	  System.out.print(", child number=" + n);
-          }
-    	  System.out.println();
-      }
-   };   
-   public static     ArrayList < ArrayList < ArrayList < PathVector >>> pathVectors;
 
    // Dataset exports.
    public static String PATH_RNN_DATASET_FILENAME       = "causation_paths_rnn_dataset.py";
@@ -1161,7 +1151,7 @@ public class Causations
    // Generate causation paths.
    public static void generateCausationPaths(int numPaths)
    {
-	  // Generate causation hierarchy paths.
+      // Generate causation hierarchy paths.
       causationPaths = new ArrayList < ArrayList < ArrayList < CausationState >>> ();
       if (causationHierarchies.size() == 0)
       {
@@ -1184,12 +1174,58 @@ public class Causations
             step.add(new CausationState(root, 0));
          }
          while (stepCausationPath(path, 0)) {}
+         for (ArrayList<CausationState> s : path)
+         {
+            Collections.reverse(s);
+         }
+      }
+
+      // Probabilistically validate causation path.
+      for (int i = 0; i < numPaths; i++)
+      {
+         ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+         ArrayList<CausationState> step  = path.get(0);
+         CausationState            state = step.get(0);
+         state.valid = true;
+         boolean pathValid = true;
+         for (int j = 1; j < path.size() && pathValid; j++)
+         {
+            step      = path.get(j);
+            pathValid = false;
+            for (int k = 1; k < step.size(); k++)
+            {
+               state = step.get(k);
+               NonterminalCausation nonterminalCausation = (NonterminalCausation)state.causation;
+               if (state.currentChild > 0)
+               {
+                  float probability = nonterminalCausation.probabilities.get(state.currentChild - 1);
+                  if (randomizer.nextFloat() < probability)
+                  {
+                     pathValid = true;
+                  }
+                  break;
+               }
+            }
+            if (pathValid)
+            {
+               boolean stepValid = false;
+               for (int k = step.size() - 1; k >= 0; k--)
+               {
+                  state = step.get(k);
+                  if (state.currentChild > 0)
+                  {
+                     stepValid = true;
+                  }
+                  state.valid = stepValid;
+               }
+            }
+         }
       }
 
       if (VERBOSE)
       {
          System.out.println("causation paths:");
-         for (int i = 0; i < causationPaths.size(); i++)
+         for (int i = 0; i < numPaths; i++)
          {
             ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
             System.out.println("path=" + i);
@@ -1200,73 +1236,11 @@ public class Causations
                for (int k = 0; k < step.size(); k++)
                {
                   CausationState state = step.get(k);
-                  if (state.causation instanceof TerminalCausation)
-                  {
-                     ((TerminalCausation)state.causation).printHierarchical("", null, -1.0f);
-                  }
-                  else
-                  {
-                     NonterminalCausation nonterminalCausation = (NonterminalCausation)state.causation;
-                     String               childInfo            = state.currentChild + "/" + nonterminalCausation.children.size();
-                     float                probability          = -1.0f;
-                     if (state.currentChild < nonterminalCausation.probabilities.size())
-                     {
-                        probability = nonterminalCausation.probabilities.get(state.currentChild);
-                     }
-                     nonterminalCausation.printHierarchical("", childInfo, probability, false);
-                  }
+                  state.print();
                }
             }
          }
       }
-      
-      // Generate path vectors.
-      pathVectors = new ArrayList < ArrayList < ArrayList < PathVector >>> ();
-      for (int i = 0; i < numPaths; i++)
-      {
-         ArrayList < ArrayList < PathVector >> vectorPath = new ArrayList < ArrayList < PathVector >> ();
-         pathVectors.add(vectorPath);
-         ArrayList<PathVector> vectorStep = new ArrayList<PathVector>();
-         vectorPath.add(vectorStep);
-         PathVector vector = new PathVector();
-         vectorStep.add(vector);
-         ArrayList < ArrayList < CausationState >> causationPath = causationPaths.get(i);
-         ArrayList < CausationState > causationStep = causationPath.get(0);
-         CausationState causationState = causationStep.get(causationStep.size() - 1);
-         TerminalCausation terminalCausation = (TerminalCausation)causationState.causation;
-         vector.id = terminalCausation.id;
-         vector.features = new ArrayList<Boolean>();
-         for (int j = 0; j < NUM_DIMENSIONS; j++)
-         {
-        	 vector.features.add(terminalCausation.features.get(j));
-         }
-         vector.childNum = new ArrayList<Boolean>();
-         for (int j = 0; j < MAX_PRODUCTION_RHS_LENGTH; j++)
-         {
-        	 vector.childNum.add(false);
-         }               
-         while (stepVectorPath(vectorPath, causationPath, 0)) {}
-      }
-      
-      if (VERBOSE)
-      {
-         System.out.println("vector paths:");
-         for (int i = 0; i < pathVectors.size(); i++)
-         {
-            ArrayList < ArrayList < PathVector >> path = pathVectors.get(i);
-            System.out.println("path=" + i);
-            for (int j = 0; j < path.size(); j++)
-            {
-               System.out.println("step=" + j);
-               ArrayList<PathVector> step = path.get(j);
-               for (int k = 0; k < step.size(); k++)
-               {
-            	  PathVector vector = step.get(k);
-            	  vector.print();
-               }
-            }
-         }         
-      }      
    }
 
 
@@ -1310,13 +1284,6 @@ public class Causations
       return(true);
    }
 
-   // Step along causation path.
-   public static boolean stepVectorPath(ArrayList < ArrayList < PathVector >> vectorPath, 
-		   ArrayList < ArrayList < CausationState >> causationPath, int stepNum)
-   {
-	   
-      return(false);
-   }
 
    // Export path NN dataset.
    public static void exportPathNNdataset()
