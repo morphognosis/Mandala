@@ -862,8 +862,8 @@ public class Causations
          ArrayList<Causation> causations = new ArrayList<Causation>();
          if (NUM_NONTERMINALS > 0)
          {
-            ArrayList<NonterminalCausation> nonterminalCausations = generateCausationHierarchy(i);
-            for (NonterminalCausation causation : nonterminalCausations)
+            ArrayList<NonterminalCausation> nonterminalInstances = generateCausationHierarchy(i);
+            for (NonterminalCausation causation : nonterminalInstances)
             {
                if (causation != null)
                {
@@ -918,20 +918,26 @@ public class Causations
 
       ArrayList<NonterminalCausation> open = new ArrayList<NonterminalCausation>();
       open.add(root);
-      ArrayList<NonterminalCausation> instances = new ArrayList<NonterminalCausation>();
-      instances.add(root);
+      ArrayList<NonterminalCausation> nonterminalInstances = new ArrayList<NonterminalCausation>();
+      nonterminalInstances.add(root);
       for (int i = 1; i < NUM_NONTERMINALS; i++)
       {
-         instances.add(null);
+         nonterminalInstances.add(null);
+      }
+      ArrayList<TerminalCausation> terminalInstances = new ArrayList<TerminalCausation>();
+      for (int i = 0; i < NUM_TERMINALS; i++)
+      {
+         terminalInstances.add(null);
       }
       Graph graph = new Graph(NUM_NONTERMINALS);
-      expandNonterminal(open, instances, graph);
-      return(instances);
+      expandNonterminal(open, graph, nonterminalInstances, terminalInstances);
+      return(nonterminalInstances);
    }
 
 
    // Expand nonterminal causation.
-   public static void expandNonterminal(ArrayList<NonterminalCausation> open, ArrayList<NonterminalCausation> instances, Graph graph)
+   public static void expandNonterminal(ArrayList<NonterminalCausation> open, Graph graph,
+                                        ArrayList<NonterminalCausation> nonterminalInstances, ArrayList<TerminalCausation> terminalInstances)
    {
       int n = randomizer.nextInt(open.size());
       NonterminalCausation parent = open.get(n);
@@ -939,7 +945,7 @@ public class Causations
       open.remove(n);
       if (randomizer.nextFloat() < TERMINAL_PRODUCTION_PROBABILITY)
       {
-         expandTerminal(parent);
+         expandTerminal(parent, terminalInstances);
       }
       else
       {
@@ -965,11 +971,11 @@ public class Causations
                }
                else
                {
-                  child = instances.get(k);
+                  child = nonterminalInstances.get(k);
                   if (child == null)
                   {
                      child = new NonterminalCausation(parent.hierarchy, k);
-                     instances.set(k, child);
+                     nonterminalInstances.set(k, child);
                      newChildren.add(child);
                      open.add(child);
                   }
@@ -988,31 +994,37 @@ public class Causations
                {
                   Causation newChild = newChildren.get(j);
                   graph.removeEdge(parent.id, newChild.id);
-                  instances.set(newChild.id, null);
+                  nonterminalInstances.set(newChild.id, null);
                   open.remove(newChild);
                }
                parent.children      = new ArrayList<Causation>();
                parent.probabilities = new ArrayList<Float>();
-               expandTerminal(parent);
+               expandTerminal(parent, terminalInstances);
                return;
             }
          }
       }
       if (open.size() > 0)
       {
-         expandNonterminal(open, instances, graph);
+         expandNonterminal(open, graph, nonterminalInstances, terminalInstances);
       }
    }
 
 
    // Expand causation to terminals.
-   public static void expandTerminal(NonterminalCausation parent)
+   public static void expandTerminal(NonterminalCausation parent, ArrayList<TerminalCausation> terminalInstances)
    {
       int n = randomizer.nextInt(MAX_PRODUCTION_RHS_LENGTH - MIN_PRODUCTION_RHS_LENGTH + 1) + MIN_PRODUCTION_RHS_LENGTH;
 
       for (int i = 0; i < n; i++)
       {
-         TerminalCausation child = new TerminalCausation(parent.hierarchy, randomizer.nextInt(NUM_TERMINALS));
+         int               j     = randomizer.nextInt(NUM_TERMINALS);
+         TerminalCausation child = terminalInstances.get(j);
+         if (child == null)
+         {
+            child = new TerminalCausation(parent.hierarchy, j);
+            terminalInstances.set(j, child);
+         }
          child.parents.add(parent);
          parent.children.add(child);
          if (i < n - 1)
