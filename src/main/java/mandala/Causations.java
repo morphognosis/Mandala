@@ -31,43 +31,17 @@ public class Causations
    // Causation.
    public static class Causation
    {
-      public int hierarchy;
-      public int id;
+      public int                             hierarchy;
+      public int                             id;
+      public ArrayList<Boolean>              features;
       public ArrayList<NonterminalCausation> parents;
 
       public Causation(int hierarchy, int id)
       {
          this.hierarchy = hierarchy;
          this.id        = id;
+         features       = encodeFeatures(hierarchy, id, NUM_DIMENSIONS, NUM_FEATURES);
          parents        = new ArrayList<NonterminalCausation>();
-      }
-
-
-      public void print()
-      {
-         System.out.print("hierarchy=" + hierarchy);
-         System.out.print(", id=" + id);
-         if (parents != null)
-         {
-            System.out.print(", parents:");
-            for (Causation p : parents)
-            {
-               System.out.print(" " + p.id);
-            }
-         }
-         System.out.println();
-      }
-   };
-
-   // Terminal causation.
-   public static class TerminalCausation extends Causation
-   {
-      public ArrayList<Boolean> features;
-
-      public TerminalCausation(int hierarchy, int id)
-      {
-         super(hierarchy, id);
-         features = encodeFeatures(hierarchy, id, NUM_DIMENSIONS, NUM_FEATURES);
       }
 
 
@@ -112,7 +86,6 @@ public class Causations
       }
 
 
-      @Override
       public void print()
       {
          System.out.print("hierarchy=" + hierarchy);
@@ -134,6 +107,15 @@ public class Causations
             }
          }
          System.out.println();
+      }
+   };
+
+   // Terminal causation.
+   public static class TerminalCausation extends Causation
+   {
+      public TerminalCausation(int hierarchy, int id)
+      {
+         super(hierarchy, id);
       }
 
 
@@ -180,6 +162,14 @@ public class Causations
       {
          System.out.print("hierarchy=" + hierarchy);
          System.out.print(", id=" + id);
+         System.out.print(", features:");
+         for (int i = 0; i < features.size(); i++)
+         {
+            if (features.get(i))
+            {
+               System.out.print(" " + i);
+            }
+         }
          if (parents != null)
          {
             System.out.print(", parents:");
@@ -219,6 +209,14 @@ public class Causations
          if (probability >= 0.0f)
          {
             System.out.print(", probability=" + probability);
+         }
+         System.out.print(", features:");
+         for (int i = 0; i < features.size(); i++)
+         {
+            if (features.get(i))
+            {
+               System.out.print(" " + i);
+            }
          }
          System.out.println();
          if (recursive)
@@ -1180,7 +1178,7 @@ public class Causations
          }
       }
 
-      // Probabilistically validate causation path.
+      // Probabilistically validate causation paths.
       for (int i = 0; i < numPaths; i++)
       {
          ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
