@@ -40,29 +40,29 @@ public class Causations
       {
          this.hierarchy = hierarchy;
          this.id        = id;
-         features       = encodeFeatures(hierarchy, id, NUM_DIMENSIONS, NUM_FEATURES);
-         parents        = new ArrayList<NonterminalCausation>();
+         encodeFeatures();
+         parents = new ArrayList<NonterminalCausation>();
       }
 
 
       // Encode features.
-      public ArrayList<Boolean> encodeFeatures(int hierarchy, int id, int numDimensions, int numFeatures)
+      public void encodeFeatures()
       {
          String seedString = hierarchy + "_" + id;
          long   seed       = seedString.hashCode();
          Random r          = new Random(seed);
 
-         ArrayList<Boolean> features = new ArrayList<Boolean>();
-         for (int i = 0; i < numDimensions; i++)
+         features = new ArrayList<Boolean>();
+         for (int i = 0; i < NUM_DIMENSIONS; i++)
          {
             features.add(false);
          }
          ArrayList<Integer> idxs = new ArrayList<Integer>();
-         for (int i = 0; i < numFeatures; i++)
+         for (int i = 0; i < NUM_FEATURES; i++)
          {
             while (true)
             {
-               int n = r.nextInt(numDimensions);
+               int n = r.nextInt(NUM_DIMENSIONS);
                int j = 0;
                for ( ; j < idxs.size(); j++)
                {
@@ -82,7 +82,6 @@ public class Causations
          {
             features.set(n, true);
          }
-         return(features);
       }
 
 
@@ -98,13 +97,10 @@ public class Causations
                System.out.print(" " + i);
             }
          }
-         if (parents != null)
+         System.out.print(", parents:");
+         for (Causation p : parents)
          {
-            System.out.print(", parents:");
-            for (Causation p : parents)
-            {
-               System.out.print(" " + p.id);
-            }
+            System.out.print(" " + p.id);
          }
          System.out.println();
       }
@@ -157,12 +153,23 @@ public class Causations
       }
 
 
+      // Add child.
+      public void addChild(Causation child)
+      {
+         children.add(child);
+         if (children.size() > 1)
+         {
+            float p = MIN_CAUSATION_PROBABILITY + (randomizer.nextFloat() * (MAX_CAUSATION_PROBABILITY - MIN_CAUSATION_PROBABILITY));
+            probabilities.add(p);
+         }
+      }
+
+
       @Override
       public void print()
       {
          System.out.print("hierarchy=" + hierarchy);
          System.out.print(", id=" + id);
-         System.out.print(", features:");
          for (int i = 0; i < features.size(); i++)
          {
             if (features.get(i))
@@ -170,21 +177,15 @@ public class Causations
                System.out.print(" " + i);
             }
          }
-         if (parents != null)
+         System.out.print(", parents:");
+         for (Causation p : parents)
          {
-            System.out.print(", parents:");
-            for (Causation p : parents)
-            {
-               System.out.print(" " + p.id);
-            }
+            System.out.print(" " + p.id);
          }
-         if (children != null)
+         System.out.print(", children:");
+         for (Causation c : children)
          {
-            System.out.print(", children:");
-            for (Causation c : children)
-            {
-               System.out.print(" " + c.id);
-            }
+            System.out.print(" " + c.id);
          }
          if (probabilities != null)
          {
@@ -209,14 +210,6 @@ public class Causations
          if (probability >= 0.0f)
          {
             System.out.print(", probability=" + probability);
-         }
-         System.out.print(", features:");
-         for (int i = 0; i < features.size(); i++)
-         {
-            if (features.get(i))
-            {
-               System.out.print(" " + i);
-            }
          }
          System.out.println();
          if (recursive)
@@ -287,13 +280,18 @@ public class Causations
    public static int NUM_CAUSATION_PATHS = 5;
    public static     ArrayList < ArrayList < ArrayList < CausationState >>> causationPaths;
 
-   // Dataset exports.
-   public static String PATH_RNN_DATASET_FILENAME       = "causation_paths_rnn_dataset.py";
-   public static float  PATH_RNN_DATASET_TRAIN_FRACTION = 0.75f;
-   public static String PATH_TCN_DATASET_FILENAME       = "causation_paths_tcn_dataset.py";
-   public static float  PATH_TCN_DATASET_TRAIN_FRACTION = 0.75f;
-   public static String PATH_NN_DATASET_FILENAME        = "causation_paths_nn_dataset.csv";
-   public static float  PATH_NN_DATASET_TRAIN_FRACTION  = 0.75f;
+   // Datasets.
+   public static String NN_DATASET_FILENAME        = "causations_nn_dataset.py";
+   public static float  NN_DATASET_TRAIN_FRACTION  = 0.75f;
+   public static String RNN_DATASET_FILENAME       = "causations_rnn_dataset.py";
+   public static float  RNN_DATASET_TRAIN_FRACTION = 0.75f;
+   public static String TCN_DATASET_FILENAME       = "causations_tcn_dataset.py";
+   public static float  TCN_DATASET_TRAIN_FRACTION = 0.75f;
+
+   // Learners.
+   public static String CAUSATIONS_NN_FILENAME  = "causations_nn.py";
+   public static String CAUSATIONS_RNN_FILENAME = "causations_rnn.py";
+   public static String CAUSATIONS_TCN_FILENAME = "causations_tcn.py";
 
    // Random numbers.
    public static int    RANDOM_SEED = 4517;
@@ -319,12 +317,12 @@ public class Causations
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
-      "      [-exportPathNNdataset [<file name> (default=\"" + PATH_NN_DATASET_FILENAME + "\")]\n" +
-      "          [-NNdatasetTrainFraction <fraction> (default=" + PATH_NN_DATASET_TRAIN_FRACTION + ")]]\n" +
-      "      [-exportPathRNNdataset [<file name> (default=\"" + PATH_RNN_DATASET_FILENAME + "\")]\n" +
-      "          [-RNNdatasetTrainFraction <fraction> (default=" + PATH_RNN_DATASET_TRAIN_FRACTION + ")]]\n" +
-      "      [-exportPathTCNdataset [<file name> (default=\"" + PATH_TCN_DATASET_FILENAME + "\")]\n" +
-      "          [-TCNdatasetTrainFraction <fraction> (default=" + PATH_TCN_DATASET_TRAIN_FRACTION + ")]]\n" +
+      "      [-exportNNdataset [<file name> (default=\"" + NN_DATASET_FILENAME + "\")]\n" +
+      "          [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]]\n" +
+      "      [-exportRNNdataset [<file name> (default=\"" + RNN_DATASET_FILENAME + "\")]\n" +
+      "          [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]]\n" +
+      "      [-exportTCNdataset [<file name> (default=\"" + TCN_DATASET_FILENAME + "\")]\n" +
+      "          [-TCNdatasetTrainFraction <fraction> (default=" + TCN_DATASET_TRAIN_FRACTION + ")]]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-verbose]\n" +
       "  Help:\n" +
@@ -338,9 +336,9 @@ public class Causations
    {
       boolean gotExportCausationsGraph   = false;
       boolean gotTreeFormat              = false;
-      boolean gotExportPathNNdataset     = false;
-      boolean gotExportPathRNNdataset    = false;
-      boolean gotExportPathTCNdataset    = false;
+      boolean gotExportNNdataset         = false;
+      boolean gotExportRNNdataset        = false;
+      boolean gotExportTCNdataset        = false;
       boolean gotNNdatasetTrainFraction  = false;
       boolean gotRNNdatasetTrainFraction = false;
       boolean gotTCNdatasetTrainFraction = false;
@@ -669,111 +667,111 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-exportPathNNdataset"))
+         if (args[i].equals("-exportNNdataset"))
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
                i++;
-               PATH_NN_DATASET_FILENAME = args[i];
+               NN_DATASET_FILENAME = args[i];
             }
-            gotExportPathNNdataset = true;
+            gotExportNNdataset = true;
             continue;
          }
-         if (args[i].equals("-pathNNdatasetTrainFraction"))
+         if (args[i].equals("-NNdatasetTrainFraction"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid pathNNdatasetTrainFraction option");
+               System.err.println("Invalid NNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
             try
             {
-               PATH_NN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
+               NN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid pathNNdatasetTrainFraction option");
+               System.err.println("Invalid NNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((PATH_NN_DATASET_TRAIN_FRACTION < 0.0f) || (PATH_NN_DATASET_TRAIN_FRACTION > 1.0f))
+            if ((NN_DATASET_TRAIN_FRACTION < 0.0f) || (NN_DATASET_TRAIN_FRACTION > 1.0f))
             {
-               System.err.println("Invalid pathNNdatasetTrainFraction option");
+               System.err.println("Invalid NNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
             gotNNdatasetTrainFraction = true;
             continue;
          }
-         if (args[i].equals("-exportPathRNNdataset"))
+         if (args[i].equals("-exportRNNdataset"))
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
                i++;
-               PATH_RNN_DATASET_FILENAME = args[i];
+               RNN_DATASET_FILENAME = args[i];
             }
-            gotExportPathRNNdataset = true;
+            gotExportRNNdataset = true;
             continue;
          }
-         if (args[i].equals("-pathRNNdatasetTrainFraction"))
+         if (args[i].equals("-RNNdatasetTrainFraction"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid pathRNNdatasetTrainFraction option");
+               System.err.println("Invalid RNNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
             try
             {
-               PATH_RNN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
+               RNN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid pathRNNdatasetTrainFraction option");
+               System.err.println("Invalid RNNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((PATH_RNN_DATASET_TRAIN_FRACTION < 0.0f) || (PATH_RNN_DATASET_TRAIN_FRACTION > 1.0f))
+            if ((RNN_DATASET_TRAIN_FRACTION < 0.0f) || (RNN_DATASET_TRAIN_FRACTION > 1.0f))
             {
-               System.err.println("Invalid pathRNNdatasetTrainFraction option");
+               System.err.println("Invalid RNNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
             gotRNNdatasetTrainFraction = true;
             continue;
          }
-         if (args[i].equals("-exportPathTCNdataset"))
+         if (args[i].equals("-exportTCNdataset"))
          {
             if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
             {
                i++;
-               PATH_TCN_DATASET_FILENAME = args[i];
+               TCN_DATASET_FILENAME = args[i];
             }
-            gotExportPathTCNdataset = true;
+            gotExportTCNdataset = true;
             continue;
          }
-         if (args[i].equals("-pathTCNdatasetTrainFraction"))
+         if (args[i].equals("-TCNdatasetTrainFraction"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid pathTCNdatasetTrainFraction option");
+               System.err.println("Invalid TCNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
             try
             {
-               PATH_TCN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
+               TCN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid pathTCNdatasetTrainFraction option");
+               System.err.println("Invalid TCNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((PATH_TCN_DATASET_TRAIN_FRACTION < 0.0f) || (PATH_TCN_DATASET_TRAIN_FRACTION > 1.0f))
+            if ((TCN_DATASET_TRAIN_FRACTION < 0.0f) || (TCN_DATASET_TRAIN_FRACTION > 1.0f))
             {
-               System.err.println("Invalid pathTCNdatasetTrainFraction option");
+               System.err.println("Invalid TCNdatasetTrainFraction option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -836,17 +834,17 @@ public class Causations
          System.err.println(Usage);
          System.exit(1);
       }
-      if (!gotExportPathNNdataset && gotNNdatasetTrainFraction)
+      if (!gotExportNNdataset && gotNNdatasetTrainFraction)
       {
          System.err.println(Usage);
          System.exit(1);
       }
-      if (!gotExportPathRNNdataset && gotRNNdatasetTrainFraction)
+      if (!gotExportRNNdataset && gotRNNdatasetTrainFraction)
       {
          System.err.println(Usage);
          System.exit(1);
       }
-      if (!gotExportPathTCNdataset && gotTCNdatasetTrainFraction)
+      if (!gotExportTCNdataset && gotTCNdatasetTrainFraction)
       {
          System.err.println(Usage);
          System.exit(1);
@@ -893,19 +891,15 @@ public class Causations
       // Generate causation paths.
       generateCausationPaths(NUM_CAUSATION_PATHS);
 
-      // Export datasets.
-      if (gotExportPathNNdataset)
-      {
-         exportPathNNdataset(PATH_NN_DATASET_FILENAME, PATH_NN_DATASET_TRAIN_FRACTION);
-      }
-      if (gotExportPathRNNdataset)
-      {
-         exportPathDataset(PATH_RNN_DATASET_FILENAME, PATH_RNN_DATASET_TRAIN_FRACTION);
-      }
-      if (gotExportPathTCNdataset)
-      {
-         exportPathDataset(PATH_TCN_DATASET_FILENAME, PATH_TCN_DATASET_TRAIN_FRACTION);
-      }
+      // Export causation datasets.
+      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION);
+      exportDataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
+      exportDataset(TCN_DATASET_FILENAME, TCN_DATASET_TRAIN_FRACTION);
+
+      // Learn causations.
+      learnCausationsNN(NN_DATASET_FILENAME);
+      learnCausationsRNN(RNN_DATASET_FILENAME);
+      learnCausationsTCN(TCN_DATASET_FILENAME);
 
       System.exit(0);
    }
@@ -980,12 +974,7 @@ public class Causations
                      open.add(child);
                   }
                   child.parents.add(parent);
-                  parent.children.add(child);
-                  if (i < n - 1)
-                  {
-                     float p = MIN_CAUSATION_PROBABILITY + (randomizer.nextFloat() * (MAX_CAUSATION_PROBABILITY - MIN_CAUSATION_PROBABILITY));
-                     parent.probabilities.add(p);
-                  }
+                  parent.addChild(child);
                }
             }
             if (child == null)
@@ -1026,12 +1015,7 @@ public class Causations
             terminalInstances.set(j, child);
          }
          child.parents.add(parent);
-         parent.children.add(child);
-         if (i < n - 1)
-         {
-            float p = MIN_CAUSATION_PROBABILITY + (randomizer.nextFloat() * (MAX_CAUSATION_PROBABILITY - MIN_CAUSATION_PROBABILITY));
-            parent.probabilities.add(p);
-         }
+         parent.addChild(child);
       }
    }
 
@@ -1295,62 +1279,394 @@ public class Causations
    }
 
 
-   // Export path NN dataset.
-   public static void exportPathNNdataset()
+   // Export NN dataset.
+   public static void exportNNdataset()
    {
-      exportPathNNdataset(PATH_NN_DATASET_FILENAME, PATH_NN_DATASET_TRAIN_FRACTION);
+      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION);
    }
 
 
-   public static void exportPathNNdataset(String filename, float trainFraction)
+   public static void exportNNdataset(String filename, float trainFraction)
    {
-   }
+      int numPaths      = causationPaths.size();
+      int maxPathLength = 0;
+      int maxStepSize   = 0;
 
-
-   // Export path RNN dataset.
-   public static void exportPathRNNdataset()
-   {
-      exportPathDataset(PATH_RNN_DATASET_FILENAME, PATH_RNN_DATASET_TRAIN_FRACTION);
-   }
-
-
-   // Export path TCN dataset.
-   public static void exportPathTCNdataset()
-   {
-      exportPathDataset(PATH_TCN_DATASET_FILENAME, PATH_TCN_DATASET_TRAIN_FRACTION);
-   }
-
-
-   public static void exportPathDataset(String filename, float trainFraction)
-   {
-   }
-
-
-   // One-hot coding of terminal.
-   public String oneHot(char terminal)
-   {
-      String code = "";
-      int    t    = -1;
-
-      if (terminal >= 'a')
+      for (int i = 0; i < numPaths; i++)
       {
-         t = terminal - 'a';
-      }
-      for (int i = 0; i < 26; i++)
-      {
-         if (i == t)
+         ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+         if (path.size() > maxPathLength)
          {
-            code += "1";
+            maxPathLength = path.size();
          }
-         else
+         for (int j = 0; j < path.size(); j++)
          {
-            code += "0";
-         }
-         if (i < 25)
-         {
-            code += ", ";
+            ArrayList<CausationState> step = path.get(j);
+            if (step.size() > maxStepSize)
+            {
+               maxStepSize = step.size();
+            }
          }
       }
-      return(code);
+
+      try
+      {
+         FileWriter  fileWriter  = new FileWriter(filename);
+         PrintWriter printWriter = new PrintWriter(fileWriter);
+         int         numTrain    = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
+         int         stateSize   = NUM_DIMENSIONS + MAX_PRODUCTION_RHS_LENGTH;
+         printWriter.println("X_train_shape = [ " + (numTrain * (maxPathLength - 1)) + ", " + (maxStepSize * stateSize) + " ]");
+         printWriter.print("X_train = [ ");
+         String X_train = "";
+         for (int i = 0; i < numTrain; i++)
+         {
+            ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+            int p = path.size() - 1;
+            for (int j = 0; j < p; j++)
+            {
+               ArrayList<CausationState> step = path.get(j);
+               int s = step.size();
+               int k = 0;
+               for ( ; k < s; k++)
+               {
+                  CausationState state = step.get(k);
+                  if (!state.valid) { break; }
+                  ArrayList<Boolean> features = null;
+                  features = state.causation.features;
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (features.get(q))
+                     {
+                        X_train += "1,";
+                     }
+                     else
+                     {
+                        X_train += "0,";
+                     }
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     if (q == state.currentChild)
+                     {
+                        X_train += "1,";
+                     }
+                     else
+                     {
+                        X_train += "0,";
+                     }
+                  }
+               }
+               s = maxStepSize - k;
+               for (k = 0; k < s; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_train += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     X_train += "0,";
+                  }
+               }
+               X_train += "\n";
+            }
+            p = (maxPathLength - 1) - p;
+            for (int j = 0; j < p; j++)
+            {
+               for (int k = 0; k < maxStepSize; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_train += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     X_train += "0,";
+                  }
+               }
+               X_train += "\n";
+            }
+         }
+         if (X_train.endsWith(","))
+         {
+            X_train = X_train.substring(0, X_train.length() - 1);
+         }
+         printWriter.println(X_train + " ]");
+         printWriter.println("y_train_shape = [ " + (numTrain * (maxPathLength - 1)) + ", " + (maxStepSize * stateSize) + " ]");
+         printWriter.print("y_train = [ ");
+         String y_train = "";
+         for (int i = 0; i < numTrain; i++)
+         {
+            ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+            int p = path.size();
+            for (int j = 1; j < p; j++)
+            {
+               ArrayList<CausationState> step = path.get(j);
+               int s = step.size();
+               int k = 0;
+               for ( ; k < s; k++)
+               {
+                  CausationState state = step.get(k);
+                  if (!state.valid) { break; }
+                  ArrayList<Boolean> features = null;
+                  features = state.causation.features;
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (features.get(q))
+                     {
+                        y_train += "1,";
+                     }
+                     else
+                     {
+                        y_train += "0,";
+                     }
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     if (q == state.currentChild)
+                     {
+                        y_train += "1,";
+                     }
+                     else
+                     {
+                        y_train += "0,";
+                     }
+                  }
+               }
+               s = maxStepSize - k;
+               for (k = 0; k < s; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     y_train += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     y_train += "0,";
+                  }
+               }
+               y_train += "\n";
+            }
+            p = (maxPathLength - 1) - p;
+            for (int j = 0; j < p; j++)
+            {
+               for (int k = 0; k < maxStepSize; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     y_train += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     y_train += "0,";
+                  }
+               }
+               y_train += "\n";
+            }
+         }
+         if (y_train.endsWith(","))
+         {
+            y_train = y_train.substring(0, y_train.length() - 1);
+         }
+         printWriter.println(y_train + " ]");
+         int numTest = numPaths - numTrain;
+         printWriter.println("X_test_shape = [ " + (numTest * (maxPathLength - 1)) + ", " + (maxStepSize * stateSize) + " ]");
+         printWriter.print("X_test = [ ");
+         String X_test = "";
+         for (int i = numTrain; i < numPaths; i++)
+         {
+            ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+            int p = path.size() - 1;
+            for (int j = 0; j < p; j++)
+            {
+               ArrayList<CausationState> step = path.get(j);
+               int s = step.size();
+               int k = 0;
+               for ( ; k < s; k++)
+               {
+                  CausationState state = step.get(k);
+                  if (!state.valid) { break; }
+                  ArrayList<Boolean> features = null;
+                  features = state.causation.features;
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (features.get(q))
+                     {
+                        X_test += "1,";
+                     }
+                     else
+                     {
+                        X_test += "0,";
+                     }
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     if (q == state.currentChild)
+                     {
+                        X_test += "1,";
+                     }
+                     else
+                     {
+                        X_test += "0,";
+                     }
+                  }
+               }
+               s = maxStepSize - k;
+               for (k = 0; k < s; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_test += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     X_test += "0,";
+                  }
+               }
+               X_test += "\n";
+            }
+            p = (maxPathLength - 1) - p;
+            for (int j = 0; j < p; j++)
+            {
+               for (int k = 0; k < maxStepSize; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_test += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     X_test += "0,";
+                  }
+               }
+               X_test += "\n";
+            }
+         }
+         if (X_test.endsWith(","))
+         {
+            X_test = X_test.substring(0, X_test.length() - 1);
+         }
+         printWriter.println(X_test + " ]");
+         printWriter.println("y_test_shape = [ " + (numTest * (maxPathLength - 1)) + ", " + (maxStepSize * stateSize) + " ]");
+         printWriter.print("y_test = [ ");
+         String y_test = "";
+         for (int i = numTrain; i < numPaths; i++)
+         {
+            ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
+            int p = path.size();
+            for (int j = 1; j < p; j++)
+            {
+               ArrayList<CausationState> step = path.get(j);
+               int s = step.size();
+               int k = 0;
+               for ( ; k < s; k++)
+               {
+                  CausationState state = step.get(k);
+                  if (!state.valid) { break; }
+                  ArrayList<Boolean> features = null;
+                  features = state.causation.features;
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (features.get(q))
+                     {
+                        y_test += "1,";
+                     }
+                     else
+                     {
+                        y_test += "0,";
+                     }
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     if (q == state.currentChild)
+                     {
+                        y_test += "1,";
+                     }
+                     else
+                     {
+                        y_test += "0,";
+                     }
+                  }
+               }
+               s = maxStepSize - k;
+               for (k = 0; k < s; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     y_test += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     y_test += "0,";
+                  }
+               }
+               y_test += "\n";
+            }
+            p = (maxPathLength - 1) - p;
+            for (int j = 0; j < p; j++)
+            {
+               for (int k = 0; k < maxStepSize; k++)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     y_test += "0,";
+                  }
+                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  {
+                     y_test += "0,";
+                  }
+               }
+               y_test += "\n";
+            }
+         }
+         if (y_test.endsWith(","))
+         {
+            y_test = y_test.substring(0, y_test.length() - 1);
+         }
+         printWriter.println(y_test + " ]");
+         printWriter.close();
+      }
+      catch (IOException e)
+      {
+         System.err.println("Cannot write NN dataset to file " + filename);
+         System.exit(1);
+      }
+   }
+
+
+   // Export RNN dataset.
+   public static void exportRNNdataset()
+   {
+      exportDataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
+   }
+
+
+   // Export TCN dataset.
+   public static void exportTCNdataset()
+   {
+      exportDataset(TCN_DATASET_FILENAME, TCN_DATASET_TRAIN_FRACTION);
+   }
+
+
+   public static void exportDataset(String filename, float trainFraction)
+   {
+   }
+
+
+   // Learn causations with NN.
+   public static void learnCausationsNN(String filename)
+   {
+   }
+
+
+   // Learn causations with RNN.
+   public static void learnCausationsRNN(String filename)
+   {
+   }
+
+
+   // Learn causations with TCN.
+   public static void learnCausationsTCN(String filename)
+   {
    }
 }

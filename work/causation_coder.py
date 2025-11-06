@@ -1,7 +1,7 @@
 # Causation coder.
 # Map input cause to output effect, encoding relationship in the process.
 # ref: https://blog.keras.io/building-autoencoders-in-keras.html
-
+import tensorflow as tf
 import keras
 from keras import layers
 
@@ -41,13 +41,16 @@ decoded = layers.Dense(hidden_dim, activation='relu')(decoded)
 effect_layer = layers.Dense(effect_dim, activation='sigmoid')(decoded)
 
 # Causation model maps cause to effect.
-causation_model = keras.Model(cause_layer, effect_layer)
+causation_model = keras.Model(cause_layer, outputs=[effect_layer, code_layer])
 
 # Coder model maps cause to its code.
 coder_model = keras.Model(cause_layer, code_layer)
 
-# Compile model with a mean squared error loss and Adam optimizer.
-causation_model.compile(optimizer='adam', loss='mse')
+# Loss.
+def custom_loss(cause_data, effect_data):
+    def loss(y_true, y_pred):
+        return tf.reduce_mean(tf.square(y_pred - y_true), axis=-1)
+    return loss
 
 # Generate cause and effect pairs.
 # off=0.0, on=1.0
@@ -94,6 +97,9 @@ for row in range(dataset_size):
         for j in range(len(effect_feature_idxs[i])):
             idx = effect_feature_idxs[i][j]
             effect_data[row,idx] = 1.0
+
+# Compile model with a custom loss and Adam optimizer.
+causation_model.compile(optimizer='adam', loss=[custom_loss(cause_data, effect_data), None])
 
 # Train causation model.
 causation_model.fit(cause_data, effect_data,

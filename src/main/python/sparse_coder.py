@@ -13,7 +13,7 @@ code_dim = 32
 effect_dim = 16
 
 # Causations.
-num_causations = 1
+num_causations = 2
 num_cause_features = 2
 num_code_features = 3
 num_effect_features = 2
@@ -154,3 +154,15 @@ for i in range(num_causations):
     print('code:', code_instance)
     print('effect:', np.array([effect_data[i]]))
     print('prediction:', decoded_instance)
+    
+# Predict effects from combined codes.
+print('decode combined predictions:')
+code_instance = np.array([code_data[0]])
+for i in range(1,num_causations):
+    code_temp = np.array([code_data[i]])
+    for j in range(code_dim):
+        if code_temp[0,j] > .9:
+            code_instance[0,j] = 1
+decoded_instance = decode_model.predict(code_instance)
+print('code:', code_instance)
+print('prediction:', decoded_instance)
