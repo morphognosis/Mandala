@@ -1344,15 +1344,25 @@ public class Causations
                         X_train += "0,";
                      }
                   }
-                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  if (state.causation instanceof TerminalCausation)
                   {
-                     if (q == state.currentChild)
-                     {
-                        X_train += "1,";
-                     }
-                     else
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
                      {
                         X_train += "0,";
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        if (q == state.currentChild)
+                        {
+                           X_train += "1,";
+                        }
+                        else
+                        {
+                           X_train += "0,";
+                        }
                      }
                   }
                }
@@ -1421,15 +1431,25 @@ public class Causations
                         y_train += "0,";
                      }
                   }
-                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  if (state.causation instanceof TerminalCausation)
                   {
-                     if (q == state.currentChild)
-                     {
-                        y_train += "1,";
-                     }
-                     else
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
                      {
                         y_train += "0,";
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        if (q == state.currentChild)
+                        {
+                           y_train += "1,";
+                        }
+                        else
+                        {
+                           y_train += "0,";
+                        }
                      }
                   }
                }
@@ -1499,15 +1519,25 @@ public class Causations
                         X_test += "0,";
                      }
                   }
-                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  if (state.causation instanceof TerminalCausation)
                   {
-                     if (q == state.currentChild)
-                     {
-                        X_test += "1,";
-                     }
-                     else
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
                      {
                         X_test += "0,";
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        if (q == state.currentChild)
+                        {
+                           X_test += "1,";
+                        }
+                        else
+                        {
+                           X_test += "0,";
+                        }
                      }
                   }
                }
@@ -1576,15 +1606,25 @@ public class Causations
                         y_test += "0,";
                      }
                   }
-                  for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                  if (state.causation instanceof TerminalCausation)
                   {
-                     if (q == state.currentChild)
-                     {
-                        y_test += "1,";
-                     }
-                     else
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
                      {
                         y_test += "0,";
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        if (q == state.currentChild)
+                        {
+                           y_test += "1,";
+                        }
+                        else
+                        {
+                           y_test += "0,";
+                        }
                      }
                   }
                }
