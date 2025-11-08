@@ -20,8 +20,8 @@ public class Causations
    public static int   NUM_TERMINALS                   = 10;
    public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH       = 5;
-   public static float MIN_CAUSATION_PROBABILITY       = 0.1f;
-   public static float MAX_CAUSATION_PROBABILITY       = 0.9f;
+   public static float MIN_CAUSATION_PROBABILITY       = 1.0f;
+   public static float MAX_CAUSATION_PROBABILITY       = 1.0f;
    public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
 
    // Feature dimensions.
@@ -1467,7 +1467,7 @@ public class Causations
                }
                y_train += "\n";
             }
-            p = (maxPathLength - 1) - p;
+            p = maxPathLength - p;
             for (int j = 0; j < p; j++)
             {
                for (int k = 0; k < maxStepSize; k++)
@@ -1642,7 +1642,7 @@ public class Causations
                }
                y_test += "\n";
             }
-            p = (maxPathLength - 1) - p;
+            p = maxPathLength - p;
             for (int j = 0; j < p; j++)
             {
                for (int k = 0; k < maxStepSize; k++)
