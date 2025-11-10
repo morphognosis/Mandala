@@ -285,7 +285,7 @@ public class Causations
          }
       }
    };
-   public static int NUM_CAUSATION_PATHS = 5;
+   public static int NUM_CAUSATION_PATHS = 20;
    public static     ArrayList < ArrayList < ArrayList < CausationState >>> causationPaths;
 
    // Datasets.
@@ -329,7 +329,7 @@ public class Causations
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
-      "      [-NNresultsFilename <file name> (default=\"" + NN_RESULTS_FILENAME + "\")]\n" +    
+      "      [-NNresultsFilename <file name> (default=\"" + NN_RESULTS_FILENAME + "\")]\n" +
       "      [-NNnumHidden <number of hidden neurons> (comma-separated for additional layers) (default=" + NN_HIDDEN + ")]\n" +
       "      [-NNnumEpochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
       "      [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]\n" +
@@ -706,7 +706,7 @@ public class Causations
                NN_RESULTS_FILENAME = args[i];
             }
             continue;
-         }         
+         }
          if (args[i].equals("-NNnumHidden"))
          {
             i++;
@@ -1706,11 +1706,11 @@ public class Causations
 
    // Learn causations with NN.
    public static void learnCausationsNN(String filename)
-   {	   
-	  if (VERBOSE)
-	  {
-		  System.out.println("Learn NN");
-	  }
+   {
+      if (VERBOSE)
+      {
+         System.out.println("Learn NN");
+      }
       try
       {
          InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(NN_FILENAME);
@@ -1739,7 +1739,7 @@ public class Causations
       commandList.add("python");
       commandList.add(NN_FILENAME);
       commandList.add("-f");
-      commandList.add(NN_RESULTS_FILENAME + "");      
+      commandList.add(NN_RESULTS_FILENAME + "");
       String[] hidden = NN_HIDDEN.split(",");
       for (String neurons : hidden)
       {
@@ -1750,7 +1750,7 @@ public class Causations
       commandList.add(NN_EPOCHS + "");
       if (!VERBOSE)
       {
-    	  commandList.add("-q");
+         commandList.add("-q");
       }
       ProcessBuilder processBuilder = new ProcessBuilder(commandList);
       processBuilder.inheritIO();
@@ -1768,9 +1768,9 @@ public class Causations
       }
       if (VERBOSE)
       {
-         System.out.println("Results written to " + NN_RESULTS_FILENAME);         
+         System.out.println("Results written to " + NN_RESULTS_FILENAME);
       }
-      
+
       // Fetch the results.
       try
       {
@@ -1829,7 +1829,7 @@ public class Causations
                System.out.print("Train prediction errors/total = " + train_prediction_errors + "/" + train_total_predictions);
                System.out.println(" (" + train_error_pct + "%)");
                System.out.print("Test prediction errors/total = " + test_prediction_errors + "/" + test_total_predictions);
-               System.out.println(" (" + test_error_pct + "%)");        
+               System.out.println(" (" + test_error_pct + "%)");
             }
          }
          else
