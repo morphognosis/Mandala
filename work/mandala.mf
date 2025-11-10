@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Class-Path: . 
- ../lib/nd4j-native-platform-1.0.0-beta6.jar 
+ ../lib/nd4j-native-platform-1.0.0-beta6.jar
  ../lib/openblas-platform-0.3.7-1.5.2.jar 
  ../lib/openblas-0.3.7-1.5.2-android-arm.jar 
  ../lib/openblas-0.3.7-1.5.2-android-arm64.jar 
@@ -144,5 +144,10 @@ Class-Path: .
  ../lib/deeplearning4j-ui-components-1.0.0-beta6.jar 
  ../lib/slf4j-api-1.7.25.jar 
  ../lib/slf4j-simple-1.7.25.jar
+ ../lib/gson-2.8.6.jar
+ ../lib/javax.annotation-api-1.3.2.jar 
+ ../lib/jsr305-3.0.2.jar 
+ ../lib/json-20160810.jar 
+ ../lib/json-simple-1.1.jar
 Main-Class: mandala.Mandala
 

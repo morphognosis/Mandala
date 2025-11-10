@@ -42,7 +42,7 @@ for opt, arg in opts:
      n_hidden.append(int(arg))
   elif opt in ("-e", "--epochs"):
      n_epochs = int(arg)
-  elif opt == "-q":
+  elif opt in ("-q", "--quiet"):
      verbose = False
   else:
      print(usage)
@@ -73,7 +73,7 @@ seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1])
 seq = array(y_train)
 y = seq.reshape(y_train_shape[0], y_train_shape[1])
-model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0])
+model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # validate
 seq = array(X_train)
@@ -83,8 +83,20 @@ y = seq.reshape(y_train_shape[0], y_train_shape[1])
 predictions = model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
 trainErrors = 0
 trainTotal = 0
-for index in range(y_train_shape[0]):
-    print(y[index], predictions[index])
+for i in range(y_train_shape[0]):
+    yvals = y[i]
+    pvals = predictions[i]
+    trainTotal += 1
+    for j in range(len(yvals)):
+        if yvals[j] >= threshold and pvals[j] < threshold:
+            trainErrors += 1
+            break
+        if yvals[j] < threshold and pvals[j] >= threshold:
+            trainErrors += 1
+            break
+trainErrorPct = 0
+if trainTotal > 0:
+    trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
 
 # predict
 seq = array(X_test)
@@ -94,22 +106,31 @@ y = seq.reshape(y_test_shape[0], y_test_shape[1])
 predictions = model.predict(X, batch_size=X_test_shape[0], verbose=int(verbose))
 testErrors = 0
 testTotal = 0
-
-# Print results.
-print("Train prediction errors/total = ", trainErrors, "/", trainTotal, sep='', end='')
-trainErrorPct=0
-if trainTotal > 0:
-    trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
-    print(" (", str(round(trainErrorPct, 2)), "%)", sep='', end='')
-print('')
-print("Test prediction errors/total = ", testErrors, "/", testTotal, sep='', end='')
-testErrorPct=0
+for i in range(y_test_shape[0]):
+    yvals = y[i]
+    pvals = predictions[i]
+    testTotal += 1
+    for j in range(len(yvals)):
+        if yvals[j] >= threshold and pvals[j] < threshold:
+            testErrors += 1
+            break
+        if yvals[j] < threshold and pvals[j] >= threshold:
+            testErrors += 1
+            break
+testErrorPct = 0
 if testTotal > 0:
     testErrorPct = (float(testErrors) / float(testTotal)) * 100.0
-    print(" (", str(round(testErrorPct, 2)), "%)", sep='', end='')
-print('')
 
-# Write results to file.
+# print results.
+if verbose:
+    print("Train prediction errors/total = ", trainErrors, "/", trainTotal, sep='', end='')
+    print(" (", str(round(trainErrorPct, 2)), "%)", sep='', end='')
+    print('')
+    print("Test prediction errors/total = ", testErrors, "/", testTotal, sep='', end='')
+    print(" (", str(round(testErrorPct, 2)), "%)", sep='', end='')
+    print('')
+
+# write results to file.
 with open(results_filename, 'w') as f:
     f.write('{')
     f.write('\"train_prediction_errors\":\"'+str(trainErrors)+'\",')
@@ -119,6 +140,5 @@ with open(results_filename, 'w') as f:
     f.write('\"test_total_predictions\":\"'+str(testTotal)+'\",')
     f.write('\"test_error_pct\":\"'+str(round(testErrorPct, 2))+'\"')
     f.write('}\n')
-
 
 sys.exit(0)
