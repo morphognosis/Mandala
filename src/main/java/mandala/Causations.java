@@ -304,12 +304,31 @@ public class Causations
    public static String RNN_FILENAME        = "causations_rnn.py";
    public static String TCN_FILENAME        = "causations_tcn.py";
 
+   // Learning results.
+   public static class LearningResults
+   {
+      public int   train_prediction_errors;
+      public int   train_total_predictions;
+      public float train_error_pct;
+      public int   test_prediction_errors;
+      public int   test_total_predictions;
+      public float test_error_pct;
+
+      public void print()
+      {
+         System.out.println("Train prediction errors/total = " + train_prediction_errors + "/" + train_total_predictions);
+         System.out.println(" (" + train_error_pct + "%)");
+         System.out.print("Test prediction errors/total = " + test_prediction_errors + "/" + test_total_predictions);
+         System.out.println(" (" + test_error_pct + "%)");
+      }
+   };
+
    // Random numbers.
    public static int    RANDOM_SEED = 4517;
    public static Random randomizer  = null;
 
    // Verbosity.
-   public static boolean VERBOSE = false;
+   public static boolean VERBOSE = true;
 
    // Usage.
    public static final String Usage =
@@ -329,13 +348,12 @@ public class Causations
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
-      "      [-NNresultsFilename <file name> (default=\"" + NN_RESULTS_FILENAME + "\")]\n" +
       "      [-NNnumHidden <number of hidden neurons> (comma-separated for additional layers) (default=" + NN_HIDDEN + ")]\n" +
       "      [-NNnumEpochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
       "      [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-TCNdatasetTrainFraction <fraction> (default=" + TCN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
-      "      [-verbose]\n" +
+      "      [-quiet]\n" +
       "  Help:\n" +
       "    java mandala.Causations -help\n" +
       "Exit codes:\n" +
@@ -698,15 +716,6 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-NNresultsFilename"))
-         {
-            if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
-            {
-               i++;
-               NN_RESULTS_FILENAME = args[i];
-            }
-            continue;
-         }
          if (args[i].equals("-NNnumHidden"))
          {
             i++;
@@ -823,9 +832,9 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-verbose"))
+         if (args[i].equals("-quiet"))
          {
-            VERBOSE = true;
+            VERBOSE = false;
             continue;
          }
          if (args[i].equals("-help") || args[i].equals("-h") || args[i].equals("-?"))
@@ -1705,7 +1714,7 @@ public class Causations
 
 
    // Learn causations with NN.
-   public static void learnCausationsNN(String filename)
+   public static LearningResults learnCausationsNN(String filename)
    {
       if (VERBOSE)
       {
@@ -1738,8 +1747,6 @@ public class Causations
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
       commandList.add(NN_FILENAME);
-      commandList.add("-f");
-      commandList.add(NN_RESULTS_FILENAME + "");
       String[] hidden = NN_HIDDEN.split(",");
       for (String neurons : hidden)
       {
@@ -1772,6 +1779,7 @@ public class Causations
       }
 
       // Fetch the results.
+      LearningResults results = new LearningResults();
       try
       {
          BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(NN_RESULTS_FILENAME)));
@@ -1794,8 +1802,26 @@ public class Causations
                System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
                System.exit(1);
             }
+            try
+            {
+               results.train_prediction_errors = Integer.parseInt(train_prediction_errors);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
+               System.exit(1);
+            }
             String train_total_predictions = jObj.getString("train_total_predictions");
             if ((train_total_predictions == null) || train_total_predictions.isEmpty())
+            {
+               System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.train_total_predictions = Integer.parseInt(train_total_predictions);
+            }
+            catch (NumberFormatException e)
             {
                System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
                System.exit(1);
@@ -1806,8 +1832,26 @@ public class Causations
                System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
                System.exit(1);
             }
+            try
+            {
+               results.train_error_pct = Float.parseFloat(train_error_pct);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
+               System.exit(1);
+            }
             String test_prediction_errors = jObj.getString("test_prediction_errors");
             if ((test_prediction_errors == null) || test_prediction_errors.isEmpty())
+            {
+               System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.test_prediction_errors = Integer.parseInt(test_prediction_errors);
+            }
+            catch (NumberFormatException e)
             {
                System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
                System.exit(1);
@@ -1818,18 +1862,29 @@ public class Causations
                System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
                System.exit(1);
             }
+            try
+            {
+               results.test_total_predictions = Integer.parseInt(test_total_predictions);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
+               System.exit(1);
+            }
             String test_error_pct = jObj.getString("test_error_pct");
             if ((test_error_pct == null) || test_error_pct.isEmpty())
             {
                System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
                System.exit(1);
             }
-            if (VERBOSE)
+            try
             {
-               System.out.print("Train prediction errors/total = " + train_prediction_errors + "/" + train_total_predictions);
-               System.out.println(" (" + train_error_pct + "%)");
-               System.out.print("Test prediction errors/total = " + test_prediction_errors + "/" + test_total_predictions);
-               System.out.println(" (" + test_error_pct + "%)");
+               results.test_error_pct = Float.parseFloat(test_error_pct);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + NN_RESULTS_FILENAME);
+               System.exit(1);
             }
          }
          else
@@ -1844,6 +1899,7 @@ public class Causations
          System.err.println("Cannot read results file " + NN_RESULTS_FILENAME + ":" + e.getMessage());
          System.exit(1);
       }
+      return(results);
    }
 
 

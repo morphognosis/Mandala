@@ -25,9 +25,9 @@ verbose = True
 
 # get options
 first_hidden = True
-usage = 'causations_nn.py [-f <results file name>] [-h <hidden neurons> (repeat for additional layers)] [-e <epochs>] [-q (quiet)]'
+usage = 'causations_nn.py [-h <hidden neurons> (repeat for additional layers)] [-e <epochs>] [-q (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"?qf:h:e:",["filename","hidden=","epochs="])
+  opts, args = getopt.getopt(sys.argv[1:],"?qh:e:",["hidden=","epochs="])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -35,9 +35,7 @@ for opt, arg in opts:
   if opt in ("-?", "--help"):
      print(usage)
      sys.exit(0)
-  if opt in ("-f", "--filename"):
-     results_filename = arg
-  elif opt in ("-h", "--hidden"):
+  if opt in ("-h", "--hidden"):
      if first_hidden:
          first_hidden = False
          n_hidden = []
