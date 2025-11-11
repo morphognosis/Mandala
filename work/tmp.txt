@@ -1,0 +1,2889 @@
+hierarchies
+  hierarchy_0
+    nonterminal id=0, features: 7 8 13
+      nonterminal id=2, features: 7 8 15, child number=0, probability=1.0
+        terminal id=9, features: 7 11 13, child number=0, probability=1.0
+        terminal id=7, features: 0 5 7, child number=1, probability=1.0
+        terminal id=5, features: 0 8 11, child number=2, probability=1.0
+        terminal id=7, features: 0 5 7, child number=3, probability=1.0
+        terminal id=1, features: 5 8 10, child number=4
+      nonterminal id=2, features: 7 8 15, child number=1, probability=1.0
+        terminal id=9, features: 7 11 13, child number=0, probability=1.0
+        terminal id=7, features: 0 5 7, child number=1, probability=1.0
+        terminal id=5, features: 0 8 11, child number=2, probability=1.0
+        terminal id=7, features: 0 5 7, child number=3, probability=1.0
+        terminal id=1, features: 5 8 10, child number=4
+      nonterminal id=4, features: 4 7 8, child number=2, probability=1.0
+        terminal id=3, features: 4 5 7, child number=0, probability=1.0
+        terminal id=0, features: 7 8 13, child number=1, probability=1.0
+        terminal id=0, features: 7 8 13, child number=2, probability=1.0
+        terminal id=6, features: 0 3 8, child number=3, probability=1.0
+        terminal id=5, features: 0 8 11, child number=4
+      nonterminal id=3, features: 4 5 7, child number=3, probability=1.0
+        terminal id=8, features: 3 7 10, child number=0, probability=1.0
+        terminal id=0, features: 7 8 13, child number=1, probability=1.0
+        terminal id=3, features: 4 5 7, child number=2, probability=1.0
+        terminal id=4, features: 4 7 8, child number=3, probability=1.0
+        terminal id=8, features: 3 7 10, child number=4
+      nonterminal id=3, features: 4 5 7, child number=4
+        terminal id=8, features: 3 7 10, child number=0, probability=1.0
+        terminal id=0, features: 7 8 13, child number=1, probability=1.0
+        terminal id=3, features: 4 5 7, child number=2, probability=1.0
+        terminal id=4, features: 4 7 8, child number=3, probability=1.0
+        terminal id=8, features: 3 7 10, child number=4
+causation paths:
+path=0
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=1
+step=0
+valid=true, terminal id=3, features: 4 5 7
+valid=false, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+path=2
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+path=3
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=5
+valid=true, terminal id=9, features: 7 11 13
+valid=true, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=6
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=7
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=8
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=9
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=10
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=11
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=12
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=13
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=14
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=15
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=16
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=17
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=18
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=19
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=20
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=21
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=22
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=23
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=24
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+path=4
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=5
+valid=true, terminal id=9, features: 7 11 13
+valid=true, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=6
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=7
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=8
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=9
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=10
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=11
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=12
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=13
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=14
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=15
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=16
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=17
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=18
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=19
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=20
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=21
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=22
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=23
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=24
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+path=5
+step=0
+valid=true, terminal id=3, features: 4 5 7
+valid=false, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+path=6
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=7
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+path=8
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=9
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=10
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=11
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=5
+valid=true, terminal id=9, features: 7 11 13
+valid=true, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=6
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=7
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=8
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=9
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=10
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=11
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=12
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=13
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=14
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=15
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=16
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=17
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=18
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=19
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=20
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=21
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=22
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=23
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=24
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+path=12
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=13
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=14
+step=0
+valid=true, terminal id=3, features: 4 5 7
+valid=false, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+path=15
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=5
+valid=true, terminal id=9, features: 7 11 13
+valid=true, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=6
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=7
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=8
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=9
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=10
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=11
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=12
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=13
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=14
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=15
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=16
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=17
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=18
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=19
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=20
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=21
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=22
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=23
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=24
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+path=16
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=5
+valid=true, terminal id=9, features: 7 11 13
+valid=true, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=6
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=7
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=8
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=9
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=10
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=11
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=12
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=13
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=14
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=15
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=16
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=17
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=18
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=19
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=20
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=21
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=22
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=23
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=24
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+path=17
+step=0
+valid=true, terminal id=8, features: 3 7 10
+valid=false, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+path=18
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=false, nonterminal id=0, features: 7 8 13, child number=0/5, probability=1.0
+step=5
+valid=true, terminal id=9, features: 7 11 13
+valid=true, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=6
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=7
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=8
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=9
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=1/5, probability=1.0
+step=10
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=4, features: 4 7 8, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=11
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=12
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=4, features: 4 7 8, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=13
+valid=true, terminal id=6, features: 0 3 8
+valid=true, nonterminal id=4, features: 4 7 8, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=14
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=4, features: 4 7 8, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=2/5, probability=1.0
+step=15
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=16
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=17
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=18
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=19
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=3/5, probability=1.0
+step=20
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=0/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=21
+valid=true, terminal id=0, features: 7 8 13
+valid=true, nonterminal id=3, features: 4 5 7, child number=1/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=22
+valid=true, terminal id=3, features: 4 5 7
+valid=true, nonterminal id=3, features: 4 5 7, child number=2/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=23
+valid=true, terminal id=4, features: 4 7 8
+valid=true, nonterminal id=3, features: 4 5 7, child number=3/5, probability=1.0
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+step=24
+valid=true, terminal id=8, features: 3 7 10
+valid=true, nonterminal id=3, features: 4 5 7, child number=4/5
+valid=true, nonterminal id=0, features: 7 8 13, child number=4/5
+path=19
+step=0
+valid=true, terminal id=9, features: 7 11 13
+valid=false, nonterminal id=2, features: 7 8 15, child number=0/5, probability=1.0
+step=1
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=1/5, probability=1.0
+step=2
+valid=true, terminal id=5, features: 0 8 11
+valid=true, nonterminal id=2, features: 7 8 15, child number=2/5, probability=1.0
+step=3
+valid=true, terminal id=7, features: 0 5 7
+valid=true, nonterminal id=2, features: 7 8 15, child number=3/5, probability=1.0
+step=4
+valid=true, terminal id=1, features: 5 8 10
+valid=true, nonterminal id=2, features: 7 8 15, child number=4/5
+Learn NN
+Model: "sequential"
++--------------------------------------------------------------------------+
+| Layer (type)                    | Output Shape           |       Param # |
+|---------------------------------+------------------------+---------------|
+| dense (Dense)                   | (None, 128)            |         8,192 |
+|---------------------------------+------------------------+---------------|
+| dense_1 (Dense)                 | (None, 128)            |        16,512 |
+|---------------------------------+------------------------+---------------|
+| dense_2 (Dense)                 | (None, 128)            |        16,512 |
+|---------------------------------+------------------------+---------------|
+| dense_3 (Dense)                 | (None, 63)             |         8,127 |
++--------------------------------------------------------------------------+
+ Total params: 49,343 (192.75 KB)
+ Trainable params: 49,343 (192.75 KB)
+ Non-trainable params: 0 (0.00 B)
+Epoch 1/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 2s/step - loss: 0.6920
+[1m1/1[0m [32m====================[0m[37m[0m [1m2s[0m 2s/step - loss: 0.6920
+Epoch 2/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.6873
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.6873
+Epoch 3/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.6825
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.6825
+Epoch 4/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.6773
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.6773
+Epoch 5/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.6716
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.6716
+Epoch 6/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.6653
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.6653
+Epoch 7/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.6583
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.6583
+Epoch 8/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.6506
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 55ms/step - loss: 0.6506
+Epoch 9/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.6420
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.6420
+Epoch 10/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 160ms/step - loss: 0.6324
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 208ms/step - loss: 0.6324
+Epoch 11/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 0.6219
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 61ms/step - loss: 0.6219
+Epoch 12/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 0.6104
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 0.6104
+Epoch 13/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.5980
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.5980
+Epoch 14/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.5848
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.5848
+Epoch 15/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.5709
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.5709
+Epoch 16/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.5565
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.5565
+Epoch 17/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.5418
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 55ms/step - loss: 0.5418
+Epoch 18/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.5270
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.5270
+Epoch 19/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.5123
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.5123
+Epoch 20/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.4980
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 0.4980
+Epoch 21/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.4841
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.4841
+Epoch 22/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 0.4707
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 0.4707
+Epoch 23/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 0.4577
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 0.4577
+Epoch 24/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 39ms/step - loss: 0.4449
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 61ms/step - loss: 0.4449
+Epoch 25/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.4321
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.4321
+Epoch 26/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.4192
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.4192
+Epoch 27/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.4060
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.4060
+Epoch 28/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.3925
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.3925
+Epoch 29/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.3785
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.3785
+Epoch 30/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.3642
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.3642
+Epoch 31/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.3497
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.3497
+Epoch 32/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 0.3351
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 0.3351
+Epoch 33/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.3206
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.3206
+Epoch 34/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.3065
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.3065
+Epoch 35/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.2929
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.2929
+Epoch 36/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.2800
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 0.2800
+Epoch 37/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.2677
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.2677
+Epoch 38/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.2562
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.2562
+Epoch 39/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 85ms/step - loss: 0.2455
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 129ms/step - loss: 0.2455
+Epoch 40/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 299ms/step - loss: 0.2357
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 338ms/step - loss: 0.2357
+Epoch 41/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.2268
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 118ms/step - loss: 0.2268
+Epoch 42/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 79ms/step - loss: 0.2185
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 261ms/step - loss: 0.2185
+Epoch 43/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 212ms/step - loss: 0.2108
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 298ms/step - loss: 0.2108
+Epoch 44/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 275ms/step - loss: 0.2036
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 344ms/step - loss: 0.2036
+Epoch 45/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 91ms/step - loss: 0.1968
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 140ms/step - loss: 0.1968
+Epoch 46/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 93ms/step - loss: 0.1903
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 151ms/step - loss: 0.1903
+Epoch 47/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 60ms/step - loss: 0.1839
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 99ms/step - loss: 0.1839
+Epoch 48/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 122ms/step - loss: 0.1777
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 151ms/step - loss: 0.1777
+Epoch 49/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 40ms/step - loss: 0.1715
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 74ms/step - loss: 0.1715
+Epoch 50/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 136ms/step - loss: 0.1654
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 179ms/step - loss: 0.1654
+Epoch 51/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 129ms/step - loss: 0.1593
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 171ms/step - loss: 0.1593
+Epoch 52/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.1533
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 89ms/step - loss: 0.1533
+Epoch 53/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.1474
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 87ms/step - loss: 0.1474
+Epoch 54/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.1416
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 0.1416
+Epoch 55/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.1359
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 97ms/step - loss: 0.1359
+Epoch 56/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 66ms/step - loss: 0.1303
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 108ms/step - loss: 0.1303
+Epoch 57/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 123ms/step - loss: 0.1248
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 158ms/step - loss: 0.1248
+Epoch 58/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.1195
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 73ms/step - loss: 0.1195
+Epoch 59/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 33ms/step - loss: 0.1144
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 68ms/step - loss: 0.1144
+Epoch 60/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.1095
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 68ms/step - loss: 0.1095
+Epoch 61/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.1048
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 81ms/step - loss: 0.1048
+Epoch 62/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 0.1004
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 69ms/step - loss: 0.1004
+Epoch 63/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 0.0962
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 71ms/step - loss: 0.0962
+Epoch 64/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0924
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 72ms/step - loss: 0.0924
+Epoch 65/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 35ms/step - loss: 0.0889
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 0.0889
+Epoch 66/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0857
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0857
+Epoch 67/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 36ms/step - loss: 0.0828
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 70ms/step - loss: 0.0828
+Epoch 68/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0802
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 0.0802
+Epoch 69/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0778
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 83ms/step - loss: 0.0778
+Epoch 70/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0756
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 0.0756
+Epoch 71/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 36ms/step - loss: 0.0736
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 0.0736
+Epoch 72/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0718
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0718
+Epoch 73/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0701
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 0.0701
+Epoch 74/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.0685
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 62ms/step - loss: 0.0685
+Epoch 75/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0671
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 77ms/step - loss: 0.0671
+Epoch 76/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0657
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.0657
+Epoch 77/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.0643
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 0.0643
+Epoch 78/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0631
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0631
+Epoch 79/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0619
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0619
+Epoch 80/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0607
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0607
+Epoch 81/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0596
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0596
+Epoch 82/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0585
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0585
+Epoch 83/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0574
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0574
+Epoch 84/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0563
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0563
+Epoch 85/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 0.0553
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 93ms/step - loss: 0.0553
+Epoch 86/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 35ms/step - loss: 0.0543
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 0.0543
+Epoch 87/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 39ms/step - loss: 0.0533
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 68ms/step - loss: 0.0533
+Epoch 88/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0524
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0524
+Epoch 89/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0515
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0515
+Epoch 90/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0506
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0506
+Epoch 91/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0498
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0498
+Epoch 92/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.0491
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.0491
+Epoch 93/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0484
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0484
+Epoch 94/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0477
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0477
+Epoch 95/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0470
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0470
+Epoch 96/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0463
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0463
+Epoch 97/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0457
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0457
+Epoch 98/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0451
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0451
+Epoch 99/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0445
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0445
+Epoch 100/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0439
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0439
+Epoch 101/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0433
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0433
+Epoch 102/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0427
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0427
+Epoch 103/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0421
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0421
+Epoch 104/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0415
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0415
+Epoch 105/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0410
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0410
+Epoch 106/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0404
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.0404
+Epoch 107/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0399
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0399
+Epoch 108/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0393
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0393
+Epoch 109/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.0387
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.0387
+Epoch 110/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0382
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.0382
+Epoch 111/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0376
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0376
+Epoch 112/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0371
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0371
+Epoch 113/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0365
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0365
+Epoch 114/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0360
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0360
+Epoch 115/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0354
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0354
+Epoch 116/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0349
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0349
+Epoch 117/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0343
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0343
+Epoch 118/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0338
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0338
+Epoch 119/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 0.0332
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.0332
+Epoch 120/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0327
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0327
+Epoch 121/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0321
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0321
+Epoch 122/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0316
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.0316
+Epoch 123/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0311
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0311
+Epoch 124/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0305
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0305
+Epoch 125/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0300
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.0300
+Epoch 126/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 0.0295
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 81ms/step - loss: 0.0295
+Epoch 127/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0289
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0289
+Epoch 128/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0284
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0284
+Epoch 129/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0279
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0279
+Epoch 130/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0274
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0274
+Epoch 131/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0269
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0269
+Epoch 132/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0264
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0264
+Epoch 133/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0258
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0258
+Epoch 134/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0254
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0254
+Epoch 135/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0249
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0249
+Epoch 136/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0244
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0244
+Epoch 137/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0239
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0239
+Epoch 138/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0234
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 0.0234
+Epoch 139/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0230
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.0230
+Epoch 140/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.0225
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0225
+Epoch 141/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0221
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0221
+Epoch 142/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0216
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0216
+Epoch 143/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0212
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0212
+Epoch 144/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0207
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0207
+Epoch 145/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0203
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0203
+Epoch 146/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0199
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0199
+Epoch 147/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0195
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0195
+Epoch 148/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0191
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0191
+Epoch 149/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.0187
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.0187
+Epoch 150/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0183
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0183
+Epoch 151/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0179
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0179
+Epoch 152/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0175
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0175
+Epoch 153/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0171
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0171
+Epoch 154/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0168
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0168
+Epoch 155/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0164
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0164
+Epoch 156/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0161
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0161
+Epoch 157/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0157
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0157
+Epoch 158/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0154
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0154
+Epoch 159/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 35ms/step - loss: 0.0150
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 55ms/step - loss: 0.0150
+Epoch 160/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0147
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0147
+Epoch 161/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.0144
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0144
+Epoch 162/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0140
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0140
+Epoch 163/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0137
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0137
+Epoch 164/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0134
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0134
+Epoch 165/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0131
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0131
+Epoch 166/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 0.0128
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.0128
+Epoch 167/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0125
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0125
+Epoch 168/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0122
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0122
+Epoch 169/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0119
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0119
+Epoch 170/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0116
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 0.0116
+Epoch 171/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.0113
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0113
+Epoch 172/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0111
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0111
+Epoch 173/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0108
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0108
+Epoch 174/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0105
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0105
+Epoch 175/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0103
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0103
+Epoch 176/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0100
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0100
+Epoch 177/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0098
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0098
+Epoch 178/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0095
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0095
+Epoch 179/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0093
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0093
+Epoch 180/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0090
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.0090
+Epoch 181/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0088
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0088
+Epoch 182/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0086
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 0.0086
+Epoch 183/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0084
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0084
+Epoch 184/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0082
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0082
+Epoch 185/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0080
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0080
+Epoch 186/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0077
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 62ms/step - loss: 0.0077
+Epoch 187/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.0075
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 93ms/step - loss: 0.0075
+Epoch 188/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.0074
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 0.0074
+Epoch 189/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 40ms/step - loss: 0.0072
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 92ms/step - loss: 0.0072
+Epoch 190/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 35ms/step - loss: 0.0070
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 0.0070
+Epoch 191/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0068
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.0068
+Epoch 192/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0066
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0066
+Epoch 193/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0065
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0065
+Epoch 194/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0063
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0063
+Epoch 195/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0061
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0061
+Epoch 196/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0060
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0060
+Epoch 197/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0058
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0058
+Epoch 198/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0057
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0057
+Epoch 199/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0055
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0055
+Epoch 200/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0054
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0054
+Epoch 201/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0053
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.0053
+Epoch 202/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0051
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0051
+Epoch 203/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0050
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0050
+Epoch 204/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0049
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0049
+Epoch 205/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0047
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0047
+Epoch 206/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0046
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0046
+Epoch 207/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0045
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0045
+Epoch 208/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.0044
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.0044
+Epoch 209/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0043
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0043
+Epoch 210/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0042
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0042
+Epoch 211/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0041
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0041
+Epoch 212/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0040
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0040
+Epoch 213/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0039
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0039
+Epoch 214/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0038
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0038
+Epoch 215/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0037
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0037
+Epoch 216/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0036
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0036
+Epoch 217/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0035
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0035
+Epoch 218/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0034
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0034
+Epoch 219/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0034
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0034
+Epoch 220/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0033
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0033
+Epoch 221/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0032
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0032
+Epoch 222/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0031
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 0.0031
+Epoch 223/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 40ms/step - loss: 0.0031
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 61ms/step - loss: 0.0031
+Epoch 224/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0030
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0030
+Epoch 225/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0029
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0029
+Epoch 226/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0029
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0029
+Epoch 227/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0028
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0028
+Epoch 228/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0027
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0027
+Epoch 229/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0027
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0027
+Epoch 230/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0026
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 0.0026
+Epoch 231/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0026
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0026
+Epoch 232/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0025
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0025
+Epoch 233/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0024
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0024
+Epoch 234/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0024
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0024
+Epoch 235/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0023
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 0.0023
+Epoch 236/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 0.0023
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0023
+Epoch 237/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0022
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0022
+Epoch 238/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0022
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0022
+Epoch 239/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0021
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0021
+Epoch 240/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0021
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0021
+Epoch 241/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0021
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0021
+Epoch 242/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0020
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0020
+Epoch 243/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0020
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0020
+Epoch 244/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0019
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0019
+Epoch 245/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.0019
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0019
+Epoch 246/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0019
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0019
+Epoch 247/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0018
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0018
+Epoch 248/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0018
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0018
+Epoch 249/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0017
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0017
+Epoch 250/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0017
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0017
+Epoch 251/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0017
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 0.0017
+Epoch 252/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0016
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0016
+Epoch 253/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0016
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0016
+Epoch 254/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0016
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0016
+Epoch 255/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0015
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0015
+Epoch 256/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 0.0015
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 61ms/step - loss: 0.0015
+Epoch 257/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 0.0015
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0015
+Epoch 258/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0015
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0015
+Epoch 259/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0014
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0014
+Epoch 260/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0014
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0014
+Epoch 261/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0014
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0014
+Epoch 262/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 0.0014
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0014
+Epoch 263/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0013
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0013
+Epoch 264/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0013
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0013
+Epoch 265/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0013
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0013
+Epoch 266/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 0.0013
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 0.0013
+Epoch 267/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 0.0012
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 0.0012
+Epoch 268/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0012
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 0.0012
+Epoch 269/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 41ms/step - loss: 0.0012
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 72ms/step - loss: 0.0012
+Epoch 270/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 39ms/step - loss: 0.0012
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 76ms/step - loss: 0.0012
+Epoch 271/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 0.0011
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 75ms/step - loss: 0.0011
+Epoch 272/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 0.0011
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 78ms/step - loss: 0.0011
+Epoch 273/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 0.0011
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 0.0011
+Epoch 274/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 0.0011
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 73ms/step - loss: 0.0011
+Epoch 275/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 36ms/step - loss: 0.0011
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 55ms/step - loss: 0.0011
+Epoch 276/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0011
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 0.0011
+Epoch 277/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 0.0010
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 0.0010
+Epoch 278/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 0.0010
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 0.0010
+Epoch 279/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 9.9937e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 9.9937e-04
+Epoch 280/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 9.8258e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 9.8258e-04
+Epoch 281/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 9.6633e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 9.6633e-04
+Epoch 282/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 9.5047e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 9.5047e-04
+Epoch 283/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 35ms/step - loss: 9.3495e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 9.3495e-04
+Epoch 284/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 9.1971e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 9.1971e-04
+Epoch 285/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 9.0480e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 9.0480e-04
+Epoch 286/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 8.9020e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 8.9020e-04
+Epoch 287/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 8.7607e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 8.7607e-04
+Epoch 288/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 8.6222e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 8.6222e-04
+Epoch 289/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 8.4859e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 8.4859e-04
+Epoch 290/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 41ms/step - loss: 8.3531e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 67ms/step - loss: 8.3531e-04
+Epoch 291/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 41ms/step - loss: 8.2225e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 8.2225e-04
+Epoch 292/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 8.0945e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 8.0945e-04
+Epoch 293/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 7.9693e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 7.9693e-04
+Epoch 294/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 37ms/step - loss: 7.8465e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 7.8465e-04
+Epoch 295/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 7.7272e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 7.7272e-04
+Epoch 296/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 7.6100e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 7.6100e-04
+Epoch 297/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 7.4944e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 7.4944e-04
+Epoch 298/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 7.3824e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 7.3824e-04
+Epoch 299/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 7.2732e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 7.2732e-04
+Epoch 300/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 7.1655e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 7.1655e-04
+Epoch 301/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 7.0595e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 7.0595e-04
+Epoch 302/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 6.9564e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 6.9564e-04
+Epoch 303/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 6.8557e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 6.8557e-04
+Epoch 304/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 6.7567e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 6.7567e-04
+Epoch 305/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 36ms/step - loss: 6.6594e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 6.6594e-04
+Epoch 306/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 6.5655e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 6.5655e-04
+Epoch 307/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 6.4728e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 6.4728e-04
+Epoch 308/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 6.3816e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 6.3816e-04
+Epoch 309/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 6.2924e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 6.2924e-04
+Epoch 310/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 6.2049e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 6.2049e-04
+Epoch 311/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 6.1187e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 6.1187e-04
+Epoch 312/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 153ms/step - loss: 6.0362e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 174ms/step - loss: 6.0362e-04
+Epoch 313/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 168ms/step - loss: 5.9547e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 204ms/step - loss: 5.9547e-04
+Epoch 314/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 129ms/step - loss: 5.8737e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 172ms/step - loss: 5.8737e-04
+Epoch 315/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 135ms/step - loss: 5.7943e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 171ms/step - loss: 5.7943e-04
+Epoch 316/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 33ms/step - loss: 5.7179e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 5.7179e-04
+Epoch 317/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 5.6427e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 5.6427e-04
+Epoch 318/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 5.5684e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 5.5684e-04
+Epoch 319/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 38ms/step - loss: 5.4955e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 61ms/step - loss: 5.4955e-04
+Epoch 320/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 5.4241e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 73ms/step - loss: 5.4241e-04
+Epoch 321/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 5.3536e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 55ms/step - loss: 5.3536e-04
+Epoch 322/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 5.2842e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 71ms/step - loss: 5.2842e-04
+Epoch 323/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 5.2181e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 5.2181e-04
+Epoch 324/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 5.1527e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 5.1527e-04
+Epoch 325/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 5.0875e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 5.0875e-04
+Epoch 326/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 5.0234e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 5.0234e-04
+Epoch 327/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 4.9609e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 4.9609e-04
+Epoch 328/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 4.8999e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 4.8999e-04
+Epoch 329/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 38ms/step - loss: 4.8397e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 65ms/step - loss: 4.8397e-04
+Epoch 330/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 4.7805e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 75ms/step - loss: 4.7805e-04
+Epoch 331/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 4.7223e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 70ms/step - loss: 4.7223e-04
+Epoch 332/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 4.6651e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 4.6651e-04
+Epoch 333/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 4.6089e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 4.6089e-04
+Epoch 334/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 4.5540e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 4.5540e-04
+Epoch 335/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 4.4999e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 4.4999e-04
+Epoch 336/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 4.4466e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 79ms/step - loss: 4.4466e-04
+Epoch 337/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 4.3947e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 77ms/step - loss: 4.3947e-04
+Epoch 338/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 4.3435e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 77ms/step - loss: 4.3435e-04
+Epoch 339/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 4.2934e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 4.2934e-04
+Epoch 340/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 33ms/step - loss: 4.2438e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 4.2438e-04
+Epoch 341/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 4.1954e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 4.1954e-04
+Epoch 342/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 36ms/step - loss: 4.1478e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 4.1478e-04
+Epoch 343/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 4.1008e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 4.1008e-04
+Epoch 344/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 4.0547e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 68ms/step - loss: 4.0547e-04
+Epoch 345/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 4.0095e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 89ms/step - loss: 4.0095e-04
+Epoch 346/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 135ms/step - loss: 3.9650e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 171ms/step - loss: 3.9650e-04
+Epoch 347/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 40ms/step - loss: 3.9214e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 73ms/step - loss: 3.9214e-04
+Epoch 348/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 41ms/step - loss: 3.8783e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 78ms/step - loss: 3.8783e-04
+Epoch 349/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 3.8359e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 71ms/step - loss: 3.8359e-04
+Epoch 350/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 3.7943e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 86ms/step - loss: 3.7943e-04
+Epoch 351/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 135ms/step - loss: 3.7534e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 168ms/step - loss: 3.7534e-04
+Epoch 352/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 41ms/step - loss: 3.7129e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 72ms/step - loss: 3.7129e-04
+Epoch 353/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 35ms/step - loss: 3.6733e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 60ms/step - loss: 3.6733e-04
+Epoch 354/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 3.6344e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 63ms/step - loss: 3.6344e-04
+Epoch 355/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 3.5957e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 75ms/step - loss: 3.5957e-04
+Epoch 356/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 38ms/step - loss: 3.5580e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 65ms/step - loss: 3.5580e-04
+Epoch 357/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 39ms/step - loss: 3.5208e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 64ms/step - loss: 3.5208e-04
+Epoch 358/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 3.4842e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 62ms/step - loss: 3.4842e-04
+Epoch 359/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 3.4482e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 3.4482e-04
+Epoch 360/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 3.4129e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 3.4129e-04
+Epoch 361/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 36ms/step - loss: 3.3779e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 3.3779e-04
+Epoch 362/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 3.3435e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 3.3435e-04
+Epoch 363/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 3.3099e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 3.3099e-04
+Epoch 364/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 3.2767e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 3.2767e-04
+Epoch 365/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 3.2440e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 3.2440e-04
+Epoch 366/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 3.2116e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 3.2116e-04
+Epoch 367/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 3.1798e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 3.1798e-04
+Epoch 368/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 3.1486e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 3.1486e-04
+Epoch 369/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 3.1177e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 3.1177e-04
+Epoch 370/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 3.0873e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 3.0873e-04
+Epoch 371/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 3.0574e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 3.0574e-04
+Epoch 372/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 3.0278e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 3.0278e-04
+Epoch 373/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.9989e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 2.9989e-04
+Epoch 374/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 2.9702e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 2.9702e-04
+Epoch 375/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 2.9422e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 71ms/step - loss: 2.9422e-04
+Epoch 376/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 2.9144e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 2.9144e-04
+Epoch 377/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 2.8869e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 2.8869e-04
+Epoch 378/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 33ms/step - loss: 2.8600e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 2.8600e-04
+Epoch 379/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.8334e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 2.8334e-04
+Epoch 380/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.8073e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 2.8073e-04
+Epoch 381/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.7816e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 2.7816e-04
+Epoch 382/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.7562e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 80ms/step - loss: 2.7562e-04
+Epoch 383/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 2.7311e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 61ms/step - loss: 2.7311e-04
+Epoch 384/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 134ms/step - loss: 2.7064e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 158ms/step - loss: 2.7064e-04
+Epoch 385/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 2.6822e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 55ms/step - loss: 2.6822e-04
+Epoch 386/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 38ms/step - loss: 2.6582e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 65ms/step - loss: 2.6582e-04
+Epoch 387/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 2.6345e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 2.6345e-04
+Epoch 388/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.6111e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 2.6111e-04
+Epoch 389/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 2.5880e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step - loss: 2.5880e-04
+Epoch 390/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 2.5654e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.5654e-04
+Epoch 391/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 2.5429e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 2.5429e-04
+Epoch 392/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 2.5207e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 2.5207e-04
+Epoch 393/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.4989e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 2.4989e-04
+Epoch 394/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 2.4774e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 70ms/step - loss: 2.4774e-04
+Epoch 395/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 33ms/step - loss: 2.4561e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.4561e-04
+Epoch 396/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 59ms/step - loss: 2.4351e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 94ms/step - loss: 2.4351e-04
+Epoch 397/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 38ms/step - loss: 2.4144e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 64ms/step - loss: 2.4144e-04
+Epoch 398/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 37ms/step - loss: 2.3939e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 60ms/step - loss: 2.3939e-04
+Epoch 399/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 2.3737e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 2.3737e-04
+Epoch 400/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 2.3539e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 2.3539e-04
+Epoch 401/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 2.3343e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.3343e-04
+Epoch 402/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 2.3148e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 2.3148e-04
+Epoch 403/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 2.2956e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 2.2956e-04
+Epoch 404/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 2.2767e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.2767e-04
+Epoch 405/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 2.2581e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 54ms/step - loss: 2.2581e-04
+Epoch 406/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 30ms/step - loss: 2.2396e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 2.2396e-04
+Epoch 407/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 2.2214e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 52ms/step - loss: 2.2214e-04
+Epoch 408/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 2.2034e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 2.2034e-04
+Epoch 409/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 33ms/step - loss: 2.1857e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 2.1857e-04
+Epoch 410/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 2.1681e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 2.1681e-04
+Epoch 411/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 2.1508e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 62ms/step - loss: 2.1508e-04
+Epoch 412/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 2.1337e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.1337e-04
+Epoch 413/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 32ms/step - loss: 2.1168e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 57ms/step - loss: 2.1168e-04
+Epoch 414/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 2.1000e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 2.1000e-04
+Epoch 415/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 34ms/step - loss: 2.0836e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 68ms/step - loss: 2.0836e-04
+Epoch 416/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 2.0673e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 2.0673e-04
+Epoch 417/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 2.0512e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 2.0512e-04
+Epoch 418/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 2.0353e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 2.0353e-04
+Epoch 419/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 2.0195e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 2.0195e-04
+Epoch 420/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 2.0040e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 2.0040e-04
+Epoch 421/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.9886e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 1.9886e-04
+Epoch 422/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.9733e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.9733e-04
+Epoch 423/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.9585e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.9585e-04
+Epoch 424/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.9437e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.9437e-04
+Epoch 425/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.9290e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 1.9290e-04
+Epoch 426/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 1.9145e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 1.9145e-04
+Epoch 427/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.9002e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.9002e-04
+Epoch 428/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.8861e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.8861e-04
+Epoch 429/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 1.8720e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 1.8720e-04
+Epoch 430/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.8582e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.8582e-04
+Epoch 431/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.8445e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.8445e-04
+Epoch 432/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 1.8309e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 50ms/step - loss: 1.8309e-04
+Epoch 433/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.8177e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 1.8177e-04
+Epoch 434/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.8044e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.8044e-04
+Epoch 435/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.7913e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.7913e-04
+Epoch 436/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.7783e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 1.7783e-04
+Epoch 437/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.7655e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.7655e-04
+Epoch 438/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.7529e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.7529e-04
+Epoch 439/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.7403e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.7403e-04
+Epoch 440/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.7280e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.7280e-04
+Epoch 441/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 60ms/step - loss: 1.7157e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 79ms/step - loss: 1.7157e-04
+Epoch 442/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.7036e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.7036e-04
+Epoch 443/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6916e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.6916e-04
+Epoch 444/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.6798e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.6798e-04
+Epoch 445/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6681e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.6681e-04
+Epoch 446/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6565e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.6565e-04
+Epoch 447/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6450e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.6450e-04
+Epoch 448/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6336e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.6336e-04
+Epoch 449/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6224e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.6224e-04
+Epoch 450/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.6112e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.6112e-04
+Epoch 451/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.6002e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.6002e-04
+Epoch 452/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.5893e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.5893e-04
+Epoch 453/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 53ms/step - loss: 1.5785e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 73ms/step - loss: 1.5785e-04
+Epoch 454/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.5679e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 1.5679e-04
+Epoch 455/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 1.5573e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 1.5573e-04
+Epoch 456/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.5468e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.5468e-04
+Epoch 457/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 29ms/step - loss: 1.5365e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 1.5365e-04
+Epoch 458/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.5263e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.5263e-04
+Epoch 459/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.5162e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.5162e-04
+Epoch 460/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.5062e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.5062e-04
+Epoch 461/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.4962e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 1.4962e-04
+Epoch 462/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4864e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4864e-04
+Epoch 463/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4767e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4767e-04
+Epoch 464/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.4670e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4670e-04
+Epoch 465/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.4575e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.4575e-04
+Epoch 466/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.4481e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4481e-04
+Epoch 467/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4388e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4388e-04
+Epoch 468/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4295e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4295e-04
+Epoch 469/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4203e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.4203e-04
+Epoch 470/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4113e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.4113e-04
+Epoch 471/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.4023e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.4023e-04
+Epoch 472/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.3934e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.3934e-04
+Epoch 473/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.3846e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.3846e-04
+Epoch 474/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.3759e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 51ms/step - loss: 1.3759e-04
+Epoch 475/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.3672e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 48ms/step - loss: 1.3672e-04
+Epoch 476/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 58ms/step - loss: 1.3586e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 77ms/step - loss: 1.3586e-04
+Epoch 477/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.3501e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 43ms/step - loss: 1.3501e-04
+Epoch 478/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.3418e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 1.3418e-04
+Epoch 479/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.3334e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.3334e-04
+Epoch 480/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.3252e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 1.3252e-04
+Epoch 481/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.3170e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.3170e-04
+Epoch 482/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.3089e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.3089e-04
+Epoch 483/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.3009e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.3009e-04
+Epoch 484/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.2929e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.2929e-04
+Epoch 485/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.2849e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.2849e-04
+Epoch 486/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.2770e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.2770e-04
+Epoch 487/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.2693e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.2693e-04
+Epoch 488/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 27ms/step - loss: 1.2616e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 47ms/step - loss: 1.2616e-04
+Epoch 489/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.2540e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.2540e-04
+Epoch 490/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.2464e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 1.2464e-04
+Epoch 491/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.2389e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.2389e-04
+Epoch 492/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.2315e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.2315e-04
+Epoch 493/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 24ms/step - loss: 1.2242e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 42ms/step - loss: 1.2242e-04
+Epoch 494/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.2169e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.2169e-04
+Epoch 495/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.2097e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 1.2097e-04
+Epoch 496/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 31ms/step - loss: 1.2026e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 1.2026e-04
+Epoch 497/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 28ms/step - loss: 1.1955e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 49ms/step - loss: 1.1955e-04
+Epoch 498/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 26ms/step - loss: 1.1885e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 46ms/step - loss: 1.1885e-04
+Epoch 499/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.1815e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 44ms/step - loss: 1.1815e-04
+Epoch 500/500
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 25ms/step - loss: 1.1746e-04
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 45ms/step - loss: 1.1746e-04
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 62ms/step
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 78ms/step
+
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 56ms/step
+[1m1/1[0m [32m====================[0m[37m[0m [1m0s[0m 73ms/step
+Train prediction errors/total = 0/360 (0.0%)
+Test prediction errors/total = 0/120 (0.0%)
+Results written to causations_nn_results.json

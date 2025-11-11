@@ -127,14 +127,6 @@ public class Causations
       {
          System.out.print(indent);
          System.out.print("terminal id=" + id);
-         if (childNum != null)
-         {
-            System.out.print(", child number=" + childNum);
-         }
-         if (probability >= 0.0f)
-         {
-            System.out.print(", probability=" + probability);
-         }
          System.out.print(", features:");
          for (int i = 0; i < features.size(); i++)
          {
@@ -142,6 +134,14 @@ public class Causations
             {
                System.out.print(" " + i);
             }
+         }
+         if (childNum != null)
+         {
+            System.out.print(", child number=" + childNum);
+         }
+         if (probability >= 0.0f)
+         {
+            System.out.print(", probability=" + probability);
          }
          System.out.println();
       }
@@ -211,6 +211,14 @@ public class Causations
       {
          System.out.print(indent);
          System.out.print("nonterminal id=" + id);
+         System.out.print(", features:");
+         for (int i = 0; i < features.size(); i++)
+         {
+            if (features.get(i))
+            {
+               System.out.print(" " + i);
+            }
+         }
          if (childNum != null)
          {
             System.out.print(", child number=" + childNum);
