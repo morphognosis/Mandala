@@ -28,8 +28,6 @@ public class Causations
    public static int   NUM_TERMINALS                   = 10;
    public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH       = 5;
-   public static float MIN_CAUSATION_PROBABILITY       = 1.0f;
-   public static float MAX_CAUSATION_PROBABILITY       = 1.0f;
    public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
 
    // Feature dimensions.
@@ -123,7 +121,7 @@ public class Causations
       }
 
 
-      public void printHierarchical(String indent, String childNum, float probability)
+      public void printHierarchical(String indent, String childNum)
       {
          System.out.print(indent);
          System.out.print("terminal id=" + id);
@@ -139,10 +137,6 @@ public class Causations
          {
             System.out.print(", child number=" + childNum);
          }
-         if (probability >= 0.0f)
-         {
-            System.out.print(", probability=" + probability);
-         }
          System.out.println();
       }
    };
@@ -151,25 +145,11 @@ public class Causations
    public static class NonterminalCausation extends Causation
    {
       public ArrayList<Causation> children;
-      public ArrayList<Float>     probabilities;
 
       public NonterminalCausation(int hierarchy, int id)
       {
          super(hierarchy, id);
-         children      = new ArrayList<Causation>();
-         probabilities = new ArrayList<Float>();
-      }
-
-
-      // Add child.
-      public void addChild(Causation child)
-      {
-         children.add(child);
-         if (children.size() > 1)
-         {
-            float p = MIN_CAUSATION_PROBABILITY + (randomizer.nextFloat() * (MAX_CAUSATION_PROBABILITY - MIN_CAUSATION_PROBABILITY));
-            probabilities.add(p);
-         }
+         children = new ArrayList<Causation>();
       }
 
 
@@ -195,19 +175,11 @@ public class Causations
          {
             System.out.print(" " + c.id);
          }
-         if (probabilities != null)
-         {
-            System.out.print(", probabilities:");
-            for (float p : probabilities)
-            {
-               System.out.print(" " + p);
-            }
-         }
          System.out.println();
       }
 
 
-      public void printHierarchical(String indent, String childNum, float probability, boolean recursive)
+      public void printHierarchical(String indent, String childNum, boolean recursive)
       {
          System.out.print(indent);
          System.out.print("nonterminal id=" + id);
@@ -223,30 +195,21 @@ public class Causations
          {
             System.out.print(", child number=" + childNum);
          }
-         if (probability >= 0.0f)
-         {
-            System.out.print(", probability=" + probability);
-         }
          System.out.println();
          if (recursive)
          {
             for (int i = 0, j = children.size(); i < j; i++)
             {
-               float p = -1.0f;
-               if (i < j - 1)
-               {
-                  p = probabilities.get(i);
-               }
                Causation child = children.get(i);
                if (child instanceof TerminalCausation)
                {
                   TerminalCausation terminal = (TerminalCausation)child;
-                  terminal.printHierarchical(indent + "  ", i + "", p);
+                  terminal.printHierarchical(indent + "  ", i + "");
                }
                else
                {
                   NonterminalCausation nonterminal = (NonterminalCausation)child;
-                  nonterminal.printHierarchical(indent + "  ", i + "", p, true);
+                  nonterminal.printHierarchical(indent + "  ", i + "", true);
                }
             }
          }
@@ -263,33 +226,25 @@ public class Causations
    {
       public Causation causation;
       public int       currentChild;
-      public boolean   valid;
 
       public CausationState(Causation causation, int currentChild)
       {
          this.causation    = causation;
          this.currentChild = currentChild;
-         valid             = false;
       }
 
 
       public void print()
       {
-         System.out.print("valid=" + valid + ", ");
          if (causation instanceof TerminalCausation)
          {
-            ((TerminalCausation)causation).printHierarchical("", null, -1.0f);
+            ((TerminalCausation)causation).printHierarchical("", null);
          }
          else
          {
             NonterminalCausation nonterminalCausation = (NonterminalCausation)causation;
             String               childInfo            = currentChild + "/" + nonterminalCausation.children.size();
-            float                probability          = -1.0f;
-            if (currentChild < nonterminalCausation.probabilities.size())
-            {
-               probability = nonterminalCausation.probabilities.get(currentChild);
-            }
-            nonterminalCausation.printHierarchical("", childInfo, probability, false);
+            nonterminalCausation.printHierarchical("", childInfo, false);
          }
       }
    };
@@ -347,8 +302,6 @@ public class Causations
       "      [-numTerminals <quantity> (default=" + NUM_TERMINALS + ")]\n" +
       "      [-minProductionRightHandSideLength <quantity> (default=" + MIN_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
-      "      [-minCausationProbability <probability> (default=" + MIN_CAUSATION_PROBABILITY + ")]\n" +
-      "      [-maxCausationProbability <probability> (default=" + MAX_CAUSATION_PROBABILITY + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
       "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
@@ -501,58 +454,6 @@ public class Causations
             if (MAX_PRODUCTION_RHS_LENGTH < 1)
             {
                System.err.println("Invalid maxProductionRightHandSideLength option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-minCausationProbability"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid minCausationProbability option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               MIN_CAUSATION_PROBABILITY = Float.parseFloat(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid minCausationProbability option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (MIN_CAUSATION_PROBABILITY < 0.0f)
-            {
-               System.err.println("Invalid minCausationProbability option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-maxCausationProbability"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid maxCausationProbability option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               MAX_CAUSATION_PROBABILITY = Float.parseFloat(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid maxCausationProbability option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (MAX_CAUSATION_PROBABILITY > 1.0f)
-            {
-               System.err.println("Invalid maxCausationProbability option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -861,11 +762,6 @@ public class Causations
          System.err.println(Usage);
          System.exit(1);
       }
-      if (MIN_CAUSATION_PROBABILITY > MAX_CAUSATION_PROBABILITY)
-      {
-         System.err.println(Usage);
-         System.exit(1);
-      }
       if (NUM_FEATURES > NUM_DIMENSIONS)
       {
          System.err.println(Usage);
@@ -1002,7 +898,7 @@ public class Causations
                      open.add(child);
                   }
                   child.parents.add(parent);
-                  parent.addChild(child);
+                  parent.children.add(child);
                }
             }
             if (child == null)
@@ -1014,8 +910,7 @@ public class Causations
                   nonterminalInstances.set(newChild.id, null);
                   open.remove(newChild);
                }
-               parent.children      = new ArrayList<Causation>();
-               parent.probabilities = new ArrayList<Float>();
+               parent.children = new ArrayList<Causation>();
                expandTerminal(parent, terminalInstances);
                return;
             }
@@ -1043,7 +938,7 @@ public class Causations
             terminalInstances.set(j, child);
          }
          child.parents.add(parent);
-         parent.addChild(child);
+         parent.children.add(child);
       }
    }
 
@@ -1061,12 +956,12 @@ public class Causations
             if (root instanceof TerminalCausation)
             {
                TerminalCausation terminal = (TerminalCausation)root;
-               terminal.printHierarchical("    ", null, -1.0f);
+               terminal.printHierarchical("    ", null);
             }
             else
             {
                NonterminalCausation nonterminal = (NonterminalCausation)root;
-               nonterminal.printHierarchical("    ", null, -1.0f, true);
+               nonterminal.printHierarchical("    ", null, true);
             }
          }
       }
@@ -1145,24 +1040,19 @@ public class Causations
          NonterminalCausation nonTerminal = (NonterminalCausation)vertex;
          for (int i = 0; i < nonTerminal.children.size(); i++)
          {
-            Causation child = nonTerminal.children.get(i);
-            String    p     = "";
-            if (i < nonTerminal.probabilities.size())
-            {
-               p = "(" + String.format("%.2f", nonTerminal.probabilities.get(i)) + ")";
-            }
-            String childPathPrefix = "";
+            Causation child           = nonTerminal.children.get(i);
+            String    childPathPrefix = "";
             if (TREE_FORMAT)
             {
                childPathPrefix = new String(pathPrefix) + vertex.id + "_" + i + "_";
             }
             if (child instanceof TerminalCausation)
             {
-               edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_t" + childPathPrefix + child.id + " [label=\"" + i + p + "\"];");
+               edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_t" + childPathPrefix + child.id + " [label=\"" + i + "\"];");
             }
             else
             {
-               edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_nt" + childPathPrefix + child.id + " [label=\"" + i + p + "\"];");
+               edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_nt" + childPathPrefix + child.id + " [label=\"" + i + "\"];");
             }
             listGraph(hierarchy, child, childPathPrefix, vertices, edges);
          }
@@ -1188,59 +1078,17 @@ public class Causations
          Causation                 root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
          ArrayList<CausationState> step = new ArrayList<CausationState>();
          step.add(new CausationState(root, 0));
-         path.add(step);
          while (root instanceof NonterminalCausation)
          {
-            NonterminalCausation nonterminalRoot = (NonterminalCausation)root;
-            root = nonterminalRoot.children.get(0);
+            NonterminalCausation nonterminal = (NonterminalCausation)root;
+            root = nonterminal.children.get(0);
             step.add(new CausationState(root, 0));
          }
+         path.add(step);
          while (stepCausationPath(path, 0)) {}
          for (ArrayList<CausationState> s : path)
          {
             Collections.reverse(s);
-         }
-      }
-
-      // Probabilistically validate causation paths.
-      for (int i = 0; i < numPaths; i++)
-      {
-         ArrayList < ArrayList < CausationState >> path = causationPaths.get(i);
-         ArrayList<CausationState> step  = path.get(0);
-         CausationState            state = step.get(0);
-         state.valid = true;
-         boolean pathValid = true;
-         for (int j = 1; j < path.size() && pathValid; j++)
-         {
-            step      = path.get(j);
-            pathValid = false;
-            for (int k = 1; k < step.size(); k++)
-            {
-               state = step.get(k);
-               NonterminalCausation nonterminalCausation = (NonterminalCausation)state.causation;
-               if (state.currentChild > 0)
-               {
-                  float probability = nonterminalCausation.probabilities.get(state.currentChild - 1);
-                  if (randomizer.nextFloat() < probability)
-                  {
-                     pathValid = true;
-                  }
-                  break;
-               }
-            }
-            if (pathValid)
-            {
-               boolean stepValid = false;
-               for (int k = step.size() - 1; k >= 0; k--)
-               {
-                  state = step.get(k);
-                  if (state.currentChild > 0)
-                  {
-                     stepValid = true;
-                  }
-                  state.valid = stepValid;
-               }
-            }
          }
       }
 
@@ -1358,32 +1206,13 @@ public class Causations
                for ( ; k < s; k++)
                {
                   CausationState state = step.get(k);
-                  if (!state.valid) { break; }
-                  ArrayList<Boolean> features = null;
-                  features = state.causation.features;
-                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  if (state.currentChild > 0)
                   {
-                     if (features.get(q))
+                     ArrayList<Boolean> features = null;
+                     features = state.causation.features;
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
-                        X_train += "1,";
-                     }
-                     else
-                     {
-                        X_train += "0,";
-                     }
-                  }
-                  if (state.causation instanceof TerminalCausation)
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        X_train += "0,";
-                     }
-                  }
-                  else
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        if (q == state.currentChild)
+                        if (features.get(q))
                         {
                            X_train += "1,";
                         }
@@ -1391,6 +1220,38 @@ public class Causations
                         {
                            X_train += "0,";
                         }
+                     }
+                     if (state.causation instanceof TerminalCausation)
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           X_train += "0,";
+                        }
+                     }
+                     else
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           if (q == state.currentChild)
+                           {
+                              X_train += "1,";
+                           }
+                           else
+                           {
+                              X_train += "0,";
+                           }
+                        }
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
+                     {
+                        X_train += "0,";
+                     }
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        X_train += "0,";
                      }
                   }
                }
@@ -1445,32 +1306,13 @@ public class Causations
                for ( ; k < s; k++)
                {
                   CausationState state = step.get(k);
-                  if (!state.valid) { break; }
-                  ArrayList<Boolean> features = null;
-                  features = state.causation.features;
-                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  if (state.currentChild > 0)
                   {
-                     if (features.get(q))
+                     ArrayList<Boolean> features = null;
+                     features = state.causation.features;
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
-                        y_train += "1,";
-                     }
-                     else
-                     {
-                        y_train += "0,";
-                     }
-                  }
-                  if (state.causation instanceof TerminalCausation)
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        y_train += "0,";
-                     }
-                  }
-                  else
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        if (q == state.currentChild)
+                        if (features.get(q))
                         {
                            y_train += "1,";
                         }
@@ -1478,6 +1320,38 @@ public class Causations
                         {
                            y_train += "0,";
                         }
+                     }
+                     if (state.causation instanceof TerminalCausation)
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           y_train += "0,";
+                        }
+                     }
+                     else
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           if (q == state.currentChild)
+                           {
+                              y_train += "1,";
+                           }
+                           else
+                           {
+                              y_train += "0,";
+                           }
+                        }
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
+                     {
+                        y_train += "0,";
+                     }
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        y_train += "0,";
                      }
                   }
                }
@@ -1533,32 +1407,13 @@ public class Causations
                for ( ; k < s; k++)
                {
                   CausationState state = step.get(k);
-                  if (!state.valid) { break; }
-                  ArrayList<Boolean> features = null;
-                  features = state.causation.features;
-                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  if (state.currentChild > 0)
                   {
-                     if (features.get(q))
+                     ArrayList<Boolean> features = null;
+                     features = state.causation.features;
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
-                        X_test += "1,";
-                     }
-                     else
-                     {
-                        X_test += "0,";
-                     }
-                  }
-                  if (state.causation instanceof TerminalCausation)
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        X_test += "0,";
-                     }
-                  }
-                  else
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        if (q == state.currentChild)
+                        if (features.get(q))
                         {
                            X_test += "1,";
                         }
@@ -1566,6 +1421,38 @@ public class Causations
                         {
                            X_test += "0,";
                         }
+                     }
+                     if (state.causation instanceof TerminalCausation)
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           X_test += "0,";
+                        }
+                     }
+                     else
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           if (q == state.currentChild)
+                           {
+                              X_test += "1,";
+                           }
+                           else
+                           {
+                              X_test += "0,";
+                           }
+                        }
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
+                     {
+                        X_test += "0,";
+                     }
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        X_test += "0,";
                      }
                   }
                }
@@ -1620,32 +1507,13 @@ public class Causations
                for ( ; k < s; k++)
                {
                   CausationState state = step.get(k);
-                  if (!state.valid) { break; }
-                  ArrayList<Boolean> features = null;
-                  features = state.causation.features;
-                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  if (state.currentChild > 0)
                   {
-                     if (features.get(q))
+                     ArrayList<Boolean> features = null;
+                     features = state.causation.features;
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
-                        y_test += "1,";
-                     }
-                     else
-                     {
-                        y_test += "0,";
-                     }
-                  }
-                  if (state.causation instanceof TerminalCausation)
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        y_test += "0,";
-                     }
-                  }
-                  else
-                  {
-                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
-                     {
-                        if (q == state.currentChild)
+                        if (features.get(q))
                         {
                            y_test += "1,";
                         }
@@ -1653,6 +1521,38 @@ public class Causations
                         {
                            y_test += "0,";
                         }
+                     }
+                     if (state.causation instanceof TerminalCausation)
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           y_test += "0,";
+                        }
+                     }
+                     else
+                     {
+                        for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                        {
+                           if (q == state.currentChild)
+                           {
+                              y_test += "1,";
+                           }
+                           else
+                           {
+                              y_test += "0,";
+                           }
+                        }
+                     }
+                  }
+                  else
+                  {
+                     for (int q = 0; q < NUM_DIMENSIONS; q++)
+                     {
+                        y_test += "0,";
+                     }
+                     for (int q = 0; q < MAX_PRODUCTION_RHS_LENGTH; q++)
+                     {
+                        y_test += "0,";
                      }
                   }
                }
