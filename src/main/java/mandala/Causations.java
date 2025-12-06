@@ -1451,7 +1451,6 @@ public class Causations
       {
          System.out.println("testing dataset:");
       }
-      int numTest = numPaths - numTrain;
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
       for (int i = numTrain; i < numPaths; i++)
