@@ -274,8 +274,8 @@ public class Causations
    public static float CAUSATION_FEATURE_ATTENUATION = 0.1f;
    public static float CAUSATION_TIER_ATTENUATION    = 0.0f;
 
-   // Non-terminal causation features.
-   public static class CausationFeature
+   // Context features.
+   public static class ContextFeature
    {
       public int   feature;
       public int   tier;
@@ -283,23 +283,35 @@ public class Causations
       public int   begin;
       public int   end;
 
-      // Set feature from component features.
-      public void setFeature(ArrayList<Integer> component1, ArrayList<Integer> component2)
+      // Set feature from source features.
+      public void setFeature(ArrayList<Integer> source1, ArrayList<Integer> source2)
       {
          String s = "";
 
-         for (Integer i : component1)
+         for (Integer i : source1)
          {
             s += i + "_";
          }
-         for (Integer i : component2)
+         for (Integer i : source2)
          {
             s += i + "_";
          }
          Random r = new Random(s.hashCode());
          feature = r.nextInt(NUM_DIMENSIONS);
       }
+      
+      public void setFeature(ArrayList<Integer> source)
+      {
+         String s = "";
 
+         for (Integer i : source)
+         {
+            s += i + "_";
+         }
+         Random r = new Random(s.hashCode());
+         feature = r.nextInt(NUM_DIMENSIONS);
+      }      
+      ArrayList < ArrayList < ContextFeature >> contextFeatures;
 
       // Attenuate value.
       public boolean attentuate()
@@ -316,7 +328,7 @@ public class Causations
          }
       }
    };
-   public static ArrayList < ArrayList < CausationFeature >> causationFeatures;
+   public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
 
    // Datasets.
    public static String NN_DATASET_FILENAME        = "causations_nn_dataset.py";
@@ -1304,17 +1316,17 @@ public class Causations
             }
          }
       }
-
-      causationFeatures = new ArrayList < ArrayList < CausationFeature >> ();
-      for (int i = 0; i < maxTiers; i++)
-      {
-         causationFeatures.add(new ArrayList<CausationFeature>());
-      }
-
+      
       if (VERBOSE)
       {
          System.out.println("training dataset:");
       }
+      contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+      for (int i = 0, j = maxTiers - 1; i < j; i++)
+      {
+    	  contextFeatures.add(new ArrayList<ContextFeature>());
+      }      
+      int tick = 0;      
       int numTrain = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
@@ -1344,6 +1356,7 @@ public class Causations
                   ArrayList<Float>  X_train_step    = new ArrayList<Float>();
                   ArrayList<Float>  y_train_step    = new ArrayList<Float>();
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
+            	  updateContext(randomCausation.features, tick++);                  
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -1380,9 +1393,10 @@ public class Causations
                      }
                      else
                      {
+                    	ArrayList<Float> X_context = getTierContext(k - 1);                    	
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           X_train_step.add(0.0f);
+                           X_train_step.add(X_context.get(q));
                            y_train_step.add(0.0f);
                         }
                      }
@@ -1402,6 +1416,7 @@ public class Causations
             }
             ArrayList<Float> X_train_step = new ArrayList<Float>();
             ArrayList<Float> y_train_step = new ArrayList<Float>();
+      	    updateContext(xterminalCausation.features, tick++);             
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -1431,11 +1446,12 @@ public class Causations
                }
                else
                {
-                  for (int q = 0; q < NUM_DIMENSIONS; q++)
-                  {
-                     X_train_step.add(0.0f);
-                     y_train_step.add(0.0f);
-                  }
+               	ArrayList<Float> X_context = getTierContext(k - 1);                    	
+                for (int q = 0; q < NUM_DIMENSIONS; q++)
+                {
+                   X_train_step.add(X_context.get(q));
+                   y_train_step.add(0.0f);
+                }
                }
             }
             X_train.add(X_train_step);
@@ -1451,6 +1467,12 @@ public class Causations
       {
          System.out.println("testing dataset:");
       }
+      contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+      for (int i = 0, j = maxTiers - 1; i < j; i++)
+      {
+         contextFeatures.add(new ArrayList<ContextFeature>());
+      }      
+      tick = 0; 
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
       for (int i = numTrain; i < numPaths; i++)
@@ -1479,6 +1501,7 @@ public class Causations
                   ArrayList<Float>  X_test_step     = new ArrayList<Float>();
                   ArrayList<Float>  y_test_step     = new ArrayList<Float>();
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
+                  updateContext(randomCausation.features, tick++);                  
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -1515,9 +1538,10 @@ public class Causations
                      }
                      else
                      {
+                     	ArrayList<Float> X_context = getTierContext(k - 1);                    	
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           X_test_step.add(0.0f);
+                           X_test_step.add(X_context.get(q));
                            y_test_step.add(0.0f);
                         }
                      }
@@ -1537,6 +1561,7 @@ public class Causations
             }
             ArrayList<Float> X_test_step = new ArrayList<Float>();
             ArrayList<Float> y_test_step = new ArrayList<Float>();
+            updateContext(xterminalCausation.features, tick++);           
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -1566,11 +1591,12 @@ public class Causations
                }
                else
                {
-                  for (int q = 0; q < NUM_DIMENSIONS; q++)
-                  {
-                     X_test_step.add(0.0f);
-                     y_test_step.add(0.0f);
-                  }
+               	ArrayList<Float> X_context = getTierContext(k - 1);                    	
+                for (int q = 0; q < NUM_DIMENSIONS; q++)
+                {
+                   X_test_step.add(X_context.get(q));
+                   y_test_step.add(0.0f);
+                }
                }
             }
             X_test.add(X_test_step);
@@ -1660,8 +1686,42 @@ public class Causations
          System.exit(1);
       }
    }
-
-
+   
+   // Update feature context.
+   static void updateContext(ArrayList<Boolean> features, int tick)
+   {
+	   ContextFeature context = new ContextFeature();
+	   ArrayList<Integer> idxs = new ArrayList<Integer>();
+	   for (int i = 0, j = features.size(); i < j; i++)
+	   {
+		   if (features.get(i))
+		   {
+			   idxs.add(i);
+		   }
+	   }
+	   context.setFeature(idxs);
+	   context.tier = 0;
+	   context.value = 1.0f;
+	   context.begin = context.end = tick;
+	   contextFeatures.get(0).add(context);
+   }
+   
+   // Get tier context.
+   static ArrayList<Float> getTierContext(int tier)
+   {
+		ArrayList<Float> features = new ArrayList<Float>();
+	    for (int q = 0; q < NUM_DIMENSIONS; q++)
+	    {
+	       features.add(0.0f);
+	    }
+	    ArrayList<ContextFeature> context = contextFeatures.get(tier);
+	    for (ContextFeature contextFeature : context)
+	    {
+	    	features.set(contextFeature.feature, contextFeature.value);
+	    }
+	    return features;
+	}
+	
    // Export RNN dataset.
    public static void exportRNNdataset()
    {
