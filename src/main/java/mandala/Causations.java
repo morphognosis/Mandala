@@ -283,24 +283,28 @@ public class Causations
       public int   begin;
       public int   end;
 
-      // Set feature from source features.
-      public void setFeature(ArrayList<Integer> source1, ArrayList<Integer> source2)
+      // Constructors.
+      public ContextFeature(ArrayList<Integer> source, int tier, float value, int begin, int end)
       {
-         String s = "";
-
-         for (Integer i : source1)
-         {
-            s += i + "_";
-         }
-         for (Integer i : source2)
-         {
-            s += i + "_";
-         }
-         Random r = new Random(s.hashCode());
-         feature = r.nextInt(NUM_DIMENSIONS);
+         setFeature(source);
+         this.tier  = tier;
+         this.value = value;
+         this.begin = begin;
+         this.end   = end;
       }
 
 
+      public ContextFeature(int source1, int source2, int tier, float value, int begin, int end)
+      {
+         setFeature(source1, source2);
+         this.tier  = tier;
+         this.value = value;
+         this.begin = begin;
+         this.end   = end;
+      }
+
+
+      // Set feature from source features.
       public void setFeature(ArrayList<Integer> source)
       {
          String s = "";
@@ -310,6 +314,15 @@ public class Causations
             s += i + "_";
          }
          Random r = new Random(s.hashCode());
+         feature = r.nextInt(NUM_DIMENSIONS);
+      }
+
+
+      public void setFeature(int source1, int source2)
+      {
+         String s = source1 + "_" + source2;
+         Random r = new Random(s.hashCode());
+
          feature = r.nextInt(NUM_DIMENSIONS);
       }
 
@@ -1728,8 +1741,7 @@ public class Causations
          contextFeatures.set(i, tmpContexts);
       }
 
-      ContextFeature     context = new ContextFeature();
-      ArrayList<Integer> idxs    = new ArrayList<Integer>();
+      ArrayList<Integer> idxs = new ArrayList<Integer>();
       for (int i = 0, j = features.size(); i < j; i++)
       {
          if (features.get(i))
@@ -1737,11 +1749,47 @@ public class Causations
             idxs.add(i);
          }
       }
-      context.setFeature(idxs);
-      context.tier  = 0;
-      context.value = 1.0f;
-      context.begin = context.end = tick;
-      contextFeatures.get(0).add(context);
+      ContextFeature contextFeature = new ContextFeature(idxs, 0, 1.0f, tick, tick);
+      addContextFeature(contextFeature, 0);
+   }
+
+
+   // Add context feature.
+   static void addContextFeature(ContextFeature contextFeature, int tier)
+   {
+      if (tier < contextFeatures.size() - 1)
+      {
+         ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
+         ArrayList<ContextFeature> sources  = new ArrayList<ContextFeature>();
+         for (ContextFeature feature : contexts)
+         {
+            if (contextFeature.begin > feature.end)
+            {
+               boolean replaced = false;
+               for (int i = 0, j = sources.size(); i < j; i++)
+               {
+                  ContextFeature source = sources.get(i);
+                  if ((source.feature == feature.feature) && (source.value < feature.value))
+                  {
+                     sources.set(i, feature);
+                     replaced = true;
+                     break;
+                  }
+               }
+               if (!replaced)
+               {
+                  sources.add(feature);
+               }
+            }
+         }
+         for (ContextFeature feature : sources)
+         {
+            float          value           = (contextFeature.value + feature.value) / 2.0f;
+            ContextFeature nextTierFeature = new ContextFeature(contextFeature.feature, feature.feature, tier + 1, value, feature.begin, contextFeature.end);
+            addContextFeature(nextTierFeature, tier + 1);
+         }
+      }
+      contextFeatures.get(tier).add(contextFeature);
    }
 
 
