@@ -1423,6 +1423,8 @@ public class Causations
                   id = randomizer.nextInt(NUM_TERMINALS);
                }
             }
+            ArrayList<Float> X_train_step = new ArrayList<Float>();
+            ArrayList<Float> y_train_step = new ArrayList<Float>();
             if (VERBOSE)
             {
                System.out.print("X: ");
@@ -1430,8 +1432,6 @@ public class Causations
                System.out.print("y: ");
                yterminalCausation.print();
             }
-            ArrayList<Float> X_train_step = new ArrayList<Float>();
-            ArrayList<Float> y_train_step = new ArrayList<Float>();
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -1491,6 +1491,7 @@ public class Causations
       tick = 0;
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
+      ArrayList<Integer> uncausedIdxs = new ArrayList<Integer>();
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -1564,10 +1565,13 @@ public class Causations
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   pathLength++;
+                  uncausedIdxs.add(tick);
                   updateContexts(randomCausation.features, tick++);
                   id = randomizer.nextInt(NUM_TERMINALS);
                }
             }
+            ArrayList<Float> X_test_step = new ArrayList<Float>();
+            ArrayList<Float> y_test_step = new ArrayList<Float>();
             if (VERBOSE)
             {
                System.out.print("X: ");
@@ -1575,8 +1579,6 @@ public class Causations
                System.out.print("y: ");
                yterminalCausation.print();
             }
-            ArrayList<Float> X_test_step = new ArrayList<Float>();
-            ArrayList<Float> y_test_step = new ArrayList<Float>();
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -1694,6 +1696,16 @@ public class Causations
             printWriter.println();
          }
          printWriter.println("]");
+         printWriter.print("uncaused_test = [");
+         for (int i = 0, j = uncausedIdxs.size(); i < j; i++)
+         {
+            printWriter.print(uncausedIdxs.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");
          printWriter.close();
       }
       catch (IOException e)
@@ -1754,7 +1766,7 @@ public class Causations
    }
 
 
-   // Add context feature.
+   // Recursively add context feature.
    static void addContextFeature(ContextFeature contextFeature, int tier)
    {
       if (tier < contextFeatures.size() - 1)
