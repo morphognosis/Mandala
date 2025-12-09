@@ -1406,7 +1406,7 @@ public class Causations
                   X_train.add(X_train_step);
                   y_train.add(y_train_step);
                   pathLength++;
-                  updateContext(randomCausation.features, tick++);
+                  updateContexts(randomCausation.features, tick++);
                   id = randomizer.nextInt(NUM_TERMINALS);
                }
             }
@@ -1458,7 +1458,7 @@ public class Causations
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
-            updateContext(xterminalCausation.features, tick++);
+            updateContexts(xterminalCausation.features, tick++);
             pathLength++;
          }
          if (VERBOSE)
@@ -1551,7 +1551,7 @@ public class Causations
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   pathLength++;
-                  updateContext(randomCausation.features, tick++);
+                  updateContexts(randomCausation.features, tick++);
                   id = randomizer.nextInt(NUM_TERMINALS);
                }
             }
@@ -1604,7 +1604,7 @@ public class Causations
             X_test.add(X_test_step);
             y_test.add(y_test_step);
             pathLength++;
-            updateContext(xterminalCausation.features, tick++);
+            updateContexts(xterminalCausation.features, tick++);
          }
          if (VERBOSE)
          {
@@ -1711,8 +1711,8 @@ public class Causations
    }
 
 
-   // Update feature context.
-   static void updateContext(ArrayList<Boolean> features, int tick)
+   // Update feature contexts.
+   static void updateContexts(ArrayList<Boolean> features, int tick)
    {
       for (int i = 0, j = contextFeatures.size(); i < j; i++)
       {
