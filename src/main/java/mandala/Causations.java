@@ -64,7 +64,7 @@ public class Causations
       // Encode features.
       public void encodeFeatures()
       {
-         String seedString = hierarchy + "_" + id;
+         String seedString = id + "_";
          long   seed       = seedString.hashCode();
          Random r          = new Random(seed);
 
@@ -233,7 +233,7 @@ public class Causations
          }
       }
    };
-   public static int   NUM_CAUSATION_PATHS = 5;
+   public static int   NUM_CAUSATION_PATHS = 10;
    public static class CausationPath
    {
       int hierarchy;
