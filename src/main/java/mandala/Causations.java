@@ -1696,7 +1696,7 @@ public class Causations
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.print("uncaused_test = [");
+         printWriter.print("y_test_unpredictable = [");
          for (int i = 0, j = uncausedIdxs.size(); i < j; i++)
          {
             printWriter.print(uncausedIdxs.get(i) + "");
@@ -1739,6 +1739,7 @@ public class Causations
    // Update feature contexts.
    static void updateContexts(ArrayList<Boolean> features, int tick)
    {
+      // Attenuate.
       for (int i = 0, j = contextFeatures.size(); i < j; i++)
       {
          ArrayList<ContextFeature> contexts    = contextFeatures.get(i);
@@ -1753,6 +1754,7 @@ public class Causations
          contextFeatures.set(i, tmpContexts);
       }
 
+      // Add contexts.
       ArrayList<Integer> idxs = new ArrayList<Integer>();
       for (int i = 0, j = features.size(); i < j; i++)
       {
