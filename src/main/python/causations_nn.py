@@ -1,6 +1,8 @@
+# For conditions of distribution and use, see copyright notice in LICENSE.txt
+
 # Causations NN.
 # imports causations_nn_dataset.py
-# results written to causations_nn_results.txt
+# results written to causations_nn_results.json
 
 import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
