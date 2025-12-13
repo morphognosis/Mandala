@@ -13,7 +13,7 @@ from keras.layers import Input, Dense
 import sys, getopt
 
 # parameters
-n_hidden = [128, 128, 128]
+n_neurons = '128,128,128'
 n_epochs = 500
 
 # results file name
@@ -26,10 +26,9 @@ threshold = 0.5
 verbose = True
 
 # get options
-first_hidden = True
-usage = 'causations_nn.py [-h <hidden neurons> (repeat for additional layers)] [-e <epochs>] [-q (quiet)]'
+usage = 'causations_nn.py [-n <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [-e <epochs>] [-q (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"?qh:e:",["hidden=","epochs="])
+  opts, args = getopt.getopt(sys.argv[1:],"?qn:e:",["neurons=","epochs="])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -37,11 +36,8 @@ for opt, arg in opts:
   if opt in ("-?", "--help"):
      print(usage)
      sys.exit(0)
-  if opt in ("-h", "--hidden"):
-     if first_hidden:
-         first_hidden = False
-         n_hidden = []
-     n_hidden.append(int(arg))
+  if opt in ("-n", "--neurons"):
+     n_neurons = arg
   elif opt in ("-e", "--epochs"):
      n_epochs = int(arg)
   elif opt in ("-q", "--quiet"):
@@ -49,6 +45,22 @@ for opt, arg in opts:
   else:
      print(usage)
      sys.exit(1)
+n_list = n_neurons.split(",")
+if len(n_list) == 0:
+    print(usage, sep='')
+    sys.exit(1)
+n_hidden = []
+for i in n_list:
+    if i.isnumeric() == False:
+        print(usage, sep='')
+        sys.exit(1)
+    if int(i) < 1:
+        print(usage, sep='')
+        sys.exit(1)
+    n_hidden.append(int(i))
+if n_epochs < 0:
+    print(usage, sep='')
+    sys.exit(1)
 
 # import dataset
 from causations_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_predictable

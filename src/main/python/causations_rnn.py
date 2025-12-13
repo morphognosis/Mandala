@@ -19,7 +19,6 @@ import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import getopt
 import sys
-n_hidden = []
 usage = 'usage: python causations_rnn.py [--rnn_type <"lstm" | "attention"> (default=' + rnn_type + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
   opts, args = getopt.getopt(sys.argv[1:],"h",["help","neurons=","epochs=","results_filename=","quiet"])
@@ -52,6 +51,7 @@ n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
     sys.exit(1)
+n_hidden = []
 for i in n_list:
     if i.isnumeric() == False:
         print(usage, sep='')

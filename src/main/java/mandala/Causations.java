@@ -351,17 +351,18 @@ public class Causations
    public static float  NN_DATASET_TRAIN_FRACTION  = 0.75f;
    public static String RNN_DATASET_FILENAME       = "causations_rnn_dataset.py";
    public static float  RNN_DATASET_TRAIN_FRACTION = 0.75f;
-   public static String TCN_DATASET_FILENAME       = "causations_tcn_dataset.py";
-   public static float  TCN_DATASET_TRAIN_FRACTION = 0.75f;
 
    // Learners.
    public static String NN_FILENAME         = "causations_nn.py";
-   public static String NN_RESULTS_FILENAME = "causations_nn_results.json";
-   public static String NN_HIDDEN           = "128,128,128";
+   public static String NN_NEURONS           = "128,128,128";
    public static int    NN_EPOCHS           = 500;
+   public static String NN_RESULTS_FILENAME = "causations_nn_results.json";   
    public static String RNN_FILENAME        = "causations_rnn.py";
-   public static String TCN_FILENAME        = "causations_tcn.py";
-
+   public static String RNN_TYPE = "lstm";   
+   public static String RNN_NEURONS           = "128";
+   public static int    RNN_EPOCHS           = 500;
+   public static String RNN_RESULTS_FILENAME = "causations_rnn_results.json";
+   
    // Learning results.
    public static class LearningResults
    {
@@ -405,11 +406,13 @@ public class Causations
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-causationFeatureAttenuation <multiplier> (default=" + CAUSATION_FEATURE_ATTENUATION + ")]\n" +
       "      [-causationTierAttenuation <divisor> (default=" + CAUSATION_TIER_ATTENUATION + ")]\n" +
-      "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
-      "      [-NNnumHidden <number of hidden neurons> (comma-separated for additional layers) (default=" + NN_HIDDEN + ")]\n" +
-      "      [-NNnumEpochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
+      "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +      
+      "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
+      "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +      
       "      [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]\n" +
-      "      [-TCNdatasetTrainFraction <fraction> (default=" + TCN_DATASET_TRAIN_FRACTION + ")]\n" +
+      "      [-RNNtype \"lstm\" | \"attention\" (default=" + RNN_TYPE + ")]\n" +      
+      "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
+      "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +       
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
       "  Help:\n" +
@@ -774,30 +777,30 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-NNnumHidden"))
+         if (args[i].equals("-NNneurons"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid NNnumHidden option");
+               System.err.println("Invalid NNneurons option");
                System.err.println(Usage);
                System.exit(1);
             }
-            NN_HIDDEN = args[i].replaceAll("\\s", "");
-            if (NN_HIDDEN.isEmpty())
+            NN_NEURONS = args[i].replaceAll("\\s", "");
+            if (NN_NEURONS.isEmpty())
             {
-               System.err.println("Invalid NNnumHidden option");
+               System.err.println("Invalid NNneurons option");
                System.err.println(Usage);
                System.exit(1);
             }
             continue;
          }
-         if (args[i].equals("-NNnumEpochs"))
+         if (args[i].equals("-NNepochs"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid NNnumEpochs option");
+               System.err.println("Invalid NNepochs option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -806,13 +809,13 @@ public class Causations
                NN_EPOCHS = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid NNnumEpochs option");
+               System.err.println("Invalid NNepochs option");
                System.err.println(Usage);
                System.exit(1);
             }
             if (NN_EPOCHS < 0)
             {
-               System.err.println("Invalid NNnumEpochs option");
+               System.err.println("Invalid NNepochs option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -844,32 +847,74 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-TCNdatasetTrainFraction"))
+         if (args[i].equals("-RNNtype"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid TCNdatasetTrainFraction option");
+               System.err.println("Invalid RNNtype option");
                System.err.println(Usage);
                System.exit(1);
             }
-            try
+            RNN_TYPE = args[i].replaceAll("\\s", "");
+            if (RNN_TYPE.isEmpty())
             {
-               TCN_DATASET_TRAIN_FRACTION = Float.parseFloat(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid TCNdatasetTrainFraction option");
+               System.err.println("Invalid RNNtype option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((TCN_DATASET_TRAIN_FRACTION < 0.0f) || (TCN_DATASET_TRAIN_FRACTION > 1.0f))
+            if (!RNN_TYPE.equals("lstm") && !RNN_TYPE.equals("attention"))
             {
-               System.err.println("Invalid TCNdatasetTrainFraction option");
+                System.err.println("Invalid RNNtype option");
+                System.err.println(Usage);
+                System.exit(1);            	
+            }
+            continue;
+         }         
+         if (args[i].equals("-RNNneurons"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid RNNneurons option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            RNN_NEURONS = args[i].replaceAll("\\s", "");
+            if (RNN_NEURONS.isEmpty())
+            {
+               System.err.println("Invalid RNNneurons option");
                System.err.println(Usage);
                System.exit(1);
             }
             continue;
          }
+         if (args[i].equals("-RNNepochs"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid RNNepochs option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               NN_EPOCHS = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid RNNepochs option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (NN_EPOCHS < 0)
+            {
+               System.err.println("Invalid RNNepochs option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }         
          if (args[i].equals("-randomSeed"))
          {
             i++;
@@ -966,13 +1011,11 @@ public class Causations
 
       // Export causation datasets.
       exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION);
-      exportDataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
-      exportDataset(TCN_DATASET_FILENAME, TCN_DATASET_TRAIN_FRACTION);
+      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
 
       // Learn causations.
       learnCausationsNN(NN_DATASET_FILENAME);
       learnCausationsRNN(RNN_DATASET_FILENAME);
-      learnCausationsTCN(TCN_DATASET_FILENAME);
 
       System.exit(0);
    }
@@ -1813,21 +1856,415 @@ public class Causations
    // Export RNN dataset.
    public static void exportRNNdataset()
    {
-      exportDataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
+      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
    }
 
-
-   // Export TCN dataset.
-   public static void exportTCNdataset()
+   public static void exportRNNdataset(String filename, float trainFraction)
    {
-      exportDataset(TCN_DATASET_FILENAME, TCN_DATASET_TRAIN_FRACTION);
+      int numPaths = causationPaths.size();
+      int maxTiers = 0;
+
+      if (VERBOSE)
+      {
+         System.out.println("export NN dataset");
+      }
+      for (int i = 0; i < numPaths; i++)
+      {
+         CausationPath path = causationPaths.get(i);
+         for (int j = 0; j < path.steps.size(); j++)
+         {
+            ArrayList<CausationTier> step = path.steps.get(j);
+            if (step.size() > maxTiers)
+            {
+               maxTiers = step.size();
+            }
+         }
+      }
+
+      if (VERBOSE)
+      {
+         System.out.println("training dataset:");
+      }
+      contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+      for (int i = 0, j = maxTiers - 1; i < j; i++)
+      {
+         contextFeatures.add(new ArrayList<ContextFeature>());
+      }
+      int tick     = 0;
+      int numTrain = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
+      ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
+      ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
+      for (int i = 0; i < numTrain; i++)
+      {
+         CausationPath path = causationPaths.get(i);
+         if (VERBOSE)
+         {
+            path.print();
+            System.out.println("data:");
+         }
+         int pathLength = 0;
+         int p          = path.steps.size() - 1;
+         for (int j = 0; j < p; j++)
+         {
+            ArrayList<CausationTier> xstep              = path.steps.get(j);
+            ArrayList<CausationTier> ystep              = path.steps.get(j + 1);
+            Causation                xcausation         = xstep.get(0).causation;
+            TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
+            Causation                ycausation         = ystep.get(0).causation;
+            TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
+            if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
+            {
+               int id = randomizer.nextInt(NUM_TERMINALS);
+               while (id != xcausation.id)
+               {
+                  ArrayList<Float>  X_train_step    = new ArrayList<Float>();
+                  ArrayList<Float>  y_train_step    = new ArrayList<Float>();
+                  TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
+                  if (VERBOSE)
+                  {
+                     System.out.print("X: *");
+                     randomCausation.print();
+                     System.out.print("y: ");
+                     yterminalCausation.print();
+                  }
+                  for (int k = 0; k < maxTiers; k++)
+                  {
+                     if (k == 0)
+                     {
+                        for (int q = 0; q < NUM_DIMENSIONS; q++)
+                        {
+                           if (randomCausation.features.get(q))
+                           {
+                              X_train_step.add(1.0f);
+                           }
+                           else
+                           {
+                              X_train_step.add(0.0f);
+                           }
+                        }
+                        for (int q = 0; q < NUM_DIMENSIONS; q++)
+                        {
+                           if (xterminalCausation.features.get(q))
+                           {
+                              y_train_step.add(1.0f);
+                           }
+                           else
+                           {
+                              y_train_step.add(0.0f);
+                           }
+                        }
+                     }
+                     else
+                     {
+                        ArrayList<Float> X_context = getTierContext(k - 1);
+                        for (int q = 0; q < NUM_DIMENSIONS; q++)
+                        {
+                           X_train_step.add(X_context.get(q));
+                           y_train_step.add(0.0f);
+                        }
+                     }
+                  }
+                  X_train.add(X_train_step);
+                  y_train.add(y_train_step);
+                  pathLength++;
+                  updateContexts(randomCausation.features, tick++);
+                  id = randomizer.nextInt(NUM_TERMINALS);
+               }
+            }
+            ArrayList<Float> X_train_step = new ArrayList<Float>();
+            ArrayList<Float> y_train_step = new ArrayList<Float>();
+            if (VERBOSE)
+            {
+               System.out.print("X: ");
+               xterminalCausation.print();
+               System.out.print("y: ");
+               yterminalCausation.print();
+            }
+            for (int k = 0; k < maxTiers; k++)
+            {
+               if (k == 0)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (xterminalCausation.features.get(q))
+                     {
+                        X_train_step.add(1.0f);
+                     }
+                     else
+                     {
+                        X_train_step.add(0.0f);
+                     }
+                  }
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (yterminalCausation.features.get(q))
+                     {
+                        y_train_step.add(1.0f);
+                     }
+                     else
+                     {
+                        y_train_step.add(0.0f);
+                     }
+                  }
+               }
+               else
+               {
+                  ArrayList<Float> X_context = getTierContext(k - 1);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_train_step.add(X_context.get(q));
+                     y_train_step.add(0.0f);
+                  }
+               }
+            }
+            X_train.add(X_train_step);
+            y_train.add(y_train_step);
+            updateContexts(xterminalCausation.features, tick++);
+            pathLength++;
+         }
+         if (VERBOSE)
+         {
+            System.out.println("training path length=" + pathLength);
+         }
+      }
+      if (VERBOSE)
+      {
+         System.out.println("testing dataset:");
+      }
+      contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+      for (int i = 0, j = maxTiers - 1; i < j; i++)
+      {
+         contextFeatures.add(new ArrayList<ContextFeature>());
+      }
+      tick = 0;
+      ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
+      ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
+      ArrayList<Integer> y_predictable = new ArrayList<Integer>();
+      for (int i = numTrain; i < numPaths; i++)
+      {
+         CausationPath path = causationPaths.get(i);
+         if (VERBOSE)
+         {
+            path.print();
+            System.out.println("data:");
+         }
+         int p          = path.steps.size() - 1;
+         int pathLength = 0;
+         for (int j = 0; j < p; j++)
+         {
+            ArrayList<CausationTier> xstep              = path.steps.get(j);
+            ArrayList<CausationTier> ystep              = path.steps.get(j + 1);
+            Causation                xcausation         = xstep.get(0).causation;
+            TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
+            Causation                ycausation         = ystep.get(0).causation;
+            TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
+            if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
+            {
+               int id = randomizer.nextInt(NUM_TERMINALS);
+               while (id != xcausation.id)
+               {
+                  ArrayList<Float>  X_test_step     = new ArrayList<Float>();
+                  ArrayList<Float>  y_test_step     = new ArrayList<Float>();
+                  TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
+                  if (VERBOSE)
+                  {
+                     System.out.print("X: *");
+                     randomCausation.print();
+                     System.out.print("y: ");
+                     yterminalCausation.print();
+                  }
+                  for (int k = 0; k < maxTiers; k++)
+                  {
+                     if (k == 0)
+                     {
+                        for (int q = 0; q < NUM_DIMENSIONS; q++)
+                        {
+                           if (randomCausation.features.get(q))
+                           {
+                              X_test_step.add(1.0f);
+                           }
+                           else
+                           {
+                              X_test_step.add(0.0f);
+                           }
+                        }
+                        for (int q = 0; q < NUM_DIMENSIONS; q++)
+                        {
+                           if (xterminalCausation.features.get(q))
+                           {
+                              y_test_step.add(1.0f);
+                           }
+                           else
+                           {
+                              y_test_step.add(0.0f);
+                           }
+                        }
+                     }
+                     else
+                     {
+                        ArrayList<Float> X_context = getTierContext(k - 1);
+                        for (int q = 0; q < NUM_DIMENSIONS; q++)
+                        {
+                           X_test_step.add(X_context.get(q));
+                           y_test_step.add(0.0f);
+                        }
+                     }
+                  }
+                  X_test.add(X_test_step);
+                  y_test.add(y_test_step);
+                  pathLength++;
+                  updateContexts(randomCausation.features, tick++);
+                  id = randomizer.nextInt(NUM_TERMINALS);
+               }
+            }
+            ArrayList<Float> X_test_step = new ArrayList<Float>();
+            ArrayList<Float> y_test_step = new ArrayList<Float>();
+            if (VERBOSE)
+            {
+               System.out.print("X: ");
+               xterminalCausation.print();
+               System.out.print("y: ");
+               yterminalCausation.print();
+            }
+            for (int k = 0; k < maxTiers; k++)
+            {
+               if (k == 0)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (xterminalCausation.features.get(q))
+                     {
+                        X_test_step.add(1.0f);
+                     }
+                     else
+                     {
+                        X_test_step.add(0.0f);
+                     }
+                  }
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (yterminalCausation.features.get(q))
+                     {
+                        y_test_step.add(1.0f);
+                     }
+                     else
+                     {
+                        y_test_step.add(0.0f);
+                     }
+                  }
+               }
+               else
+               {
+                  ArrayList<Float> X_context = getTierContext(k - 1);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_test_step.add(X_context.get(q));
+                     y_test_step.add(0.0f);
+                  }
+               }
+            }
+            X_test.add(X_test_step);
+            y_test.add(y_test_step);
+            pathLength++;
+            if ((xstep.size() > 1) && (xstep.get(1).currentChild > 0))
+            {
+            	y_predictable.add(tick);
+            }
+            updateContexts(xterminalCausation.features, tick++);
+         }
+         if (VERBOSE)
+         {
+            System.out.println("testing path length=" + pathLength);
+         }
+      }
+
+      try
+      {
+         FileWriter  fileWriter  = new FileWriter(filename);
+         PrintWriter printWriter = new PrintWriter(fileWriter);
+
+         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_train = [");
+         for (int i = 0, j = X_train.size(); i < j; i++)
+         {
+            ArrayList<Float> X_train_step = X_train.get(i);
+            for (int k = 0, q = X_train_step.size(); k < q; k++)
+            {
+               printWriter.print(X_train_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_train = [");
+         for (int i = 0, j = y_train.size(); i < j; i++)
+         {
+            ArrayList<Float> y_train_step = y_train.get(i);
+            for (int k = 0, q = y_train_step.size(); k < q; k++)
+            {
+               printWriter.print(y_train_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("X_test_shape = [ " + X_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_test = [");
+         for (int i = 0, j = X_test.size(); i < j; i++)
+         {
+            ArrayList<Float> X_test_step = X_test.get(i);
+            for (int k = 0, q = X_test_step.size(); k < q; k++)
+            {
+               printWriter.print(X_test_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_test_shape = [ " + y_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_test = [");
+         for (int i = 0, j = y_test.size(); i < j; i++)
+         {
+            ArrayList<Float> y_test_step = y_test.get(i);
+            for (int k = 0, q = y_test_step.size(); k < q; k++)
+            {
+               printWriter.print(y_test_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.print("y_test_predictable = [");
+         for (int i = 0, j = y_predictable.size(); i < j; i++)
+         {
+            printWriter.print(y_predictable.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");
+         printWriter.close();
+      }
+      catch (IOException e)
+      {
+         System.err.println("Cannot write NN dataset to file " + filename);
+         System.exit(1);
+      }
    }
-
-
-   public static void exportDataset(String filename, float trainFraction)
-   {
-   }
-
 
    // Learn causations with NN.
    public static LearningResults learnCausationsNN(String filename)
@@ -1863,12 +2300,8 @@ public class Causations
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
       commandList.add(NN_FILENAME);
-      String[] hidden = NN_HIDDEN.split(",");
-      for (String neurons : hidden)
-      {
-         commandList.add("-h");
-         commandList.add(neurons);
-      }
+      commandList.add("-n");
+      commandList.add(NN_NEURONS);
       commandList.add("-e");
       commandList.add(NN_EPOCHS + "");
       if (!VERBOSE)
@@ -2021,12 +2454,6 @@ public class Causations
 
    // Learn causations with RNN.
    public static void learnCausationsRNN(String filename)
-   {
-   }
-
-
-   // Learn causations with TCN.
-   public static void learnCausationsTCN(String filename)
    {
    }
 }
