@@ -51,7 +51,7 @@ for opt, arg in opts:
      sys.exit(1)
 
 # import dataset
-from causations_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_unpredictable
+from causations_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_predictable
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -109,7 +109,7 @@ predictions = model.predict(X, batch_size=X_test_shape[0], verbose=int(verbose))
 testErrors = 0
 testTotal = 0
 for i in range(y_test_shape[0]):
-    if i not in y_test_unpredictable:
+    if i in y_test_predictable:
         yvals = y[i]
         pvals = predictions[i]
         testTotal += 1

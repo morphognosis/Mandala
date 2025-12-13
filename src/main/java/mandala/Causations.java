@@ -1491,7 +1491,7 @@ public class Causations
       tick = 0;
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
-      ArrayList<Integer> uncausedIdxs = new ArrayList<Integer>();
+      ArrayList<Integer> y_predictable = new ArrayList<Integer>();
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -1565,7 +1565,6 @@ public class Causations
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   pathLength++;
-                  uncausedIdxs.add(tick);
                   updateContexts(randomCausation.features, tick++);
                   id = randomizer.nextInt(NUM_TERMINALS);
                }
@@ -1619,6 +1618,10 @@ public class Causations
             X_test.add(X_test_step);
             y_test.add(y_test_step);
             pathLength++;
+            if ((xstep.size() > 1) && (xstep.get(1).currentChild > 0))
+            {
+            	y_predictable.add(tick);
+            }
             updateContexts(xterminalCausation.features, tick++);
          }
          if (VERBOSE)
@@ -1696,10 +1699,10 @@ public class Causations
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.print("y_test_unpredictable = [");
-         for (int i = 0, j = uncausedIdxs.size(); i < j; i++)
+         printWriter.print("y_test_predictable = [");
+         for (int i = 0, j = y_predictable.size(); i < j; i++)
          {
-            printWriter.print(uncausedIdxs.get(i) + "");
+            printWriter.print(y_predictable.get(i) + "");
             if (i < j - 1)
             {
                printWriter.print(",");
