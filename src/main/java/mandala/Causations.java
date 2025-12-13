@@ -1866,7 +1866,7 @@ public class Causations
 
       if (VERBOSE)
       {
-         System.out.println("export NN dataset");
+         System.out.println("export RNN dataset");
       }
       for (int i = 0; i < numPaths; i++)
       {
@@ -2453,7 +2453,189 @@ public class Causations
 
 
    // Learn causations with RNN.
-   public static void learnCausationsRNN(String filename)
+   public static LearningResults learnCausationsRNN(String filename)
    {
+	      if (VERBOSE)
+	      {
+	         System.out.println("Learn RNN");
+	      }
+	      try
+	      {
+	         InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(RNN_FILENAME);
+	         if (in == null)
+	         {
+	            System.err.println("Cannot access " + RNN_FILENAME);
+	            System.exit(1);
+	         }
+	         File             pythonScript = new File(RNN_FILENAME);
+	         FileOutputStream out          = new FileOutputStream(pythonScript);
+	         byte[] buffer = new byte[1024];
+	         int bytesRead;
+	         while ((bytesRead = in.read(buffer)) != -1)
+	         {
+	            out.write(buffer, 0, bytesRead);
+	         }
+	         out.close();
+	      }
+	      catch (Exception e)
+	      {
+	         System.err.println("Cannot create " + RNN_FILENAME);
+	         System.exit(1);
+	      }
+	      new File(RNN_RESULTS_FILENAME).delete();
+	      ArrayList<String> commandList = new ArrayList<>();
+	      commandList.add("python");
+	      commandList.add(RNN_FILENAME);
+	      commandList.add("--rnn_type");
+	      commandList.add(RNN_TYPE);	      
+	      commandList.add("--neurons");
+	      commandList.add(RNN_NEURONS);
+	      commandList.add("--epochs");
+	      commandList.add(RNN_EPOCHS + "");
+	      if (!VERBOSE)
+	      {
+	         commandList.add("-q");
+	      }
+	      ProcessBuilder processBuilder = new ProcessBuilder(commandList);
+	      processBuilder.inheritIO();
+	      Process process;
+	      try
+	      {
+	         process = processBuilder.start();
+	         process.waitFor();
+	      }
+	      catch (InterruptedException e) {}
+	      catch (IOException e)
+	      {
+	         System.err.println("Cannot run " + RNN_FILENAME + ":" + e.getMessage());
+	         System.exit(1);
+	      }
+	      if (VERBOSE)
+	      {
+	         System.out.println("Results written to " + RNN_RESULTS_FILENAME);
+	      }
+
+	      // Fetch the results.
+	      LearningResults results = new LearningResults();
+	      try
+	      {
+	         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(RNN_RESULTS_FILENAME)));
+	         String         json;
+	         if ((json = br.readLine()) != null)
+	         {
+	            JSONObject jObj = null;
+	            try
+	            {
+	               jObj = new JSONObject(json);
+	            }
+	            catch (JSONException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            String train_prediction_errors = jObj.getString("train_prediction_errors");
+	            if ((train_prediction_errors == null) || train_prediction_errors.isEmpty())
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            try
+	            {
+	               results.train_prediction_errors = Integer.parseInt(train_prediction_errors);
+	            }
+	            catch (NumberFormatException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            String train_total_predictions = jObj.getString("train_total_predictions");
+	            if ((train_total_predictions == null) || train_total_predictions.isEmpty())
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            try
+	            {
+	               results.train_total_predictions = Integer.parseInt(train_total_predictions);
+	            }
+	            catch (NumberFormatException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            String train_error_pct = jObj.getString("train_error_pct");
+	            if ((train_error_pct == null) || train_error_pct.isEmpty())
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            try
+	            {
+	               results.train_error_pct = Float.parseFloat(train_error_pct);
+	            }
+	            catch (NumberFormatException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            String test_prediction_errors = jObj.getString("test_prediction_errors");
+	            if ((test_prediction_errors == null) || test_prediction_errors.isEmpty())
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            try
+	            {
+	               results.test_prediction_errors = Integer.parseInt(test_prediction_errors);
+	            }
+	            catch (NumberFormatException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            String test_total_predictions = jObj.getString("test_total_predictions");
+	            if ((test_total_predictions == null) || test_total_predictions.isEmpty())
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            try
+	            {
+	               results.test_total_predictions = Integer.parseInt(test_total_predictions);
+	            }
+	            catch (NumberFormatException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            String test_error_pct = jObj.getString("test_error_pct");
+	            if ((test_error_pct == null) || test_error_pct.isEmpty())
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	            try
+	            {
+	               results.test_error_pct = Float.parseFloat(test_error_pct);
+	            }
+	            catch (NumberFormatException e)
+	            {
+	               System.err.println("Error parsing results file " + RNN_RESULTS_FILENAME);
+	               System.exit(1);
+	            }
+	         }
+	         else
+	         {
+	            System.err.println("Cannot read results file " + RNN_RESULTS_FILENAME);
+	            System.exit(1);
+	         }
+	         br.close();
+	      }
+	      catch (Exception e)
+	      {
+	         System.err.println("Cannot read results file " + RNN_RESULTS_FILENAME + ":" + e.getMessage());
+	         System.exit(1);
+	      }
+	      return(results);	   
    }
 }
