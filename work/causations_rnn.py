@@ -21,23 +21,23 @@ import getopt
 import sys
 usage = 'usage: python causations_rnn.py [--rnn_type <"lstm" | "attention"> (default=' + rnn_type + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"h",["help","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"ht:n:e:f:q",["help","rnn_type=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage, sep='')
   sys.exit(1)
 for opt, arg in opts:
-  if opt == '-h' or opt == '--help':
+  if opt in ("-h", "--help"):
      print(usage, sep='')
      sys.exit(0)
-  if opt == "--rnn_type":
+  if opt in ("-t", "--rnn_type"):
      rnn_type= arg
-  elif opt == "--neurons":
+  elif opt in ["-n", "--neurons"]:
      n_neurons = arg
-  elif opt == "--epochs":
+  elif opt in ["-e", "--epochs"]:
      n_epochs = int(arg)
-  elif opt == "--results_filename":
+  elif opt in ["-f", "--results_filename"]:
      results_filename = arg
-  elif opt == "--quiet":
+  elif opt in ["-q", "--quiet"]:
      verbose = False
   else:
      print(usage, sep='')
@@ -65,7 +65,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Load dataset.
-from causations_rnn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_unpredictable
+from causations_rnn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_predictable
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -79,7 +79,7 @@ if rnn_type == 'lstm':
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.layers import Input, LSTM, Dense, TimeDistributed
     rnn_model=Sequential()
-    rnn_model.add(Input(shape=(x_train_data.shape[1],1)))
+    rnn_model.add(Input(shape=(X_train_shape[1],1)))
     n=len(n_hidden)
     for i in range(0, n):
         if i < (n - 1):
@@ -93,7 +93,7 @@ else:
     from tensorflow.keras import Model
     from attention import Attention
     from tensorflow.keras.layers import Input, LSTM, Dense, TimeDistributed
-    model_input = Input(shape=(x_train_data.shape[1],1))
+    model_input = Input(shape=(X_train_shape[1],1))
     x = LSTM(n_hidden[0], return_sequences=True)(model_input)
     n=len(n_hidden)
     for i in range(1, n):

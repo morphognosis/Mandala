@@ -26,20 +26,22 @@ threshold = 0.5
 verbose = True
 
 # get options
-usage = 'causations_nn.py [-n <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [-e <epochs>] [-q (quiet)]'
+usage = 'causations_nn.py [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"?qn:e:",["neurons=","epochs="])
+  opts, args = getopt.getopt(sys.argv[1:],"hn:e:f:q",["help","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
 for opt, arg in opts:
-  if opt in ("-?", "--help"):
+  if opt in ("-h", "--help"):
      print(usage)
      sys.exit(0)
   if opt in ("-n", "--neurons"):
      n_neurons = arg
   elif opt in ("-e", "--epochs"):
      n_epochs = int(arg)
+  elif opt in ("-f", "--results_filename"):
+     results_filename = arg
   elif opt in ("-q", "--quiet"):
      verbose = False
   else:
