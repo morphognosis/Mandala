@@ -92,10 +92,6 @@ y = seq.reshape(y_train_shape[0], y_train_shape[1])
 model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # validate
-seq = array(X_train)
-X = seq.reshape(X_train_shape[0], X_train_shape[1])
-seq = array(y_train)
-y = seq.reshape(y_train_shape[0], y_train_shape[1])
 predictions = model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
 trainErrors = 0
 trainTotal = 0

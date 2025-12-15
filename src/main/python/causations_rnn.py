@@ -5,7 +5,6 @@
 # results written to causations_rnn_results.json
 
 # Default parameters.
-rnn_type = 'lstm'
 n_neurons = '128'
 n_epochs = 500
 results_filename = 'causations_rnn_results.json'
@@ -19,9 +18,9 @@ import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import getopt
 import sys
-usage = 'usage: python causations_rnn.py [--rnn_type <"lstm" | "attention"> (default=' + rnn_type + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'usage: python causations_rnn.py [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"ht:n:e:f:q",["help","rnn_type=","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hn:e:f:q",["help","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage, sep='')
   sys.exit(1)
@@ -29,9 +28,7 @@ for opt, arg in opts:
   if opt in ("-h", "--help"):
      print(usage, sep='')
      sys.exit(0)
-  if opt in ("-t", "--rnn_type"):
-     rnn_type= arg
-  elif opt in ["-n", "--neurons"]:
+  if opt in ["-n", "--neurons"]:
      n_neurons = arg
   elif opt in ["-e", "--epochs"]:
      n_epochs = int(arg)
@@ -42,11 +39,6 @@ for opt, arg in opts:
   else:
      print(usage, sep='')
      sys.exit(1)
-if rnn_type == 'lstm' or rnn_type == 'attention':
-    pass
-else:
-    print(usage, sep='')
-    sys.exit(1)
 n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
@@ -74,39 +66,21 @@ if X_test_shape[0] == 0:
     sys.exit(1)
 
 # Create model.
-if rnn_type == 'lstm':
-    # LSTM.
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.layers import Input, LSTM, Dense, TimeDistributed
-    rnn_model=Sequential()
-    rnn_model.add(Input(shape=(X_train_shape[1],1)))
-    n=len(n_hidden)
-    for i in range(0, n):
-        if i < (n - 1):
-            rnn_model.add(LSTM(units=n_hidden[i], return_sequences=True))
-        else:
-            rnn_model.add(LSTM(units=n_hidden[i]))
-    rnn_model.add(TimeDistributed(Dense(y_train_shape[2])))
-    rnn_model.compile(loss='mean_squared_error',optimizer='adam')
-else:
-    # Attention.
-    from tensorflow.keras import Model
-    from attention import Attention
-    from tensorflow.keras.layers import Input, LSTM, Dense, TimeDistributed
-    model_input = Input(shape=(X_train_shape[1],1))
-    x = LSTM(n_hidden[0], return_sequences=True)(model_input)
-    n=len(n_hidden)
-    for i in range(1, n):
-        x = LSTM(units=n_hidden[i], return_sequences=True)(x)
-    x = Attention(units=n_hidden[n-1])(x)
-    model_output = TimeDistributed(Dense(y_train_shape[2]))(x)
-    rnn_model = Model(model_input, model_output)
-    rnn_model.compile(loss='mean_squared_error', optimizer='adam')
-
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, message="Do not pass an `input_shape`/`input_dim` argument to a layer.*")
+rnn_model=Sequential()
+rnn_model.add(LSTM(input_shape=(X_train_shape[1], X_train_shape[2]), units=n_hidden[0], return_sequences=True))
+for i in range(1, len(n_hidden)):
+    rnn_model.add(LSTM(units=n_hidden[i], return_sequences=True))
+rnn_model.add(Dense(y_train_shape[2]))
+rnn_model.compile(loss='mean_squared_error',optimizer='adam')
 if verbose:
     rnn_model.summary()
 
 # Train.
+from numpy import array
 seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
 seq = array(y_train)
@@ -114,16 +88,12 @@ y = seq.reshape(y_train_shape[0], y_train_shape[1], y_train_shape[2])
 rnn_model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # Validate.
-seq = array(X_train)
-X = seq.reshape(X_train_shape[0], X_train_shape[1])
-seq = array(y_train)
-y = seq.reshape(y_train_shape[0], y_train_shape[1])
-predictions = rnn.model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
+predictions = rnn_model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
 trainErrors = 0
 trainTotal = 0
 for path in range(X_train_shape[0]):
     for step in range(X_train_shape[1]):
-        for i in range(len(step)):
+        for i in range(X_train_shape[2]):
             yvals = y[path][step]
             pvals = predictions[path][step]
             if yvals[i] >= threshold and pvals[i] < threshold:
@@ -139,24 +109,25 @@ if trainTotal > 0:
 
 # Predict.
 seq = array(X_test)
-X = seq.reshape(X_test_shape[0], X_test_shape[1])
+X = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
 seq = array(y_test)
-y = seq.reshape(y_test_shape[0], y_test_shape[1])
-predictions = rnn.model.predict(X, batch_size=X_test_shape[0], verbose=int(verbose))
+y = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
+predictions = rnn_model.predict(X, batch_size=X_test_shape[0], verbose=int(verbose))
 testErrors = 0
 testTotal = 0
 for path in range(X_test_shape[0]):
     for step in range(X_test_shape[1]):
-        for i in range(len(step)):
-            yvals = y[path][step]
-            pvals = predictions[path][step]
-            if yvals[i] >= threshold and pvals[i] < threshold:
-                testErrors += 1
-                break
-            if yvals[i] < threshold and pvals[i] >= threshold:
-                testErrors += 1
-                break
-        testTotal += 1
+        if step in y_test_predictable[path]:
+            for i in range(X_test_shape[2]):
+                yvals = y[path][step]
+                pvals = predictions[path][step]
+                if yvals[i] >= threshold and pvals[i] < threshold:
+                    testErrors += 1
+                    break
+                if yvals[i] < threshold and pvals[i] >= threshold:
+                    testErrors += 1
+                    break
+            testTotal += 1
 testErrorPct = 0
 if testTotal > 0:
     testErrorPct = (float(testErrors) / float(testTotal)) * 100.0

@@ -358,7 +358,6 @@ public class Causations
    public static int    NN_EPOCHS            = 500;
    public static String NN_RESULTS_FILENAME  = "causations_nn_results.json";
    public static String RNN_FILENAME         = "causations_rnn.py";
-   public static String RNN_TYPE             = "lstm";
    public static String RNN_NEURONS          = "128";
    public static int    RNN_EPOCHS           = 500;
    public static String RNN_RESULTS_FILENAME = "causations_rnn_results.json";
@@ -410,7 +409,6 @@ public class Causations
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
       "      [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]\n" +
-      "      [-RNNtype \"lstm\" | \"attention\" (default=" + RNN_TYPE + ")]\n" +
       "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
       "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
@@ -847,30 +845,6 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-RNNtype"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid RNNtype option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            RNN_TYPE = args[i].replaceAll("\\s", "");
-            if (RNN_TYPE.isEmpty())
-            {
-               System.err.println("Invalid RNNtype option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (!RNN_TYPE.equals("lstm") && !RNN_TYPE.equals("attention"))
-            {
-               System.err.println("Invalid RNNtype option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
          if (args[i].equals("-RNNneurons"))
          {
             i++;
@@ -1010,8 +984,8 @@ public class Causations
       generateCausationPaths(NUM_CAUSATION_PATHS);
 
       // Export causation datasets.
-      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION);
-      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
+      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
+      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
 
       // Learn causations.
       learnCausationsNN(NN_DATASET_FILENAME);
@@ -1350,18 +1324,19 @@ public class Causations
    // Export NN dataset.
    public static void exportNNdataset()
    {
-      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION);
+      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
    }
 
 
-   public static void exportNNdataset(String filename, float trainFraction)
+   public static void exportNNdataset(String filename, float trainFraction, int randomSeed)
    {
       if (VERBOSE)
       {
          System.out.println("export NN dataset");
       }
-      int numPaths = causationPaths.size();
-      int maxTiers = 0;
+      Random randomID = new Random(randomSeed);
+      int    numPaths = causationPaths.size();
+      int    maxTiers = 0;
       for (int i = 0; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -1409,7 +1384,7 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomizer.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);
                while (id != xcausation.id)
                {
                   ArrayList<Float>  X_train_step    = new ArrayList<Float>();
@@ -1463,7 +1438,7 @@ public class Causations
                   y_train.add(y_train_step);
                   pathLength++;
                   updateContexts(randomCausation.features, tick++);
-                  id = randomizer.nextInt(NUM_TERMINALS);
+                  id = randomID.nextInt(NUM_TERMINALS);
                }
             }
             if (VERBOSE)
@@ -1555,7 +1530,7 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomizer.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);
                while (id != xcausation.id)
                {
                   ArrayList<Float>  X_test_step     = new ArrayList<Float>();
@@ -1609,7 +1584,7 @@ public class Causations
                   y_test.add(y_test_step);
                   pathLength++;
                   updateContexts(randomCausation.features, tick++);
-                  id = randomizer.nextInt(NUM_TERMINALS);
+                  id = randomID.nextInt(NUM_TERMINALS);
                }
             }
             if (VERBOSE)
@@ -1856,18 +1831,19 @@ public class Causations
    // Export RNN dataset.
    public static void exportRNNdataset()
    {
-      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION);
+      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
    }
 
 
-   public static void exportRNNdataset(String filename, float trainFraction)
+   public static void exportRNNdataset(String filename, float trainFraction, int randomSeed)
    {
       if (VERBOSE)
       {
          System.out.println("export RNN dataset");
          System.out.println("training dataset:");
       }
-      int numPaths = causationPaths.size();
+      Random randomID = new Random(randomSeed);
+      int    numPaths = causationPaths.size();
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
       int numTrain      = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
@@ -1894,7 +1870,7 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomizer.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);
                while (id != xcausation.id)
                {
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
@@ -1927,7 +1903,7 @@ public class Causations
                         y_train_path.add(0.0f);
                      }
                   }
-                  id = randomizer.nextInt(NUM_TERMINALS);
+                  id = randomID.nextInt(NUM_TERMINALS);
                }
             }
             if (VERBOSE)
@@ -2002,7 +1978,7 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomizer.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);
                while (id != xcausation.id)
                {
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
@@ -2036,7 +2012,7 @@ public class Causations
                      }
                   }
                   tick++;
-                  id = randomizer.nextInt(NUM_TERMINALS);
+                  id = randomID.nextInt(NUM_TERMINALS);
                }
             }
             if (VERBOSE)
@@ -2435,8 +2411,6 @@ public class Causations
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
       commandList.add(RNN_FILENAME);
-      commandList.add("--rnn_type");
-      commandList.add(RNN_TYPE);
       commandList.add("--neurons");
       commandList.add(RNN_NEURONS);
       commandList.add("--epochs");
