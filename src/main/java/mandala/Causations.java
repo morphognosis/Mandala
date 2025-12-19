@@ -24,15 +24,14 @@ public class Causations
 {
    // Generation parameters.
    public static int   NUM_CAUSATION_HIERARCHIES       = 1;
-   public static int   NUM_NONTERMINALS                = 5;
-   public static int   NUM_TERMINALS                   = 10;
+   public static int   NUM_NONTERMINALS                = 10;
+   public static int   NUM_TERMINALS                   = 20;
    public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
-   public static int   MAX_PRODUCTION_RHS_LENGTH       = 5;
+   public static int   MAX_PRODUCTION_RHS_LENGTH       = 2;
    public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
 
    // Dimensions.
    public static int NUM_DIMENSIONS        = 32;
-   public static int NUM_TERMINAL_FEATURES = 3;
 
    // Causation.
    public static class Causation
@@ -52,52 +51,22 @@ public class Causations
    // Terminal causation.
    public static class TerminalCausation extends Causation
    {
-      public ArrayList<Boolean> features;
+      public int feature;
 
       public TerminalCausation(int hierarchy, int id)
       {
          super(hierarchy, id);
-         encodeFeatures();
+         encodeFeature();
       }
 
 
-      // Encode features.
-      public void encodeFeatures()
+      // Encode feature.
+      public void encodeFeature()
       {
          String seedString = id + "_";
          long   seed       = seedString.hashCode();
          Random r          = new Random(seed);
-
-         features = new ArrayList<Boolean>();
-         for (int i = 0; i < NUM_DIMENSIONS; i++)
-         {
-            features.add(false);
-         }
-         ArrayList<Integer> idxs = new ArrayList<Integer>();
-         for (int i = 0; i < NUM_TERMINAL_FEATURES; i++)
-         {
-            while (true)
-            {
-               int n = r.nextInt(NUM_DIMENSIONS);
-               int j = 0;
-               for ( ; j < idxs.size(); j++)
-               {
-                  if (n == idxs.get(j))
-                  {
-                     break;
-                  }
-               }
-               if (j == idxs.size())
-               {
-                  idxs.add(n);
-                  break;
-               }
-            }
-         }
-         for (int n : idxs)
-         {
-            features.set(n, true);
-         }
+         feature = r.nextInt(NUM_DIMENSIONS);
       }
 
 
@@ -105,14 +74,7 @@ public class Causations
       {
          System.out.print("hierarchy=" + hierarchy);
          System.out.print(", id=" + id);
-         System.out.print(", features:");
-         for (int i = 0; i < features.size(); i++)
-         {
-            if (features.get(i))
-            {
-               System.out.print(" " + i);
-            }
-         }
+         System.out.print(", feature=" + feature);
          System.out.print(", parents:");
          for (Causation p : parents)
          {
@@ -126,14 +88,7 @@ public class Causations
       {
          System.out.print(indent);
          System.out.print("terminal id=" + id);
-         System.out.print(", features:");
-         for (int i = 0; i < features.size(); i++)
-         {
-            if (features.get(i))
-            {
-               System.out.print(" " + i);
-            }
-         }
+         System.out.print(", features=" + feature);
          if (childNum != null)
          {
             System.out.print(", child number=" + childNum);
@@ -284,7 +239,7 @@ public class Causations
       public int   end;
 
       // Constructors.
-      public ContextFeature(ArrayList<Integer> source, int tier, float value, int begin, int end)
+      public ContextFeature(int source, int tier, float value, int begin, int end)
       {
          setFeature(source);
          this.tier  = tier;
@@ -305,14 +260,9 @@ public class Causations
 
 
       // Set feature from source features.
-      public void setFeature(ArrayList<Integer> source)
+      public void setFeature(int source)
       {
-         String s = "";
-
-         for (Integer i : source)
-         {
-            s += i + "_";
-         }
+         String s = source + "_";
          Random r = new Random(s.hashCode());
          feature = r.nextInt(NUM_DIMENSIONS);
       }
@@ -399,7 +349,6 @@ public class Causations
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
-      "      [-numTerminalFeatures <quantity> (default=" + NUM_TERMINAL_FEATURES + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
@@ -604,32 +553,6 @@ public class Causations
             if (NUM_DIMENSIONS < 1)
             {
                System.err.println("Invalid numDimensions option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-numTerminalFeatures"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid numTerminalFeatures option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               NUM_TERMINAL_FEATURES = Integer.parseInt(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid numTerminalFeatures option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (NUM_TERMINAL_FEATURES < 1)
-            {
-               System.err.println("Invalid numTerminalFeatures option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -874,14 +797,14 @@ public class Causations
             }
             try
             {
-               NN_EPOCHS = Integer.parseInt(args[i]);
+               RNN_EPOCHS = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
                System.err.println("Invalid RNNepochs option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (NN_EPOCHS < 0)
+            if (RNN_EPOCHS < 0)
             {
                System.err.println("Invalid RNNepochs option");
                System.err.println(Usage);
@@ -926,11 +849,6 @@ public class Causations
 
       // Validate options.
       if (MIN_PRODUCTION_RHS_LENGTH > MAX_PRODUCTION_RHS_LENGTH)
-      {
-         System.err.println(Usage);
-         System.exit(1);
-      }
-      if (NUM_TERMINAL_FEATURES > NUM_DIMENSIONS)
       {
          System.err.println(Usage);
          System.exit(1);
@@ -1027,7 +945,12 @@ public class Causations
       NonterminalCausation parent = open.get(n);
 
       open.remove(n);
+      float f = randomizer.nextFloat(); // flibber
+      System.out.println("expandTerminal check, parent=" + parent.id + ",rand=" + f); // flibber
+      if (f < TERMINAL_PRODUCTION_PROBABILITY)
+    	  /* flibber
       if (randomizer.nextFloat() < TERMINAL_PRODUCTION_PROBABILITY)
+      flibber */
       {
          expandTerminal(parent, terminalInstances);
       }
@@ -1093,7 +1016,7 @@ public class Causations
    public static void expandTerminal(NonterminalCausation parent, ArrayList<TerminalCausation> terminalInstances)
    {
       int n = randomizer.nextInt(MAX_PRODUCTION_RHS_LENGTH - MIN_PRODUCTION_RHS_LENGTH + 1) + MIN_PRODUCTION_RHS_LENGTH;
-
+	   System.out.println("expandTerminal, parent=" + parent.id + ",n=" + n); // flibber
       for (int i = 0; i < n; i++)
       {
          int               j     = randomizer.nextInt(NUM_TERMINALS);
@@ -1185,20 +1108,8 @@ public class Causations
       if (vertex instanceof TerminalCausation)
       {
          TerminalCausation terminal = (TerminalCausation)vertex;
-         String            s        = "(";
-         for (int i = 0, j = terminal.features.size(); i < j; i++)
-         {
-            if (terminal.features.get(i))
-            {
-               s += i + ",";
-            }
-         }
-         if (s.length() > 0)
-         {
-            s = s.substring(0, s.length() - 1);
-         }
-         s += ")";
-         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + s + "\", shape=square];");
+         String            feature        = "(" + terminal.feature + ")";
+         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + feature + "\", shape=square];");
       }
       else
       {
@@ -1264,7 +1175,7 @@ public class Causations
          for (int i = 0; i < numPaths; i++)
          {
             CausationPath path = causationPaths.get(i);
-            System.out.println("path=" + i + ", hierarchy=" + path.hierarchy);
+            System.out.println("path=" + i + ", hierarchy=" + path.hierarchy + ", id=" + path.id);
             for (int j = 0; j < path.steps.size(); j++)
             {
                System.out.println("step=" + j);
@@ -1366,6 +1277,7 @@ public class Causations
       for (int i = 0; i < numTrain; i++)
       {
          CausationPath path = causationPaths.get(i);
+         //path = causationPaths.get(0); // flibber         
          if (VERBOSE)
          {
             path.print();
@@ -1387,11 +1299,13 @@ public class Causations
                int id = randomID.nextInt(NUM_TERMINALS);
                while (id != xcausation.id)
                {
+                   //id = randomID.nextInt(100) + NUM_TERMINALS; // flibber            	   
                   ArrayList<Float>  X_train_step    = new ArrayList<Float>();
                   ArrayList<Float>  y_train_step    = new ArrayList<Float>();
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
                   if (VERBOSE)
                   {
+                	 System.out.println("XNN_star_train id=" + randomCausation.id); // flibber
                      System.out.print("X: *");
                      randomCausation.print();
                      System.out.print("y: ");
@@ -1403,7 +1317,7 @@ public class Causations
                      {
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (randomCausation.features.get(q))
+                           if (q == randomCausation.feature)
                            {
                               X_train_step.add(1.0f);
                            }
@@ -1414,7 +1328,7 @@ public class Causations
                         }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (xterminalCausation.features.get(q))
+                           if (q == xterminalCausation.feature)
                            {
                               y_train_step.add(1.0f);
                            }
@@ -1437,12 +1351,13 @@ public class Causations
                   X_train.add(X_train_step);
                   y_train.add(y_train_step);
                   pathLength++;
-                  updateContexts(randomCausation.features, tick++);
-                  id = randomID.nextInt(NUM_TERMINALS);
+                  updateContexts(randomCausation.feature, tick++);
+                  id = randomID.nextInt(NUM_TERMINALS);                  
                }
             }
             if (VERBOSE)
             {
+           	 System.out.println("XNN_valid_train id=" + xterminalCausation.id); // flibber            	
                System.out.print("X: ");
                xterminalCausation.print();
                System.out.print("y: ");
@@ -1456,7 +1371,7 @@ public class Causations
                {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (xterminalCausation.features.get(q))
+                     if (q == xterminalCausation.feature)
                      {
                         X_train_step.add(1.0f);
                      }
@@ -1467,7 +1382,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (yterminalCausation.features.get(q))
+                     if (q == yterminalCausation.feature)
                      {
                         y_train_step.add(1.0f);
                      }
@@ -1489,7 +1404,7 @@ public class Causations
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
-            updateContexts(xterminalCausation.features, tick++);
+            updateContexts(xterminalCausation.feature, tick++);
             pathLength++;
          }
          if (VERBOSE)
@@ -1513,6 +1428,7 @@ public class Causations
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
+         //path = causationPaths.get(0); // flibber         
          if (VERBOSE)
          {
             path.print();
@@ -1530,14 +1446,16 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomID.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);               
                while (id != xcausation.id)
                {
+                   //id = randomID.nextInt(100) + NUM_TERMINALS; // flibber            	   
                   ArrayList<Float>  X_test_step     = new ArrayList<Float>();
                   ArrayList<Float>  y_test_step     = new ArrayList<Float>();
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
                   if (VERBOSE)
                   {
+                 	 System.out.println("XNN_star_test id=" + randomCausation.id); // flibber                	  
                      System.out.print("X: *");
                      randomCausation.print();
                      System.out.print("y: ");
@@ -1549,7 +1467,7 @@ public class Causations
                      {
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (randomCausation.features.get(q))
+                           if (q == randomCausation.feature)
                            {
                               X_test_step.add(1.0f);
                            }
@@ -1560,7 +1478,7 @@ public class Causations
                         }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (xterminalCausation.features.get(q))
+                           if (q == xterminalCausation.feature)
                            {
                               y_test_step.add(1.0f);
                            }
@@ -1583,12 +1501,13 @@ public class Causations
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   pathLength++;
-                  updateContexts(randomCausation.features, tick++);
-                  id = randomID.nextInt(NUM_TERMINALS);
+                  updateContexts(randomCausation.feature, tick++);
+                  id = randomID.nextInt(NUM_TERMINALS);               
                }
             }
             if (VERBOSE)
             {
+           	 System.out.println("XNN_valid_test id=" + xterminalCausation.id); // flibber            	
                System.out.print("X: ");
                xterminalCausation.print();
                System.out.print("y: ");
@@ -1602,7 +1521,7 @@ public class Causations
                {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (xterminalCausation.features.get(q))
+                     if (q == xterminalCausation.feature)
                      {
                         X_test_step.add(1.0f);
                      }
@@ -1613,7 +1532,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (yterminalCausation.features.get(q))
+                     if (q == yterminalCausation.feature)
                      {
                         y_test_step.add(1.0f);
                      }
@@ -1640,7 +1559,7 @@ public class Causations
             {
                y_predictable.add(tick);
             }
-            updateContexts(xterminalCausation.features, tick++);
+            updateContexts(xterminalCausation.feature, tick++);
          }
          if (VERBOSE)
          {
@@ -1758,33 +1677,25 @@ public class Causations
 
 
    // Update feature contexts.
-   static void updateContexts(ArrayList<Boolean> features, int tick)
+   static void updateContexts(int feature, int tick)
    {
       // Attenuate.
       for (int i = 0, j = contextFeatures.size(); i < j; i++)
       {
          ArrayList<ContextFeature> contexts    = contextFeatures.get(i);
          ArrayList<ContextFeature> tmpContexts = new ArrayList<ContextFeature>();
-         for (ContextFeature feature : contexts)
+         for (ContextFeature context : contexts)
          {
-            if (feature.attentuate())
+            if (context.attentuate())
             {
-               tmpContexts.add(feature);
+               tmpContexts.add(context);
             }
          }
          contextFeatures.set(i, tmpContexts);
       }
 
       // Add contexts.
-      ArrayList<Integer> idxs = new ArrayList<Integer>();
-      for (int i = 0, j = features.size(); i < j; i++)
-      {
-         if (features.get(i))
-         {
-            idxs.add(i);
-         }
-      }
-      ContextFeature contextFeature = new ContextFeature(idxs, 0, 1.0f, tick, tick);
+      ContextFeature contextFeature = new ContextFeature(feature, 0, 1.0f, tick, tick);
       addContextFeature(contextFeature, 0);
    }
 
@@ -1852,6 +1763,7 @@ public class Causations
       for (int i = 0; i < numTrain; i++)
       {
          CausationPath path = causationPaths.get(i);
+         //path = causationPaths.get(0); // flibber         
          if (VERBOSE)
          {
             path.print();
@@ -1870,12 +1782,14 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomID.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);           
                while (id != xcausation.id)
                {
+                   //id = randomID.nextInt(100) + NUM_TERMINALS; // flibber            	   
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
                   if (VERBOSE)
                   {
+                 	 System.out.println("RNN_star_train id=" + randomCausation.id); // flibber                	  
                      System.out.print("X: *");
                      randomCausation.print();
                      System.out.print("y: ");
@@ -1883,7 +1797,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (randomCausation.features.get(q))
+                     if (q == randomCausation.feature)
                      {
                         X_train_path.add(1.0f);
                      }
@@ -1894,7 +1808,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (xterminalCausation.features.get(q))
+                     if (q == xterminalCausation.feature)
                      {
                         y_train_path.add(1.0f);
                      }
@@ -1903,11 +1817,12 @@ public class Causations
                         y_train_path.add(0.0f);
                      }
                   }
-                  id = randomID.nextInt(NUM_TERMINALS);
+                  id = randomID.nextInt(NUM_TERMINALS);            
                }
             }
             if (VERBOSE)
             {
+           	 System.out.println("RNN_valid_train id=" + xterminalCausation.id); // flibber            	
                System.out.print("X: ");
                xterminalCausation.print();
                System.out.print("y: ");
@@ -1915,7 +1830,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (xterminalCausation.features.get(q))
+               if (q == xterminalCausation.feature)
                {
                   X_train_path.add(1.0f);
                }
@@ -1926,7 +1841,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (yterminalCausation.features.get(q))
+               if (q == yterminalCausation.feature)
                {
                   y_train_path.add(1.0f);
                }
@@ -1959,6 +1874,7 @@ public class Causations
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
+         //path = causationPaths.get(0); // flibber         
          if (VERBOSE)
          {
             path.print();
@@ -1978,12 +1894,14 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomID.nextInt(NUM_TERMINALS);
+               int id = randomID.nextInt(NUM_TERMINALS);               
                while (id != xcausation.id)
                {
+                   //id = randomID.nextInt(100) + NUM_TERMINALS; // flibber            	   
                   TerminalCausation randomCausation = new TerminalCausation(xcausation.hierarchy, id);
                   if (VERBOSE)
                   {
+                 	 System.out.println("RNN_star_test id=" + randomCausation.id); // flibber                	  
                      System.out.print("X: *");
                      randomCausation.print();
                      System.out.print("y: ");
@@ -1991,7 +1909,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (randomCausation.features.get(q))
+                     if (q == randomCausation.feature)
                      {
                         X_test_path.add(1.0f);
                      }
@@ -2002,7 +1920,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (xterminalCausation.features.get(q))
+                     if (q == xterminalCausation.feature)
                      {
                         y_test_path.add(1.0f);
                      }
@@ -2017,6 +1935,7 @@ public class Causations
             }
             if (VERBOSE)
             {
+           	 System.out.println("RNN_valid_test id=" + xterminalCausation.id); // flibber            	
                System.out.print("X: ");
                xterminalCausation.print();
                System.out.print("y: ");
@@ -2024,7 +1943,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (xterminalCausation.features.get(q))
+               if (q == xterminalCausation.feature)
                {
                   X_test_path.add(1.0f);
                }
@@ -2035,7 +1954,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (yterminalCausation.features.get(q))
+               if (q == yterminalCausation.feature)
                {
                   y_test_path.add(1.0f);
                }
