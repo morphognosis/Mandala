@@ -20,7 +20,7 @@ n_epochs = 500
 results_filename = 'causations_nn_results.json'
 
 # prediction significance threshold
-threshold = 0.5
+threshold = 0.1
 
 # verbosity
 verbose = True
@@ -99,13 +99,8 @@ for i in range(y_train_shape[0]):
     yvals = y[i]
     pvals = predictions[i]
     trainTotal += 1
-    for j in range(len(yvals)):
-        if yvals[j] >= threshold and pvals[j] < threshold:
-            trainErrors += 1
-            break
-        if yvals[j] < threshold and pvals[j] >= threshold:
-            trainErrors += 1
-            break
+    if argmax(yvals) != argmax(pvals):
+        trainErrors += 1
 trainErrorPct = 0
 if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
@@ -123,13 +118,8 @@ for i in range(y_test_shape[0]):
         yvals = y[i]
         pvals = predictions[i]
         testTotal += 1
-        for j in range(len(yvals)):
-            if yvals[j] >= threshold and pvals[j] < threshold:
-                testErrors += 1
-                break
-            if yvals[j] < threshold and pvals[j] >= threshold:
-                testErrors += 1
-                break
+        if argmax(yvals) != argmax(pvals):
+            testErrors += 1
 testErrorPct = 0
 if testTotal > 0:
     testErrorPct = (float(testErrors) / float(testTotal)) * 100.0
