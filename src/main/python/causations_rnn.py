@@ -80,7 +80,7 @@ if verbose:
     rnn_model.summary()
 
 # Train.
-from numpy import array
+from numpy import array, argmax
 seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
 seq = array(y_train)
@@ -93,16 +93,17 @@ trainErrors = 0
 trainTotal = 0
 for path in range(X_train_shape[0]):
     for step in range(X_train_shape[1]):
-        for i in range(X_train_shape[2]):
-            yvals = y[path][step]
-            pvals = predictions[path][step]
-            if yvals[i] >= threshold and pvals[i] < threshold:
-                trainErrors += 1
-                break
-            if yvals[i] < threshold and pvals[i] >= threshold:
-                trainErrors += 1
-                break
+        yvals = y[path][step]
+        pvals = predictions[path][step]
+        if argmax(yvals) != argmax(pvals):
+            trainErrors += 1
         trainTotal += 1
+for i in range(y_train_shape[0]):
+    yvals = y[i]
+    pvals = predictions[i]
+    trainTotal += 1
+    if argmax(yvals) != argmax(pvals):
+        trainErrors += 1
 trainErrorPct = 0
 if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
@@ -118,15 +119,10 @@ testTotal = 0
 for path in range(X_test_shape[0]):
     for step in range(X_test_shape[1]):
         if step in y_test_predictable[path]:
-            for i in range(X_test_shape[2]):
-                yvals = y[path][step]
-                pvals = predictions[path][step]
-                if yvals[i] >= threshold and pvals[i] < threshold:
-                    testErrors += 1
-                    break
-                if yvals[i] < threshold and pvals[i] >= threshold:
-                    testErrors += 1
-                    break
+            yvals = y[path][step]
+            pvals = predictions[path][step]
+            if argmax(yvals) != argmax(pvals):
+                testErrors += 1
             testTotal += 1
 testErrorPct = 0
 if testTotal > 0:
