@@ -1,0 +1,2127 @@
+hierarchies
+  hierarchy_0
+    nonterminal id=0
+      nonterminal id=2, child number=0
+        nonterminal id=3, child number=0
+          nonterminal id=4, child number=0
+            terminal id=8, features=39, child number=0
+            terminal id=11, features=30, child number=1
+          nonterminal id=5, child number=1
+            nonterminal id=7, child number=0
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+            nonterminal id=7, child number=1
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+        nonterminal id=1, child number=1
+          nonterminal id=9, child number=0
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+          nonterminal id=9, child number=1
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+      nonterminal id=2, child number=1
+        nonterminal id=3, child number=0
+          nonterminal id=4, child number=0
+            terminal id=8, features=39, child number=0
+            terminal id=11, features=30, child number=1
+          nonterminal id=5, child number=1
+            nonterminal id=7, child number=0
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+            nonterminal id=7, child number=1
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+        nonterminal id=1, child number=1
+          nonterminal id=9, child number=0
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+          nonterminal id=9, child number=1
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+causation paths:
+path=0, hierarchy=0, id=9
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+path=1, hierarchy=0, id=1
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=12
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=13
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=16
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=17
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=18
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=19
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=22
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=23
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+path=2, hierarchy=0, id=4
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+path=3, hierarchy=0, id=1
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=12
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=13
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=16
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=17
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=18
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=19
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=22
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=23
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+path=4, hierarchy=0, id=6
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+step=2
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+step=3
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+step=4
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+step=5
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+step=6
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+step=7
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+path=5, hierarchy=0, id=5
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+path=6, hierarchy=0, id=0
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=4
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=5
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=6
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=7
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=10
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=11
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=12
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=13
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=16
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=17
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=18
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=19
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=22
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=23
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=24
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=25
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=26
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=27
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=28
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=29
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=30
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=31
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=32
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=33
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=34
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=35
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=36
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=37
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=38
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=39
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=40
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=41
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=42
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=43
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=44
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=45
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=46
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=47
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=48
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=49
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=50
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=51
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=52
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=53
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=54
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=55
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=56
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=57
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=58
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=59
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+path=7, hierarchy=0, id=1
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=12
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=13
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=16
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=17
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=18
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=19
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=22
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=23
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+path=8, hierarchy=0, id=5
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+path=9, hierarchy=0, id=4
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+export NN dataset
+training dataset:
+path: hierarchy=0/root id=9
+steps: 
+step 0: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step 1: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step 2: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step 3: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step 4: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step 5: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step 6: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 7: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 8: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 9: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 10: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 11: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+data:
+hit2a, id=13,feature=29,path=0
+X: *hierarchy=0, id=13, feature=29, parents:
+y: hierarchy=0, id=14, feature=31, parents:
+hit9, update feature=29
+hit2a, id=14,feature=31,path=0
+X: *hierarchy=0, id=14, feature=31, parents:
+y: hierarchy=0, id=11, feature=30, parents:
+hit9, update feature=31
+hitatt feature=29,value0=1.0,value1=0.5
+hit2a, id=11,feature=30,path=0
+X: *hierarchy=0, id=11, feature=30, parents:
+y: hierarchy=0, id=2, feature=37, parents:
+hit9, update feature=30
+hitatt feature=29,value0=0.5,value1=0.0
+hitatt feature=3,value0=0.75,value1=0.65
+hit2b, id=2,feature=37,path=0
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+hit9, update feature=37
+hitatt feature=3,value0=0.65,value1=0.54999995
+hit1, feature=3, contextFeature=14
+feature=3, tier=1, value=0.54999995, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=14, tier=1, value=0.75, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=2, end=2
+path=0
+feature=5, tier=2, value=0.65, begin=0, end=3
+path=0
+source1:
+feature=14, tier=1, value=0.75, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=2, end=2
+path=0
+source2:
+feature=3, tier=1, value=0.54999995, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+hit2b, id=7,feature=39,path=0
+X: hierarchy=0, id=7, feature=39, parents: 7
+y: hierarchy=0, id=2, feature=37, parents: 7
+hit9, update feature=39
+hitatt feature=3,value0=0.54999995,value1=0.44999996
+hitatt feature=5,value0=0.65,value1=0.59999996
+hit1, feature=3, contextFeature=35
+feature=3, tier=1, value=0.44999996, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=35, tier=1, value=0.75, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=1.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=3, end=3
+path=0
+feature=46, tier=2, value=0.59999996, begin=0, end=4
+path=0
+source1:
+feature=35, tier=1, value=0.75, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=1.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=3, end=3
+path=0
+source2:
+feature=3, tier=1, value=0.44999996, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+hit1, feature=15, contextFeature=35
+feature=15, tier=1, value=0.54999995, begin=1, end=2
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+feature=35, tier=1, value=0.75, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=1.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=3, end=3
+path=0
+feature=32, tier=2, value=0.65, begin=1, end=4
+path=0
+source1:
+feature=35, tier=1, value=0.75, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=1.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=3, end=3
+path=0
+source2:
+feature=15, tier=1, value=0.54999995, begin=1, end=2
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+hit2a, id=12,feature=30,path=0
+X: *hierarchy=0, id=12, feature=30, parents:
+y: hierarchy=0, id=0, feature=37, parents:
+hit9, update feature=30
+hitatt feature=3,value0=0.44999996,value1=0.34999996
+hitatt feature=5,value0=0.59999996,value1=0.54999995
+hit1, feature=3, contextFeature=15
+feature=3, tier=1, value=0.34999996, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=15, tier=1, value=0.75, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.5, begin=4, end=4
+path=0
+feature=22, tier=2, value=0.54999995, begin=0, end=5
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.5, begin=4, end=4
+path=0
+source2:
+feature=3, tier=1, value=0.34999996, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+hit1, feature=15, contextFeature=15
+feature=15, tier=1, value=0.44999996, begin=1, end=2
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+feature=15, tier=1, value=0.75, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.5, begin=4, end=4
+path=0
+feature=12, tier=2, value=0.59999996, begin=1, end=5
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.5, begin=4, end=4
+path=0
+source2:
+feature=15, tier=1, value=0.44999996, begin=1, end=2
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+hit1, feature=14, contextFeature=15
+feature=14, tier=1, value=0.54999995, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+feature=15, tier=1, value=0.75, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.5, begin=4, end=4
+path=0
+feature=12, tier=2, value=0.65, begin=2, end=5
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.5, begin=4, end=4
+path=0
+source2:
+feature=14, tier=1, value=0.54999995, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+hit2a, id=0,feature=37,path=0
+X: *hierarchy=0, id=0, feature=37, parents:
+y: hierarchy=0, id=19, feature=31, parents:
+hit9, update feature=37
+hitatt feature=3,value0=0.34999996,value1=0.24999997
+hitatt feature=5,value0=0.54999995,value1=0.49999994
+hit1, feature=3, contextFeature=14
+feature=3, tier=1, value=0.24999997, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+feature=5, tier=2, value=0.5, begin=0, end=6
+path=0
+source1:
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+source2:
+feature=3, tier=1, value=0.24999997, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+hit1, feature=15, contextFeature=14
+feature=15, tier=1, value=0.34999996, begin=1, end=2
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+feature=33, tier=2, value=0.54999995, begin=1, end=6
+path=0
+source1:
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+source2:
+feature=15, tier=1, value=0.34999996, begin=1, end=2
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+hit1, feature=14, contextFeature=14
+feature=14, tier=1, value=0.44999996, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+feature=33, tier=2, value=0.59999996, begin=2, end=6
+path=0
+source1:
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+source2:
+feature=14, tier=1, value=0.44999996, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+hit1, feature=35, contextFeature=14
+feature=35, tier=1, value=0.54999995, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+feature=32, tier=2, value=0.65, begin=3, end=6
+path=0
+source1:
+feature=14, tier=1, value=0.75, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=1.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.5, begin=5, end=5
+path=0
+source2:
+feature=35, tier=1, value=0.54999995, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+hit2a, id=19,feature=31,path=0
+X: *hierarchy=0, id=19, feature=31, parents:
+y: hierarchy=0, id=10, feature=30, parents:
+hit9, update feature=31
+hitatt feature=3,value0=0.24999997,value1=0.14999998
+hitatt feature=5,value0=0.49999994,value1=0.44999993
+hit1, feature=3, contextFeature=3
+feature=3, tier=1, value=0.14999998, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+feature=31, tier=2, value=0.45, begin=0, end=7
+path=0
+source1:
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+source2:
+feature=3, tier=1, value=0.14999998, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+hit1, feature=15, contextFeature=3
+feature=15, tier=1, value=0.54999995, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+feature=22, tier=2, value=0.65, begin=4, end=7
+path=0
+source1:
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+source2:
+feature=15, tier=1, value=0.54999995, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+hit1, feature=14, contextFeature=3
+feature=14, tier=1, value=0.34999996, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+feature=21, tier=2, value=0.54999995, begin=2, end=7
+path=0
+source1:
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+source2:
+feature=14, tier=1, value=0.34999996, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+hit1, feature=35, contextFeature=3
+feature=35, tier=1, value=0.44999996, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+feature=21, tier=2, value=0.59999996, begin=3, end=7
+path=0
+source1:
+feature=3, tier=1, value=0.75, begin=6, end=7
+path=0
+source1:
+feature=31, tier=0, value=1.0, begin=7, end=7
+path=0
+source2:
+feature=37, tier=0, value=0.5, begin=6, end=6
+path=0
+source2:
+feature=35, tier=1, value=0.44999996, begin=3, end=4
+path=0
+source1:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+source2:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+hit2a, id=10,feature=30,path=0
+X: *hierarchy=0, id=10, feature=30, parents:
+y: hierarchy=0, id=13, feature=29, parents:
+hit9, update feature=30
+hitatt feature=3,value0=0.14999998,value1=0.049999975
+hitatt feature=5,value0=0.44999993,value1=0.39999992
+hit1, feature=3, contextFeature=15
+feature=3, tier=1, value=0.049999975, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+feature=22, tier=2, value=0.39999998, begin=0, end=8
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+source2:
+feature=3, tier=1, value=0.049999975, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+hit1, feature=15, contextFeature=15
+feature=15, tier=1, value=0.44999996, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+feature=12, tier=2, value=0.59999996, begin=4, end=8
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+source2:
+feature=15, tier=1, value=0.44999996, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+hit1, feature=14, contextFeature=15
+feature=14, tier=1, value=0.54999995, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+feature=12, tier=2, value=0.65, begin=5, end=8
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+source2:
+feature=14, tier=1, value=0.54999995, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+hit dup
+feature=58, tier=3, value=0.49999994, begin=0, end=8
+path=0
+source1:
+feature=12, tier=2, value=0.59999996, begin=4, end=8
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+source2:
+feature=15, tier=1, value=0.44999996, begin=4, end=5
+path=0
+source1:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+source2:
+feature=39, tier=0, value=0.0, begin=4, end=4
+path=0
+source2:
+feature=5, tier=2, value=0.39999992, begin=0, end=3
+path=0
+source1:
+feature=14, tier=1, value=0.24999997, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=3, tier=1, value=0.049999975, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0
+feature=58, tier=3, value=0.525, begin=0, end=8
+path=0
+source1:
+feature=12, tier=2, value=0.65, begin=5, end=8
+path=0
+source1:
+feature=15, tier=1, value=0.75, begin=7, end=8
+path=0
+source1:
+feature=30, tier=0, value=1.0, begin=8, end=8
+path=0
+source2:
+feature=31, tier=0, value=0.5, begin=7, end=7
+path=0
+source2:
+feature=14, tier=1, value=0.54999995, begin=5, end=6
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=6, end=6
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=5, end=5
+path=0
+source2:
+feature=5, tier=2, value=0.39999992, begin=0, end=3
+path=0
+source1:
+feature=14, tier=1, value=0.24999997, begin=2, end=3
+path=0
+source1:
+feature=37, tier=0, value=0.0, begin=3, end=3
+path=0
+source2:
+feature=30, tier=0, value=0.0, begin=2, end=2
+path=0
+source2:
+feature=3, tier=1, value=0.049999975, begin=0, end=1
+path=0
+source1:
+feature=31, tier=0, value=0.0, begin=1, end=1
+path=0
+source2:
+feature=29, tier=0, value=0.0, begin=0, end=0
+path=0

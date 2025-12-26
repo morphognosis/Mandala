@@ -29,9 +29,10 @@ public class Causations
    public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH       = 2;
    public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
+   public static int   MAX_INTERSTITIAL_TERMINALS      = 10;
 
    // Dimensions.
-   public static int NUM_DIMENSIONS = 32;
+   public static int NUM_DIMENSIONS = 64;
 
    // Causation.
    public static class Causation
@@ -227,7 +228,7 @@ public class Causations
    public static ArrayList<CausationPath> causationPaths;
 
    // Causation attenuation.
-   public static float CAUSATION_FEATURE_ATTENUATION = 0.1f;
+   public static float CAUSATION_FEATURE_ATTENUATION = 1.0f;
    public static float CAUSATION_TIER_ATTENUATION    = 0.0f;
 
    // Context features.
@@ -240,13 +241,13 @@ public class Causations
       public int   end;
 
       // Constructors.
-      public ContextFeature(int source, int tier, float value, int begin, int end)
+      public ContextFeature(int feature, int tier, float value, int begin, int end)
       {
-         setFeature(source);
-         this.tier  = tier;
-         this.value = value;
-         this.begin = begin;
-         this.end   = end;
+         this.feature = feature;
+         this.tier    = tier;
+         this.value   = value;
+         this.begin   = begin;
+         this.end     = end;
       }
 
 
@@ -261,15 +262,6 @@ public class Causations
 
 
       // Set feature from source features.
-      public void setFeature(int source)
-      {
-         String s = source + "_";
-         Random r = new Random(s.hashCode());
-
-         feature = r.nextInt(NUM_DIMENSIONS);
-      }
-
-
       public void setFeature(int source1, int source2)
       {
          String s = source1 + "_" + source2;
@@ -279,29 +271,33 @@ public class Causations
       }
 
 
-      ArrayList < ArrayList < ContextFeature >> contextFeatures;
-
       // Attenuate value.
       public boolean attentuate()
       {
          if (tier == 0)
          {
-            value = 0.0f;
-            return(false);
+            value -= 0.5f;
          }
          else
          {
             value -= CAUSATION_FEATURE_ATTENUATION / Math.pow(tier, CAUSATION_TIER_ATTENUATION);
-            if (value > 0.0f)
-            {
-               return(true);
-            }
-            else
-            {
-               value = 0.0f;
-               return(false);
-            }
          }
+         if (value > 0.0f)
+         {
+            return(true);
+         }
+         else
+         {
+            value = 0.0f;
+            return(false);
+         }
+      }
+
+
+      // Print.
+      public void print()
+      {
+         System.out.println("feature=" + feature + ", tier=" + tier + ", value=" + value + ", begin=" + begin + ", end=" + end);
       }
    };
    public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
@@ -358,6 +354,7 @@ public class Causations
       "      [-minProductionRightHandSideLength <quantity> (default=" + MIN_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
+      "      [-maxInterstitialTerminals <quantity> (default=" + MAX_INTERSTITIAL_TERMINALS + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
@@ -537,6 +534,32 @@ public class Causations
             if ((TERMINAL_PRODUCTION_PROBABILITY < 0.0f) || (TERMINAL_PRODUCTION_PROBABILITY > 1.0f))
             {
                System.err.println("Invalid terminalProductionProbability option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-maxInterstitialTerminals"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid maxInterstitialTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               MAX_INTERSTITIAL_TERMINALS = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid maxInterstitialTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (MAX_INTERSTITIAL_TERMINALS < 0)
+            {
+               System.err.println("Invalid maxInterstitialTerminals option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1238,12 +1261,6 @@ public class Causations
 
 
    // Export NN dataset.
-   public static void exportNNdataset()
-   {
-      exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
-   }
-
-
    public static void exportNNdataset(String filename, float trainFraction, int randomSeed)
    {
       if (VERBOSE)
@@ -1270,11 +1287,6 @@ public class Causations
       {
          System.out.println("training dataset:");
       }
-      contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
-      for (int i = 0, j = maxTiers - 1; i < j; i++)
-      {
-         contextFeatures.add(new ArrayList<ContextFeature>());
-      }
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
       int tick     = 0;
@@ -1287,7 +1299,11 @@ public class Causations
             path.print();
             System.out.println("data:");
          }
-
+         contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+         for (int j = 0, k = maxTiers - 1; j < k; j++)
+         {
+            contextFeatures.add(new ArrayList<ContextFeature>());
+         }
          int pathLength = 0;
          int p          = path.steps.size() - 1;
          for (int j = 0; j < p; j++)
@@ -1301,7 +1317,7 @@ public class Causations
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
                int xid = randomID.nextInt(NUM_TERMINALS);
-               while (xid != xcausation.id)
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
                {
                   ArrayList<Float>  X_train_step     = new ArrayList<Float>();
                   ArrayList<Float>  y_train_step     = new ArrayList<Float>();
@@ -1418,11 +1434,6 @@ public class Causations
       {
          System.out.println("testing dataset:");
       }
-      contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
-      for (int i = 0, j = maxTiers - 1; i < j; i++)
-      {
-         contextFeatures.add(new ArrayList<ContextFeature>());
-      }
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
       ArrayList<Integer> y_predictable = new ArrayList<Integer>();
@@ -1434,6 +1445,11 @@ public class Causations
          {
             path.print();
             System.out.println("data:");
+         }
+         contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+         for (int j = 0, k = maxTiers - 1; j < k; j++)
+         {
+            contextFeatures.add(new ArrayList<ContextFeature>());
          }
          int p          = path.steps.size() - 1;
          int pathLength = 0;
@@ -1448,7 +1464,7 @@ public class Causations
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
                int xid = randomID.nextInt(NUM_TERMINALS);
-               while (xid != xcausation.id)
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
                {
                   ArrayList<Float>  X_test_step      = new ArrayList<Float>();
                   ArrayList<Float>  y_test_step      = new ArrayList<Float>();
@@ -1707,10 +1723,18 @@ public class Causations
    // Recursively add context feature.
    static void addContextFeature(ContextFeature contextFeature, int tier)
    {
+      ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
+      for (ContextFeature feature : contexts)
+      {
+         if ((feature.feature == contextFeature.feature) && (feature.begin == contextFeature.begin) && (feature.end == contextFeature.end))
+         {
+            return;
+         }
+      }
       if (tier < contextFeatures.size() - 1)
       {
-         ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
-         ArrayList<ContextFeature> sources  = new ArrayList<ContextFeature>();
+         contexts = contextFeatures.get(tier);
+         ArrayList<ContextFeature> sources = new ArrayList<ContextFeature>();
          for (ContextFeature feature : contexts)
          {
             if (contextFeature.begin > feature.end)
@@ -1734,9 +1758,9 @@ public class Causations
          }
          for (ContextFeature feature : sources)
          {
-            float          value           = (contextFeature.value + feature.value) / 2.0f;
-            ContextFeature nextTierFeature = new ContextFeature(contextFeature.feature, feature.feature, tier + 1, value, feature.begin, contextFeature.end);
-            addContextFeature(nextTierFeature, tier + 1);
+            float          value = (contextFeature.value + feature.value) / 2.0f;
+            ContextFeature nextContextFeature = new ContextFeature(contextFeature.feature, feature.feature, tier + 1, value, feature.begin, contextFeature.end);
+            addContextFeature(nextContextFeature, tier + 1);
          }
       }
       contextFeatures.get(tier).add(contextFeature);
@@ -1744,12 +1768,6 @@ public class Causations
 
 
    // Export RNN dataset.
-   public static void exportRNNdataset()
-   {
-      exportRNNdataset(RNN_DATASET_FILENAME, RNN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
-   }
-
-
    public static void exportRNNdataset(String filename, float trainFraction, int randomSeed)
    {
       if (VERBOSE)
@@ -1785,10 +1803,10 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomID.nextInt(NUM_TERMINALS);
-               while (id != xcausation.id)
+               int xid = randomID.nextInt(NUM_TERMINALS);
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
                {
-                  TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, id);
+                  TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
                   TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, randomID.nextInt(NUM_TERMINALS));
                   if (VERBOSE)
                   {
@@ -1819,7 +1837,7 @@ public class Causations
                         y_train_path.add(0.0f);
                      }
                   }
-                  id = yrandomCausation.id;
+                  xid = yrandomCausation.id;
                }
             }
             if (VERBOSE)
@@ -1894,10 +1912,10 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int id = randomID.nextInt(NUM_TERMINALS);
-               while (id != xcausation.id)
+               int xid = randomID.nextInt(NUM_TERMINALS);
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
                {
-                  TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, id);
+                  TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
                   TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, randomID.nextInt(NUM_TERMINALS));
                   if (VERBOSE)
                   {
@@ -1929,7 +1947,7 @@ public class Causations
                      }
                   }
                   tick++;
-                  id = yrandomCausation.id;
+                  xid = yrandomCausation.id;
                }
             }
             if (VERBOSE)
