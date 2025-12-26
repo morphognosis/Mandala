@@ -228,8 +228,8 @@ public class Causations
    public static ArrayList<CausationPath> causationPaths;
 
    // Causation attenuation.
-   public static float CAUSATION_FEATURE_ATTENUATION = 1.0f;
-   public static float CAUSATION_TIER_ATTENUATION    = 0.0f;
+   public static float CAUSATION_FEATURE_ATTENUATION = 0.5f;
+   public static float CAUSATION_TIER_ATTENUATION    = 1.0f;
 
    // Context features.
    public static class ContextFeature
