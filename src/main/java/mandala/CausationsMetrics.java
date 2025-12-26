@@ -4,21 +4,13 @@
 
 package mandala;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class CausationsMetrics
 {
@@ -301,25 +293,6 @@ public class CausationsMetrics
       }
    };
    public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
-
-   // Learning results.
-   public static class LearningResults
-   {
-      public int   train_prediction_errors;
-      public int   train_total_predictions;
-      public float train_error_pct;
-      public int   test_prediction_errors;
-      public int   test_total_predictions;
-      public float test_error_pct;
-
-      public void print()
-      {
-         System.out.println("Train prediction errors/total = " + train_prediction_errors + "/" + train_total_predictions);
-         System.out.println(" (" + train_error_pct + "%)");
-         System.out.print("Test prediction errors/total = " + test_prediction_errors + "/" + test_total_predictions);
-         System.out.println(" (" + test_error_pct + "%)");
-      }
-   };
 
    // Random numbers.
    public static int    RANDOM_SEED = 4517;
