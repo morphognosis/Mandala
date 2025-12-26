@@ -1,6 +1,6 @@
 // For conditions of distribution and use, see copyright notice in Mandala.java
 
-// Generate causation hierarchies measure their properties.
+// Generate causation hierarchies to measure their properties.
 
 package mandala;
 
@@ -727,6 +727,7 @@ public class CausationsMetrics
          {
             causations.add(new TerminalCausation(i, 0));
          }
+         measureCausationProperties(causations);
          causationHierarchies.add(causations);
       }
 
@@ -741,7 +742,7 @@ public class CausationsMetrics
       {
          exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME, TREE_FORMAT);
       }
-
+      
       // Generate causation paths.
       generateCausationPaths(NUM_CAUSATION_PATHS);
 
@@ -970,7 +971,21 @@ public class CausationsMetrics
       }
    }
 
-
+   // Measure causation properties.
+   public static void measureCausationProperties(ArrayList<Causation> causations)
+   {
+	   for (Causation causation : causations)
+	   {
+		   if (causation instanceof TerminalCausation)
+		   {
+			   ((TerminalCausation)causation).printHierarchical("", null);
+		   } else {
+			   ((NonterminalCausation)causation).printHierarchical("", null, true);			   
+		   }
+	   }
+	   System.exit(0); // flibber
+   }
+   
    // Generate causation paths.
    public static void generateCausationPaths(int numPaths)
    {
