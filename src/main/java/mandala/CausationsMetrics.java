@@ -727,9 +727,11 @@ public class CausationsMetrics
          {
             causations.add(new TerminalCausation(i, 0));
          }
-         measureCausationProperties(causations);
          causationHierarchies.add(causations);
       }
+
+      // Analyze causations.
+      analyzeCausations();
 
       // Print causations?
       if (VERBOSE)
@@ -742,7 +744,7 @@ public class CausationsMetrics
       {
          exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME, TREE_FORMAT);
       }
-      
+
       // Generate causation paths.
       generateCausationPaths(NUM_CAUSATION_PATHS);
 
@@ -971,21 +973,28 @@ public class CausationsMetrics
       }
    }
 
-   // Measure causation properties.
-   public static void measureCausationProperties(ArrayList<Causation> causations)
+
+   // Analyze causations.
+   public static void analyzeCausations()
    {
-	   for (Causation causation : causations)
-	   {
-		   if (causation instanceof TerminalCausation)
-		   {
-			   ((TerminalCausation)causation).printHierarchical("", null);
-		   } else {
-			   ((NonterminalCausation)causation).printHierarchical("", null, true);			   
-		   }
-	   }
-	   System.exit(0); // flibber
+      for (ArrayList<Causation> caucations : causationHierarchies)
+      {
+         for (Causation causation : caucations)
+         {
+            if (causation instanceof TerminalCausation)
+            {
+               ((TerminalCausation)causation).printHierarchical("", null);
+            }
+            else
+            {
+               ((NonterminalCausation)causation).printHierarchical("", null, true);
+            }
+         }
+      }
+      System.exit(0);      // flibber
    }
-   
+
+
    // Generate causation paths.
    public static void generateCausationPaths(int numPaths)
    {

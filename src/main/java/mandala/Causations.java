@@ -361,6 +361,7 @@ public class Causations
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-causationFeatureAttenuation <multiplier> (default=" + CAUSATION_FEATURE_ATTENUATION + ")]\n" +
       "      [-causationTierAttenuation <divisor> (default=" + CAUSATION_TIER_ATTENUATION + ")]\n" +
+      "      [-analyzeCausations]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -380,6 +381,7 @@ public class Causations
    {
       boolean gotExportCausationsGraph = false;
       boolean gotTreeFormat            = false;
+      boolean gotAnalyzeCausations     = false;
 
       for (int i = 0; i < args.length; i++)
       {
@@ -705,6 +707,11 @@ public class Causations
             }
             continue;
          }
+         if (args[i].equals("-analyzeCausations"))
+         {
+            gotAnalyzeCausations = true;
+            continue;
+         }
          if (args[i].equals("-NNdatasetTrainFraction"))
          {
             i++;
@@ -933,6 +940,12 @@ public class Causations
 
       // Generate causation paths.
       generateCausationPaths(NUM_CAUSATION_PATHS);
+
+      // Analyze causations.
+      if (gotAnalyzeCausations)
+      {
+         analyzeCausations();
+      }
 
       // Export causation datasets.
       exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
@@ -1257,6 +1270,109 @@ public class Causations
       } while (tier.causation instanceof NonterminalCausation);
       path.add(nextStep);
       return(true);
+   }
+
+
+   // Analyze causations.
+   public static void analyzeCausations()
+   {
+      if (VERBOSE)
+      {
+         if ((MIN_PRODUCTION_RHS_LENGTH != 2) || (MAX_PRODUCTION_RHS_LENGTH != 2))
+         {
+            System.out.println("Analysis requires cause/effect structure");
+            return;
+         }
+         else
+         {
+            System.out.println("analyze causations");
+         }
+      }
+      else
+      {
+         return;
+      }
+      for (ArrayList<Causation> caucations : causationHierarchies)
+      {
+         for (Causation causation : caucations)
+         {
+            if (causation instanceof TerminalCausation)
+            {
+               ((TerminalCausation)causation).print();
+               System.out.println("terminal span=1");
+            }
+            else
+            {
+               ((NonterminalCausation)causation).print();
+               int root_min               = spanCausation(causation, 0);
+               int root_expected          = spanCausation(causation, 1);
+               int root_max               = spanCausation(causation, 2);
+               NonterminalCausation root  = (NonterminalCausation)causation;
+               Causation            cause = root.children.get(0);
+               int       cause_min        = spanCausation(cause, 0);
+               int       cause_expected   = spanCausation(cause, 1);
+               int       cause_max        = spanCausation(cause, 2);
+               Causation effect           = root.children.get(1);
+               int       effect_min       = spanCausation(effect, 0);
+               int       effect_expected  = spanCausation(effect, 1);
+               int       effect_max       = spanCausation(effect, 2);
+               System.out.println("min span=" + root_min + ", expected span=" + root_expected + ", max span=" + root_max);
+               System.out.println("cause min span=" + cause_min + ", expected span=" + cause_expected + ", max span=" + cause_max);
+               System.out.println("effect min span=" + effect_min + ", expected span=" + effect_expected + ", max span=" + effect_max);
+            }
+         }
+      }
+   }
+
+
+   // Measure traversal span.
+   public static int spanCausation(Causation causation, int type)
+   {
+      int numTerminals = countTerminals(causation);
+
+      switch (type)
+      {
+      case 0:      // minimum.
+         return(numTerminals);
+
+      case 1:      // expected.
+         int count = 0;
+         for (int i = 0; i < 100; i++)
+         {
+            for (int j = 0, k = numTerminals / 2; j < k; j++)
+            {
+               for (int n = 0; n < MAX_INTERSTITIAL_TERMINALS && randomizer.nextInt(NUM_TERMINALS) != 0; n++)
+               {
+                  count++;
+               }
+            }
+         }
+         count /= 100;
+         return(numTerminals + count);
+
+      case 2:       // maximum.
+         return(numTerminals + ((numTerminals / 2) * MAX_INTERSTITIAL_TERMINALS));
+      }
+      return(0);
+   }
+
+
+   // Count terminals.
+   public static int countTerminals(Causation causation)
+   {
+      int count = 0;
+
+      if (causation instanceof TerminalCausation)
+      {
+         count = 1;
+      }
+      else
+      {
+         NonterminalCausation nonterminalCausation = (NonterminalCausation)causation;
+         count  = countTerminals(nonterminalCausation.children.get(0));
+         count += countTerminals(nonterminalCausation.children.get(1));
+      }
+      return(count);
    }
 
 
