@@ -227,37 +227,40 @@ public class Causations
    };
    public static ArrayList<CausationPath> causationPaths;
 
-   // Causation attenuation.
-   public static float CAUSATION_FEATURE_ATTENUATION = 0.5f;
-   public static float CAUSATION_TIER_ATTENUATION    = 1.0f;
+   // Feature value durations.
+   public static String             FEATURE_VALUE_DURATION_TYPE = "maximum";
+   public static ArrayList<Integer> featureValueDurations;
 
    // Context features.
    public static class ContextFeature
    {
       public int   feature;
       public int   tier;
-      public float value;
       public int   begin;
       public int   end;
+      public float value;
+      public int   age;
 
       // Constructors.
-      public ContextFeature(int feature, int tier, float value, int begin, int end)
+      public ContextFeature(int feature, int tier, int begin, int end, float value)
       {
          this.feature = feature;
          this.tier    = tier;
-         this.value   = value;
          this.begin   = begin;
          this.end     = end;
+         this.value   = value;
+         age          = 0;
       }
 
 
-      public ContextFeature(int source1, int source2, int tier, float value, int begin, int end)
+      public ContextFeature(int source1, int source2, int tier, int begin, int end, float value)
       {
          setFeature(source1, source2);
          this.tier  = tier;
-         this.value = value;
          this.begin = begin;
          this.end   = end;
+         this.value = value;
+         age        = 0;
       }
 
 
@@ -274,17 +277,20 @@ public class Causations
       // Attenuate value.
       public boolean attentuate()
       {
-         if (tier == 0)
+         if (featureValueDurations != null)
          {
-            value -= 0.5f;
-         }
-         else
-         {
-            value -= CAUSATION_FEATURE_ATTENUATION / Math.pow(tier, CAUSATION_TIER_ATTENUATION);
-         }
-         if (value > 0.0f)
-         {
-            return(true);
+            int duration = featureValueDurations.get(tier);
+            if (age == duration)
+            {
+               value = 0.0f;
+               return(false);
+            }
+            else
+            {
+               value = 1.0f - (age / duration);
+               age++;
+               return(true);
+            }
          }
          else
          {
@@ -297,7 +303,7 @@ public class Causations
       // Print.
       public void print()
       {
-         System.out.println("feature=" + feature + ", tier=" + tier + ", value=" + value + ", begin=" + begin + ", end=" + end);
+         System.out.println("feature=" + feature + ", tier=" + tier + ", begin=" + begin + ", end=" + end + ", value=" + value + ", age=" + age);
       }
    };
    public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
@@ -359,9 +365,7 @@ public class Causations
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
-      "      [-causationFeatureAttenuation <multiplier> (default=" + CAUSATION_FEATURE_ATTENUATION + ")]\n" +
-      "      [-causationTierAttenuation <divisor> (default=" + CAUSATION_TIER_ATTENUATION + ")]\n" +
-      "      [-analyzeCausations]\n" +
+      "      [-featureValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + FEATURE_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -381,7 +385,6 @@ public class Causations
    {
       boolean gotExportCausationsGraph = false;
       boolean gotTreeFormat            = false;
-      boolean gotAnalyzeCausations     = false;
 
       for (int i = 0; i < args.length; i++)
       {
@@ -655,61 +658,23 @@ public class Causations
             }
             continue;
          }
-         if (args[i].equals("-causationFeatureAttenuation"))
+         if (args[i].equals("-featureValueDurationType"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid causationFeatureAttenuation option");
+               System.err.println("Invalid featureValueDurationType option");
                System.err.println(Usage);
                System.exit(1);
             }
-            try
+            FEATURE_VALUE_DURATION_TYPE = new String(args[i]);
+            if (!FEATURE_VALUE_DURATION_TYPE.equals("minimum") && !FEATURE_VALUE_DURATION_TYPE.equals("expected") &&
+                !FEATURE_VALUE_DURATION_TYPE.equals("maximum"))
             {
-               CAUSATION_FEATURE_ATTENUATION = Float.parseFloat(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid causationFeatureAttenuation option");
+               System.err.println("Invalid featureValueDurationType option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (CAUSATION_FEATURE_ATTENUATION < 0.0f)
-            {
-               System.err.println("Invalid causationFeatureAttenuation option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-causationTierAttenuation"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid causationTierAttenuation option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               CAUSATION_TIER_ATTENUATION = Float.parseFloat(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid causationTierAttenuation option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (CAUSATION_TIER_ATTENUATION < 0.0f)
-            {
-               System.err.println("Invalid causationTierAttenuation option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-analyzeCausations"))
-         {
-            gotAnalyzeCausations = true;
             continue;
          }
          if (args[i].equals("-NNdatasetTrainFraction"))
@@ -942,10 +907,7 @@ public class Causations
       generateCausationPaths(NUM_CAUSATION_PATHS);
 
       // Analyze causations.
-      if (gotAnalyzeCausations)
-      {
-         analyzeCausations();
-      }
+      analyzeCausations();
 
       // Export causation datasets.
       exportNNdataset(NN_DATASET_FILENAME, NN_DATASET_TRAIN_FRACTION, RANDOM_SEED);
@@ -1278,32 +1240,53 @@ public class Causations
    {
       if (VERBOSE)
       {
-         if ((MIN_PRODUCTION_RHS_LENGTH != 2) || (MAX_PRODUCTION_RHS_LENGTH != 2))
-         {
-            System.out.println("Analysis requires cause/effect structure");
-            return;
-         }
-         else
-         {
-            System.out.println("analyze causations");
-         }
+         System.out.println("analyze causations");
       }
-      else
+      if ((MIN_PRODUCTION_RHS_LENGTH != 2) || (MAX_PRODUCTION_RHS_LENGTH != 2))
       {
+         System.err.println("analysis requires cause/effect structure");
          return;
       }
-      for (ArrayList<Causation> caucations : causationHierarchies)
+      featureValueDurations = new ArrayList<Integer>();
+      ArrayList < ArrayList < Integer >> hierarchyTiers = new ArrayList < ArrayList < Integer >> ();
+      int maxTier = 0;
+      for (int i = 0, j = causationHierarchies.size(); i < j; i++)
       {
-         for (Causation causation : caucations)
+         ArrayList<Integer> tiers = new ArrayList<Integer>();
+         hierarchyTiers.add(tiers);
+         ArrayList<Causation> causations = causationHierarchies.get(i);
+         for (Causation causation : causations)
+         {
+            int tier = getTier(causation);
+            tiers.add(tier);
+            if (tier > maxTier)
+            {
+               maxTier = tier;
+            }
+         }
+      }
+      for (int i = 0; i <= maxTier; i++)
+      {
+         featureValueDurations.add(0);
+      }
+      for (ArrayList<Causation> causations : causationHierarchies)
+      {
+         for (Causation causation : causations)
          {
             if (causation instanceof TerminalCausation)
             {
-               ((TerminalCausation)causation).print();
-               System.out.println("terminal span=1");
+               if (VERBOSE)
+               {
+                  ((TerminalCausation)causation).print();
+                  System.out.println("terminal span=1");
+               }
             }
             else
             {
-               ((NonterminalCausation)causation).print();
+               if (VERBOSE)
+               {
+                  ((NonterminalCausation)causation).print();
+               }
                int root_min               = spanCausation(causation, 0);
                int root_expected          = spanCausation(causation, 1);
                int root_max               = spanCausation(causation, 2);
@@ -1316,10 +1299,37 @@ public class Causations
                int       effect_min       = spanCausation(effect, 0);
                int       effect_expected  = spanCausation(effect, 1);
                int       effect_max       = spanCausation(effect, 2);
-               System.out.println("min span=" + root_min + ", expected span=" + root_expected + ", max span=" + root_max);
-               System.out.println("cause min span=" + cause_min + ", expected span=" + cause_expected + ", max span=" + cause_max);
-               System.out.println("effect min span=" + effect_min + ", expected span=" + effect_expected + ", max span=" + effect_max);
+               if (VERBOSE)
+               {
+                  System.out.println("min span=" + root_min + ", expected span=" + root_expected + ", max span=" + root_max);
+                  System.out.println("cause min span=" + cause_min + ", expected span=" + cause_expected + ", max span=" + cause_max);
+                  System.out.println("effect min span=" + effect_min + ", expected span=" + effect_expected + ", max span=" + effect_max);
+               }
             }
+         }
+      }
+   }
+
+
+   // Get causation tier.
+   public static int getTier(Causation causation)
+   {
+      if (causation instanceof TerminalCausation)
+      {
+         return(0);
+      }
+      else
+      {
+         NonterminalCausation nonterminalCausation = (NonterminalCausation)causation;
+         int cause_tier  = getTier(nonterminalCausation.children.get(0)) + 1;
+         int effect_tier = getTier(nonterminalCausation.children.get(1)) + 1;
+         if (cause_tier > effect_tier)
+         {
+            return(cause_tier);
+         }
+         else
+         {
+            return(effect_tier);
          }
       }
    }
@@ -1792,7 +1802,7 @@ public class Causations
    }
 
 
-   // Get tier context.
+   // Get tier feature context.
    static ArrayList<Float> getTierContext(int tier)
    {
       ArrayList<Float> features = new ArrayList<Float>();
@@ -1831,7 +1841,7 @@ public class Causations
       }
 
       // Add contexts.
-      ContextFeature contextFeature = new ContextFeature(feature, 0, 1.0f, tick, tick);
+      ContextFeature contextFeature = new ContextFeature(feature, 0, tick, tick, 1.0f);
       addContextFeature(contextFeature, 0);
    }
 
@@ -1842,7 +1852,8 @@ public class Causations
       ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
       for (ContextFeature feature : contexts)
       {
-         if ((feature.feature == contextFeature.feature) && (feature.begin == contextFeature.begin) && (feature.end == contextFeature.end))
+         if ((feature.feature == contextFeature.feature) &&
+             (feature.begin == contextFeature.begin) && (feature.end == contextFeature.end))
          {
             return;
          }
@@ -1875,7 +1886,7 @@ public class Causations
          for (ContextFeature feature : sources)
          {
             float          value = (contextFeature.value + feature.value) / 2.0f;
-            ContextFeature nextContextFeature = new ContextFeature(contextFeature.feature, feature.feature, tier + 1, value, feature.begin, contextFeature.end);
+            ContextFeature nextContextFeature = new ContextFeature(contextFeature.feature, feature.feature, tier + 1, feature.begin, contextFeature.end, value);
             addContextFeature(nextContextFeature, tier + 1);
          }
       }
