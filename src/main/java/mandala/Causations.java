@@ -26,10 +26,11 @@ public class Causations
    public static int   NUM_CAUSATION_HIERARCHIES       = 1;
    public static int   NUM_NONTERMINALS                = 10;
    public static int   NUM_TERMINALS                   = 20;
+   public static int   NUM_INTERSTITIAL_TERMINALS                   = 20; 
+   public static int   MAX_INTERSTITIAL_TERMINAL_SEQUENCE      = 10;   
    public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH       = 2;
    public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
-   public static int   MAX_INTERSTITIAL_TERMINALS      = 10;
 
    // Dimensions.
    public static int NUM_DIMENSIONS = 64;
@@ -357,10 +358,11 @@ public class Causations
       "      [-numCausationHierarchies <quantity> (default=" + NUM_CAUSATION_HIERARCHIES + ")]\n" +
       "      [-numNonterminals <quantity> (default=" + NUM_NONTERMINALS + ")]\n" +
       "      [-numTerminals <quantity> (default=" + NUM_TERMINALS + ")]\n" +
+      "      [-numInterstitialTerminals <quantity> (default=" + NUM_INTERSTITIAL_TERMINALS + ", if 0 resort to non-interstitial terminals)]\n" +      
+      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +      
       "      [-minProductionRightHandSideLength <quantity> (default=" + MIN_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
-      "      [-maxInterstitialTerminals <quantity> (default=" + MAX_INTERSTITIAL_TERMINALS + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
@@ -466,6 +468,58 @@ public class Causations
             }
             continue;
          }
+         if (args[i].equals("-numInterstitialTerminals"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid numInterstitialTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               NUM_INTERSTITIAL_TERMINALS = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid numInterstitialTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (NUM_INTERSTITIAL_TERMINALS < 0)
+            {
+               System.err.println("Invalid numInterstitialTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }         
+         if (args[i].equals("-maxInterstitialTerminalSequence"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid maxInterstitialTerminals option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               MAX_INTERSTITIAL_TERMINAL_SEQUENCE = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid maxInterstitialTerminalSequence option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (MAX_INTERSTITIAL_TERMINAL_SEQUENCE < 0)
+            {
+               System.err.println("Invalid maxInterstitialTerminalSequence option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }         
          if (args[i].equals("-minProductionRightHandSideLength"))
          {
             i++;
@@ -539,32 +593,6 @@ public class Causations
             if ((TERMINAL_PRODUCTION_PROBABILITY < 0.0f) || (TERMINAL_PRODUCTION_PROBABILITY > 1.0f))
             {
                System.err.println("Invalid terminalProductionProbability option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
-         if (args[i].equals("-maxInterstitialTerminals"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid maxInterstitialTerminals option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               MAX_INTERSTITIAL_TERMINALS = Integer.parseInt(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid maxInterstitialTerminals option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (MAX_INTERSTITIAL_TERMINALS < 0)
-            {
-               System.err.println("Invalid maxInterstitialTerminals option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1265,9 +1293,16 @@ public class Causations
             }
          }
       }
+      if (VERBOSE)
+      {
+         System.out.println("maximum tier=" + maxTier);
+      }
+      int[] durationAccums = new int[maxTier + 1];
+      int[] durationCounts = new int[maxTier + 1];
       for (int i = 0; i <= maxTier; i++)
       {
-         featureValueDurations.add(0);
+         durationAccums[i] = 0;
+         durationCounts[i] = 0;
       }
       for (ArrayList<Causation> causations : causationHierarchies)
       {
@@ -1290,6 +1325,17 @@ public class Causations
                int root_min               = spanCausation(causation, 0);
                int root_expected          = spanCausation(causation, 1);
                int root_max               = spanCausation(causation, 2);
+               int tier = getTier(causation);
+               if (FEATURE_VALUE_DURATION_TYPE.equals("minimum"))
+               {
+            	   durationAccums[tier] += root_min;
+               } else if (FEATURE_VALUE_DURATION_TYPE.equals("expected"))
+               {
+            	   durationAccums[tier] += root_expected;         	   
+               } else {
+            	   durationAccums[tier] += root_max;           	   
+               }
+               durationCounts[tier]++;               
                NonterminalCausation root  = (NonterminalCausation)causation;
                Causation            cause = root.children.get(0);
                int       cause_min        = spanCausation(cause, 0);
@@ -1308,6 +1354,11 @@ public class Causations
             }
          }
       }
+      for (int i = 0; i <= maxTier; i++)
+      {
+    	 int duration = (int)((float)durationAccums[i] / (float)durationCounts[i]);
+         featureValueDurations.add(duration);
+      }      
    }
 
 
@@ -1351,8 +1402,20 @@ public class Causations
          {
             for (int j = 0, k = numTerminals / 2; j < k; j++)
             {
-               for (int n = 0; n < MAX_INTERSTITIAL_TERMINALS && randomizer.nextInt(NUM_TERMINALS) != 0; n++)
+               for (int n = 0; n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
+            	   if (NUM_INTERSTITIAL_TERMINALS == 0)
+            	   {
+            		   if (randomizer.nextInt(NUM_TERMINALS) == 0)
+            		   {
+            			   break;
+            		   }
+            	   } else {
+            		   if (randomizer.nextInt(NUM_INTERSTITIAL_TERMINALS + 1) == 0)
+            		   {
+            			   break;
+            		   }            		   
+            	   }
                   count++;
                }
             }
@@ -1361,7 +1424,7 @@ public class Causations
          return(numTerminals + count);
 
       case 2:       // maximum.
-         return(numTerminals + ((numTerminals / 2) * MAX_INTERSTITIAL_TERMINALS));
+         return(numTerminals + ((numTerminals / 2) * MAX_INTERSTITIAL_TERMINAL_SEQUENCE));
       }
       return(0);
    }
@@ -1442,13 +1505,37 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int xid = randomID.nextInt(NUM_TERMINALS);
-               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
+               int xid, yid;
+               if (NUM_INTERSTITIAL_TERMINALS == 0)
+               {
+                   xid = randomID.nextInt(NUM_TERMINALS);            	   
+               } else {
+                   xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                   if (xid == 0)
+                   {
+                	   xid = xcausation.id;
+                   } else {
+                	   xid += (NUM_TERMINALS - 1);
+                   }
+               }               
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   ArrayList<Float>  X_train_step     = new ArrayList<Float>();
                   ArrayList<Float>  y_train_step     = new ArrayList<Float>();
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
-                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, randomID.nextInt(NUM_TERMINALS));
+                  if (NUM_INTERSTITIAL_TERMINALS == 0)
+                  {
+                      yid = randomID.nextInt(NUM_TERMINALS);            	   
+                  } else {
+                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                      if (yid == 0)
+                      {
+                   	   yid = xcausation.id;
+                      } else {
+                   	   yid += (NUM_TERMINALS - 1);
+                      }
+                  }                            
+                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -1497,7 +1584,7 @@ public class Causations
                   y_train.add(y_train_step);
                   pathLength++;
                   updateContexts(xrandomCausation.feature, tick++);
-                  xid = yrandomCausation.id;
+                  xid = yid;
                }
             }
             if (VERBOSE)
@@ -1589,13 +1676,37 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int xid = randomID.nextInt(NUM_TERMINALS);
-               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
+            	int xid, yid;
+                if (NUM_INTERSTITIAL_TERMINALS == 0)
+                {
+                    xid = randomID.nextInt(NUM_TERMINALS);            	   
+                } else {
+                    xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                    if (xid == 0)
+                    {
+                 	   xid = xcausation.id;
+                    } else {
+                 	   xid += (NUM_TERMINALS - 1);
+                    }
+                }           
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   ArrayList<Float>  X_test_step      = new ArrayList<Float>();
                   ArrayList<Float>  y_test_step      = new ArrayList<Float>();
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
-                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, randomID.nextInt(NUM_TERMINALS));
+                  if (NUM_INTERSTITIAL_TERMINALS == 0)
+                  {
+                      yid = randomID.nextInt(NUM_TERMINALS);            	   
+                  } else {
+                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                      if (yid == 0)
+                      {
+                   	   yid = xcausation.id;
+                      } else {
+                   	   yid += (NUM_TERMINALS - 1);
+                      }
+                  }                          
+                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -1644,7 +1755,7 @@ public class Causations
                   y_test.add(y_test_step);
                   pathLength++;
                   updateContexts(xrandomCausation.feature, tick++);
-                  xid = yrandomCausation.id;
+                  xid = yid;
                }
             }
             if (VERBOSE)
@@ -1930,11 +2041,35 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int xid = randomID.nextInt(NUM_TERMINALS);
-               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
+                int xid, yid;
+                if (NUM_INTERSTITIAL_TERMINALS == 0)
+                {
+                    xid = randomID.nextInt(NUM_TERMINALS);            	   
+                } else {
+                    xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                    if (xid == 0)
+                    {
+                 	   xid = xcausation.id;
+                    } else {
+                 	   xid += (NUM_TERMINALS - 1);
+                    }
+                }           
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
-                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, randomID.nextInt(NUM_TERMINALS));
+                  if (NUM_INTERSTITIAL_TERMINALS == 0)
+                  {
+                      yid = randomID.nextInt(NUM_TERMINALS);            	   
+                  } else {
+                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                      if (yid == 0)
+                      {
+                   	   yid = xcausation.id;
+                      } else {
+                   	   yid += (NUM_TERMINALS - 1);
+                      }
+                  }           
+                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -1964,7 +2099,7 @@ public class Causations
                         y_train_path.add(0.0f);
                      }
                   }
-                  xid = yrandomCausation.id;
+                  xid = yid;
                }
             }
             if (VERBOSE)
@@ -2039,11 +2174,35 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               int xid = randomID.nextInt(NUM_TERMINALS);
-               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINALS; n++)
+                int xid, yid;
+                if (NUM_INTERSTITIAL_TERMINALS == 0)
+                {
+                    xid = randomID.nextInt(NUM_TERMINALS);            	   
+                } else {
+                    xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                    if (xid == 0)
+                    {
+                 	   xid = xcausation.id;
+                    } else {
+                 	   xid += (NUM_TERMINALS - 1);
+                    }
+                }           
+               for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
-                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, randomID.nextInt(NUM_TERMINALS));
+                  if (NUM_INTERSTITIAL_TERMINALS == 0)
+                  {
+                      yid = randomID.nextInt(NUM_TERMINALS);            	   
+                  } else {
+                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                      if (yid == 0)
+                      {
+                   	   yid = xcausation.id;
+                      } else {
+                   	   yid += (NUM_TERMINALS - 1);
+                      }
+                  }           
+                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -2074,7 +2233,7 @@ public class Causations
                      }
                   }
                   tick++;
-                  xid = yrandomCausation.id;
+                  xid = yid;
                }
             }
             if (VERBOSE)
