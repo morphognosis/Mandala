@@ -23,14 +23,14 @@ import org.json.JSONObject;
 public class Causations
 {
    // Generation parameters.
-   public static int   NUM_CAUSATION_HIERARCHIES       = 1;
-   public static int   NUM_NONTERMINALS                = 10;
-   public static int   NUM_TERMINALS                   = 20;
-   public static int   NUM_INTERSTITIAL_TERMINALS                   = 20; 
-   public static int   MAX_INTERSTITIAL_TERMINAL_SEQUENCE      = 10;   
-   public static int   MIN_PRODUCTION_RHS_LENGTH       = 2;
-   public static int   MAX_PRODUCTION_RHS_LENGTH       = 2;
-   public static float TERMINAL_PRODUCTION_PROBABILITY = 0.5f;
+   public static int   NUM_CAUSATION_HIERARCHIES          = 1;
+   public static int   NUM_NONTERMINALS                   = 10;
+   public static int   NUM_TERMINALS                      = 20;
+   public static int   NUM_INTERSTITIAL_TERMINALS         = 20;
+   public static int   MAX_INTERSTITIAL_TERMINAL_SEQUENCE = 10;
+   public static int   MIN_PRODUCTION_RHS_LENGTH          = 2;
+   public static int   MAX_PRODUCTION_RHS_LENGTH          = 2;
+   public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.5f;
 
    // Dimensions.
    public static int NUM_DIMENSIONS = 64;
@@ -358,8 +358,8 @@ public class Causations
       "      [-numCausationHierarchies <quantity> (default=" + NUM_CAUSATION_HIERARCHIES + ")]\n" +
       "      [-numNonterminals <quantity> (default=" + NUM_NONTERMINALS + ")]\n" +
       "      [-numTerminals <quantity> (default=" + NUM_TERMINALS + ")]\n" +
-      "      [-numInterstitialTerminals <quantity> (default=" + NUM_INTERSTITIAL_TERMINALS + ", if 0 resort to non-interstitial terminals)]\n" +      
-      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +      
+      "      [-numInterstitialTerminals <quantity> (default=" + NUM_INTERSTITIAL_TERMINALS + ", if 0 resort to non-interstitial terminals)]\n" +
+      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-minProductionRightHandSideLength <quantity> (default=" + MIN_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
@@ -493,7 +493,7 @@ public class Causations
                System.exit(1);
             }
             continue;
-         }         
+         }
          if (args[i].equals("-maxInterstitialTerminalSequence"))
          {
             i++;
@@ -519,7 +519,7 @@ public class Causations
                System.exit(1);
             }
             continue;
-         }         
+         }
          if (args[i].equals("-minProductionRightHandSideLength"))
          {
             i++;
@@ -1299,7 +1299,9 @@ public class Causations
       }
       int[] durationAccums = new int[maxTier + 1];
       int[] durationCounts = new int[maxTier + 1];
-      for (int i = 0; i <= maxTier; i++)
+      durationAccums[0]    = 1;
+      durationCounts[0]    = 1;
+      for (int i = 1; i <= maxTier; i++)
       {
          durationAccums[i] = 0;
          durationCounts[i] = 0;
@@ -1322,20 +1324,23 @@ public class Causations
                {
                   ((NonterminalCausation)causation).print();
                }
-               int root_min               = spanCausation(causation, 0);
-               int root_expected          = spanCausation(causation, 1);
-               int root_max               = spanCausation(causation, 2);
-               int tier = getTier(causation);
+               int root_min      = spanCausation(causation, 0);
+               int root_expected = spanCausation(causation, 1);
+               int root_max      = spanCausation(causation, 2);
+               int tier          = getTier(causation);
                if (FEATURE_VALUE_DURATION_TYPE.equals("minimum"))
                {
-            	   durationAccums[tier] += root_min;
-               } else if (FEATURE_VALUE_DURATION_TYPE.equals("expected"))
-               {
-            	   durationAccums[tier] += root_expected;         	   
-               } else {
-            	   durationAccums[tier] += root_max;           	   
+                  durationAccums[tier] += root_min;
                }
-               durationCounts[tier]++;               
+               else if (FEATURE_VALUE_DURATION_TYPE.equals("expected"))
+               {
+                  durationAccums[tier] += root_expected;
+               }
+               else
+               {
+                  durationAccums[tier] += root_max;
+               }
+               durationCounts[tier]++;
                NonterminalCausation root  = (NonterminalCausation)causation;
                Causation            cause = root.children.get(0);
                int       cause_min        = spanCausation(cause, 0);
@@ -1354,11 +1359,19 @@ public class Causations
             }
          }
       }
+      if (VERBOSE)
+      {
+         System.out.println("feature value durations:");
+      }
       for (int i = 0; i <= maxTier; i++)
       {
-    	 int duration = (int)((float)durationAccums[i] / (float)durationCounts[i]);
+         int duration = (int)((float)durationAccums[i] / (float)durationCounts[i]);
          featureValueDurations.add(duration);
-      }      
+         if (VERBOSE)
+         {
+            System.out.println("tier=" + i + ", duration=" + duration);
+         }
+      }
    }
 
 
@@ -1404,18 +1417,20 @@ public class Causations
             {
                for (int n = 0; n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
-            	   if (NUM_INTERSTITIAL_TERMINALS == 0)
-            	   {
-            		   if (randomizer.nextInt(NUM_TERMINALS) == 0)
-            		   {
-            			   break;
-            		   }
-            	   } else {
-            		   if (randomizer.nextInt(NUM_INTERSTITIAL_TERMINALS + 1) == 0)
-            		   {
-            			   break;
-            		   }            		   
-            	   }
+                  if (NUM_INTERSTITIAL_TERMINALS == 0)
+                  {
+                     if (randomizer.nextInt(NUM_TERMINALS) == 0)
+                     {
+                        break;
+                     }
+                  }
+                  else
+                  {
+                     if (randomizer.nextInt(NUM_INTERSTITIAL_TERMINALS + 1) == 0)
+                     {
+                        break;
+                     }
+                  }
                   count++;
                }
             }
@@ -1508,16 +1523,20 @@ public class Causations
                int xid, yid;
                if (NUM_INTERSTITIAL_TERMINALS == 0)
                {
-                   xid = randomID.nextInt(NUM_TERMINALS);            	   
-               } else {
-                   xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                   if (xid == 0)
-                   {
-                	   xid = xcausation.id;
-                   } else {
-                	   xid += (NUM_TERMINALS - 1);
-                   }
-               }               
+                  xid = randomID.nextInt(NUM_TERMINALS);
+               }
+               else
+               {
+                  xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                  if (xid == 0)
+                  {
+                     xid = xcausation.id;
+                  }
+                  else
+                  {
+                     xid += (NUM_TERMINALS - 1);
+                  }
+               }
                for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   ArrayList<Float>  X_train_step     = new ArrayList<Float>();
@@ -1525,16 +1544,20 @@ public class Causations
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
                   if (NUM_INTERSTITIAL_TERMINALS == 0)
                   {
-                      yid = randomID.nextInt(NUM_TERMINALS);            	   
-                  } else {
-                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                      if (yid == 0)
-                      {
-                   	   yid = xcausation.id;
-                      } else {
-                   	   yid += (NUM_TERMINALS - 1);
-                      }
-                  }                            
+                     yid = randomID.nextInt(NUM_TERMINALS);
+                  }
+                  else
+                  {
+                     yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                     if (yid == 0)
+                     {
+                        yid = xcausation.id;
+                     }
+                     else
+                     {
+                        yid += (NUM_TERMINALS - 1);
+                     }
+                  }
                   TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
@@ -1676,19 +1699,23 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-            	int xid, yid;
-                if (NUM_INTERSTITIAL_TERMINALS == 0)
-                {
-                    xid = randomID.nextInt(NUM_TERMINALS);            	   
-                } else {
-                    xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                    if (xid == 0)
-                    {
-                 	   xid = xcausation.id;
-                    } else {
-                 	   xid += (NUM_TERMINALS - 1);
-                    }
-                }           
+               int xid, yid;
+               if (NUM_INTERSTITIAL_TERMINALS == 0)
+               {
+                  xid = randomID.nextInt(NUM_TERMINALS);
+               }
+               else
+               {
+                  xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                  if (xid == 0)
+                  {
+                     xid = xcausation.id;
+                  }
+                  else
+                  {
+                     xid += (NUM_TERMINALS - 1);
+                  }
+               }
                for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   ArrayList<Float>  X_test_step      = new ArrayList<Float>();
@@ -1696,16 +1723,20 @@ public class Causations
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
                   if (NUM_INTERSTITIAL_TERMINALS == 0)
                   {
-                      yid = randomID.nextInt(NUM_TERMINALS);            	   
-                  } else {
-                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                      if (yid == 0)
-                      {
-                   	   yid = xcausation.id;
-                      } else {
-                   	   yid += (NUM_TERMINALS - 1);
-                      }
-                  }                          
+                     yid = randomID.nextInt(NUM_TERMINALS);
+                  }
+                  else
+                  {
+                     yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                     if (yid == 0)
+                     {
+                        yid = xcausation.id;
+                     }
+                     else
+                     {
+                        yid += (NUM_TERMINALS - 1);
+                     }
+                  }
                   TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
@@ -2041,34 +2072,42 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-                int xid, yid;
-                if (NUM_INTERSTITIAL_TERMINALS == 0)
-                {
-                    xid = randomID.nextInt(NUM_TERMINALS);            	   
-                } else {
-                    xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                    if (xid == 0)
-                    {
-                 	   xid = xcausation.id;
-                    } else {
-                 	   xid += (NUM_TERMINALS - 1);
-                    }
-                }           
+               int xid, yid;
+               if (NUM_INTERSTITIAL_TERMINALS == 0)
+               {
+                  xid = randomID.nextInt(NUM_TERMINALS);
+               }
+               else
+               {
+                  xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                  if (xid == 0)
+                  {
+                     xid = xcausation.id;
+                  }
+                  else
+                  {
+                     xid += (NUM_TERMINALS - 1);
+                  }
+               }
                for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
                   if (NUM_INTERSTITIAL_TERMINALS == 0)
                   {
-                      yid = randomID.nextInt(NUM_TERMINALS);            	   
-                  } else {
-                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                      if (yid == 0)
-                      {
-                   	   yid = xcausation.id;
-                      } else {
-                   	   yid += (NUM_TERMINALS - 1);
-                      }
-                  }           
+                     yid = randomID.nextInt(NUM_TERMINALS);
+                  }
+                  else
+                  {
+                     yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                     if (yid == 0)
+                     {
+                        yid = xcausation.id;
+                     }
+                     else
+                     {
+                        yid += (NUM_TERMINALS - 1);
+                     }
+                  }
                   TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
@@ -2174,34 +2213,42 @@ public class Causations
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-                int xid, yid;
-                if (NUM_INTERSTITIAL_TERMINALS == 0)
-                {
-                    xid = randomID.nextInt(NUM_TERMINALS);            	   
-                } else {
-                    xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                    if (xid == 0)
-                    {
-                 	   xid = xcausation.id;
-                    } else {
-                 	   xid += (NUM_TERMINALS - 1);
-                    }
-                }           
+               int xid, yid;
+               if (NUM_INTERSTITIAL_TERMINALS == 0)
+               {
+                  xid = randomID.nextInt(NUM_TERMINALS);
+               }
+               else
+               {
+                  xid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                  if (xid == 0)
+                  {
+                     xid = xcausation.id;
+                  }
+                  else
+                  {
+                     xid += (NUM_TERMINALS - 1);
+                  }
+               }
                for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
                   TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
                   if (NUM_INTERSTITIAL_TERMINALS == 0)
                   {
-                      yid = randomID.nextInt(NUM_TERMINALS);            	   
-                  } else {
-                      yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
-                      if (yid == 0)
-                      {
-                   	   yid = xcausation.id;
-                      } else {
-                   	   yid += (NUM_TERMINALS - 1);
-                      }
-                  }           
+                     yid = randomID.nextInt(NUM_TERMINALS);
+                  }
+                  else
+                  {
+                     yid = randomID.nextInt(NUM_INTERSTITIAL_TERMINALS + 1);
+                     if (yid == 0)
+                     {
+                        yid = xcausation.id;
+                     }
+                     else
+                     {
+                        yid += (NUM_TERMINALS - 1);
+                     }
+                  }
                   TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
                   if (VERBOSE)
                   {
