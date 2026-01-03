@@ -1,0 +1,2992 @@
+hierarchies
+  hierarchy_0
+    nonterminal id=0
+      nonterminal id=2, child number=0
+        nonterminal id=3, child number=0
+          nonterminal id=4, child number=0
+            terminal id=8, features=39, child number=0
+            terminal id=11, features=30, child number=1
+          nonterminal id=5, child number=1
+            nonterminal id=7, child number=0
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+            nonterminal id=7, child number=1
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+        nonterminal id=1, child number=1
+          nonterminal id=9, child number=0
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+          nonterminal id=9, child number=1
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+      nonterminal id=2, child number=1
+        nonterminal id=3, child number=0
+          nonterminal id=4, child number=0
+            terminal id=8, features=39, child number=0
+            terminal id=11, features=30, child number=1
+          nonterminal id=5, child number=1
+            nonterminal id=7, child number=0
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+            nonterminal id=7, child number=1
+              terminal id=2, features=37, child number=0
+              terminal id=7, features=39, child number=1
+        nonterminal id=1, child number=1
+          nonterminal id=9, child number=0
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+          nonterminal id=9, child number=1
+            nonterminal id=5, child number=0
+              nonterminal id=7, child number=0
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+              nonterminal id=7, child number=1
+                terminal id=2, features=37, child number=0
+                terminal id=7, features=39, child number=1
+            nonterminal id=6, child number=1
+              nonterminal id=4, child number=0
+                terminal id=8, features=39, child number=0
+                terminal id=11, features=30, child number=1
+              nonterminal id=3, child number=1
+                nonterminal id=4, child number=0
+                  terminal id=8, features=39, child number=0
+                  terminal id=11, features=30, child number=1
+                nonterminal id=5, child number=1
+                  nonterminal id=7, child number=0
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+                  nonterminal id=7, child number=1
+                    terminal id=2, features=37, child number=0
+                    terminal id=7, features=39, child number=1
+causation paths:
+path=0, hierarchy=0, id=9
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+path=1, hierarchy=0, id=1
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=12
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=13
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=16
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=17
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=18
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=19
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=22
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=23
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+path=2, hierarchy=0, id=4
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+path=3, hierarchy=0, id=1
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=12
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=13
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=16
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=17
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=18
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=19
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=22
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=23
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+path=4, hierarchy=0, id=6
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+step=2
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+step=3
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+step=4
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+step=5
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+step=6
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+step=7
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+path=5, hierarchy=0, id=5
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+path=6, hierarchy=0, id=0
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=4
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=5
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=0/2
+step=6
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=7
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=10
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=11
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=12
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=13
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=16
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=17
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=18
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=19
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=22
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=23
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=24
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=25
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=26
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=27
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=28
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=29
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=0/2
+step=30
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=31
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=32
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=33
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=34
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=35
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=2, child number=0/2
+nonterminal id=0, child number=1/2
+step=36
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=37
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=38
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=39
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=40
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=41
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=42
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=43
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=44
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=45
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=46
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=47
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=48
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=49
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=50
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=51
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=52
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=53
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=54
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=55
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=56
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=57
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=58
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+step=59
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+nonterminal id=2, child number=1/2
+nonterminal id=0, child number=1/2
+path=7, hierarchy=0, id=1
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step=4
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=5
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=6
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=7
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=8
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=9
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=10
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=11
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step=12
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=13
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=14
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=15
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step=16
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=17
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=18
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=19
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=20
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=21
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=22
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step=23
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+path=8, hierarchy=0, id=5
+step=0
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+step=1
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+step=2
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+step=3
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+path=9, hierarchy=0, id=4
+step=0
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+step=1
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+analyze causations
+maximum tier=8
+hierarchy=0, id=0, parents:, children: 2 2
+min span=60, expected span=293, max span=360
+cause min span=30, expected span=145, max span=180
+effect min span=30, expected span=145, max span=180
+hierarchy=0, id=1, parents: 2, children: 9 9
+min span=24, expected span=117, max span=144
+cause min span=12, expected span=58, max span=72
+effect min span=12, expected span=59, max span=72
+hierarchy=0, id=2, parents: 0 0, children: 3 1
+min span=30, expected span=144, max span=180
+cause min span=6, expected span=30, max span=36
+effect min span=24, expected span=117, max span=144
+hierarchy=0, id=3, parents: 2 6, children: 4 5
+min span=6, expected span=29, max span=36
+cause min span=2, expected span=9, max span=12
+effect min span=4, expected span=19, max span=24
+hierarchy=0, id=4, parents: 6 3, children: 8 11
+min span=2, expected span=9, max span=12
+cause min span=1, expected span=1, max span=1
+effect min span=1, expected span=1, max span=1
+hierarchy=0, id=5, parents: 9 3, children: 7 7
+min span=4, expected span=18, max span=24
+cause min span=2, expected span=10, max span=12
+effect min span=2, expected span=9, max span=12
+hierarchy=0, id=6, parents: 9, children: 4 3
+min span=8, expected span=40, max span=48
+cause min span=2, expected span=9, max span=12
+effect min span=6, expected span=29, max span=36
+hierarchy=0, id=7, parents: 5 5, children: 2 7
+min span=2, expected span=9, max span=12
+cause min span=1, expected span=1, max span=1
+effect min span=1, expected span=1, max span=1
+hierarchy=0, id=9, parents: 1 1, children: 5 6
+min span=12, expected span=56, max span=72
+cause min span=4, expected span=18, max span=24
+effect min span=8, expected span=38, max span=48
+feature value durations:
+tier=0, duration=1
+tier=1, duration=12
+tier=2, duration=24
+tier=3, duration=36
+tier=4, duration=48
+tier=5, duration=72
+tier=6, duration=144
+tier=7, duration=180
+tier=8, duration=360
+export NN dataset
+training dataset:
+path: hierarchy=0/root id=9
+steps: 
+step 0: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step 1: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+step 2: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step 3: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+step 4: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step 5: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+step 6: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 7: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 8: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 9: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 10: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+step 11: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+data:
+X: *hierarchy=0, id=33, feature=16, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=0,tick=0
+contextFeature counts: t=0,1 t=1,0 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=28, feature=18, parents:
+contestFeature dup fcounts=1,tier=0,tick=1,begin=0/1,end=0/1
+feature=16, tier=0, begin=0, end=0, value=1.0, age=1
+feature=16, tier=0, begin=1, end=1, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,0 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=28, feature=18, parents:
+y: hierarchy=0, id=26, feature=18, parents:
+contextFeature tier=0,sources=0,tick=2
+contextFeature counts: t=0,1 t=1,0 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=26, feature=18, parents:
+y: hierarchy=0, id=23, feature=17, parents:
+contestFeature dup fcounts=2,tier=0,tick=3,begin=2/3,end=2/3
+feature=18, tier=0, begin=2, end=2, value=1.0, age=1
+feature=18, tier=0, begin=3, end=3, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,0 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=23, feature=17, parents:
+y: hierarchy=0, id=28, feature=18, parents:
+contextFeature tier=0,sources=0,tick=4
+contextFeature counts: t=0,1 t=1,0 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=28, feature=18, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=1,tick=5
+contextFeature tier=1,sources=0,tick=5
+contextFeature counts: t=0,2 t=1,1 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=6
+contextFeature tier=1,sources=0,tick=6
+contextFeature counts: t=0,2 t=1,2 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=33, feature=16, parents:
+contextFeature tier=0,sources=1,tick=7
+contextFeature tier=1,sources=1,tick=7
+contextFeature tier=2,sources=0,tick=7
+contextFeature counts: t=0,2 t=1,3 t=2,1 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=33, feature=16, parents:
+y: hierarchy=0, id=30, feature=17, parents:
+contextFeature tier=0,sources=1,tick=8
+contestFeature dup fcounts=3,tier=1,tick=8,begin=5/7,end=6/8
+feature=17, tier=1, begin=5, end=6, value=1.0, age=2
+feature=17, tier=1, begin=7, end=8, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,1 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=30, feature=17, parents:
+y: hierarchy=0, id=33, feature=16, parents:
+contextFeature tier=0,sources=1,tick=9
+contextFeature tier=1,sources=3,tick=9
+contextFeature tier=2,sources=0,tick=9
+contextFeature tier=2,sources=0,tick=9
+contextFeature tier=2,sources=0,tick=9
+contextFeature counts: t=0,2 t=1,4 t=2,4 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+contextFeature tier=0,sources=1,tick=10
+contextFeature tier=1,sources=3,tick=10
+contextFeature tier=2,sources=0,tick=10
+contextFeature tier=2,sources=0,tick=10
+contestFeature dup fcounts=4,tier=2,tick=10,begin=5/6,end=10/10
+feature=3, tier=2, begin=5, end=10, value=1.0, age=0
+feature=3, tier=2, begin=6, end=10, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,6 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=7, feature=39, parents: 7
+y: hierarchy=0, id=2, feature=37, parents: 7
+contextFeature tier=0,sources=1,tick=11
+contextFeature tier=1,sources=4,tick=11
+contextFeature tier=2,sources=0,tick=11
+contextFeature tier=2,sources=0,tick=11
+contestFeature dup fcounts=5,tier=2,tick=11,begin=5/6,end=11/11
+feature=32, tier=2, begin=5, end=11, value=1.0, age=0
+feature=32, tier=2, begin=6, end=11, value=1.0, age=0
+contestFeature dup fcounts=5,tier=2,tick=11,begin=5/8,end=11/11
+feature=32, tier=2, begin=5, end=11, value=1.0, age=0
+feature=32, tier=2, begin=8, end=11, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=22, feature=18, parents:
+y: hierarchy=0, id=23, feature=17, parents:
+contextFeature tier=0,sources=1,tick=12
+contestFeature dup fcounts=6,tier=1,tick=12,begin=4/11,end=5/12
+feature=4, tier=1, begin=4, end=5, value=1.0, age=7
+feature=4, tier=1, begin=11, end=12, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=23, feature=17, parents:
+y: hierarchy=0, id=24, feature=17, parents:
+contextFeature tier=0,sources=1,tick=13
+contestFeature dup fcounts=7,tier=1,tick=13,begin=8/12,end=9/13
+feature=15, tier=1, begin=8, end=9, value=1.0, age=4
+feature=15, tier=1, begin=12, end=13, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=24, feature=17, parents:
+y: hierarchy=0, id=21, feature=18, parents:
+contestFeature dup fcounts=7,tier=0,tick=14,begin=13/14,end=13/14
+feature=17, tier=0, begin=13, end=13, value=1.0, age=1
+feature=17, tier=0, begin=14, end=14, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=21, feature=18, parents:
+y: hierarchy=0, id=2, feature=37, parents:
+contextFeature tier=0,sources=0,tick=15
+contextFeature counts: t=0,1 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+contextFeature tier=0,sources=1,tick=16
+contestFeature dup fcounts=8,tier=1,tick=16,begin=9/15,end=10/16
+feature=19, tier=1, begin=9, end=10, value=1.0, age=6
+feature=19, tier=1, begin=15, end=16, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=7, feature=39, parents: 7
+y: hierarchy=0, id=8, feature=39, parents: 4
+contextFeature tier=0,sources=1,tick=17
+contestFeature dup fcounts=9,tier=1,tick=17,begin=10/16,end=11/17
+feature=35, tier=1, begin=10, end=11, value=1.0, age=6
+feature=35, tier=1, begin=16, end=17, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=1,tick=18
+contestFeature dup fcounts=10,tier=1,tick=18,begin=6/17,end=7/18
+feature=28, tier=1, begin=6, end=7, value=1.0, age=11
+feature=28, tier=1, begin=17, end=18, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=35, feature=12, parents:
+contextFeature tier=0,sources=1,tick=19
+contextFeature tier=1,sources=4,tick=19
+contextFeature tier=2,sources=0,tick=19
+contestFeature dup fcounts=10,tier=2,tick=19,begin=6/8,end=19/19
+feature=15, tier=2, begin=6, end=19, value=1.0, age=0
+feature=15, tier=2, begin=8, end=19, value=1.0, age=0
+contestFeature dup fcounts=10,tier=2,tick=19,begin=6/9,end=19/19
+feature=15, tier=2, begin=6, end=19, value=1.0, age=0
+feature=15, tier=2, begin=9, end=19, value=1.0, age=0
+contextFeature tier=2,sources=4,tick=19
+contextFeature tier=3,sources=0,tick=19
+contestFeature dup fcounts=10,tier=3,tick=19,begin=4/4,end=19/19
+feature=17, tier=3, begin=4, end=19, value=1.0, age=0
+feature=17, tier=3, begin=4, end=19, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=19
+contestFeature dup fcounts=10,tier=3,tick=19,begin=5/6,end=19/19
+feature=16, tier=3, begin=5, end=19, value=1.0, age=0
+feature=16, tier=3, begin=6, end=19, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,10 t=3,2 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=35, feature=12, parents:
+y: hierarchy=0, id=23, feature=17, parents:
+contextFeature tier=0,sources=1,tick=20
+contextFeature tier=1,sources=3,tick=20
+contextFeature tier=2,sources=1,tick=20
+contextFeature tier=3,sources=0,tick=20
+contestFeature dup fcounts=11,tier=2,tick=20,begin=8/9,end=20/20
+feature=52, tier=2, begin=8, end=20, value=1.0, age=0
+feature=52, tier=2, begin=9, end=20, value=1.0, age=0
+contestFeature dup fcounts=11,tier=2,tick=20,begin=8/10,end=20/20
+feature=52, tier=2, begin=8, end=20, value=1.0, age=0
+feature=52, tier=2, begin=10, end=20, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,11 t=3,3 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=23, feature=17, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=1,tick=21
+contestFeature dup fcounts=11,tier=1,tick=21,begin=8/20,end=9/21
+feature=15, tier=1, begin=8, end=9, value=1.0, age=12
+feature=15, tier=1, begin=20, end=21, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,11 t=3,3 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=38, feature=12, parents:
+contextFeature tier=0,sources=1,tick=22
+contestFeature dup fcounts=11,tier=1,tick=22,begin=18/21,end=19/22
+feature=17, tier=1, begin=18, end=19, value=1.0, age=3
+feature=17, tier=1, begin=21, end=22, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,11 t=3,3 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=38, feature=12, parents:
+y: hierarchy=0, id=32, feature=16, parents:
+contextFeature tier=0,sources=1,tick=23
+contestFeature dup fcounts=12,tier=1,tick=23,begin=19/22,end=20/23
+feature=46, tier=1, begin=19, end=20, value=1.0, age=3
+feature=46, tier=1, begin=22, end=23, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,11 t=3,3 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=32, feature=16, parents:
+y: hierarchy=0, id=8, feature=39, parents:
+contextFeature tier=0,sources=1,tick=24
+contextFeature tier=1,sources=2,tick=24
+contextFeature tier=2,sources=8,tick=24
+contextFeature tier=3,sources=0,tick=24
+contestFeature dup fcounts=12,tier=3,tick=24,begin=4/4,end=24/24
+feature=15, tier=3, begin=4, end=24, value=1.0, age=0
+feature=15, tier=3, begin=4, end=24, value=1.0, age=0
+contestFeature dup fcounts=12,tier=3,tick=24,begin=4/5,end=24/24
+feature=15, tier=3, begin=4, end=24, value=1.0, age=0
+feature=15, tier=3, begin=5, end=24, value=1.0, age=0
+contestFeature dup fcounts=12,tier=3,tick=24,begin=4/6,end=24/24
+feature=15, tier=3, begin=4, end=24, value=1.0, age=0
+feature=15, tier=3, begin=6, end=24, value=1.0, age=0
+contestFeature dup fcounts=12,tier=3,tick=24,begin=5/4,end=19/24
+feature=16, tier=3, begin=5, end=19, value=1.0, age=5
+feature=16, tier=3, begin=4, end=24, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=24
+contestFeature dup fcounts=12,tier=3,tick=24,begin=5/4,end=19/24
+feature=16, tier=3, begin=5, end=19, value=1.0, age=5
+feature=16, tier=3, begin=4, end=24, value=1.0, age=0
+contestFeature dup fcounts=12,tier=3,tick=24,begin=5/5,end=19/24
+feature=16, tier=3, begin=5, end=19, value=1.0, age=5
+feature=16, tier=3, begin=5, end=24, value=1.0, age=0
+contestFeature dup fcounts=12,tier=2,tick=24,begin=18/19,end=24/24
+feature=17, tier=2, begin=18, end=24, value=1.0, age=0
+feature=17, tier=2, begin=19, end=24, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,12 t=3,5 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=8, feature=39, parents: 4
+y: hierarchy=0, id=11, feature=30, parents: 4
+contextFeature tier=0,sources=1,tick=25
+contextFeature tier=1,sources=2,tick=25
+contestFeature dup fcounts=12,tier=2,tick=25,begin=5/18,end=11/25
+feature=32, tier=2, begin=5, end=11, value=1.0, age=14
+feature=32, tier=2, begin=18, end=25, value=1.0, age=0
+contestFeature dup fcounts=12,tier=2,tick=25,begin=5/19,end=11/25
+feature=32, tier=2, begin=5, end=11, value=1.0, age=14
+feature=32, tier=2, begin=19, end=25, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,12 t=3,5 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=11, feature=30, parents: 4
+y: hierarchy=0, id=8, feature=39, parents: 4
+contextFeature tier=0,sources=1,tick=26
+contextFeature tier=1,sources=3,tick=26
+contestFeature dup fcounts=13,tier=2,tick=26,begin=5/18,end=9/26
+feature=12, tier=2, begin=5, end=9, value=1.0, age=17
+feature=12, tier=2, begin=18, end=26, value=1.0, age=0
+contestFeature dup fcounts=14,tier=2,tick=26,begin=6/19,end=9/26
+feature=11, tier=2, begin=6, end=9, value=1.0, age=17
+feature=11, tier=2, begin=19, end=26, value=1.0, age=0
+contestFeature dup fcounts=14,tier=2,tick=26,begin=5/23,end=9/26
+feature=12, tier=2, begin=5, end=9, value=1.0, age=17
+feature=12, tier=2, begin=23, end=26, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,12 t=3,5 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=27
+contestFeature dup fcounts=14,tier=1,tick=27,begin=18/26,end=19/27
+feature=17, tier=1, begin=18, end=19, value=1.0, age=8
+feature=17, tier=1, begin=26, end=27, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,12 t=3,5 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contextFeature tier=0,sources=1,tick=28
+contextFeature tier=1,sources=5,tick=28
+contextFeature tier=2,sources=8,tick=28
+contestFeature dup fcounts=14,tier=3,tick=28,begin=5/4,end=24/28
+feature=3, tier=3, begin=5, end=24, value=1.0, age=4
+feature=3, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=14,tier=3,tick=28,begin=5/4,end=24/28
+feature=3, tier=3, begin=5, end=24, value=1.0, age=4
+feature=3, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=14,tier=3,tick=28,begin=5/5,end=24/28
+feature=3, tier=3, begin=5, end=24, value=1.0, age=4
+feature=3, tier=3, begin=5, end=28, value=1.0, age=0
+contestFeature dup fcounts=14,tier=3,tick=28,begin=5/6,end=24/28
+feature=3, tier=3, begin=5, end=24, value=1.0, age=4
+feature=3, tier=3, begin=6, end=28, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=28
+contextFeature tier=3,sources=0,tick=28
+contestFeature dup fcounts=14,tier=3,tick=28,begin=5/4,end=24/28
+feature=3, tier=3, begin=5, end=24, value=1.0, age=4
+feature=3, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=14,tier=3,tick=28,begin=5/5,end=24/28
+feature=3, tier=3, begin=5, end=24, value=1.0, age=4
+feature=3, tier=3, begin=5, end=28, value=1.0, age=0
+contextFeature tier=2,sources=8,tick=28
+contextFeature tier=3,sources=0,tick=28
+contestFeature dup fcounts=15,tier=3,tick=28,begin=4/4,end=28/28
+feature=44, tier=3, begin=4, end=28, value=1.0, age=0
+feature=44, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=15,tier=3,tick=28,begin=4/5,end=28/28
+feature=44, tier=3, begin=4, end=28, value=1.0, age=0
+feature=44, tier=3, begin=5, end=28, value=1.0, age=0
+contestFeature dup fcounts=15,tier=3,tick=28,begin=4/6,end=28/28
+feature=44, tier=3, begin=4, end=28, value=1.0, age=0
+feature=44, tier=3, begin=6, end=28, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=28
+contextFeature tier=3,sources=0,tick=28
+contestFeature dup fcounts=16,tier=3,tick=28,begin=4/4,end=28/28
+feature=39, tier=3, begin=4, end=28, value=1.0, age=0
+feature=39, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=16,tier=3,tick=28,begin=4/5,end=28/28
+feature=39, tier=3, begin=4, end=28, value=1.0, age=0
+feature=39, tier=3, begin=5, end=28, value=1.0, age=0
+contestFeature dup fcounts=16,tier=2,tick=28,begin=18/23,end=28/28
+feature=19, tier=2, begin=18, end=28, value=1.0, age=0
+feature=19, tier=2, begin=23, end=28, value=1.0, age=0
+contextFeature tier=2,sources=11,tick=28
+contextFeature tier=3,sources=0,tick=28
+contestFeature dup fcounts=16,tier=3,tick=28,begin=4/4,end=28/28
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=16,tier=3,tick=28,begin=4/5,end=28/28
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+feature=4, tier=3, begin=5, end=28, value=1.0, age=0
+contestFeature dup fcounts=16,tier=3,tick=28,begin=4/6,end=28/28
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+feature=4, tier=3, begin=6, end=28, value=1.0, age=0
+contestFeature dup fcounts=17,tier=3,tick=28,begin=5/4,end=28/28
+feature=5, tier=3, begin=5, end=28, value=1.0, age=0
+feature=5, tier=3, begin=4, end=28, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=28
+contestFeature dup fcounts=17,tier=3,tick=28,begin=5/4,end=28/28
+feature=5, tier=3, begin=5, end=28, value=1.0, age=0
+feature=5, tier=3, begin=4, end=28, value=1.0, age=0
+contestFeature dup fcounts=17,tier=3,tick=28,begin=4/5,end=28/28
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+feature=4, tier=3, begin=5, end=28, value=1.0, age=0
+contestFeature dup fcounts=17,tier=3,tick=28,begin=4/6,end=28/28
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+feature=4, tier=3, begin=6, end=28, value=1.0, age=0
+contestFeature dup fcounts=17,tier=3,tick=28,begin=4/10,end=28/28
+feature=4, tier=3, begin=4, end=28, value=1.0, age=0
+feature=4, tier=3, begin=10, end=28, value=1.0, age=0
+contestFeature dup fcounts=17,tier=3,tick=28,begin=5/8,end=28/28
+feature=5, tier=3, begin=5, end=28, value=1.0, age=0
+feature=5, tier=3, begin=8, end=28, value=1.0, age=0
+contestFeature dup fcounts=17,tier=2,tick=28,begin=18/25,end=28/28
+feature=19, tier=2, begin=18, end=28, value=1.0, age=0
+feature=19, tier=2, begin=25, end=28, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,15 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=39, feature=12, parents:
+y: hierarchy=0, id=8, feature=39, parents:
+contextFeature tier=0,sources=1,tick=29
+contestFeature dup fcounts=17,tier=1,tick=29,begin=19/28,end=20/29
+feature=46, tier=1, begin=19, end=20, value=1.0, age=9
+feature=46, tier=1, begin=28, end=29, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,15 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=8, feature=39, parents: 4
+y: hierarchy=0, id=11, feature=30, parents: 4
+contextFeature tier=0,sources=1,tick=30
+contestFeature dup fcounts=17,tier=1,tick=30,begin=24/29,end=25/30
+feature=35, tier=1, begin=24, end=25, value=1.0, age=5
+feature=35, tier=1, begin=29, end=30, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,15 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=11, feature=30, parents: 4
+y: hierarchy=0, id=2, feature=37, parents: 7
+contextFeature tier=0,sources=1,tick=31
+contestFeature dup fcounts=17,tier=1,tick=31,begin=25/30,end=26/31
+feature=15, tier=1, begin=25, end=26, value=1.0, age=5
+feature=15, tier=1, begin=30, end=31, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,15 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=24, feature=17, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contextFeature tier=0,sources=1,tick=32
+contestFeature dup fcounts=17,tier=1,tick=32,begin=23/31,end=24/32
+feature=16, tier=1, begin=23, end=24, value=1.0, age=8
+feature=16, tier=1, begin=31, end=32, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,14 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=39, feature=12, parents:
+y: hierarchy=0, id=34, feature=12, parents:
+contextFeature tier=0,sources=1,tick=33
+contextFeature tier=1,sources=4,tick=33
+contestFeature dup fcounts=17,tier=2,tick=33,begin=8/23,end=20/33
+feature=52, tier=2, begin=8, end=20, value=1.0, age=13
+feature=52, tier=2, begin=23, end=33, value=1.0, age=0
+contestFeature dup fcounts=17,tier=2,tick=33,begin=8/24,end=20/33
+feature=52, tier=2, begin=8, end=20, value=1.0, age=13
+feature=52, tier=2, begin=24, end=33, value=1.0, age=0
+contestFeature dup fcounts=17,tier=2,tick=33,begin=8/25,end=20/33
+feature=52, tier=2, begin=8, end=20, value=1.0, age=13
+feature=52, tier=2, begin=25, end=33, value=1.0, age=0
+contestFeature dup fcounts=17,tier=2,tick=33,begin=8/27,end=20/33
+feature=52, tier=2, begin=8, end=20, value=1.0, age=13
+feature=52, tier=2, begin=27, end=33, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,14 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=34, feature=12, parents:
+y: hierarchy=0, id=28, feature=18, parents:
+contestFeature dup fcounts=17,tier=0,tick=34,begin=33/34,end=33/34
+feature=12, tier=0, begin=33, end=33, value=1.0, age=1
+feature=12, tier=0, begin=34, end=34, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,5 t=2,11 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=28, feature=18, parents:
+y: hierarchy=0, id=37, feature=11, parents:
+contextFeature tier=0,sources=0,tick=35
+contextFeature counts: t=0,1 t=1,5 t=2,9 t=3,12 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=37, feature=11, parents:
+y: hierarchy=0, id=27, feature=18, parents:
+contextFeature tier=0,sources=1,tick=36
+contextFeature tier=1,sources=5,tick=36
+contextFeature tier=2,sources=3,tick=36
+contextFeature tier=3,sources=0,tick=36
+contestFeature dup fcounts=17,tier=3,tick=36,begin=6/10,end=36/36
+feature=19, tier=3, begin=6, end=36, value=1.0, age=0
+feature=19, tier=3, begin=10, end=36, value=1.0, age=0
+contestFeature dup fcounts=17,tier=3,tick=36,begin=6/8,end=36/36
+feature=19, tier=3, begin=6, end=36, value=1.0, age=0
+feature=19, tier=3, begin=8, end=36, value=1.0, age=0
+contextFeature tier=2,sources=3,tick=36
+contextFeature tier=3,sources=0,tick=36
+contestFeature dup fcounts=18,tier=3,tick=36,begin=6/10,end=36/36
+feature=7, tier=3, begin=6, end=36, value=1.0, age=0
+feature=7, tier=3, begin=10, end=36, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=36
+contestFeature dup fcounts=19,tier=2,tick=36,begin=23/25,end=36/36
+feature=42, tier=2, begin=23, end=36, value=1.0, age=0
+feature=42, tier=2, begin=25, end=36, value=1.0, age=0
+contestFeature dup fcounts=19,tier=2,tick=36,begin=23/27,end=36/36
+feature=42, tier=2, begin=23, end=36, value=1.0, age=0
+feature=42, tier=2, begin=27, end=36, value=1.0, age=0
+contestFeature dup fcounts=20,tier=2,tick=36,begin=24/32,end=36/36
+feature=43, tier=2, begin=24, end=36, value=1.0, age=0
+feature=43, tier=2, begin=32, end=36, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,9 t=3,15 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=27, feature=18, parents:
+y: hierarchy=0, id=30, feature=17, parents:
+contextFeature tier=0,sources=1,tick=37
+contextFeature tier=1,sources=4,tick=37
+contextFeature tier=2,sources=3,tick=37
+contextFeature tier=3,sources=0,tick=37
+contestFeature dup fcounts=21,tier=3,tick=37,begin=6/10,end=37/37
+feature=53, tier=3, begin=6, end=37, value=1.0, age=0
+feature=53, tier=3, begin=10, end=37, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=37
+contextFeature tier=2,sources=4,tick=37
+contextFeature tier=3,sources=0,tick=37
+contestFeature dup fcounts=21,tier=3,tick=37,begin=6/10,end=37/37
+feature=35, tier=3, begin=6, end=37, value=1.0, age=0
+feature=35, tier=3, begin=10, end=37, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=37
+contestFeature dup fcounts=21,tier=3,tick=37,begin=6/18,end=37/37
+feature=35, tier=3, begin=6, end=37, value=1.0, age=0
+feature=35, tier=3, begin=18, end=37, value=1.0, age=0
+contestFeature dup fcounts=21,tier=2,tick=37,begin=25/27,end=37/37
+feature=39, tier=2, begin=25, end=37, value=1.0, age=0
+feature=39, tier=2, begin=27, end=37, value=1.0, age=0
+contestFeature dup fcounts=22,tier=2,tick=37,begin=24/32,end=37/37
+feature=38, tier=2, begin=24, end=37, value=1.0, age=0
+feature=38, tier=2, begin=32, end=37, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,11 t=3,19 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=30, feature=17, parents:
+y: hierarchy=0, id=35, feature=12, parents:
+contextFeature tier=0,sources=1,tick=38
+contestFeature dup fcounts=22,tier=1,tick=38,begin=25/37,end=26/38
+feature=15, tier=1, begin=25, end=26, value=1.0, age=12
+feature=15, tier=1, begin=37, end=38, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,11 t=3,19 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=35, feature=12, parents:
+y: hierarchy=0, id=36, feature=11, parents:
+contextFeature tier=0,sources=1,tick=39
+contestFeature dup fcounts=22,tier=1,tick=39,begin=32/38,end=33/39
+feature=46, tier=1, begin=32, end=33, value=1.0, age=6
+feature=46, tier=1, begin=38, end=39, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,11 t=3,19 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=36, feature=11, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=40
+contestFeature dup fcounts=23,tier=1,tick=40,begin=35/39,end=36/40
+feature=6, tier=1, begin=35, end=36, value=1.0, age=4
+feature=6, tier=1, begin=39, end=40, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,11 t=3,19 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=29, feature=18, parents:
+contextFeature tier=0,sources=1,tick=41
+contextFeature tier=1,sources=3,tick=41
+contextFeature tier=2,sources=7,tick=41
+contextFeature tier=3,sources=0,tick=41
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/10,end=41/41
+feature=33, tier=3, begin=6, end=41, value=1.0, age=0
+feature=33, tier=3, begin=10, end=41, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=41
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/18,end=41/41
+feature=33, tier=3, begin=6, end=41, value=1.0, age=0
+feature=33, tier=3, begin=18, end=41, value=1.0, age=0
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/18,end=41/41
+feature=33, tier=3, begin=6, end=41, value=1.0, age=0
+feature=33, tier=3, begin=18, end=41, value=1.0, age=0
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/19,end=41/41
+feature=33, tier=3, begin=6, end=41, value=1.0, age=0
+feature=33, tier=3, begin=19, end=41, value=1.0, age=0
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/24,end=41/41
+feature=33, tier=3, begin=6, end=41, value=1.0, age=0
+feature=33, tier=3, begin=24, end=41, value=1.0, age=0
+contextFeature tier=2,sources=7,tick=41
+contextFeature tier=3,sources=0,tick=41
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/10,end=41/41
+feature=12, tier=3, begin=6, end=41, value=1.0, age=0
+feature=12, tier=3, begin=10, end=41, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=41
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/18,end=41/41
+feature=12, tier=3, begin=6, end=41, value=1.0, age=0
+feature=12, tier=3, begin=18, end=41, value=1.0, age=0
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/18,end=41/41
+feature=12, tier=3, begin=6, end=41, value=1.0, age=0
+feature=12, tier=3, begin=18, end=41, value=1.0, age=0
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/19,end=36/41
+feature=7, tier=3, begin=6, end=36, value=1.0, age=5
+feature=7, tier=3, begin=19, end=41, value=1.0, age=0
+contestFeature dup fcounts=24,tier=3,tick=41,begin=6/24,end=41/41
+feature=12, tier=3, begin=6, end=41, value=1.0, age=0
+feature=12, tier=3, begin=24, end=41, value=1.0, age=0
+contestFeature dup fcounts=25,tier=2,tick=41,begin=35/36,end=41/41
+feature=9, tier=2, begin=35, end=41, value=1.0, age=0
+feature=9, tier=2, begin=36, end=41, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,13 t=3,23 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+contextFeature tier=0,sources=1,tick=42
+contextFeature tier=1,sources=3,tick=42
+contextFeature tier=2,sources=7,tick=42
+contextFeature tier=3,sources=0,tick=42
+contestFeature dup fcounts=26,tier=3,tick=42,begin=6/10,end=42/42
+feature=22, tier=3, begin=6, end=42, value=1.0, age=0
+feature=22, tier=3, begin=10, end=42, value=1.0, age=0
+contestFeature dup fcounts=26,tier=3,tick=42,begin=5/8,end=19/42
+feature=16, tier=3, begin=5, end=19, value=1.0, age=23
+feature=16, tier=3, begin=8, end=42, value=1.0, age=0
+contestFeature dup fcounts=26,tier=3,tick=42,begin=6/18,end=42/42
+feature=22, tier=3, begin=6, end=42, value=1.0, age=0
+feature=22, tier=3, begin=18, end=42, value=1.0, age=0
+contestFeature dup fcounts=26,tier=3,tick=42,begin=6/18,end=42/42
+feature=22, tier=3, begin=6, end=42, value=1.0, age=0
+feature=22, tier=3, begin=18, end=42, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=42
+contestFeature dup fcounts=26,tier=3,tick=42,begin=6/24,end=42/42
+feature=22, tier=3, begin=6, end=42, value=1.0, age=0
+feature=22, tier=3, begin=24, end=42, value=1.0, age=0
+contextFeature tier=2,sources=7,tick=42
+contestFeature dup fcounts=27,tier=3,tick=42,begin=4/6,end=20/42
+feature=25, tier=3, begin=4, end=20, value=1.0, age=22
+feature=25, tier=3, begin=6, end=42, value=1.0, age=0
+contestFeature dup fcounts=27,tier=3,tick=42,begin=4/10,end=20/42
+feature=25, tier=3, begin=4, end=20, value=1.0, age=22
+feature=25, tier=3, begin=10, end=42, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=42
+contestFeature dup fcounts=27,tier=3,tick=42,begin=4/18,end=20/42
+feature=25, tier=3, begin=4, end=20, value=1.0, age=22
+feature=25, tier=3, begin=18, end=42, value=1.0, age=0
+contestFeature dup fcounts=27,tier=3,tick=42,begin=4/18,end=20/42
+feature=25, tier=3, begin=4, end=20, value=1.0, age=22
+feature=25, tier=3, begin=18, end=42, value=1.0, age=0
+contestFeature dup fcounts=27,tier=3,tick=42,begin=4/19,end=20/42
+feature=25, tier=3, begin=4, end=20, value=1.0, age=22
+feature=25, tier=3, begin=19, end=42, value=1.0, age=0
+contestFeature dup fcounts=27,tier=3,tick=42,begin=4/24,end=20/42
+feature=25, tier=3, begin=4, end=20, value=1.0, age=22
+feature=25, tier=3, begin=24, end=42, value=1.0, age=0
+contestFeature dup fcounts=28,tier=2,tick=42,begin=35/36,end=42/42
+feature=60, tier=2, begin=35, end=42, value=1.0, age=0
+feature=60, tier=2, begin=36, end=42, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,15 t=3,26 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=7, feature=39, parents: 7
+y: hierarchy=0, id=2, feature=37, parents: 7
+contextFeature tier=0,sources=1,tick=43
+contextFeature tier=1,sources=4,tick=43
+contextFeature tier=2,sources=7,tick=43
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/6,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=6, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/10,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=10, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/8,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=8, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/18,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=18, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/18,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=18, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/19,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=19, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=5/24,end=28/43
+feature=60, tier=3, begin=5, end=28, value=1.0, age=15
+feature=60, tier=3, begin=24, end=43, value=1.0, age=0
+contextFeature tier=2,sources=7,tick=43
+contextFeature tier=3,sources=0,tick=43
+contestFeature dup fcounts=28,tier=3,tick=43,begin=6/10,end=43/43
+feature=52, tier=3, begin=6, end=43, value=1.0, age=0
+feature=52, tier=3, begin=10, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=6/8,end=43/43
+feature=52, tier=3, begin=6, end=43, value=1.0, age=0
+feature=52, tier=3, begin=8, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=6/18,end=43/43
+feature=52, tier=3, begin=6, end=43, value=1.0, age=0
+feature=52, tier=3, begin=18, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=6/18,end=43/43
+feature=52, tier=3, begin=6, end=43, value=1.0, age=0
+feature=52, tier=3, begin=18, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=6/19,end=43/43
+feature=52, tier=3, begin=6, end=43, value=1.0, age=0
+feature=52, tier=3, begin=19, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=43,begin=6/24,end=43/43
+feature=52, tier=3, begin=6, end=43, value=1.0, age=0
+feature=52, tier=3, begin=24, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=2,tick=43,begin=35/36,end=43/43
+feature=46, tier=2, begin=35, end=43, value=1.0, age=0
+feature=46, tier=2, begin=36, end=43, value=1.0, age=0
+contestFeature dup fcounts=28,tier=2,tick=43,begin=32/40,end=43/43
+feature=32, tier=2, begin=32, end=43, value=1.0, age=0
+feature=32, tier=2, begin=40, end=43, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,17 t=3,27 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=25, feature=17, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=44
+contextFeature tier=1,sources=5,tick=44
+contestFeature dup fcounts=28,tier=2,tick=44,begin=18/32,end=24/44
+feature=17, tier=2, begin=18, end=24, value=1.0, age=20
+feature=17, tier=2, begin=32, end=44, value=1.0, age=0
+contextFeature tier=2,sources=5,tick=44
+contestFeature dup fcounts=28,tier=3,tick=44,begin=4/8,end=19/44
+feature=17, tier=3, begin=4, end=19, value=1.0, age=25
+feature=17, tier=3, begin=8, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=44,begin=4/18,end=19/44
+feature=17, tier=3, begin=4, end=19, value=1.0, age=25
+feature=17, tier=3, begin=18, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=44,begin=4/18,end=19/44
+feature=17, tier=3, begin=4, end=19, value=1.0, age=25
+feature=17, tier=3, begin=18, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=44,begin=4/19,end=19/44
+feature=17, tier=3, begin=4, end=19, value=1.0, age=25
+feature=17, tier=3, begin=19, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=3,tick=44,begin=4/24,end=19/44
+feature=17, tier=3, begin=4, end=19, value=1.0, age=25
+feature=17, tier=3, begin=24, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=2,tick=44,begin=35/36,end=44/44
+feature=16, tier=2, begin=35, end=44, value=1.0, age=0
+feature=16, tier=2, begin=36, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=2,tick=44,begin=18/40,end=24/44
+feature=17, tier=2, begin=18, end=24, value=1.0, age=20
+feature=17, tier=2, begin=40, end=44, value=1.0, age=0
+contestFeature dup fcounts=28,tier=2,tick=44,begin=18/41,end=24/44
+feature=17, tier=2, begin=18, end=24, value=1.0, age=20
+feature=17, tier=2, begin=41, end=44, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,7 t=2,16 t=3,27 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=35, feature=12, parents:
+contextFeature tier=0,sources=1,tick=45
+contextFeature tier=1,sources=6,tick=45
+contestFeature dup fcounts=29,tier=2,tick=45,begin=19/32,end=28/45
+feature=20, tier=2, begin=19, end=28, value=1.0, age=17
+feature=20, tier=2, begin=32, end=45, value=1.0, age=0
+contextFeature tier=2,sources=4,tick=45
+contestFeature dup fcounts=30,tier=3,tick=45,begin=4/18,end=28/45
+feature=62, tier=3, begin=4, end=28, value=1.0, age=17
+feature=62, tier=3, begin=18, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=3,tick=45,begin=4/18,end=28/45
+feature=62, tier=3, begin=4, end=28, value=1.0, age=17
+feature=62, tier=3, begin=18, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=3,tick=45,begin=4/19,end=28/45
+feature=62, tier=3, begin=4, end=28, value=1.0, age=17
+feature=62, tier=3, begin=19, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=3,tick=45,begin=4/24,end=28/45
+feature=62, tier=3, begin=4, end=28, value=1.0, age=17
+feature=62, tier=3, begin=24, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=2,tick=45,begin=35/36,end=45/45
+feature=25, tier=2, begin=35, end=45, value=1.0, age=0
+feature=25, tier=2, begin=36, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=2,tick=45,begin=18/40,end=28/45
+feature=19, tier=2, begin=18, end=28, value=1.0, age=17
+feature=19, tier=2, begin=40, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=2,tick=45,begin=18/41,end=28/45
+feature=19, tier=2, begin=18, end=28, value=1.0, age=17
+feature=19, tier=2, begin=41, end=45, value=1.0, age=0
+contestFeature dup fcounts=30,tier=2,tick=45,begin=24/42,end=28/45
+feature=18, tier=2, begin=24, end=28, value=1.0, age=17
+feature=18, tier=2, begin=42, end=45, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,8 t=2,16 t=3,27 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=35, feature=12, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contextFeature tier=0,sources=1,tick=46
+contextFeature tier=1,sources=6,tick=46
+contextFeature tier=2,sources=4,tick=46
+contextFeature tier=3,sources=0,tick=46
+contestFeature dup fcounts=31,tier=3,tick=46,begin=18/18,end=46/46
+feature=37, tier=3, begin=18, end=46, value=1.0, age=0
+feature=37, tier=3, begin=18, end=46, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=46
+contestFeature dup fcounts=31,tier=3,tick=46,begin=18/24,end=46/46
+feature=37, tier=3, begin=18, end=46, value=1.0, age=0
+feature=37, tier=3, begin=24, end=46, value=1.0, age=0
+contestFeature dup fcounts=31,tier=2,tick=46,begin=35/36,end=46/46
+feature=5, tier=2, begin=35, end=46, value=1.0, age=0
+feature=5, tier=2, begin=36, end=46, value=1.0, age=0
+contextFeature tier=2,sources=8,tick=46
+contestFeature dup fcounts=31,tier=3,tick=46,begin=4/18,end=20/46
+feature=25, tier=3, begin=4, end=20, value=1.0, age=26
+feature=25, tier=3, begin=18, end=46, value=1.0, age=0
+contestFeature dup fcounts=31,tier=3,tick=46,begin=4/18,end=20/46
+feature=25, tier=3, begin=4, end=20, value=1.0, age=26
+feature=25, tier=3, begin=18, end=46, value=1.0, age=0
+contestFeature dup fcounts=31,tier=3,tick=46,begin=4/19,end=20/46
+feature=25, tier=3, begin=4, end=20, value=1.0, age=26
+feature=25, tier=3, begin=19, end=46, value=1.0, age=0
+contestFeature dup fcounts=31,tier=3,tick=46,begin=4/24,end=20/46
+feature=25, tier=3, begin=4, end=20, value=1.0, age=26
+feature=25, tier=3, begin=24, end=46, value=1.0, age=0
+contextFeature tier=3,sources=3,tick=46
+contextFeature tier=4,sources=0,tick=46
+contestFeature dup fcounts=32,tier=4,tick=46,begin=4/5,end=46/46
+feature=49, tier=4, begin=4, end=46, value=1.0, age=0
+feature=49, tier=4, begin=5, end=46, value=1.0, age=0
+contestFeature dup fcounts=32,tier=4,tick=46,begin=4/4,end=46/46
+feature=49, tier=4, begin=4, end=46, value=1.0, age=0
+feature=49, tier=4, begin=4, end=46, value=1.0, age=0
+contestFeature dup fcounts=33,tier=3,tick=46,begin=23/24,end=46/46
+feature=24, tier=3, begin=23, end=46, value=1.0, age=0
+feature=24, tier=3, begin=24, end=46, value=1.0, age=0
+contestFeature dup fcounts=33,tier=3,tick=46,begin=23/24,end=46/46
+feature=24, tier=3, begin=23, end=46, value=1.0, age=0
+feature=24, tier=3, begin=24, end=46, value=1.0, age=0
+contestFeature dup fcounts=33,tier=3,tick=46,begin=23/25,end=46/46
+feature=24, tier=3, begin=23, end=46, value=1.0, age=0
+feature=24, tier=3, begin=25, end=46, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=46,begin=40/41,end=46/46
+feature=52, tier=2, begin=40, end=46, value=1.0, age=0
+feature=52, tier=2, begin=41, end=46, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=46,begin=40/42,end=46/46
+feature=52, tier=2, begin=40, end=46, value=1.0, age=0
+feature=52, tier=2, begin=42, end=46, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=46,begin=40/43,end=46/46
+feature=52, tier=2, begin=40, end=46, value=1.0, age=0
+feature=52, tier=2, begin=43, end=46, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,8 t=2,18 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=39, feature=12, parents:
+y: hierarchy=0, id=36, feature=11, parents:
+contestFeature dup fcounts=33,tier=0,tick=47,begin=46/47,end=46/47
+feature=12, tier=0, begin=46, end=46, value=1.0, age=1
+feature=12, tier=0, begin=47, end=47, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,8 t=2,18 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=36, feature=11, parents:
+y: hierarchy=0, id=22, feature=18, parents:
+contextFeature tier=0,sources=0,tick=48
+contextFeature counts: t=0,1 t=1,8 t=2,18 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=22, feature=18, parents:
+y: hierarchy=0, id=35, feature=12, parents:
+contextFeature tier=0,sources=1,tick=49
+contestFeature dup fcounts=33,tier=1,tick=49,begin=36/48,end=37/49
+feature=4, tier=1, begin=36, end=37, value=1.0, age=12
+feature=4, tier=1, begin=48, end=49, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,7 t=2,17 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=35, feature=12, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contextFeature tier=0,sources=1,tick=50
+contestFeature dup fcounts=33,tier=1,tick=50,begin=45/49,end=46/50
+feature=46, tier=1, begin=45, end=46, value=1.0, age=4
+feature=46, tier=1, begin=49, end=50, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,17 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=39, feature=12, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contestFeature dup fcounts=33,tier=0,tick=51,begin=50/51,end=50/51
+feature=12, tier=0, begin=50, end=50, value=1.0, age=1
+feature=12, tier=0, begin=51, end=51, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,6 t=2,17 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=39, feature=12, parents:
+y: hierarchy=0, id=35, feature=12, parents:
+contextFeature tier=0,sources=0,tick=52
+contextFeature counts: t=0,1 t=1,6 t=2,17 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=35, feature=12, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contestFeature dup fcounts=33,tier=0,tick=53,begin=52/53,end=52/53
+feature=12, tier=0, begin=52, end=52, value=1.0, age=1
+feature=12, tier=0, begin=53, end=53, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,6 t=2,14 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+contextFeature tier=0,sources=0,tick=54
+contextFeature counts: t=0,1 t=1,5 t=2,14 t=3,30 t=4,1 t=5,0 t=6,0 t=7,0 
+training path length=55
+path: hierarchy=0/root id=1
+steps: 
+step 0: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step 1: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step 2: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step 3: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=0/2
+step 4: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 5: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 6: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 7: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 8: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 9: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 10: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 11: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=0/2
+step 12: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step 13: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step 14: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step 15: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=9, child number=0/2
+nonterminal id=1, child number=1/2
+step 16: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 17: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=6, child number=0/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 18: 
+terminal id=8, features=39
+nonterminal id=4, child number=0/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 19: 
+terminal id=11, features=30
+nonterminal id=4, child number=1/2
+nonterminal id=3, child number=0/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 20: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 21: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=0/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 22: 
+terminal id=2, features=37
+nonterminal id=7, child number=0/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+step 23: 
+terminal id=7, features=39
+nonterminal id=7, child number=1/2
+nonterminal id=5, child number=1/2
+nonterminal id=3, child number=1/2
+nonterminal id=6, child number=1/2
+nonterminal id=9, child number=1/2
+nonterminal id=1, child number=1/2
+data:
+X: *hierarchy=0, id=21, feature=18, parents:
+y: hierarchy=0, id=38, feature=12, parents:
+contextFeature tier=0,sources=0,tick=55
+contextFeature counts: t=0,1 t=1,0 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=38, feature=12, parents:
+y: hierarchy=0, id=34, feature=12, parents:
+contextFeature tier=0,sources=1,tick=56
+contextFeature tier=1,sources=0,tick=56
+contextFeature counts: t=0,2 t=1,1 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=34, feature=12, parents:
+y: hierarchy=0, id=33, feature=16, parents:
+contestFeature dup fcounts=33,tier=0,tick=57,begin=56/57,end=56/57
+feature=12, tier=0, begin=56, end=56, value=1.0, age=1
+feature=12, tier=0, begin=57, end=57, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,1 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=33, feature=16, parents:
+y: hierarchy=0, id=27, feature=18, parents:
+contextFeature tier=0,sources=0,tick=58
+contextFeature counts: t=0,1 t=1,1 t=2,0 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=27, feature=18, parents:
+y: hierarchy=0, id=30, feature=17, parents:
+contextFeature tier=0,sources=1,tick=59
+contextFeature tier=1,sources=1,tick=59
+contextFeature tier=2,sources=0,tick=59
+contextFeature counts: t=0,2 t=1,2 t=2,1 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=30, feature=17, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=1,tick=60
+contextFeature tier=1,sources=1,tick=60
+contextFeature tier=2,sources=0,tick=60
+contextFeature counts: t=0,2 t=1,3 t=2,2 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=61
+contextFeature tier=1,sources=2,tick=61
+contextFeature tier=2,sources=0,tick=61
+contextFeature tier=2,sources=0,tick=61
+contextFeature counts: t=0,2 t=1,4 t=2,4 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=23, feature=17, parents:
+contextFeature tier=0,sources=1,tick=62
+contextFeature tier=1,sources=3,tick=62
+contextFeature tier=2,sources=0,tick=62
+contextFeature tier=2,sources=0,tick=62
+contextFeature tier=2,sources=0,tick=62
+contextFeature counts: t=0,2 t=1,5 t=2,7 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=23, feature=17, parents:
+y: hierarchy=0, id=38, feature=12, parents:
+contextFeature tier=0,sources=1,tick=63
+contestFeature dup fcounts=33,tier=1,tick=63,begin=59/62,end=60/63
+feature=15, tier=1, begin=59, end=60, value=1.0, age=3
+feature=15, tier=1, begin=62, end=63, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,7 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=38, feature=12, parents:
+y: hierarchy=0, id=28, feature=18, parents:
+contextFeature tier=0,sources=1,tick=64
+contestFeature dup fcounts=33,tier=1,tick=64,begin=55/63,end=56/64
+feature=46, tier=1, begin=55, end=56, value=1.0, age=8
+feature=46, tier=1, begin=63, end=64, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,7 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+contextFeature tier=0,sources=1,tick=65
+contextFeature tier=1,sources=5,tick=65
+contestFeature dup fcounts=33,tier=2,tick=65,begin=58/55,end=61/65
+feature=3, tier=2, begin=58, end=61, value=1.0, age=4
+feature=3, tier=2, begin=55, end=65, value=1.0, age=0
+contextFeature tier=2,sources=0,tick=65
+contestFeature dup fcounts=33,tier=2,tick=65,begin=58/59,end=61/65
+feature=3, tier=2, begin=58, end=61, value=1.0, age=4
+feature=3, tier=2, begin=59, end=65, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=65,begin=58/60,end=61/65
+feature=3, tier=2, begin=58, end=61, value=1.0, age=4
+feature=3, tier=2, begin=60, end=65, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=65,begin=58/61,end=61/65
+feature=3, tier=2, begin=58, end=61, value=1.0, age=4
+feature=3, tier=2, begin=61, end=65, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,8 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=7, feature=39, parents: 7
+y: hierarchy=0, id=2, feature=37, parents: 7
+contextFeature tier=0,sources=1,tick=66
+contextFeature tier=1,sources=5,tick=66
+contextFeature tier=2,sources=0,tick=66
+contextFeature tier=2,sources=0,tick=66
+contestFeature dup fcounts=33,tier=2,tick=66,begin=55/59,end=66/66
+feature=32, tier=2, begin=55, end=66, value=1.0, age=0
+feature=32, tier=2, begin=59, end=66, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=66,begin=55/60,end=66/66
+feature=32, tier=2, begin=55, end=66, value=1.0, age=0
+feature=32, tier=2, begin=60, end=66, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=66,begin=55/61,end=66/66
+feature=32, tier=2, begin=55, end=66, value=1.0, age=0
+feature=32, tier=2, begin=61, end=66, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,7 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=32, feature=16, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=67
+contestFeature dup fcounts=33,tier=1,tick=67,begin=60/66,end=61/67
+feature=17, tier=1, begin=60, end=61, value=1.0, age=6
+feature=17, tier=1, begin=66, end=67, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,7 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=20, feature=22, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=1,tick=68
+contestFeature dup fcounts=33,tier=1,tick=68,begin=61/67,end=62/68
+feature=28, tier=1, begin=61, end=62, value=1.0, age=6
+feature=28, tier=1, begin=67, end=68, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,7 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=30, feature=17, parents:
+contextFeature tier=0,sources=1,tick=69
+contestFeature dup fcounts=33,tier=1,tick=69,begin=60/68,end=61/69
+feature=17, tier=1, begin=60, end=61, value=1.0, age=8
+feature=17, tier=1, begin=68, end=69, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=30, feature=17, parents:
+y: hierarchy=0, id=30, feature=17, parents:
+contextFeature tier=0,sources=1,tick=70
+contestFeature dup fcounts=33,tier=1,tick=70,begin=59/69,end=60/70
+feature=15, tier=1, begin=59, end=60, value=1.0, age=10
+feature=15, tier=1, begin=69, end=70, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=30, feature=17, parents:
+y: hierarchy=0, id=28, feature=18, parents:
+contestFeature dup fcounts=33,tier=0,tick=71,begin=70/71,end=70/71
+feature=17, tier=0, begin=70, end=70, value=1.0, age=1
+feature=17, tier=0, begin=71, end=71, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,6 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=28, feature=18, parents:
+y: hierarchy=0, id=34, feature=12, parents:
+contextFeature tier=0,sources=0,tick=72
+contextFeature counts: t=0,1 t=1,5 t=2,10 t=3,0 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=34, feature=12, parents:
+y: hierarchy=0, id=36, feature=11, parents:
+contextFeature tier=0,sources=1,tick=73
+contextFeature tier=1,sources=4,tick=73
+contextFeature tier=2,sources=1,tick=73
+contextFeature tier=3,sources=0,tick=73
+contestFeature dup fcounts=33,tier=2,tick=73,begin=60/61,end=73/73
+feature=52, tier=2, begin=60, end=73, value=1.0, age=0
+feature=52, tier=2, begin=61, end=73, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=73,begin=60/64,end=73/73
+feature=52, tier=2, begin=60, end=73, value=1.0, age=0
+feature=52, tier=2, begin=64, end=73, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=73,begin=60/65,end=73/73
+feature=52, tier=2, begin=60, end=73, value=1.0, age=0
+feature=52, tier=2, begin=65, end=73, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,11 t=3,1 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=36, feature=11, parents:
+y: hierarchy=0, id=23, feature=17, parents:
+contextFeature tier=0,sources=1,tick=74
+contextFeature tier=1,sources=3,tick=74
+contextFeature tier=2,sources=2,tick=74
+contextFeature tier=3,sources=0,tick=74
+contestFeature dup fcounts=33,tier=3,tick=74,begin=55/55,end=74/74
+feature=19, tier=3, begin=55, end=74, value=1.0, age=0
+feature=19, tier=3, begin=55, end=74, value=1.0, age=0
+contestFeature dup fcounts=33,tier=2,tick=74,begin=61/64,end=74/74
+feature=42, tier=2, begin=61, end=74, value=1.0, age=0
+feature=42, tier=2, begin=64, end=74, value=1.0, age=0
+contextFeature tier=2,sources=7,tick=74
+contextFeature tier=3,sources=0,tick=74
+contextFeature tier=3,sources=0,tick=74
+contestFeature dup fcounts=33,tier=3,tick=74,begin=55/55,end=74/74
+feature=7, tier=3, begin=55, end=74, value=1.0, age=0
+feature=7, tier=3, begin=55, end=74, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=74
+contestFeature dup fcounts=33,tier=3,tick=74,begin=55/55,end=74/74
+feature=7, tier=3, begin=55, end=74, value=1.0, age=0
+feature=7, tier=3, begin=55, end=74, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=74
+contestFeature dup fcounts=33,tier=3,tick=74,begin=55/59,end=74/74
+feature=7, tier=3, begin=55, end=74, value=1.0, age=0
+feature=7, tier=3, begin=59, end=74, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,13 t=3,6 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=23, feature=17, parents:
+y: hierarchy=0, id=26, feature=18, parents:
+contextFeature tier=0,sources=1,tick=75
+contextFeature tier=1,sources=3,tick=75
+contextFeature tier=2,sources=7,tick=75
+contextFeature tier=3,sources=0,tick=75
+contestFeature dup fcounts=34,tier=3,tick=75,begin=55/55,end=75/75
+feature=45, tier=3, begin=55, end=75, value=1.0, age=0
+feature=45, tier=3, begin=55, end=75, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=75
+contextFeature tier=3,sources=0,tick=75
+contestFeature dup fcounts=34,tier=3,tick=75,begin=55/55,end=75/75
+feature=46, tier=3, begin=55, end=75, value=1.0, age=0
+feature=46, tier=3, begin=55, end=75, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=75,begin=55/58,end=75/75
+feature=46, tier=3, begin=55, end=75, value=1.0, age=0
+feature=46, tier=3, begin=58, end=75, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=75,begin=55/59,end=75/75
+feature=46, tier=3, begin=55, end=75, value=1.0, age=0
+feature=46, tier=3, begin=59, end=75, value=1.0, age=0
+contestFeature dup fcounts=34,tier=2,tick=75,begin=55/65,end=60/75
+feature=11, tier=2, begin=55, end=60, value=1.0, age=15
+feature=11, tier=2, begin=65, end=75, value=1.0, age=0
+contestFeature dup fcounts=34,tier=2,tick=75,begin=55/72,end=60/75
+feature=11, tier=2, begin=55, end=60, value=1.0, age=15
+feature=11, tier=2, begin=72, end=75, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,14 t=3,9 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=26, feature=18, parents:
+y: hierarchy=0, id=21, feature=18, parents:
+contextFeature tier=0,sources=1,tick=76
+contextFeature tier=1,sources=4,tick=76
+contextFeature tier=2,sources=7,tick=76
+contextFeature tier=3,sources=0,tick=76
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/55,end=76/76
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/55,end=76/76
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=76
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/55,end=76/76
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/58,end=76/76
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+feature=35, tier=3, begin=58, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/59,end=76/76
+feature=35, tier=3, begin=55, end=76, value=1.0, age=0
+feature=35, tier=3, begin=59, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=2,tick=76,begin=55/65,end=59/76
+feature=38, tier=2, begin=55, end=59, value=1.0, age=17
+feature=38, tier=2, begin=65, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=2,tick=76,begin=55/72,end=59/76
+feature=38, tier=2, begin=55, end=59, value=1.0, age=17
+feature=38, tier=2, begin=72, end=76, value=1.0, age=0
+contextFeature tier=2,sources=10,tick=76
+contextFeature tier=3,sources=0,tick=76
+contextFeature tier=3,sources=0,tick=76
+contextFeature tier=3,sources=0,tick=76
+contextFeature tier=3,sources=0,tick=76
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/55,end=76/76
+feature=49, tier=3, begin=55, end=76, value=1.0, age=0
+feature=49, tier=3, begin=55, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/58,end=76/76
+feature=49, tier=3, begin=55, end=76, value=1.0, age=0
+feature=49, tier=3, begin=58, end=76, value=1.0, age=0
+contestFeature dup fcounts=34,tier=3,tick=76,begin=55/59,end=76/76
+feature=49, tier=3, begin=55, end=76, value=1.0, age=0
+feature=49, tier=3, begin=59, end=76, value=1.0, age=0
+contestFeature dup fcounts=35,tier=3,tick=76,begin=55/58,end=76/76
+feature=50, tier=3, begin=55, end=76, value=1.0, age=0
+feature=50, tier=3, begin=58, end=76, value=1.0, age=0
+contestFeature dup fcounts=35,tier=3,tick=76,begin=55/55,end=76/76
+feature=49, tier=3, begin=55, end=76, value=1.0, age=0
+feature=49, tier=3, begin=55, end=76, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=76,begin=55/58,end=76/76
+feature=51, tier=3, begin=55, end=76, value=1.0, age=0
+feature=51, tier=3, begin=58, end=76, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,16 t=3,15 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=2, feature=37, parents: 7
+y: hierarchy=0, id=7, feature=39, parents: 7
+contextFeature tier=0,sources=1,tick=77
+contestFeature dup fcounts=36,tier=1,tick=77,begin=64/76,end=65/77
+feature=19, tier=1, begin=64, end=65, value=1.0, age=12
+feature=19, tier=1, begin=76, end=77, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,16 t=3,15 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=7, feature=39, parents: 7
+y: hierarchy=0, id=8, feature=39, parents: 4
+contextFeature tier=0,sources=1,tick=78
+contestFeature dup fcounts=36,tier=1,tick=78,begin=65/77,end=66/78
+feature=35, tier=1, begin=65, end=66, value=1.0, age=12
+feature=35, tier=1, begin=77, end=78, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,16 t=3,15 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=39, feature=12, parents:
+y: hierarchy=0, id=29, feature=18, parents:
+contextFeature tier=0,sources=1,tick=79
+contextFeature tier=1,sources=4,tick=79
+contextFeature tier=2,sources=10,tick=79
+contestFeature dup fcounts=36,tier=3,tick=79,begin=58/55,end=76/79
+feature=4, tier=3, begin=58, end=76, value=1.0, age=3
+feature=4, tier=3, begin=55, end=79, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=79
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/58,end=76/79
+feature=50, tier=3, begin=55, end=76, value=1.0, age=3
+feature=50, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/58,end=79/79
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+feature=9, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/59,end=79/79
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+feature=9, tier=3, begin=59, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=58/58,end=76/79
+feature=4, tier=3, begin=58, end=76, value=1.0, age=3
+feature=4, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+feature=9, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=58/58,end=76/79
+feature=4, tier=3, begin=58, end=76, value=1.0, age=3
+feature=4, tier=3, begin=58, end=79, value=1.0, age=0
+contextFeature tier=2,sources=10,tick=79
+contextFeature tier=3,sources=0,tick=79
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=79
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/58,end=79/79
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+feature=42, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/59,end=79/79
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+feature=42, tier=3, begin=59, end=79, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=79
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=79/79
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+feature=42, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=36,tier=3,tick=79,begin=58/58,end=79/79
+feature=43, tier=3, begin=58, end=79, value=1.0, age=0
+feature=43, tier=3, begin=58, end=79, value=1.0, age=0
+contextFeature tier=2,sources=11,tick=79
+contestFeature dup fcounts=36,tier=3,tick=79,begin=55/55,end=76/79
+feature=35, tier=3, begin=55, end=76, value=1.0, age=3
+feature=35, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=58/55,end=74/79
+feature=34, tier=3, begin=58, end=74, value=1.0, age=5
+feature=34, tier=3, begin=55, end=79, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=79
+contextFeature tier=3,sources=0,tick=79
+contestFeature dup fcounts=37,tier=3,tick=79,begin=55/55,end=79/79
+feature=33, tier=3, begin=55, end=79, value=1.0, age=0
+feature=33, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=55/58,end=79/79
+feature=33, tier=3, begin=55, end=79, value=1.0, age=0
+feature=33, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=55/59,end=79/79
+feature=33, tier=3, begin=55, end=79, value=1.0, age=0
+feature=33, tier=3, begin=59, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=58/58,end=74/79
+feature=34, tier=3, begin=58, end=74, value=1.0, age=5
+feature=34, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=55/55,end=76/79
+feature=35, tier=3, begin=55, end=76, value=1.0, age=3
+feature=35, tier=3, begin=55, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=55/58,end=76/79
+feature=35, tier=3, begin=55, end=76, value=1.0, age=3
+feature=35, tier=3, begin=58, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=79,begin=58/60,end=74/79
+feature=34, tier=3, begin=58, end=74, value=1.0, age=5
+feature=34, tier=3, begin=60, end=79, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=79,begin=73/75,end=79/79
+feature=51, tier=2, begin=73, end=79, value=1.0, age=0
+feature=51, tier=2, begin=75, end=79, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,19 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=29, feature=18, parents:
+y: hierarchy=0, id=8, feature=39, parents:
+contextFeature tier=0,sources=1,tick=80
+contestFeature dup fcounts=37,tier=1,tick=80,begin=75/79,end=76/80
+feature=4, tier=1, begin=75, end=76, value=1.0, age=4
+feature=4, tier=1, begin=79, end=80, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,19 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=8, feature=39, parents: 4
+y: hierarchy=0, id=11, feature=30, parents: 4
+contextFeature tier=0,sources=1,tick=81
+contextFeature tier=1,sources=5,tick=81
+contestFeature dup fcounts=37,tier=2,tick=81,begin=55/72,end=66/81
+feature=32, tier=2, begin=55, end=66, value=1.0, age=15
+feature=32, tier=2, begin=72, end=81, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=81,begin=58/73,end=66/81
+feature=46, tier=2, begin=58, end=66, value=1.0, age=15
+feature=46, tier=2, begin=73, end=81, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=81,begin=55/74,end=66/81
+feature=32, tier=2, begin=55, end=66, value=1.0, age=15
+feature=32, tier=2, begin=74, end=81, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=81,begin=58/75,end=66/81
+feature=46, tier=2, begin=58, end=66, value=1.0, age=15
+feature=46, tier=2, begin=75, end=81, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=81,begin=55/78,end=66/81
+feature=32, tier=2, begin=55, end=66, value=1.0, age=15
+feature=32, tier=2, begin=78, end=81, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,19 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=11, feature=30, parents: 4
+y: hierarchy=0, id=8, feature=39, parents: 4
+contextFeature tier=0,sources=1,tick=82
+contestFeature dup fcounts=37,tier=1,tick=82,begin=74/81,end=75/82
+feature=15, tier=1, begin=74, end=75, value=1.0, age=7
+feature=15, tier=1, begin=81, end=82, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,19 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=27, feature=18, parents:
+y: hierarchy=0, id=24, feature=17, parents:
+contextFeature tier=0,sources=1,tick=83
+contestFeature dup fcounts=37,tier=1,tick=83,begin=75/82,end=76/83
+feature=4, tier=1, begin=75, end=76, value=1.0, age=7
+feature=4, tier=1, begin=82, end=83, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,19 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=24, feature=17, parents:
+y: hierarchy=0, id=34, feature=12, parents:
+contextFeature tier=0,sources=1,tick=84
+contestFeature dup fcounts=37,tier=1,tick=84,begin=74/83,end=75/84
+feature=15, tier=1, begin=74, end=75, value=1.0, age=9
+feature=15, tier=1, begin=83, end=84, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,18 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=34, feature=12, parents:
+y: hierarchy=0, id=31, feature=16, parents:
+contextFeature tier=0,sources=1,tick=85
+contestFeature dup fcounts=37,tier=1,tick=85,begin=72/84,end=73/85
+feature=46, tier=1, begin=72, end=73, value=1.0, age=12
+feature=46, tier=1, begin=84, end=85, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,17 t=3,21 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=31, feature=16, parents:
+y: hierarchy=0, id=27, feature=18, parents:
+contextFeature tier=0,sources=1,tick=86
+contextFeature tier=1,sources=5,tick=86
+contextFeature tier=2,sources=6,tick=86
+contextFeature tier=3,sources=0,tick=86
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/58,end=86/86
+feature=17, tier=3, begin=55, end=86, value=1.0, age=0
+feature=17, tier=3, begin=58, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/59,end=86/86
+feature=17, tier=3, begin=55, end=86, value=1.0, age=0
+feature=17, tier=3, begin=59, end=86, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=86
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/55,end=86/86
+feature=17, tier=3, begin=55, end=86, value=1.0, age=0
+feature=17, tier=3, begin=55, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/58,end=86/86
+feature=17, tier=3, begin=55, end=86, value=1.0, age=0
+feature=17, tier=3, begin=58, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=86,begin=73/74,end=86/86
+feature=16, tier=2, begin=73, end=86, value=1.0, age=0
+feature=16, tier=2, begin=74, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=86,begin=73/75,end=86/86
+feature=16, tier=2, begin=73, end=86, value=1.0, age=0
+feature=16, tier=2, begin=75, end=86, value=1.0, age=0
+contextFeature tier=2,sources=12,tick=86
+contextFeature tier=3,sources=0,tick=86
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/58,end=86/86
+feature=15, tier=3, begin=55, end=86, value=1.0, age=0
+feature=15, tier=3, begin=58, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/59,end=86/86
+feature=15, tier=3, begin=55, end=86, value=1.0, age=0
+feature=15, tier=3, begin=59, end=86, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=86
+contestFeature dup fcounts=37,tier=3,tick=86,begin=58/55,end=86/86
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+feature=16, tier=3, begin=55, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=58/58,end=86/86
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=58/60,end=86/86
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+feature=16, tier=3, begin=60, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=58/61,end=86/86
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+feature=16, tier=3, begin=61, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=58/65,end=86/86
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+feature=16, tier=3, begin=65, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/64,end=86/86
+feature=15, tier=3, begin=55, end=86, value=1.0, age=0
+feature=15, tier=3, begin=64, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=58/64,end=86/86
+feature=16, tier=3, begin=58, end=86, value=1.0, age=0
+feature=16, tier=3, begin=64, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=3,tick=86,begin=55/73,end=86/86
+feature=15, tier=3, begin=55, end=86, value=1.0, age=0
+feature=15, tier=3, begin=73, end=86, value=1.0, age=0
+contestFeature dup fcounts=37,tier=2,tick=86,begin=78/80,end=86/86
+feature=17, tier=2, begin=78, end=86, value=1.0, age=0
+feature=17, tier=2, begin=80, end=86, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,6 t=2,17 t=3,25 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=27, feature=18, parents:
+y: hierarchy=0, id=21, feature=18, parents:
+contextFeature tier=0,sources=1,tick=87
+contestFeature dup fcounts=37,tier=1,tick=87,begin=75/86,end=76/87
+feature=4, tier=1, begin=75, end=76, value=1.0, age=11
+feature=4, tier=1, begin=86, end=87, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,5 t=2,14 t=3,25 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=21, feature=18, parents:
+y: hierarchy=0, id=26, feature=18, parents:
+contestFeature dup fcounts=37,tier=0,tick=88,begin=87/88,end=87/88
+feature=18, tier=0, begin=87, end=87, value=1.0, age=1
+feature=18, tier=0, begin=88, end=88, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,4 t=2,14 t=3,25 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=26, feature=18, parents:
+y: hierarchy=0, id=26, feature=18, parents:
+contextFeature tier=0,sources=0,tick=89
+contextFeature counts: t=0,1 t=1,3 t=2,14 t=3,25 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=26, feature=18, parents:
+y: hierarchy=0, id=38, feature=12, parents:
+contestFeature dup fcounts=37,tier=0,tick=90,begin=89/90,end=89/90
+feature=18, tier=0, begin=89, end=89, value=1.0, age=1
+feature=18, tier=0, begin=90, end=90, value=1.0, age=0
+contextFeature counts: t=0,1 t=1,3 t=2,13 t=3,25 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=38, feature=12, parents:
+y: hierarchy=0, id=21, feature=18, parents:
+contextFeature tier=0,sources=0,tick=91
+contextFeature counts: t=0,1 t=1,3 t=2,11 t=3,25 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=21, feature=18, parents:
+y: hierarchy=0, id=39, feature=12, parents:
+contextFeature tier=0,sources=1,tick=92
+contextFeature tier=1,sources=2,tick=92
+contextFeature tier=2,sources=9,tick=92
+contextFeature tier=3,sources=0,tick=92
+contestFeature dup fcounts=38,tier=3,tick=92,begin=60/61,end=92/92
+feature=54, tier=3, begin=60, end=92, value=1.0, age=0
+feature=54, tier=3, begin=61, end=92, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=92,begin=60/65,end=92/92
+feature=54, tier=3, begin=60, end=92, value=1.0, age=0
+feature=54, tier=3, begin=65, end=92, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=92
+contestFeature dup fcounts=38,tier=3,tick=92,begin=60/64,end=92/92
+feature=54, tier=3, begin=60, end=92, value=1.0, age=0
+feature=54, tier=3, begin=64, end=92, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=92,begin=64/73,end=92/92
+feature=53, tier=3, begin=64, end=92, value=1.0, age=0
+feature=53, tier=3, begin=73, end=92, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=92,begin=60/72,end=92/92
+feature=54, tier=3, begin=60, end=92, value=1.0, age=0
+feature=54, tier=3, begin=72, end=92, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=92,begin=60/73,end=92/92
+feature=54, tier=3, begin=60, end=92, value=1.0, age=0
+feature=54, tier=3, begin=73, end=92, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=92,begin=60/74,end=92/92
+feature=54, tier=3, begin=60, end=92, value=1.0, age=0
+feature=54, tier=3, begin=74, end=92, value=1.0, age=0
+contestFeature dup fcounts=38,tier=2,tick=92,begin=64/85,end=76/92
+feature=39, tier=2, begin=64, end=76, value=1.0, age=16
+feature=39, tier=2, begin=85, end=92, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,12 t=3,27 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=8, feature=39, parents: 4
+y: hierarchy=0, id=11, feature=30, parents: 4
+contextFeature tier=0,sources=1,tick=93
+contestFeature dup fcounts=38,tier=1,tick=93,begin=80/92,end=81/93
+feature=35, tier=1, begin=80, end=81, value=1.0, age=12
+feature=35, tier=1, begin=92, end=93, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,12 t=3,27 t=4,0 t=5,0 t=6,0 t=7,0 
+X: hierarchy=0, id=11, feature=30, parents: 4
+y: hierarchy=0, id=2, feature=37, parents: 7
+contextFeature tier=0,sources=1,tick=94
+contextFeature tier=1,sources=2,tick=94
+contestFeature dup fcounts=38,tier=2,tick=94,begin=64/85,end=75/94
+feature=12, tier=2, begin=64, end=75, value=1.0, age=19
+feature=12, tier=2, begin=85, end=94, value=1.0, age=0
+contextFeature tier=2,sources=11,tick=94
+contextFeature tier=3,sources=0,tick=94
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/61,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=61, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/65,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=65, end=94, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=94
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/64,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=64, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/73,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=73, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/72,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=72, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/73,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=73, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/74,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=74, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/73,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=73, end=94, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=94,begin=60/78,end=94/94
+feature=28, tier=3, begin=60, end=94, value=1.0, age=0
+feature=28, tier=3, begin=78, end=94, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,13 t=3,29 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=28, feature=18, parents:
+y: hierarchy=0, id=38, feature=12, parents:
+contextFeature tier=0,sources=1,tick=95
+contestFeature dup fcounts=38,tier=1,tick=95,begin=91/94,end=92/95
+feature=4, tier=1, begin=91, end=92, value=1.0, age=3
+feature=4, tier=1, begin=94, end=95, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,13 t=3,29 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=38, feature=12, parents:
+y: hierarchy=0, id=25, feature=17, parents:
+contextFeature tier=0,sources=1,tick=96
+contextFeature tier=1,sources=3,tick=96
+contestFeature dup fcounts=38,tier=2,tick=96,begin=60/85,end=73/96
+feature=52, tier=2, begin=60, end=73, value=1.0, age=23
+feature=52, tier=2, begin=85, end=96, value=1.0, age=0
+contextFeature tier=2,sources=11,tick=96
+contextFeature tier=3,sources=0,tick=96
+contestFeature dup fcounts=38,tier=3,tick=96,begin=60/61,end=96/96
+feature=37, tier=3, begin=60, end=96, value=1.0, age=0
+feature=37, tier=3, begin=61, end=96, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=96,begin=60/65,end=96/96
+feature=37, tier=3, begin=60, end=96, value=1.0, age=0
+feature=37, tier=3, begin=65, end=96, value=1.0, age=0
+contextFeature tier=3,sources=0,tick=96
+contextFeature tier=3,sources=0,tick=96
+contestFeature dup fcounts=38,tier=3,tick=96,begin=64/73,end=96/96
+feature=38, tier=3, begin=64, end=96, value=1.0, age=0
+feature=38, tier=3, begin=73, end=96, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=96,begin=60/72,end=96/96
+feature=37, tier=3, begin=60, end=96, value=1.0, age=0
+feature=37, tier=3, begin=72, end=96, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=96,begin=60/73,end=96/96
+feature=37, tier=3, begin=60, end=96, value=1.0, age=0
+feature=37, tier=3, begin=73, end=96, value=1.0, age=0
+contestFeature dup fcounts=38,tier=3,tick=96,begin=60/74,end=96/96
+feature=37, tier=3, begin=60, end=96, value=1.0, age=0
+feature=37, tier=3, begin=74, end=96, value=1.0, age=0
+contestFeature dup fcounts=39,tier=3,tick=96,begin=64/73,end=96/96
+feature=36, tier=3, begin=64, end=96, value=1.0, age=0
+feature=36, tier=3, begin=73, end=96, value=1.0, age=0
+contestFeature dup fcounts=39,tier=3,tick=96,begin=60/78,end=96/96
+feature=37, tier=3, begin=60, end=96, value=1.0, age=0
+feature=37, tier=3, begin=78, end=96, value=1.0, age=0
+contestFeature dup fcounts=39,tier=2,tick=96,begin=60/93,end=73/96
+feature=52, tier=2, begin=60, end=73, value=1.0, age=23
+feature=52, tier=2, begin=93, end=96, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,14 t=3,32 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=25, feature=17, parents:
+y: hierarchy=0, id=35, feature=12, parents:
+contextFeature tier=0,sources=1,tick=97
+contestFeature dup fcounts=39,tier=1,tick=97,begin=93/96,end=94/97
+feature=15, tier=1, begin=93, end=94, value=1.0, age=3
+feature=15, tier=1, begin=96, end=97, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,14 t=3,32 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=35, feature=12, parents:
+y: hierarchy=0, id=30, feature=17, parents:
+contextFeature tier=0,sources=1,tick=98
+contestFeature dup fcounts=39,tier=1,tick=98,begin=95/97,end=96/98
+feature=46, tier=1, begin=95, end=96, value=1.0, age=2
+feature=46, tier=1, begin=97, end=98, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,4 t=2,13 t=3,32 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=30, feature=17, parents:
+y: hierarchy=0, id=27, feature=18, parents:
+contextFeature tier=0,sources=1,tick=99
+contestFeature dup fcounts=39,tier=1,tick=99,begin=93/98,end=94/99
+feature=15, tier=1, begin=93, end=94, value=1.0, age=5
+feature=15, tier=1, begin=98, end=99, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,11 t=3,32 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=27, feature=18, parents:
+y: hierarchy=0, id=32, feature=16, parents:
+contextFeature tier=0,sources=1,tick=100
+contestFeature dup fcounts=39,tier=1,tick=100,begin=91/99,end=92/100
+feature=4, tier=1, begin=91, end=92, value=1.0, age=8
+feature=4, tier=1, begin=99, end=100, value=1.0, age=0
+contextFeature counts: t=0,2 t=1,3 t=2,10 t=3,32 t=4,0 t=5,0 t=6,0 t=7,0 
+X: *hierarchy=0, id=32, feature=16, parents:
+y: hierarchy=0, id=20, feature=22, parents:
+contextFeature tier=0,sources=1,tick=101

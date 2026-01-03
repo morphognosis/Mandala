@@ -32,8 +32,9 @@ public class Causations
    public static int   MAX_PRODUCTION_RHS_LENGTH          = 2;
    public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.5f;
 
-   // Dimensions.
+   // Sizes.
    public static int NUM_DIMENSIONS = 64;
+   public static int NUM_FEATURES   = 3;
 
    // Causation.
    public static class Causation
@@ -53,23 +54,51 @@ public class Causations
    // Terminal causation.
    public static class TerminalCausation extends Causation
    {
-      public int feature;
+      public ArrayList<Integer> features;
 
       public TerminalCausation(int hierarchy, int id)
       {
          super(hierarchy, id);
-         encodeFeature();
+         encodeFeatures();
       }
 
 
-      // Encode feature.
-      public void encodeFeature()
+      // Encode features.
+      public void encodeFeatures()
       {
          String seedString = id + "_";
-         long   seed       = seedString.hashCode();
-         Random r          = new Random(seed);
+         Random r          = new Random(seedString.hashCode());
 
-         feature = r.nextInt(NUM_DIMENSIONS);
+         features = new ArrayList<Integer>();
+         for (int i = 0; i < NUM_FEATURES; i++)
+         {
+            int j = 0;
+            int k = 100;
+            for ( ; j < k; j++)
+            {
+               int n = r.nextInt(NUM_DIMENSIONS);
+               int p = 0;
+               int q = features.size();
+               for ( ; p < q; p++)
+               {
+                  if (features.get(p) == n)
+                  {
+                     break;
+                  }
+               }
+               if (p == q)
+               {
+                  features.add(n);
+                  break;
+               }
+            }
+            if (j == k)
+            {
+               System.err.println("Cannot encode features");
+               System.exit(1);
+            }
+         }
+         Collections.sort(features);
       }
 
 
@@ -77,7 +106,15 @@ public class Causations
       {
          System.out.print("hierarchy=" + hierarchy);
          System.out.print(", id=" + id);
-         System.out.print(", feature=" + feature);
+         System.out.print(", features:");
+         for (int i = 0, j = features.size(); i < j; i++)
+         {
+            System.out.print(features.get(i));
+            if (i < j - 1)
+            {
+               System.out.print(",");
+            }
+         }
          System.out.print(", parents:");
          for (Causation p : parents)
          {
@@ -91,7 +128,15 @@ public class Causations
       {
          System.out.print(indent);
          System.out.print("terminal id=" + id);
-         System.out.print(", features=" + feature);
+         System.out.print(", features:");
+         for (int i = 0, j = features.size(); i < j; i++)
+         {
+            System.out.print(features.get(i));
+            if (i < j - 1)
+            {
+               System.out.print(",");
+            }
+         }
          if (childNum != null)
          {
             System.out.print(", child number=" + childNum);
@@ -235,28 +280,21 @@ public class Causations
    // Context features.
    public static class ContextFeature
    {
-      public int   feature;
-      public int   tier;
-      public int   begin;
-      public int   end;
-      public float value;
-      public int   age;
+      public ArrayList<Integer> features;
+      public int                tier;
+      public int                begin;
+      public int                end;
+      public float              value;
+      public int                age;
 
       // Constructors.
-      public ContextFeature(int feature, int tier, int begin, int end, float value)
+      public ContextFeature(ArrayList<Integer> features, int tier, int begin, int end, float value)
       {
-         this.feature = feature;
-         this.tier    = tier;
-         this.begin   = begin;
-         this.end     = end;
-         this.value   = value;
-         age          = 0;
-      }
-
-
-      public ContextFeature(int source1, int source2, int tier, int begin, int end, float value)
-      {
-         setFeature(source1, source2);
+         this.features = new ArrayList<Integer>();
+         for (int i = 0, j = features.size(); i < j; i++)
+         {
+            this.features.add(features.get(i));
+         }
          this.tier  = tier;
          this.begin = begin;
          this.end   = end;
@@ -265,13 +303,95 @@ public class Causations
       }
 
 
-      // Set feature from source features.
-      public void setFeature(int source1, int source2)
+      public ContextFeature(ArrayList<Integer> source1, ArrayList<Integer> source2,
+                            int tier, int begin, int end, float value)
       {
-         String s = source1 + "_" + source2;
-         Random r = new Random(s.hashCode());
+         encodeFeatures(source1, source2);
+         this.tier  = tier;
+         this.begin = begin;
+         this.end   = end;
+         this.value = value;
+         age        = 0;
+      }
 
-         feature = r.nextInt(NUM_DIMENSIONS);
+
+      // Encode features from source features.
+      public void encodeFeatures(ArrayList<Integer> source1, ArrayList<Integer> source2)
+      {
+         String s = "";
+
+         for (int i : source1)
+         {
+            s += i + "_";
+         }
+         for (int i : source2)
+         {
+            s += i + "_";
+         }
+         Random r = new Random(s.hashCode());
+         features = new ArrayList<Integer>();
+         for (int i = 0; i < NUM_FEATURES; i++)
+         {
+            int j = 0;
+            int k = 100;
+            for ( ; j < k; j++)
+            {
+               int n = r.nextInt(NUM_DIMENSIONS);
+               int p = 0;
+               int q = features.size();
+               for ( ; p < q; p++)
+               {
+                  if (features.get(p) == n)
+                  {
+                     break;
+                  }
+               }
+               if (p == q)
+               {
+                  features.add(n);
+                  break;
+               }
+            }
+            if (j == k)
+            {
+               System.err.println("Cannot encode features");
+               System.exit(1);
+            }
+         }
+         Collections.sort(features);
+      }
+
+
+      // Duplicate?
+      public boolean duplicate(ContextFeature contextFeature)
+      {
+         if (!featuresEqual(contextFeature))
+         {
+            return(false);
+         }
+         if ((begin != contextFeature.begin) || (end != contextFeature.end))
+         {
+            return(false);
+         }
+         return(true);
+      }
+
+
+      // Features are equal?
+      public boolean featuresEqual(ContextFeature contextFeatures)
+      {
+         if (features.size() != contextFeatures.features.size())
+         {
+            return(false);
+         }
+         for (int i : features)
+         {
+            if (!contextFeatures.features.contains(i))
+            {
+               return(false);
+            }
+         }
+         return(true);
       }
 
 
@@ -304,7 +424,16 @@ public class Causations
       // Print.
       public void print()
       {
-         System.out.println("feature=" + feature + ", tier=" + tier + ", begin=" + begin + ", end=" + end + ", value=" + value + ", age=" + age);
+         System.out.print("features:");
+         for (int i = 0, j = features.size(); i < j; i++)
+         {
+            System.out.print(features.get(i));
+            if (i < j - 1)
+            {
+               System.out.print(",");
+            }
+         }
+         System.out.println(", tier=" + tier + ", begin=" + begin + ", end=" + end + ", value=" + value + ", age=" + age);
       }
    };
    public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
@@ -364,6 +493,7 @@ public class Causations
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
+      "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
@@ -619,6 +749,32 @@ public class Causations
             if (NUM_DIMENSIONS < 1)
             {
                System.err.println("Invalid numDimensions option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-numFeatures"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid numFeatures option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               NUM_FEATURES = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid numFeatures option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (NUM_FEATURES < 1)
+            {
+               System.err.println("Invalid numFeatures option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -886,6 +1042,11 @@ public class Causations
          System.err.println(Usage);
          System.exit(1);
       }
+      if (NUM_DIMENSIONS < NUM_FEATURES)
+      {
+         System.err.println(Usage);
+         System.exit(1);
+      }
       if (!gotExportCausationsGraph && gotTreeFormat)
       {
          System.err.println(Usage);
@@ -1139,8 +1300,17 @@ public class Causations
       if (vertex instanceof TerminalCausation)
       {
          TerminalCausation terminal = (TerminalCausation)vertex;
-         String            feature  = "(" + terminal.feature + ")";
-         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + feature + "\", shape=square];");
+         String            features = "(";
+         for (int i = 0, j = terminal.features.size(); i < j; i++)
+         {
+            System.out.print(terminal.features.get(i));
+            if (i < j - 1)
+            {
+               System.out.print(",");
+            }
+         }
+         features += ")";
+         vertices.add("h" + hierarchy + "_t" + pathPrefix + vertex.id + " [label=\"" + vertex.id + features + "\", shape=square];");
       }
       else
       {
@@ -1572,7 +1742,7 @@ public class Causations
                      {
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (q == xrandomCausation.feature)
+                           if (xrandomCausation.features.contains(q))
                            {
                               X_train_step.add(1.0f);
                            }
@@ -1583,7 +1753,7 @@ public class Causations
                         }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (q == yrandomCausation.feature)
+                           if (yrandomCausation.features.contains(q))
                            {
                               y_train_step.add(1.0f);
                            }
@@ -1606,7 +1776,7 @@ public class Causations
                   X_train.add(X_train_step);
                   y_train.add(y_train_step);
                   pathLength++;
-                  updateContexts(xrandomCausation.feature, tick++);
+                  updateContexts(xrandomCausation.features, tick++);
                   xid = yid;
                }
             }
@@ -1625,7 +1795,7 @@ public class Causations
                {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == xterminalCausation.feature)
+                     if (xterminalCausation.features.contains(q))
                      {
                         X_train_step.add(1.0f);
                      }
@@ -1636,7 +1806,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == yterminalCausation.feature)
+                     if (yterminalCausation.features.contains(q))
                      {
                         y_train_step.add(1.0f);
                      }
@@ -1658,7 +1828,7 @@ public class Causations
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
-            updateContexts(xterminalCausation.feature, tick++);
+            updateContexts(xterminalCausation.features, tick++);
             pathLength++;
          }
          if (VERBOSE)
@@ -1751,7 +1921,7 @@ public class Causations
                      {
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (q == xrandomCausation.feature)
+                           if (xrandomCausation.features.contains(q))
                            {
                               X_test_step.add(1.0f);
                            }
@@ -1762,7 +1932,7 @@ public class Causations
                         }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (q == yterminalCausation.feature)
+                           if (yrandomCausation.features.contains(q))
                            {
                               y_test_step.add(1.0f);
                            }
@@ -1785,7 +1955,7 @@ public class Causations
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   pathLength++;
-                  updateContexts(xrandomCausation.feature, tick++);
+                  updateContexts(xrandomCausation.features, tick++);
                   xid = yid;
                }
             }
@@ -1804,7 +1974,7 @@ public class Causations
                {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == xterminalCausation.feature)
+                     if (xterminalCausation.features.contains(q))
                      {
                         X_test_step.add(1.0f);
                      }
@@ -1815,7 +1985,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == yterminalCausation.feature)
+                     if (yterminalCausation.features.contains(q))
                      {
                         y_test_step.add(1.0f);
                      }
@@ -1847,7 +2017,7 @@ public class Causations
                   y_predictable.add(tick);
                }
             }
-            updateContexts(xterminalCausation.feature, tick++);
+            updateContexts(xterminalCausation.features, tick++);
          }
          if (VERBOSE)
          {
@@ -1948,16 +2118,19 @@ public class Causations
    static ArrayList<Float> getTierContext(int tier)
    {
       ArrayList<Float> features = new ArrayList<Float>();
-      for (int q = 0; q < NUM_DIMENSIONS; q++)
+      for (int i = 0; i < NUM_DIMENSIONS; i++)
       {
          features.add(0.0f);
       }
       ArrayList<ContextFeature> context = contextFeatures.get(tier);
       for (ContextFeature contextFeature : context)
       {
-         if (features.get(contextFeature.feature) < contextFeature.value)
+         for (int i : contextFeature.features)
          {
-            features.set(contextFeature.feature, contextFeature.value);
+            if (features.get(i) < contextFeature.value)
+            {
+               features.set(i, contextFeature.value);
+            }
          }
       }
       return(features);
@@ -1965,7 +2138,7 @@ public class Causations
 
 
    // Update feature contexts.
-   static void updateContexts(int feature, int tick)
+   static void updateContexts(ArrayList<Integer> features, int tick)
    {
       // Attenuate.
       for (int i = 0, j = contextFeatures.size(); i < j; i++)
@@ -1983,7 +2156,7 @@ public class Causations
       }
 
       // Add contexts.
-      ContextFeature contextFeature = new ContextFeature(feature, 0, tick, tick, 1.0f);
+      ContextFeature contextFeature = new ContextFeature(features, 0, tick, tick, 1.0f);
       addContextFeature(contextFeature, 0);
    }
 
@@ -1994,8 +2167,7 @@ public class Causations
       ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
       for (ContextFeature feature : contexts)
       {
-         if ((feature.feature == contextFeature.feature) &&
-             (feature.begin == contextFeature.begin) && (feature.end == contextFeature.end))
+         if (feature.duplicate(contextFeature))
          {
             return;
          }
@@ -2012,7 +2184,7 @@ public class Causations
                for (int i = 0, j = sources.size(); i < j; i++)
                {
                   ContextFeature source = sources.get(i);
-                  if ((source.feature == feature.feature) && (source.value < feature.value))
+                  if ((source.featuresEqual(feature)) && (source.value < feature.value))
                   {
                      sources.set(i, feature);
                      replaced = true;
@@ -2028,7 +2200,7 @@ public class Causations
          for (ContextFeature feature : sources)
          {
             float          value = (contextFeature.value + feature.value) / 2.0f;
-            ContextFeature nextContextFeature = new ContextFeature(contextFeature.feature, feature.feature, tier + 1, feature.begin, contextFeature.end, value);
+            ContextFeature nextContextFeature = new ContextFeature(contextFeature.features, feature.features, tier + 1, feature.begin, contextFeature.end, value);
             addContextFeature(nextContextFeature, tier + 1);
          }
       }
@@ -2118,7 +2290,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == xrandomCausation.feature)
+                     if (xrandomCausation.features.contains(q))
                      {
                         X_train_path.add(1.0f);
                      }
@@ -2129,7 +2301,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == yrandomCausation.feature)
+                     if (yrandomCausation.features.contains(q))
                      {
                         y_train_path.add(1.0f);
                      }
@@ -2150,7 +2322,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (q == xterminalCausation.feature)
+               if (xterminalCausation.features.contains(q))
                {
                   X_train_path.add(1.0f);
                }
@@ -2161,7 +2333,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (q == yterminalCausation.feature)
+               if (yterminalCausation.features.contains(q))
                {
                   y_train_path.add(1.0f);
                }
@@ -2259,7 +2431,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == xrandomCausation.feature)
+                     if (xrandomCausation.features.contains(q))
                      {
                         X_test_path.add(1.0f);
                      }
@@ -2270,7 +2442,7 @@ public class Causations
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (q == yrandomCausation.feature)
+                     if (yrandomCausation.features.contains(q))
                      {
                         y_test_path.add(1.0f);
                      }
@@ -2292,7 +2464,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (q == xterminalCausation.feature)
+               if (xterminalCausation.features.contains(q))
                {
                   X_test_path.add(1.0f);
                }
@@ -2303,7 +2475,7 @@ public class Causations
             }
             for (int q = 0; q < NUM_DIMENSIONS; q++)
             {
-               if (q == yterminalCausation.feature)
+               if (yterminalCausation.features.contains(q))
                {
                   y_test_path.add(1.0f);
                }
