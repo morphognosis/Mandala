@@ -13,6 +13,7 @@ from keras.layers import Input, Dense
 import sys, getopt
 
 # parameters
+n_features = 3
 n_neurons = '128,128,128'
 n_epochs = 500
 
@@ -26,9 +27,9 @@ threshold = 0.1
 verbose = True
 
 # get options
-usage = 'causations_nn.py [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'causations_nn.py [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hn:e:f:q",["help","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hf:n:e:r:q",["help","features=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -36,17 +37,22 @@ for opt, arg in opts:
   if opt in ("-h", "--help"):
      print(usage)
      sys.exit(0)
-  if opt in ("-n", "--neurons"):
+  if opt in ("-f", "--features"):
+     n_features = int(arg)
+  elif opt in ("-n", "--neurons"):
      n_neurons = arg
   elif opt in ("-e", "--epochs"):
      n_epochs = int(arg)
-  elif opt in ("-f", "--results_filename"):
+  elif opt in ("-r", "--results_filename"):
      results_filename = arg
   elif opt in ("-q", "--quiet"):
      verbose = False
   else:
      print(usage)
      sys.exit(1)
+if n_features < 1:
+    print(usage, sep='')
+    sys.exit(1)
 n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
@@ -98,8 +104,19 @@ trainTotal = 0
 for i in range(y_train_shape[0]):
     yvals = y[i]
     pvals = predictions[i]
+    ymax = []
+    pmax = []
+    for j in range(n_features):
+        k = argmax(yvals)
+        ymax.append(k)
+        yvals[k] = 0.0
+        k = argmax(pvals)
+        pmax.append(k)
+        pvals[k] = 0.0
+    ymax.sort()
+    pmax.sort()
     trainTotal += 1
-    if argmax(yvals) != argmax(pvals):
+    if ymax != pmax:
         trainErrors += 1
 trainErrorPct = 0
 if trainTotal > 0:
@@ -117,8 +134,19 @@ for i in range(y_test_shape[0]):
     if i in y_test_predictable:
         yvals = y[i]
         pvals = predictions[i]
+        ymax = []
+        pmax = []
+        for j in range(n_features):
+            k = argmax(yvals)
+            ymax.append(k)
+            yvals[k] = 0.0
+            k = argmax(pvals)
+            pmax.append(k)
+            pvals[k] = 0.0
+        ymax.sort()
+        pmax.sort()
         testTotal += 1
-        if argmax(yvals) != argmax(pvals):
+        if ymax != pmax:
             testErrors += 1
 testErrorPct = 0
 if testTotal > 0:

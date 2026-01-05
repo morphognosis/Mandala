@@ -236,7 +236,10 @@ public class Causations
          }
       }
    };
-   public static int   NUM_CAUSATION_PATHS = 10;
+
+   // Number of causation paths.
+   public static int NUM_CAUSATION_PATHS = 10;
+
    public static class CausationPath
    {
       int hierarchy;
@@ -272,6 +275,12 @@ public class Causations
       }
    };
    public static ArrayList<CausationPath> causationPaths;
+
+   // Maximum context feature tier.
+   public static int MAX_CONTEXT_FEATURE_TIER = 10;
+
+   // Update interstitial contexts.
+   public static boolean UPDATE_INTERSTITIAL_CONTEXTS = false;
 
    // Feature value durations.
    public static String             FEATURE_VALUE_DURATION_TYPE = "maximum";
@@ -497,6 +506,8 @@ public class Causations
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
+      "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
+      "      [-updateInterstitialContexts \"true\" | \"false\" (default=" + UPDATE_INTERSTITIAL_CONTEXTS + ")]\n" +
       "      [-featureValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + FEATURE_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
@@ -837,6 +848,57 @@ public class Causations
             if (NUM_CAUSATION_PATHS < 0)
             {
                System.err.println("Invalid numCausationPaths option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-maxContextFeatureTier"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid maxContextFeatureTier option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               MAX_CONTEXT_FEATURE_TIER = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid maxContextFeatureTier option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (MAX_CONTEXT_FEATURE_TIER < -1)
+            {
+               System.err.println("Invalid maxContextFeatureTier option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-updateInterstitialContexts"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid updateInterstitialContexts option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (args[i].equals("true"))
+            {
+               UPDATE_INTERSTITIAL_CONTEXTS = true;
+            }
+            else if (args[i].equals("false"))
+            {
+               UPDATE_INTERSTITIAL_CONTEXTS = false;
+            }
+            else
+            {
+               System.err.println("Invalid updateInterstitialContexts option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1776,7 +1838,7 @@ public class Causations
                   X_train.add(X_train_step);
                   y_train.add(y_train_step);
                   pathLength++;
-                  updateContexts(xrandomCausation.features, tick++);
+                  updateContexts(xrandomCausation, tick++);
                   xid = yid;
                }
             }
@@ -1828,7 +1890,7 @@ public class Causations
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
-            updateContexts(xterminalCausation.features, tick++);
+            updateContexts(xterminalCausation, tick++);
             pathLength++;
          }
          if (VERBOSE)
@@ -1955,7 +2017,7 @@ public class Causations
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   pathLength++;
-                  updateContexts(xrandomCausation.features, tick++);
+                  updateContexts(xrandomCausation, tick++);
                   xid = yid;
                }
             }
@@ -2017,7 +2079,7 @@ public class Causations
                   y_predictable.add(tick);
                }
             }
-            updateContexts(xterminalCausation.features, tick++);
+            updateContexts(xterminalCausation, tick++);
          }
          if (VERBOSE)
          {
@@ -2138,7 +2200,7 @@ public class Causations
 
 
    // Update feature contexts.
-   static void updateContexts(ArrayList<Integer> features, int tick)
+   static void updateContexts(TerminalCausation terminalCausation, int tick)
    {
       // Attenuate.
       for (int i = 0, j = contextFeatures.size(); i < j; i++)
@@ -2156,14 +2218,21 @@ public class Causations
       }
 
       // Add contexts.
-      ContextFeature contextFeature = new ContextFeature(features, 0, tick, tick, 1.0f);
-      addContextFeature(contextFeature, 0);
+      if (UPDATE_INTERSTITIAL_CONTEXTS || (terminalCausation.id < NUM_TERMINALS))
+      {
+         ContextFeature contextFeature = new ContextFeature(terminalCausation.features, 0, tick, tick, 1.0f);
+         addContextFeature(contextFeature, 0);
+      }
    }
 
 
    // Recursively add context feature.
    static void addContextFeature(ContextFeature contextFeature, int tier)
    {
+      if (tier > MAX_CONTEXT_FEATURE_TIER)
+      {
+         return;
+      }
       ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
       for (ContextFeature feature : contexts)
       {
@@ -2670,6 +2739,8 @@ public class Causations
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
       commandList.add(NN_FILENAME);
+      commandList.add("--features");
+      commandList.add(NUM_FEATURES + "");
       commandList.add("--neurons");
       commandList.add(NN_NEURONS);
       commandList.add("--epochs");
@@ -2856,6 +2927,8 @@ public class Causations
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
       commandList.add(RNN_FILENAME);
+      commandList.add("--features");
+      commandList.add(NUM_FEATURES + "");
       commandList.add("--neurons");
       commandList.add(RNN_NEURONS);
       commandList.add("--epochs");

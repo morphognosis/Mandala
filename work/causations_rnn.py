@@ -5,6 +5,7 @@
 # results written to causations_rnn_results.json
 
 # Default parameters.
+n_features = 3
 n_neurons = '128'
 n_epochs = 500
 results_filename = 'causations_rnn_results.json'
@@ -18,9 +19,9 @@ import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import getopt
 import sys
-usage = 'usage: python causations_rnn.py [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'usage: python causations_rnn.py [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hn:e:f:q",["help","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hf:n:e:r:q",["help","features=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage, sep='')
   sys.exit(1)
@@ -28,17 +29,22 @@ for opt, arg in opts:
   if opt in ("-h", "--help"):
      print(usage, sep='')
      sys.exit(0)
-  if opt in ["-n", "--neurons"]:
+  if opt in ("-f", "--features"):
+     n_features = int(arg)
+  elif opt in ["-n", "--neurons"]:
      n_neurons = arg
   elif opt in ["-e", "--epochs"]:
      n_epochs = int(arg)
-  elif opt in ["-f", "--results_filename"]:
+  elif opt in ["-r", "--results_filename"]:
      results_filename = arg
   elif opt in ["-q", "--quiet"]:
      verbose = False
   else:
      print(usage, sep='')
      sys.exit(1)
+if n_features < 1:
+    print(usage, sep='')
+    sys.exit(1)     
 n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
@@ -95,15 +101,20 @@ for path in range(X_train_shape[0]):
     for step in range(X_train_shape[1]):
         yvals = y[path][step]
         pvals = predictions[path][step]
-        if argmax(yvals) != argmax(pvals):
-            trainErrors += 1
+        ymax = []
+        pmax = []
+        for j in range(n_features):
+            k = argmax(yvals)
+            ymax.append(k)
+            yvals[k] = 0.0
+            k = argmax(pvals)
+            pmax.append(k)
+            pvals[k] = 0.0
+        ymax.sort()
+        pmax.sort()
         trainTotal += 1
-for i in range(y_train_shape[0]):
-    yvals = y[i]
-    pvals = predictions[i]
-    trainTotal += 1
-    if argmax(yvals) != argmax(pvals):
-        trainErrors += 1
+        if ymax != pmax:
+            trainErrors += 1
 trainErrorPct = 0
 if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
@@ -121,9 +132,20 @@ for path in range(X_test_shape[0]):
         if step in y_test_predictable[path]:
             yvals = y[path][step]
             pvals = predictions[path][step]
-            if argmax(yvals) != argmax(pvals):
-                testErrors += 1
+            ymax = []
+            pmax = []
+            for j in range(n_features):
+                k = argmax(yvals)
+                ymax.append(k)
+                yvals[k] = 0.0
+                k = argmax(pvals)
+                pmax.append(k)
+                pvals[k] = 0.0
+            ymax.sort()
+            pmax.sort()
             testTotal += 1
+            if ymax != pmax:
+                testErrors += 1
 testErrorPct = 0
 if testTotal > 0:
     testErrorPct = (float(testErrors) / float(testTotal)) * 100.0
