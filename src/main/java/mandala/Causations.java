@@ -1365,10 +1365,10 @@ public class Causations
          String            features = "(";
          for (int i = 0, j = terminal.features.size(); i < j; i++)
          {
-            System.out.print(terminal.features.get(i));
+            features += terminal.features.get(i);
             if (i < j - 1)
             {
-               System.out.print(",");
+               features += ",";
             }
          }
          features += ")";
