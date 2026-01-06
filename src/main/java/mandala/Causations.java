@@ -845,7 +845,7 @@ public class Causations
                System.err.println(Usage);
                System.exit(1);
             }
-            if (NUM_CAUSATION_PATHS < 0)
+            if (NUM_CAUSATION_PATHS < 2)
             {
                System.err.println("Invalid numCausationPaths option");
                System.err.println(Usage);
