@@ -302,10 +302,10 @@ public class Causations
       // Constructors.
       public ContextFeature(TerminalCausation terminalCausation, int tick)
       {
-         this.features = new ArrayList<Integer>();
-         for (int i = 0, j = features.size(); i < j; i++)
+         features = new ArrayList<Integer>();
+         for (int i = 0, j = terminalCausation.features.size(); i < j; i++)
          {
-            this.features.add(terminalCausation.features.get(i));
+            features.add(terminalCausation.features.get(i));
          }
          tier  = 0;
          begin = end = tick;
