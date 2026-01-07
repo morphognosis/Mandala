@@ -295,32 +295,38 @@ public class Causations
       public int                end;
       public float              value;
       public int                age;
+      public TerminalCausation  terminalCausation;
+      public ContextFeature     subContext0;
+      public ContextFeature     subContext1;
 
       // Constructors.
-      public ContextFeature(ArrayList<Integer> features, int tier, int begin, int end, float value)
+      public ContextFeature(TerminalCausation terminalCausation, int tick)
       {
          this.features = new ArrayList<Integer>();
          for (int i = 0, j = features.size(); i < j; i++)
          {
-            this.features.add(features.get(i));
+            this.features.add(terminalCausation.features.get(i));
          }
-         this.tier  = tier;
-         this.begin = begin;
-         this.end   = end;
-         this.value = value;
-         age        = 0;
+         tier  = 0;
+         begin = end = tick;
+         value = 1.0f;
+         age   = 0;
+         this.terminalCausation = terminalCausation;
+         subContext0            = subContext1 = null;
       }
 
 
-      public ContextFeature(ArrayList<Integer> source1, ArrayList<Integer> source2,
-                            int tier, int begin, int end, float value)
+      public ContextFeature(ContextFeature subContext0, ContextFeature subContext1, int tier)
       {
-         encodeFeatures(source1, source2);
-         this.tier  = tier;
-         this.begin = begin;
-         this.end   = end;
-         this.value = value;
-         age        = 0;
+         encodeFeatures(subContext0.features, subContext1.features);
+         this.tier         = tier;
+         begin             = subContext0.begin;
+         end               = subContext1.end;
+         value             = (subContext0.value + subContext1.value) / 2.0f;
+         age               = 0;
+         terminalCausation = null;
+         this.subContext0  = subContext0;
+         this.subContext1  = subContext1;
       }
 
 
@@ -389,13 +395,19 @@ public class Causations
       // Features are equal?
       public boolean featuresEqual(ContextFeature contextFeatures)
       {
-         if (features.size() != contextFeatures.features.size())
+         return(featuresEqual(contextFeatures.features));
+      }
+
+
+      public boolean featuresEqual(ArrayList<Integer> otherFeatures)
+      {
+         if (features.size() != otherFeatures.size())
          {
             return(false);
          }
          for (int i : features)
          {
-            if (!contextFeatures.features.contains(i))
+            if (!otherFeatures.contains(i))
             {
                return(false);
             }
@@ -442,7 +454,23 @@ public class Causations
                System.out.print(",");
             }
          }
-         System.out.println(", tier=" + tier + ", begin=" + begin + ", end=" + end + ", value=" + value + ", age=" + age);
+         System.out.println(", tier=" + tier + ", begin=" + begin + ", end=" + end + ", value=" + value + ", age=" + age + ", terminals:" + terminalSequence());
+      }
+
+
+      // Recursively list terminal causation sequence.
+      public String terminalSequence()
+      {
+         if (terminalCausation != null)
+         {
+            return(terminalCausation.id + "");
+         }
+         else
+         {
+            String t0 = subContext0.terminalSequence();
+            String t1 = subContext1.terminalSequence();
+            return(t0 + "," + t1);
+         }
       }
    };
    public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
@@ -2220,7 +2248,7 @@ public class Causations
       // Add contexts.
       if (UPDATE_INTERSTITIAL_CONTEXTS || (terminalCausation.id < NUM_TERMINALS))
       {
-         ContextFeature contextFeature = new ContextFeature(terminalCausation.features, 0, tick, tick, 1.0f);
+         ContextFeature contextFeature = new ContextFeature(terminalCausation, tick);
          addContextFeature(contextFeature, 0);
       }
    }
@@ -2245,31 +2273,30 @@ public class Causations
       {
          contexts = contextFeatures.get(tier);
          ArrayList<ContextFeature> sources = new ArrayList<ContextFeature>();
-         for (ContextFeature feature : contexts)
+         for (ContextFeature context : contexts)
          {
-            if (contextFeature.begin > feature.end)
+            if (contextFeature.begin > context.end)
             {
                boolean replaced = false;
                for (int i = 0, j = sources.size(); i < j; i++)
                {
                   ContextFeature source = sources.get(i);
-                  if ((source.featuresEqual(feature)) && (source.value < feature.value))
+                  if ((source.featuresEqual(context)) && (source.value < context.value))
                   {
-                     sources.set(i, feature);
+                     sources.set(i, context);
                      replaced = true;
                      break;
                   }
                }
                if (!replaced)
                {
-                  sources.add(feature);
+                  sources.add(context);
                }
             }
          }
-         for (ContextFeature feature : sources)
+         for (ContextFeature context : sources)
          {
-            float          value = (contextFeature.value + feature.value) / 2.0f;
-            ContextFeature nextContextFeature = new ContextFeature(contextFeature.features, feature.features, tier + 1, feature.begin, contextFeature.end, value);
+            ContextFeature nextContextFeature = new ContextFeature(context, contextFeature, tier + 1);
             addContextFeature(nextContextFeature, tier + 1);
          }
       }
