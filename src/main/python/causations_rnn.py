@@ -44,7 +44,7 @@ for opt, arg in opts:
      sys.exit(1)
 if n_features < 1:
     print(usage, sep='')
-    sys.exit(1)     
+    sys.exit(1)
 n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
@@ -160,7 +160,7 @@ if verbose:
     print('')
 
 # Write results to file.
-with open(results_filename, 'w') as f:
+with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
     f.write('\"train_prediction_errors\":\"'+str(trainErrors)+'\",')
     f.write('\"train_total_predictions\":\"'+str(trainTotal)+'\",')

@@ -1348,6 +1348,7 @@ public class Causations
    {
       try
       {
+         System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
          printWriter.println("digraph causations {");
@@ -2122,9 +2123,9 @@ public class Causations
 
       try
       {
+         System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
-
          printWriter.println("X_train_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("X_train = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
@@ -2615,6 +2616,7 @@ public class Causations
 
       try
       {
+         System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
          printWriter.println("X_train_shape = [ " + numTrain + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");

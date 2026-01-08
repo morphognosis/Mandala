@@ -162,7 +162,7 @@ if verbose:
     print('')
 
 # write results to file.
-with open(results_filename, 'w') as f:
+with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
     f.write('\"train_prediction_errors\":\"'+str(trainErrors)+'\",')
     f.write('\"train_total_predictions\":\"'+str(trainTotal)+'\",')
