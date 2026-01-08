@@ -422,14 +422,18 @@ public class Causations
          if (featureValueDurations != null)
          {
             int duration = featureValueDurations.get(tier);
-            if (age == duration)
+            if (age >= duration)
             {
                value = 0.0f;
                return(false);
             }
             else
             {
-               value = 1.0f - (age / duration);
+               value = 1.0f - ((float)age / (float)duration);
+               if (value < 0.0f)
+               {
+                  value = 0.0f;
+               }
                age++;
                return(true);
             }
@@ -1753,7 +1757,6 @@ public class Causations
       }
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
-      int tick     = 0;
       int numTrain = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
       for (int i = 0; i < numTrain; i++)
       {
@@ -1768,9 +1771,8 @@ public class Causations
          {
             contextFeatures.add(new ArrayList<ContextFeature>());
          }
-         int pathLength = 0;
-         int p          = path.steps.size() - 1;
-         for (int j = 0; j < p; j++)
+         int step = 0;
+         for (int j = 0, p = path.steps.size() - 1; j < p; j++)
          {
             ArrayList<CausationTier> xstep              = path.steps.get(j);
             ArrayList<CausationTier> ystep              = path.steps.get(j + 1);
@@ -1855,18 +1857,16 @@ public class Causations
                      }
                      else
                      {
-                        ArrayList<Float> X_context = getTierContext(k - 1);
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           X_train_step.add(X_context.get(q));
+                           X_train_step.add(0.0f);
                            y_train_step.add(0.0f);
                         }
                      }
                   }
                   X_train.add(X_train_step);
                   y_train.add(y_train_step);
-                  pathLength++;
-                  updateContexts(xrandomCausation, tick++);
+                  updateContexts(xrandomCausation, step++);
                   xid = yid;
                }
             }
@@ -1908,6 +1908,10 @@ public class Causations
                }
                else
                {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
+                  }
                   ArrayList<Float> X_context = getTierContext(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
@@ -1918,12 +1922,11 @@ public class Causations
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
-            updateContexts(xterminalCausation, tick++);
-            pathLength++;
+            updateContexts(xterminalCausation, step++);
          }
          if (VERBOSE)
          {
-            System.out.println("training path length=" + pathLength);
+            System.out.println("training path length=" + step);
          }
       }
       if (VERBOSE)
@@ -1933,7 +1936,7 @@ public class Causations
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
       ArrayList<Integer> y_predictable = new ArrayList<Integer>();
-      tick = 0;
+      int                sequence      = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -1947,9 +1950,8 @@ public class Causations
          {
             contextFeatures.add(new ArrayList<ContextFeature>());
          }
-         int p          = path.steps.size() - 1;
-         int pathLength = 0;
-         for (int j = 0; j < p; j++)
+         int step = 0;
+         for (int j = 0, p = path.steps.size() - 1; j < p; j++)
          {
             ArrayList<CausationTier> xstep              = path.steps.get(j);
             ArrayList<CausationTier> ystep              = path.steps.get(j + 1);
@@ -2034,18 +2036,17 @@ public class Causations
                      }
                      else
                      {
-                        ArrayList<Float> X_context = getTierContext(k - 1);
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           X_test_step.add(X_context.get(q));
+                           X_test_step.add(0.0f);
                            y_test_step.add(0.0f);
                         }
                      }
                   }
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
-                  pathLength++;
-                  updateContexts(xrandomCausation, tick++);
+                  updateContexts(xrandomCausation, step++);
+                  sequence++;
                   xid = yid;
                }
             }
@@ -2087,6 +2088,10 @@ public class Causations
                }
                else
                {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
+                  }
                   ArrayList<Float> X_context = getTierContext(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
@@ -2097,21 +2102,21 @@ public class Causations
             }
             X_test.add(X_test_step);
             y_test.add(y_test_step);
-            pathLength++;
             if (xstep.size() > 1)
             {
                CausationTier        causationTier        = xstep.get(1);
                NonterminalCausation nonterminalCausation = (NonterminalCausation)causationTier.causation;
                if (nonterminalCausation.children.size() > causationTier.currentChild + 1)
                {
-                  y_predictable.add(tick);
+                  y_predictable.add(sequence);
                }
             }
-            updateContexts(xterminalCausation, tick++);
+            updateContexts(xterminalCausation, step++);
+            sequence++;
          }
          if (VERBOSE)
          {
-            System.out.println("testing path length=" + pathLength);
+            System.out.println("testing path length=" + step);
          }
       }
 
@@ -2212,9 +2217,13 @@ public class Causations
       {
          features.add(0.0f);
       }
-      ArrayList<ContextFeature> context = contextFeatures.get(tier);
-      for (ContextFeature contextFeature : context)
+      ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
+      for (ContextFeature contextFeature : contexts)
       {
+         if (VERBOSE)
+         {
+            contextFeature.print();
+         }
          for (int i : contextFeature.features)
          {
             if (features.get(i) < contextFeature.value)
@@ -2329,8 +2338,7 @@ public class Causations
          }
          ArrayList<Float> X_train_path = new ArrayList<Float> ();
          ArrayList<Float> y_train_path = new ArrayList<Float> ();
-         int              p            = path.steps.size() - 1;
-         for (int j = 0; j < p; j++)
+         for (int j = 0, p = path.steps.size() - 1; j < p; j++)
          {
             ArrayList<CausationTier> xstep              = path.steps.get(j);
             ArrayList<CausationTier> ystep              = path.steps.get(j + 1);
@@ -2458,10 +2466,10 @@ public class Causations
       ArrayList < ArrayList < Float >> X_test          = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test          = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Integer >> y_predictable = new ArrayList < ArrayList < Integer >> ();
-      int tick = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
-         CausationPath path = causationPaths.get(i);
+         int           sequence = 0;
+         CausationPath path     = causationPaths.get(i);
          if (VERBOSE)
          {
             path.print();
@@ -2547,7 +2555,7 @@ public class Causations
                         y_test_path.add(0.0f);
                      }
                   }
-                  tick++;
+                  sequence++;
                   xid = yid;
                }
             }
@@ -2586,10 +2594,10 @@ public class Causations
                NonterminalCausation nonterminalCausation = (NonterminalCausation)causationTier.causation;
                if (nonterminalCausation.children.size() > causationTier.currentChild + 1)
                {
-                  y_predictable_path.add(tick);
+                  y_predictable_path.add(sequence);
                }
             }
-            tick++;
+            sequence++;
          }
          X_test.add(X_test_path);
          y_test.add(y_test_path);
