@@ -14,6 +14,7 @@ Honey bees forage for flower nectar cooperatively.
 See: http://tom.portegys.com/research.html#honey_bees
 
 Build with Eclipse project or build.sh/build.bat and export to bin/mandala.jar to run with scripts in the work directory.
+Requires java, python, and the keras machine learning package.
 
 ```
 Usage:
