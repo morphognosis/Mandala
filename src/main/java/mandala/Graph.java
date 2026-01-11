@@ -6,7 +6,8 @@ package mandala;
 import java.util.ArrayList;
 import java.util.List;
 
-class Graph {
+class Graph
+{
    private final int vertices;
    private final     List < List < Integer >> adjList;
 
