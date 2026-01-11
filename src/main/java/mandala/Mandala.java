@@ -263,6 +263,7 @@ public class Mandala
       public Causation causation;
       public int       currentChild;
 
+      // COnstructor.
       public CausationTier(Causation causation, int currentChild)
       {
          this.causation    = causation;
@@ -270,6 +271,7 @@ public class Mandala
       }
 
 
+      // Print..
       public void print()
       {
          if (causation instanceof TerminalCausation)
@@ -294,6 +296,7 @@ public class Mandala
       int id;
       ArrayList < ArrayList < CausationTier >> steps;
 
+      // Constructor.
       public CausationPath(int hierarchy, int id)
       {
          this.hierarchy = hierarchy;
@@ -302,12 +305,14 @@ public class Mandala
       }
 
 
+      // Add step.
       public void add(ArrayList<CausationTier> step)
       {
          steps.add(step);
       }
 
 
+      // Print.
       public void print()
       {
          System.out.println("path: hierarchy=" + hierarchy + "/root id=" + id + "\nsteps: ");
@@ -1331,6 +1336,14 @@ public class Mandala
                causationHierarchies.add(causations);
             }
 
+            // Load causation paths.
+            NUM_CAUSATION_PATHS = Utility.loadInt(reader);
+            causationPaths      = new ArrayList<CausationPath>();
+            for (int i = 0; i < NUM_CAUSATION_PATHS; i++)
+            {
+               causationPaths.add(new CausationPath(Utility.loadInt(reader), Utility.loadInt(reader)));
+            }
+
             reader.close();
          }
          catch (Exception e)
@@ -1364,6 +1377,7 @@ public class Mandala
             }
             causationHierarchies.add(causations);
          }
+         causationPaths = null;
       }
 
       // Print parameters and causations.
@@ -1404,7 +1418,7 @@ public class Mandala
 
       // Generate causation paths.
       randomizer = new Random(RANDOM_SEED);
-      generateCausationPaths(NUM_CAUSATION_PATHS);
+      generateCausationPaths();
 
       // Analyze causations.
       analyzeCausations();
@@ -1465,6 +1479,14 @@ public class Mandala
                      }
                   }
                }
+            }
+
+            // Save causation paths.
+            Utility.saveInt(writer, NUM_CAUSATION_PATHS);
+            for (CausationPath path : causationPaths)
+            {
+               Utility.saveInt(writer, path.hierarchy);
+               Utility.saveInt(writer, path.id);
             }
 
             writer.close();
@@ -1710,22 +1732,31 @@ public class Mandala
 
 
    // Generate causation paths.
-   public static void generateCausationPaths(int numPaths)
+   public static void generateCausationPaths()
    {
-      // Generate causation hierarchy paths.
-      causationPaths = new ArrayList<CausationPath> ();
       if (causationHierarchies.size() == 0)
       {
+         causationPaths = new ArrayList<CausationPath> ();
          return;
       }
-      for (int i = 0; i < numPaths; i++)
+      if (causationPaths == null)
       {
-         int hierarchy = randomizer.nextInt(causationHierarchies.size());
-         ArrayList<Causation> causationHierarchy = causationHierarchies.get(hierarchy);
-         Causation            root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
-         CausationPath        path = new CausationPath(hierarchy, root.id);
-         causationPaths.add(path);
-         ArrayList<CausationTier> step = new ArrayList<CausationTier>();
+         causationPaths = new ArrayList<CausationPath> ();
+         for (int i = 0; i < NUM_CAUSATION_PATHS; i++)
+         {
+            int hierarchy = randomizer.nextInt(causationHierarchies.size());
+            ArrayList<Causation> causationHierarchy = causationHierarchies.get(hierarchy);
+            Causation            root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
+            causationPaths.add(new CausationPath(hierarchy, root.id));
+         }
+      }
+      for (int i = 0; i < NUM_CAUSATION_PATHS; i++)
+      {
+         CausationPath            path               = causationPaths.get(i);
+         int                      hierarchy          = path.hierarchy;
+         ArrayList<Causation>     causationHierarchy = causationHierarchies.get(hierarchy);
+         Causation                root               = causationHierarchy.get(path.id);
+         ArrayList<CausationTier> step               = new ArrayList<CausationTier>();
          step.add(new CausationTier(root, 0));
          while (root instanceof NonterminalCausation)
          {
@@ -1744,7 +1775,7 @@ public class Mandala
       if (VERBOSE)
       {
          System.out.println("causation paths:");
-         for (int i = 0; i < numPaths; i++)
+         for (int i = 0; i < NUM_CAUSATION_PATHS; i++)
          {
             CausationPath path = causationPaths.get(i);
             System.out.println("path=" + i + ", hierarchy=" + path.hierarchy + ", id=" + path.id);
