@@ -1253,6 +1253,16 @@ public class Mandala
          System.exit(1);
       }
 
+      if (VERBOSE)
+      {
+         System.out.print("options: ");
+         for (String arg : args)
+         {
+            System.out.print(arg + " ");
+         }
+         System.out.println();
+      }
+
       // Load?
       if (gotLoad)
       {
@@ -1270,7 +1280,6 @@ public class Mandala
             TERMINAL_PRODUCTION_PROBABILITY    = Utility.loadFloat(reader);
             NUM_DIMENSIONS                     = Utility.loadInt(reader);
             NUM_FEATURES = Utility.loadInt(reader);
-            RANDOM_SEED  = Utility.loadInt(reader);
 
             // Load causations.
             causationHierarchies = new ArrayList < ArrayList < Causation >> ();
@@ -1357,9 +1366,33 @@ public class Mandala
          }
       }
 
-      // Print causations?
+      // Print parameters and causations.
       if (VERBOSE)
       {
+         System.out.println("parameters:");
+         System.out.println("NUM_CAUSATION_HIERARCHIES=" + NUM_CAUSATION_HIERARCHIES);
+         System.out.println("NUM_NONTERMINALS=" + NUM_NONTERMINALS);
+         System.out.println("NUM_TERMINALS=" + NUM_TERMINALS);
+         System.out.println("NUM_INTERSTITIAL_TERMINALS=" + NUM_INTERSTITIAL_TERMINALS);
+         System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
+         System.out.println("MIN_PRODUCTION_RHS_LENGTH=" + MIN_PRODUCTION_RHS_LENGTH);
+         System.out.println("MAX_PRODUCTION_RHS_LENGTH=" + MAX_PRODUCTION_RHS_LENGTH);
+         System.out.println("TERMINAL_PRODUCTION_PROBABILITY=" + TERMINAL_PRODUCTION_PROBABILITY);
+         System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
+         System.out.println("NUM_FEATURES=" + NUM_FEATURES);
+         System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
+         System.out.println("NUM_CAUSATION_PATHS=" + NUM_CAUSATION_PATHS);
+         System.out.println("MAX_CONTEXT_FEATURE_TIER=" + MAX_CONTEXT_FEATURE_TIER);
+         System.out.println("UPDATE_INTERSTITIAL_CONTEXTS=" + UPDATE_INTERSTITIAL_CONTEXTS);
+         System.out.println("FEATURE_VALUE_DURATION_TYPE=" + FEATURE_VALUE_DURATION_TYPE);
+         System.out.println("NN_DATASET_TRAIN_FRACTION=" + NN_DATASET_TRAIN_FRACTION);
+         System.out.println("NN_NEURONS=" + NN_NEURONS);
+         System.out.println("NN_EPOCHS=" + NN_EPOCHS);
+         System.out.println("RNN_DATASET_TRAIN_FRACTION=" + RNN_DATASET_TRAIN_FRACTION);
+         System.out.println("RNN_NEURONS=" + RNN_NEURONS);
+         System.out.println("RNN_EPOCHS=" + RNN_EPOCHS);
+         System.out.println("RANDOM_SEED=" + RANDOM_SEED);
+         System.out.println("MANDALA_FILENAME=" + MANDALA_FILENAME);
          printCausations();
       }
 
@@ -1401,7 +1434,6 @@ public class Mandala
             Utility.saveFloat(writer, TERMINAL_PRODUCTION_PROBABILITY);
             Utility.saveInt(writer, NUM_DIMENSIONS);
             Utility.saveInt(writer, NUM_FEATURES);
-            Utility.saveInt(writer, RANDOM_SEED);
 
             // Save causations.
             for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
