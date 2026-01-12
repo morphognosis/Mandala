@@ -6,7 +6,6 @@
 package mandala;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -1271,10 +1270,11 @@ public class Mandala
       // Load?
       if (gotLoad)
       {
-         DataInputStream reader;
          try
          {
-            reader = new DataInputStream(new BufferedInputStream(new FileInputStream(new File(MANDALA_FILENAME))));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(MANDALA_FILENAME)));
+
+            // Load parameters.
             NUM_CAUSATION_HIERARCHIES          = Utility.loadInt(reader);
             NUM_NONTERMINALS                   = Utility.loadInt(reader);
             NUM_TERMINALS                      = Utility.loadInt(reader);
@@ -1434,20 +1434,23 @@ public class Mandala
       // Save?
       if (gotSave)
       {
-         DataOutputStream writer;
          try
          {
-            writer = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(new File(MANDALA_FILENAME))));
-            Utility.saveInt(writer, NUM_CAUSATION_HIERARCHIES);
-            Utility.saveInt(writer, NUM_NONTERMINALS);
-            Utility.saveInt(writer, NUM_TERMINALS);
-            Utility.saveInt(writer, NUM_INTERSTITIAL_TERMINALS);
-            Utility.saveInt(writer, MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
-            Utility.saveInt(writer, MIN_PRODUCTION_RHS_LENGTH);
-            Utility.saveInt(writer, MAX_PRODUCTION_RHS_LENGTH);
-            Utility.saveFloat(writer, TERMINAL_PRODUCTION_PROBABILITY);
-            Utility.saveInt(writer, NUM_DIMENSIONS);
-            Utility.saveInt(writer, NUM_FEATURES);
+            System.setProperty("line.separator", "\n");
+            FileWriter  fileWriter = new FileWriter(MANDALA_FILENAME);
+            PrintWriter writer     = new PrintWriter(fileWriter);
+
+            // Save parameters.
+            Utility.saveInt(writer, NUM_CAUSATION_HIERARCHIES, "NUM_CAUSATION_HIERARCHIES");
+            Utility.saveInt(writer, NUM_NONTERMINALS, "NUM_NONTERMINALS");
+            Utility.saveInt(writer, NUM_TERMINALS, "NUM_TERMINALS");
+            Utility.saveInt(writer, NUM_INTERSTITIAL_TERMINALS, "NUM_INTERSTITIAL_TERMINALS");
+            Utility.saveInt(writer, MAX_INTERSTITIAL_TERMINAL_SEQUENCE, "MAX_INTERSTITIAL_TERMINAL_SEQUENCE");
+            Utility.saveInt(writer, MIN_PRODUCTION_RHS_LENGTH, "MIN_PRODUCTION_RHS_LENGTH");
+            Utility.saveInt(writer, MAX_PRODUCTION_RHS_LENGTH, "MAX_PRODUCTION_RHS_LENGTH");
+            Utility.saveFloat(writer, TERMINAL_PRODUCTION_PROBABILITY, "TERMINAL_PRODUCTION_PROBABILITY");
+            Utility.saveInt(writer, NUM_DIMENSIONS, "NUM_DIMENSIONS");
+            Utility.saveInt(writer, NUM_FEATURES, "NUM_FEATURES");
 
             // Save causations.
             for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
@@ -1455,11 +1458,11 @@ public class Mandala
                ArrayList<Causation> causations = causationHierarchies.get(i);
                if (NUM_NONTERMINALS > 0)
                {
-                  Utility.saveInt(writer, causations.size());
+                  Utility.saveInt(writer, causations.size(), "hierarchy=" + i + ",causations size");
                   for (int j = 0, k = causations.size(); j < k; j++)
                   {
                      NonterminalCausation nonterminalCausation = (NonterminalCausation)causations.get(j);
-                     Utility.saveInt(writer, nonterminalCausation.id);
+                     Utility.saveInt(writer, nonterminalCausation.id, "nonterminalCausation id");
                      for (int p = 0, q = nonterminalCausation.children.size(); p < q; p++)
                      {
                         Causation child = nonterminalCausation.children.get(p);
@@ -1467,26 +1470,26 @@ public class Mandala
                         {
                            if (child instanceof NonterminalCausation)
                            {
-                              Utility.saveInt(writer, 0);
+                              Utility.saveInt(writer, 0, "nonterminal children");
                            }
                            else
                            {
-                              Utility.saveInt(writer, 1);
+                              Utility.saveInt(writer, 1, "terminal children");
                            }
-                           Utility.saveInt(writer, nonterminalCausation.children.size());
+                           Utility.saveInt(writer, nonterminalCausation.children.size(), "children size");
                         }
-                        Utility.saveInt(writer, child.id);
+                        Utility.saveInt(writer, child.id, "child id");
                      }
                   }
                }
             }
 
             // Save causation paths.
-            Utility.saveInt(writer, NUM_CAUSATION_PATHS);
+            Utility.saveInt(writer, NUM_CAUSATION_PATHS, "NUM_CAUSATION_PATHS");
             for (CausationPath path : causationPaths)
             {
-               Utility.saveInt(writer, path.hierarchy);
-               Utility.saveInt(writer, path.id);
+               Utility.saveInt(writer, path.hierarchy, "hierarchy");
+               Utility.saveInt(writer, path.id, "id");
             }
 
             writer.close();

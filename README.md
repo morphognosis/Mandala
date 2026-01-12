@@ -18,6 +18,7 @@ Requires java, python, and the keras machine learning package.
 
 ```
 Usage:
+  New run:
     java mandala.Mandala
       [-numCausationHierarchies <quantity> (default=1)]
       [-numNonterminals <quantity> (default=10)]
@@ -29,6 +30,24 @@ Usage:
       [-terminalProductionProbability <probability> (default=0.5)]
       [-numDimensions <quantity> (default=64)]
       [-numFeatures <quantity> (default=3)]
+      [-exportCausationsGraph [<file name> (Graphviz dot format, default=mandala_causations.dot)]
+          [-treeFormat "true" | "false" (default=true)]]
+      [-numCausationPaths <quantity> (default=10)]
+      [-maxContextFeatureTier <value> (default=10)]
+      [-updateInterstitialContexts "true" | "false" (default=false)]
+      [-featureValueDurationType "minimum" | "expected" | "maximum" (default=maximum)]
+      [-NNdatasetTrainFraction <fraction> (default=0.75)]
+      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=128,128,128)]
+      [-NNepochs <number of epochs> (default=500)]
+      [-RNNdatasetTrainFraction <fraction> (default=0.75)]
+      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=128)]
+      [-RNNepochs <number of epochs> (default=500)]
+      [-randomSeed <seed> (default=4517)]
+      [-quiet]
+      [-save [<file name> (default=mandala.dat)]
+  Load:
+    java mandala.Mandala
+      -load [<file name> (default=mandala.dat)]
       [-exportCausationsGraph [<file name> (Graphviz dot format, default=mandala_causations.dot)]
           [-treeFormat "true" | "false" (default=true)]]
       [-numCausationPaths <quantity> (default=10)]

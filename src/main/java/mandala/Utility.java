@@ -4,9 +4,11 @@
 
 package mandala;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public abstract class Utility
 {
@@ -38,6 +40,48 @@ public abstract class Utility
    }
 
 
+   // Load integer.
+   public static int loadInt(BufferedReader in) throws IOException
+   {
+      String line = in.readLine();
+
+      String[] parts = line.split("#");
+      if ((parts != null) && (parts.length > 0))
+      {
+         try
+         {
+            return(Integer.parseInt(parts[0]));
+         }
+         catch (NumberFormatException e)
+         {
+            throw new IOException();
+         }
+      }
+      throw new IOException();
+   }
+
+
+   // Load float.
+   public static float loadFloat(BufferedReader in) throws IOException
+   {
+      String line = in.readLine();
+
+      String[] parts = line.split("#");
+      if ((parts != null) && (parts.length > 0))
+      {
+         try
+         {
+            return(Float.parseFloat(parts[0]));
+         }
+         catch (NumberFormatException e)
+         {
+            throw new IOException();
+         }
+      }
+      throw new IOException();
+   }
+
+
    // Save integer.
    public static void saveInt(DataOutputStream out, int value) throws IOException
    {
@@ -63,6 +107,32 @@ public abstract class Utility
    public static void saveString(DataOutputStream out, String value) throws IOException
    {
       out.writeUTF(value);
+   }
+
+
+   // Save integer.
+   public static void saveInt(PrintWriter out, int value, String description) throws IOException
+   {
+      out.println(value + "#" + description);
+   }
+
+
+   public static void saveInt(PrintWriter out, int value) throws IOException
+   {
+      out.println(value + "#");
+   }
+
+
+   // Save float.
+   public static void saveFloat(PrintWriter out, float value, String description) throws IOException
+   {
+      out.println(value + "#" + description);
+   }
+
+
+   public static void saveFloat(PrintWriter out, float value) throws IOException
+   {
+      out.println(value + "#");
    }
 
 
