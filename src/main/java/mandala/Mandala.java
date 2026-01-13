@@ -5,7 +5,6 @@
 
 package mandala;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -533,9 +532,9 @@ public class Mandala
 
    // Datasets.
    public static String NN_DATASET_FILENAME        = "mandala_nn_dataset.py";
-   public static float  NN_DATASET_TRAIN_FRACTION  = 0.75f;
+   public static float  NN_DATASET_TRAIN_FRACTION  = 0.5f;
    public static String RNN_DATASET_FILENAME       = "mandala_rnn_dataset.py";
-   public static float  RNN_DATASET_TRAIN_FRACTION = 0.75f;
+   public static float  RNN_DATASET_TRAIN_FRACTION = 0.5f;
 
    // Learners.
    public static String NN_FILENAME          = "mandala_nn.py";
@@ -1458,7 +1457,7 @@ public class Mandala
                ArrayList<Causation> causations = causationHierarchies.get(i);
                if (NUM_NONTERMINALS > 0)
                {
-                  Utility.saveInt(writer, causations.size(), "hierarchy=" + i + ",causations size");
+                  Utility.saveInt(writer, causations.size(), "number of nonterminals, hierarchy=" + i);
                   for (int j = 0, k = causations.size(); j < k; j++)
                   {
                      NonterminalCausation nonterminalCausation = (NonterminalCausation)causations.get(j);
@@ -1470,11 +1469,11 @@ public class Mandala
                         {
                            if (child instanceof NonterminalCausation)
                            {
-                              Utility.saveInt(writer, 0, "nonterminal children");
+                              Utility.saveInt(writer, 0, "nonterminal children type");
                            }
                            else
                            {
-                              Utility.saveInt(writer, 1, "terminal children");
+                              Utility.saveInt(writer, 1, "terminal children type");
                            }
                            Utility.saveInt(writer, nonterminalCausation.children.size(), "children size");
                         }
@@ -1755,11 +1754,19 @@ public class Mandala
       }
       for (int i = 0; i < NUM_CAUSATION_PATHS; i++)
       {
-         CausationPath            path               = causationPaths.get(i);
-         int                      hierarchy          = path.hierarchy;
-         ArrayList<Causation>     causationHierarchy = causationHierarchies.get(hierarchy);
-         Causation                root               = causationHierarchy.get(path.id);
-         ArrayList<CausationTier> step               = new ArrayList<CausationTier>();
+         CausationPath        path               = causationPaths.get(i);
+         int                  hierarchy          = path.hierarchy;
+         ArrayList<Causation> causationHierarchy = causationHierarchies.get(hierarchy);
+         Causation            root               = causationHierarchy.get(0);
+         for (int j = 1, k = causationHierarchy.size(); j < k; j++)
+         {
+            if (root.id == path.id)
+            {
+               break;
+            }
+            root = causationHierarchy.get(j);
+         }
+         ArrayList<CausationTier> step = new ArrayList<CausationTier>();
          step.add(new CausationTier(root, 0));
          while (root instanceof NonterminalCausation)
          {
