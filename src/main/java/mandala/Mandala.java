@@ -1758,12 +1758,8 @@ public class Mandala
          int                  hierarchy          = path.hierarchy;
          ArrayList<Causation> causationHierarchy = causationHierarchies.get(hierarchy);
          Causation            root               = causationHierarchy.get(0);
-         for (int j = 1, k = causationHierarchy.size(); j < k; j++)
+         for (int j = 1, k = causationHierarchy.size(); j < k && root.id != path.id; j++)
          {
-            if (root.id == path.id)
-            {
-               break;
-            }
             root = causationHierarchy.get(j);
          }
          ArrayList<CausationTier> step = new ArrayList<CausationTier>();
