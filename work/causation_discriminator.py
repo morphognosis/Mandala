@@ -33,8 +33,7 @@ effect_layer = layers.Dense(effect_dim, activation='sigmoid')(hidden)
 # Causation model maps cause to effect.
 causation_model = keras.Model(cause_layer, effect_layer)
 
-# Generate cause and effect training pairs.
-# off=0.0, on=1.0
+# Generate cause and effect training pairs that conflict prediction.
 import numpy as np
 cause_train = np.zeros((dataset_size, cause_dim))
 effect_train = np.zeros((dataset_size, effect_dim))
@@ -54,12 +53,11 @@ causation_model.compile(optimizer='adam', loss='mse')
 
 # Train causation model.
 causation_model.fit(cause_train, effect_train,
-                epochs=100,
+                epochs=500,
                 batch_size=4,
                 shuffle=True)
 
 # Generate cause and effect testing pairs.
-# off=0.0, on=1.0
 cause_test= np.zeros((dataset_size, cause_dim))
 effect_test = np.zeros((dataset_size, effect_dim))
 cause_test[0,0] = 1.0
