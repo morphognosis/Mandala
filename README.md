@@ -1,4 +1,4 @@
-# Mandala: Goal-directed behavior using contextual causation learning.
+# Mandala: Hierarchical causation context labeling with sparse encoding.
 
 In this project, the Morphognosis and Mona neural network models are combined into
 Mandala, a comprehensive model for animal learning and behavior.
