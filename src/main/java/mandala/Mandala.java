@@ -331,7 +331,7 @@ public class Mandala
    public static int MAX_CONTEXT_FEATURE_TIER = 10;
 
    // Update interstitial contexts.
-   public static boolean UPDATE_INTERSTITIAL_CONTEXTS = false;
+   public static boolean UPDATE_INTERSTITIAL_CONTEXTS = true;
 
    // Feature value durations.
    public static String             FEATURE_VALUE_DURATION_TYPE = "maximum";
