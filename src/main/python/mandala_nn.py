@@ -12,24 +12,25 @@ from keras.models import Sequential
 from keras.layers import Input, Dense
 import sys, getopt
 
-# parameters
+# Parameters
+n_dimensions = 64
 n_features = 3
 n_neurons = '128,128,128'
 n_epochs = 500
 
-# results file name
+# Results file name
 results_filename = 'mandala_nn_results.json'
 
-# prediction significance threshold
+# Prediction significance threshold
 threshold = 0.1
 
-# verbosity
+# Verbosity
 verbose = True
 
-# get options
-usage = 'mandala_nn.py [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+# Get options
+usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hf:n:e:r:q",["help","features=","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hd:f:n:e:r:q",["help","dimensions=","features=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -37,7 +38,9 @@ for opt, arg in opts:
   if opt in ("-h", "--help"):
      print(usage)
      sys.exit(0)
-  if opt in ("-f", "--features"):
+  if opt in ("-d", "--dimensions"):
+     n_dimensions = int(arg)
+  elif opt in ("-f", "--features"):
      n_features = int(arg)
   elif opt in ("-n", "--neurons"):
      n_neurons = arg
@@ -50,7 +53,13 @@ for opt, arg in opts:
   else:
      print(usage)
      sys.exit(1)
+if n_dimensions < 1:
+    print(usage, sep='')
+    sys.exit(1)
 if n_features < 1:
+    print(usage, sep='')
+    sys.exit(1)
+if n_features > n_dimensions:
     print(usage, sep='')
     sys.exit(1)
 n_list = n_neurons.split(",")
@@ -70,7 +79,7 @@ if n_epochs < 0:
     print(usage, sep='')
     sys.exit(1)
 
-# import dataset
+# Import dataset
 from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_predictable
 if X_train_shape[0] == 0:
     print('Empty train dataset')
@@ -79,7 +88,7 @@ if X_test_shape[0] == 0:
     print('Empty test dataset')
     sys.exit(1)
 
-# create NN
+# Create NN
 model = Sequential()
 model.add(Input((X_train_shape[1],)))
 model.add(Dense(n_hidden[0], activation='relu'))
@@ -90,20 +99,27 @@ model.compile(loss='binary_crossentropy', optimizer='adam')
 if verbose:
     model.summary()
 
-# train
+# Train
 seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1])
 seq = array(y_train)
 y = seq.reshape(y_train_shape[0], y_train_shape[1])
 model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
-# validate
+# Validate
 predictions = model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
 trainErrors = 0
 trainTotal = 0
 for i in range(y_train_shape[0]):
     yvals = y[i]
     pvals = predictions[i]
+    tvals = []
+    for j in range(len(pvals)):
+        if j < n_dimensions:
+            tvals.append(pvals[j])
+        else:
+            tvals.append(0.0)
+    pvals = tvals
     ymax = []
     pmax = []
     for j in range(n_features):
@@ -122,7 +138,7 @@ trainErrorPct = 0
 if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
 
-# predict
+# Predict
 seq = array(X_test)
 X = seq.reshape(X_test_shape[0], X_test_shape[1])
 seq = array(y_test)
@@ -134,6 +150,13 @@ for i in range(y_test_shape[0]):
     if i in y_test_predictable:
         yvals = y[i]
         pvals = predictions[i]
+        tvals = []
+        for j in range(len(pvals)):
+            if j < n_dimensions:
+                tvals.append(pvals[j])
+            else:
+                tvals.append(0.0)
+        pvals = tvals
         ymax = []
         pmax = []
         for j in range(n_features):
@@ -152,7 +175,7 @@ testErrorPct = 0
 if testTotal > 0:
     testErrorPct = (float(testErrors) / float(testTotal)) * 100.0
 
-# print results.
+# Print results.
 if verbose:
     print("Train prediction errors/total = ", trainErrors, "/", trainTotal, sep='', end='')
     print(" (", str(round(trainErrorPct, 2)), "%)", sep='', end='')
@@ -161,7 +184,7 @@ if verbose:
     print(" (", str(round(testErrorPct, 2)), "%)", sep='', end='')
     print('')
 
-# write results to file.
+# Write results to file.
 with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
     f.write('\"train_prediction_errors\":\"'+str(trainErrors)+'\",')

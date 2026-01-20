@@ -328,10 +328,10 @@ public class Mandala
    public static ArrayList<CausationPath> causationPaths;
 
    // Maximum context feature tier.
-   public static int MAX_CONTEXT_FEATURE_TIER = 10;
+   public static int MAX_CONTEXT_FEATURE_TIER = 5;
 
    // Update interstitial contexts.
-   public static boolean UPDATE_INTERSTITIAL_CONTEXTS = true;
+   public static boolean UPDATE_INTERSTITIAL_CONTEXTS = false;
 
    // Feature value durations.
    public static String             FEATURE_VALUE_DURATION_TYPE = "maximum";
@@ -2118,6 +2118,25 @@ public class Mandala
                         X_train_step.add(0.0f);
                      }
                   }
+               }
+               else
+               {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
+                  }
+                  ArrayList<Float> X_context = getTierContext(k - 1);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_train_step.add(X_context.get(q));
+                  }
+               }
+            }
+            updateContexts(xterminalCausation, step);
+            for (int k = 0; k < maxTiers; k++)
+            {
+               if (k == 0)
+               {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      if (yterminalCausation.features.contains(q))
@@ -2134,19 +2153,18 @@ public class Mandala
                {
                   if (VERBOSE)
                   {
-                     System.out.println("get tier context, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
+                     System.out.println("get tier context for y, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
                   }
-                  ArrayList<Float> X_context = getTierContext(k - 1);
+                  ArrayList<Float> y_context = getTierContext(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     X_train_step.add(X_context.get(q));
-                     y_train_step.add(0.0f);
+                     y_train_step.add(y_context.get(q));
                   }
                }
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
-            updateContexts(xterminalCausation, step++);
+            step++;
          }
          if (VERBOSE)
          {
@@ -2928,6 +2946,8 @@ public class Mandala
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
       commandList.add(NN_FILENAME);
+      commandList.add("--dimensions");
+      commandList.add(NUM_DIMENSIONS + "");
       commandList.add("--features");
       commandList.add(NUM_FEATURES + "");
       commandList.add("--neurons");
