@@ -2285,9 +2285,9 @@ public class Mandala
                         }
                      }
                   }
+                  updateContexts(xrandomCausation, step++);
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
-                  updateContexts(xrandomCausation, step++);
                   sequence++;
                   xid = yid;
                }
@@ -2316,6 +2316,25 @@ public class Mandala
                         X_test_step.add(0.0f);
                      }
                   }
+               }
+               else
+               {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
+                  }
+                  ArrayList<Float> X_context = getTierContext(k - 1);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_test_step.add(X_context.get(q));
+                  }
+               }
+            }
+            updateContexts(xterminalCausation, step);
+            for (int k = 0; k < maxTiers; k++)
+            {
+               if (k == 0)
+               {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      if (yterminalCausation.features.contains(q))
@@ -2332,13 +2351,12 @@ public class Mandala
                {
                   if (VERBOSE)
                   {
-                     System.out.println("get tier context, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
+                     System.out.println("get tier context for y, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
                   }
-                  ArrayList<Float> X_context = getTierContext(k - 1);
+                  ArrayList<Float> y_context = getTierContext(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     X_test_step.add(X_context.get(q));
-                     y_test_step.add(0.0f);
+                     y_test_step.add(y_context.get(q));
                   }
                }
             }
@@ -2353,7 +2371,7 @@ public class Mandala
                   y_predictable.add(sequence);
                }
             }
-            updateContexts(xterminalCausation, step++);
+            step++;
             sequence++;
          }
          if (VERBOSE)
