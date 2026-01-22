@@ -33,7 +33,7 @@ public class Mandala
    public static int   MAX_INTERSTITIAL_TERMINAL_SEQUENCE = 10;
    public static int   MIN_PRODUCTION_RHS_LENGTH          = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH          = 2;
-   public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.5f;
+   public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.25f;
 
    // Sizes.
    public static int NUM_DIMENSIONS = 64;
@@ -55,25 +55,14 @@ public class Mandala
          this.id        = id;
          parents        = new ArrayList<NonterminalCausation>();
       }
-   };
-
-   // Terminal causation.
-   public static class TerminalCausation extends Causation
-   {
-      public ArrayList<Integer> features;
-
-      public TerminalCausation(int hierarchy, int id)
-      {
-         super(hierarchy, id);
-         encodeFeatures();
-      }
 
 
       // Encode features.
-      public void encodeFeatures()
+      public static ArrayList<Integer> encodeFeatures(int id)
       {
-         String seedString = id + "_";
-         Random r          = new Random(seedString.hashCode());
+         ArrayList<Integer> features   = new ArrayList<Integer>();
+         String             seedString = id + "_";
+         Random             r          = new Random(seedString.hashCode());
 
          features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
@@ -105,6 +94,19 @@ public class Mandala
             }
          }
          Collections.sort(features);
+         return(features);
+      }
+   };
+
+   // Terminal causation.
+   public static class TerminalCausation extends Causation
+   {
+      public ArrayList<Integer> features;
+
+      public TerminalCausation(int hierarchy, int id)
+      {
+         super(hierarchy, id);
+         features = encodeFeatures(id);
       }
 
 
@@ -286,7 +288,7 @@ public class Mandala
    };
 
    // Number of causation paths.
-   public static int NUM_CAUSATION_PATHS = 10;
+   public static int NUM_CAUSATION_PATHS = 20;
 
    public static class CausationPath
    {
@@ -330,9 +332,6 @@ public class Mandala
    // Maximum context feature tier.
    public static int MAX_CONTEXT_FEATURE_TIER = 5;
 
-   // Update interstitial contexts.
-   public static boolean UPDATE_INTERSTITIAL_CONTEXTS = false;
-
    // Feature value durations.
    public static String             FEATURE_VALUE_DURATION_TYPE = "maximum";
    public static ArrayList<Integer> featureValueDurations;
@@ -340,91 +339,20 @@ public class Mandala
    // Context features.
    public static class ContextFeature
    {
-      public ArrayList<Integer> features;
+      public Causation          causation;
       public int                tier;
-      public int                begin;
-      public int                end;
+      public ArrayList<Integer> features;
       public float              value;
       public int                age;
-      public TerminalCausation  terminalCausation;
-      public ContextFeature     subContext0;
-      public ContextFeature     subContext1;
 
-      // Constructors.
-      public ContextFeature(TerminalCausation terminalCausation, int tick)
+      // Constructor.
+      public ContextFeature(Causation causation, int tier)
       {
-         features = new ArrayList<Integer>();
-         for (int i = 0, j = terminalCausation.features.size(); i < j; i++)
-         {
-            features.add(terminalCausation.features.get(i));
-         }
-         tier  = 0;
-         begin = end = tick;
-         value = 1.0f;
-         age   = 0;
-         this.terminalCausation = terminalCausation;
-         subContext0            = subContext1 = null;
-      }
-
-
-      public ContextFeature(ContextFeature subContext0, ContextFeature subContext1, int tier)
-      {
-         encodeFeatures(subContext0.features, subContext1.features);
-         this.tier         = tier;
-         begin             = subContext0.begin;
-         end               = subContext1.end;
-         value             = (subContext0.value + subContext1.value) / 2.0f;
-         age               = 0;
-         terminalCausation = null;
-         this.subContext0  = subContext0;
-         this.subContext1  = subContext1;
-      }
-
-
-      // Encode features from source features.
-      public void encodeFeatures(ArrayList<Integer> source1, ArrayList<Integer> source2)
-      {
-         String s = "";
-
-         for (int i : source1)
-         {
-            s += i + "_";
-         }
-         for (int i : source2)
-         {
-            s += i + "_";
-         }
-         Random r = new Random(s.hashCode());
-         features = new ArrayList<Integer>();
-         for (int i = 0; i < NUM_FEATURES; i++)
-         {
-            int j = 0;
-            int k = 100;
-            for ( ; j < k; j++)
-            {
-               int n = r.nextInt(NUM_DIMENSIONS);
-               int p = 0;
-               int q = features.size();
-               for ( ; p < q; p++)
-               {
-                  if (features.get(p) == n)
-                  {
-                     break;
-                  }
-               }
-               if (p == q)
-               {
-                  features.add(n);
-                  break;
-               }
-            }
-            if (j == k)
-            {
-               System.err.println("Cannot encode features");
-               System.exit(1);
-            }
-         }
-         Collections.sort(features);
+         this.causation = causation;
+         this.tier      = tier;
+         features       = Causation.encodeFeatures(causation.id);
+         value          = 1.0f;
+         age            = 0;
       }
 
 
@@ -432,10 +360,6 @@ public class Mandala
       public boolean duplicate(ContextFeature contextFeature)
       {
          if (!featuresEqual(contextFeature))
-         {
-            return(false);
-         }
-         if ((begin != contextFeature.begin) || (end != contextFeature.end))
          {
             return(false);
          }
@@ -500,7 +424,8 @@ public class Mandala
       // Print.
       public void print()
       {
-         System.out.print("features:");
+         System.out.print("id=" + causation.id);
+         System.out.print(", features:");
          for (int i = 0, j = features.size(); i < j; i++)
          {
             System.out.print(features.get(i));
@@ -509,23 +434,7 @@ public class Mandala
                System.out.print(",");
             }
          }
-         System.out.println(", tier=" + tier + ", begin=" + begin + ", end=" + end + ", value=" + value + ", age=" + age + ", terminals:" + terminalSequence());
-      }
-
-
-      // Recursively list terminal causation sequence.
-      public String terminalSequence()
-      {
-         if (terminalCausation != null)
-         {
-            return(terminalCausation.id + "");
-         }
-         else
-         {
-            String t0 = subContext0.terminalSequence();
-            String t1 = subContext1.terminalSequence();
-            return(t0 + "," + t1);
-         }
+         System.out.println(", tier=" + tier + ", value=" + value + ", age=" + age);
       }
    };
    public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
@@ -566,7 +475,7 @@ public class Mandala
    };
 
    // Random numbers.
-   public static int    RANDOM_SEED = 4517;
+   public static int    RANDOM_SEED = 45;
    public static Random randomizer  = null;
 
    // Verbosity.
@@ -591,7 +500,6 @@ public class Mandala
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
-      "      [-updateInterstitialContexts \"true\" | \"false\" (default=" + UPDATE_INTERSTITIAL_CONTEXTS + ")]\n" +
       "      [-featureValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + FEATURE_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
@@ -609,7 +517,6 @@ public class Mandala
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
-      "      [-updateInterstitialContexts \"true\" | \"false\" (default=" + UPDATE_INTERSTITIAL_CONTEXTS + ")]\n" +
       "      [-featureValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + FEATURE_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
@@ -1015,31 +922,6 @@ public class Mandala
             }
             continue;
          }
-         if (args[i].equals("-updateInterstitialContexts"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid updateInterstitialContexts option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (args[i].equals("true"))
-            {
-               UPDATE_INTERSTITIAL_CONTEXTS = true;
-            }
-            else if (args[i].equals("false"))
-            {
-               UPDATE_INTERSTITIAL_CONTEXTS = false;
-            }
-            else
-            {
-               System.err.println("Invalid updateInterstitialContexts option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            continue;
-         }
          if (args[i].equals("-featureValueDurationType"))
          {
             i++;
@@ -1396,7 +1278,6 @@ public class Mandala
          System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
          System.out.println("NUM_CAUSATION_PATHS=" + NUM_CAUSATION_PATHS);
          System.out.println("MAX_CONTEXT_FEATURE_TIER=" + MAX_CONTEXT_FEATURE_TIER);
-         System.out.println("UPDATE_INTERSTITIAL_CONTEXTS=" + UPDATE_INTERSTITIAL_CONTEXTS);
          System.out.println("FEATURE_VALUE_DURATION_TYPE=" + FEATURE_VALUE_DURATION_TYPE);
          System.out.println("NN_DATASET_TRAIN_FRACTION=" + NN_DATASET_TRAIN_FRACTION);
          System.out.println("NN_NEURONS=" + NN_NEURONS);
@@ -2132,7 +2013,7 @@ public class Mandala
                   }
                }
             }
-            updateContexts(xterminalCausation, step);
+            updateContexts(ystep);
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2285,9 +2166,10 @@ public class Mandala
                         }
                      }
                   }
-                  updateContexts(xrandomCausation, step++);
+                  attenuateContexts();
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
+                  step++;
                   sequence++;
                   xid = yid;
                }
@@ -2330,7 +2212,7 @@ public class Mandala
                   }
                }
             }
-            updateContexts(xterminalCausation, step);
+            updateContexts(ystep);
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2497,9 +2379,35 @@ public class Mandala
 
 
    // Update feature contexts.
-   static void updateContexts(TerminalCausation terminalCausation, int tick)
+   static void updateContexts(ArrayList<CausationTier> step)
    {
-      // Attenuate.
+      // Attenuate contexts.
+      attenuateContexts();
+
+      // Add contexts.
+      for (int i = 1, j = step.size(); i < j && i <= MAX_CONTEXT_FEATURE_TIER; i++)
+      {
+         CausationTier tier = step.get(i);
+         if (tier.currentChild > 0)
+         {
+            ContextFeature            contextFeature = new ContextFeature(tier.causation, i - 1);
+            ArrayList<ContextFeature> contexts       = contextFeatures.get(i - 1);
+            for (ContextFeature feature : contexts)
+            {
+               if (feature.duplicate(contextFeature))
+               {
+                  return;
+               }
+            }
+            contexts.add(contextFeature);
+         }
+      }
+   }
+
+
+   // Attenuate feature contexts.
+   static void attenuateContexts()
+   {
       for (int i = 0, j = contextFeatures.size(); i < j; i++)
       {
          ArrayList<ContextFeature> contexts    = contextFeatures.get(i);
@@ -2513,63 +2421,6 @@ public class Mandala
          }
          contextFeatures.set(i, tmpContexts);
       }
-
-      // Add contexts.
-      if (UPDATE_INTERSTITIAL_CONTEXTS || (terminalCausation.id < NUM_TERMINALS))
-      {
-         ContextFeature contextFeature = new ContextFeature(terminalCausation, tick);
-         addContextFeature(contextFeature, 0);
-      }
-   }
-
-
-   // Recursively add context feature.
-   static void addContextFeature(ContextFeature contextFeature, int tier)
-   {
-      if (tier > MAX_CONTEXT_FEATURE_TIER)
-      {
-         return;
-      }
-      ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
-      for (ContextFeature feature : contexts)
-      {
-         if (feature.duplicate(contextFeature))
-         {
-            return;
-         }
-      }
-      if (tier < contextFeatures.size() - 1)
-      {
-         contexts = contextFeatures.get(tier);
-         ArrayList<ContextFeature> sources = new ArrayList<ContextFeature>();
-         for (ContextFeature context : contexts)
-         {
-            if (contextFeature.begin > context.end)
-            {
-               boolean replaced = false;
-               for (int i = 0, j = sources.size(); i < j; i++)
-               {
-                  ContextFeature source = sources.get(i);
-                  if ((source.featuresEqual(context)) && (source.value < context.value))
-                  {
-                     sources.set(i, context);
-                     replaced = true;
-                     break;
-                  }
-               }
-               if (!replaced)
-               {
-                  sources.add(context);
-               }
-            }
-         }
-         for (ContextFeature context : sources)
-         {
-            ContextFeature nextContextFeature = new ContextFeature(context, contextFeature, tier + 1);
-            addContextFeature(nextContextFeature, tier + 1);
-         }
-      }
-      contextFeatures.get(tier).add(contextFeature);
    }
 
 
