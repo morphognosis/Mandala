@@ -287,7 +287,7 @@ public class Mandala
       }
    };
 
-   // Number of causation paths.
+   // Causation paths.
    public static int NUM_CAUSATION_PATHS = 20;
 
    public static class CausationPath

@@ -143,20 +143,24 @@ seq = array(X_test)
 X = seq.reshape(X_test_shape[0], X_test_shape[1])
 seq = array(y_test)
 y = seq.reshape(y_test_shape[0], y_test_shape[1])
-predictions = model.predict(X, batch_size=X_test_shape[0], verbose=int(verbose))
 testErrors = 0
 testTotal = 0
-for i in range(y_test_shape[0]):
+p = None
+for i in range(X_test_shape[0]):
+    Xi = X[i].reshape(1, X_test_shape[1])
+    if p is not None:
+        for j in range(n_dimensions, X_test_shape[1]):
+            Xi[0][j] = p[0][j]
+    yi = y[i].reshape(1, y_test_shape[1])
+    prediction = model.predict(Xi, verbose=int(verbose))
+    p = None
     if i in y_test_predictable:
-        yvals = y[i]
-        pvals = predictions[i]
-        tvals = []
-        for j in range(len(pvals)):
-            if j < n_dimensions:
-                tvals.append(pvals[j])
-            else:
-                tvals.append(0.0)
-        pvals = tvals
+        p = prediction
+        yvals = yi[0]
+        pvals = prediction[0]
+        for j in range(n_dimensions, len(pvals)):
+            yvals[j] = 0.0
+            pvals[j] = 0.0
         ymax = []
         pmax = []
         for j in range(n_features):
