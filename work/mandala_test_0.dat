@@ -1,5 +1,5 @@
-2#NUM_CAUSATION_HIERARCHIES
-6#NUM_NONTERMINALS
+1#NUM_CAUSATION_HIERARCHIES
+7#NUM_NONTERMINALS
 7#NUM_TERMINALS
 20#NUM_INTERSTITIAL_TERMINALS
 10#MAX_INTERSTITIAL_TERMINAL_SEQUENCE
@@ -8,7 +8,12 @@
 0.5#TERMINAL_PRODUCTION_PROBABILITY
 64#NUM_DIMENSIONS
 3#NUM_FEATURES
-3#number of nonterminals, hierarchy=0
+7#number of nonterminals, hierarchy=0
+6#nonterminalCausation id
+0#nonterminal children type
+2#children size
+0#child id
+3#child id
 0#nonterminalCausation id
 0#nonterminal children type
 2#children size
@@ -24,7 +29,6 @@
 2#children size
 2#child id
 3#child id
-3#number of nonterminals, hierarchy=1
 3#nonterminalCausation id
 0#nonterminal children type
 2#children size
@@ -43,9 +47,9 @@
 4#NUM_CAUSATION_PATHS
 0#hierarchy
 0#id
-1#hierarchy
+0#hierarchy
 3#id
 0#hierarchy
 0#id
-1#hierarchy
+0#hierarchy
 3#id

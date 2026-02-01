@@ -58,13 +58,11 @@ public class Mandala
 
 
       // Encode features.
-      public static ArrayList<Integer> encodeFeatures(int id)
+      public static ArrayList<Integer> encodeFeatures(int hierarchy, int id)
       {
-         ArrayList<Integer> features   = new ArrayList<Integer>();
-         String             seedString = id + "_";
+         String             seedString = hierarchy + "_" + id + "_";  
          Random             r          = new Random(seedString.hashCode());
-
-         features = new ArrayList<Integer>();
+         ArrayList<Integer> features   = new ArrayList<Integer>();         
          for (int i = 0; i < NUM_FEATURES; i++)
          {
             int j = 0;
@@ -96,6 +94,47 @@ public class Mandala
          Collections.sort(features);
          return(features);
       }
+      
+      public static ArrayList<Integer> encodeFeatures(ArrayList<Integer> features1, ArrayList<Integer> features2)
+      {
+         String seedString = "";
+         for (int i : features1)
+         {
+        	 seedString += i + "_";
+         }      
+         Random             r          = new Random(seedString.hashCode());
+         ArrayList<Integer>features = new ArrayList<Integer>();
+         for (int i = 0; i < NUM_FEATURES; i++)
+         {
+            int j = 0;
+            int k = 100;
+            for ( ; j < k; j++)
+            {
+               int n = r.nextInt(NUM_DIMENSIONS);
+               int p = 0;
+               int q = features.size();
+               for ( ; p < q; p++)
+               {
+                  if (features.get(p) == n)
+                  {
+                     break;
+                  }
+               }
+               if (p == q)
+               {
+                  features.add(n);
+                  break;
+               }
+            }
+            if (j == k)
+            {
+               System.err.println("Cannot encode features");
+               System.exit(1);
+            }
+         }
+         Collections.sort(features);
+         return(features);
+      }      
    };
 
    // Terminal causation.
@@ -106,7 +145,7 @@ public class Mandala
       public TerminalCausation(int hierarchy, int id)
       {
          super(hierarchy, id);
-         features = encodeFeatures(id);
+         features = encodeFeatures(hierarchy, id);
       }
 
 
@@ -337,29 +376,34 @@ public class Mandala
    public static ArrayList<Integer> featureValueDurations;
 
    // Context features.
-   public static class ContextFeature
+   public static class ContextFeatures
    {
-      public Causation          causation;
-      public int                tier;
       public ArrayList<Integer> features;
       public float              value;
       public int                age;
-
-      // Constructor.
-      public ContextFeature(Causation causation, int tier)
+	  public int tier;
+	  
+      // Constructors.
+      public ContextFeatures(Causation causation, int tier)
       {
-         this.causation = causation;
-         this.tier      = tier;
-         features       = Causation.encodeFeatures(causation.id);
+         features       = Causation.encodeFeatures(causation.hierarchy, causation.id);
          value          = 1.0f;
          age            = 0;
+   	  	this.tier = tier;         
       }
 
-
-      // Duplicate?
-      public boolean duplicate(ContextFeature contextFeature)
+      public ContextFeatures(ContextFeatures contextFeatures1, ContextFeatures contextFeatures2, int tier)
       {
-         if (!featuresEqual(contextFeature))
+         features       = Causation.encodeFeatures(contextFeatures1.features, contextFeatures2.features);
+         value          = 1.0f;
+         age            = 0;
+   	  	this.tier = tier;         
+      }
+      
+      // Duplicate?
+      public boolean duplicate(ContextFeatures contextFeatures)
+      {
+         if (!featuresEqual(contextFeatures))
          {
             return(false);
          }
@@ -368,7 +412,7 @@ public class Mandala
 
 
       // Features are equal?
-      public boolean featuresEqual(ContextFeature contextFeatures)
+      public boolean featuresEqual(ContextFeatures contextFeatures)
       {
          return(featuresEqual(contextFeatures.features));
       }
@@ -392,6 +436,7 @@ public class Mandala
 
 
       // Attenuate value.
+      // Return true if not expired, else false.
       public boolean attentuate()
       {
          if (featureValueDurations != null)
@@ -404,11 +449,6 @@ public class Mandala
             }
             else
             {
-               value = 1.0f - ((float)age / (float)duration);
-               if (value < 0.0f)
-               {
-                  value = 0.0f;
-               }
                age++;
                return(true);
             }
@@ -424,8 +464,7 @@ public class Mandala
       // Print.
       public void print()
       {
-         System.out.print("id=" + causation.id);
-         System.out.print(", features:");
+         System.out.print("features:");
          for (int i = 0, j = features.size(); i < j; i++)
          {
             System.out.print(features.get(i));
@@ -437,7 +476,7 @@ public class Mandala
          System.out.println(", tier=" + tier + ", value=" + value + ", age=" + age);
       }
    };
-   public static ArrayList < ArrayList < ContextFeature >> contextFeatures;
+   public static ArrayList < ContextFeatures > contextTiers;
 
    // Datasets.
    public static String NN_DATASET_FILENAME        = "mandala_nn_dataset.py";
@@ -1961,10 +2000,10 @@ public class Mandala
             path.print();
             System.out.println("data:");
          }
-         contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
+         contextTiers = new ArrayList < ContextFeatures > ();
          for (int j = 0, k = maxTiers - 1; j < k; j++)
          {
-            contextFeatures.add(new ArrayList<ContextFeature>());
+            contextTiers.add(null);
          }
          int step = 0;
          for (int j = 0, p = path.steps.size() - 1; j < p; j++)
@@ -1984,6 +2023,7 @@ public class Mandala
             }
             ArrayList<Float> X_train_step = new ArrayList<Float>();
             ArrayList<Float> y_train_step = new ArrayList<Float>();
+            ArrayList<ArrayList<Float>> X_contexts = new ArrayList<ArrayList<Float>>();
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2007,13 +2047,14 @@ public class Mandala
                      System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
                   }
                   ArrayList<Float> X_context = getTierContext(k - 1);
+                  X_contexts.add(X_context);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     X_train_step.add(X_context.get(q));
+                     X_train_step.add(X_context.get(q));                        
                   }
                }
             }
-            updateContexts(ystep);
+            updateContexts(xterminalCausation);
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2037,9 +2078,10 @@ public class Mandala
                      System.out.println("get tier context for y, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
                   }
                   ArrayList<Float> y_context = getTierContext(k - 1);
+                  ArrayList<Float> X_context = X_contexts.get(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     y_train_step.add(y_context.get(q));
+                     y_train_step.add(y_context.get(q) - X_context.get(q));                   
                   }
                }
             }
@@ -2058,6 +2100,7 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
+      ArrayList<Integer> y_path_begin = new ArrayList<Integer>();
       ArrayList<Integer> y_predictable = new ArrayList<Integer>();
       int                sequence      = 0;
       for (int i = numTrain; i < numPaths; i++)
@@ -2068,12 +2111,8 @@ public class Mandala
             path.print();
             System.out.println("data:");
          }
-         contextFeatures = new ArrayList < ArrayList < ContextFeature >> ();
-         for (int j = 0, k = maxTiers - 1; j < k; j++)
-         {
-            contextFeatures.add(new ArrayList<ContextFeature>());
-         }
          int step = 0;
+         boolean pathBegin = true;
          for (int j = 0, p = path.steps.size() - 1; j < p; j++)
          {
             ArrayList<CausationTier> xstep              = path.steps.get(j);
@@ -2084,6 +2123,11 @@ public class Mandala
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
+                if (pathBegin)
+                {
+                   y_path_begin.add(sequence);
+                   pathBegin = false;
+                }            	
                int xid, yid;
                if (NUM_INTERSTITIAL_TERMINALS == 0)
                {
@@ -2166,7 +2210,6 @@ public class Mandala
                         }
                      }
                   }
-                  attenuateContexts();
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   step++;
@@ -2174,6 +2217,11 @@ public class Mandala
                   xid = yid;
                }
             }
+            if (pathBegin)
+            {
+               y_path_begin.add(sequence);
+               pathBegin = false;
+            }                   
             if (VERBOSE)
             {
                System.out.print("X: ");
@@ -2182,7 +2230,7 @@ public class Mandala
                yterminalCausation.print();
             }
             ArrayList<Float> X_test_step = new ArrayList<Float>();
-            ArrayList<Float> y_test_step = new ArrayList<Float>();
+            ArrayList<Float> y_test_step = new ArrayList<Float>();         
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2201,18 +2249,12 @@ public class Mandala
                }
                else
                {
-                  if (VERBOSE)
-                  {
-                     System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
-                  }
-                  ArrayList<Float> X_context = getTierContext(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     X_test_step.add(X_context.get(q));
+                      X_test_step.add(0.0f);
                   }
                }
             }
-            updateContexts(ystep);
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2231,14 +2273,9 @@ public class Mandala
                }
                else
                {
-                  if (VERBOSE)
-                  {
-                     System.out.println("get tier context for y, terminal id=" + xterminalCausation.id + ", tier=" + (k - 1) + ", step=" + step);
-                  }
-                  ArrayList<Float> y_context = getTierContext(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     y_test_step.add(y_context.get(q));
+                      y_test_step.add(0.0f);
                   }
                }
             }
@@ -2275,23 +2312,23 @@ public class Mandala
             for (int k = 0, q = X_train_step.size(); k < q; k++)
             {
                printWriter.print(X_train_step.get(k) + "");
-               if ((i != j - 1) || (k != q - 1))
+               if ((i != j - 1) || (k != q - 1))              
                {
                   printWriter.print(",");
                }
             }
             printWriter.println();
-         }
+          }
          printWriter.println("]");
          printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
-         {
+         {     	 
             ArrayList<Float> y_train_step = y_train.get(i);
             for (int k = 0, q = y_train_step.size(); k < q; k++)
             {
                printWriter.print(y_train_step.get(k) + "");
-               if ((i != j - 1) || (k != q - 1))
+               if ((i != j - 1) || (k != q - 1))             	   
                {
                   printWriter.print(",");
                }
@@ -2331,6 +2368,16 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
+         printWriter.print("y_test_path_begin = [");
+         for (int i = 0, j = y_path_begin.size(); i < j; i++)
+         {
+            printWriter.print(y_path_begin.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");         
          printWriter.print("y_test_predictable = [");
          for (int i = 0, j = y_predictable.size(); i < j; i++)
          {
@@ -2359,19 +2406,16 @@ public class Mandala
       {
          features.add(0.0f);
       }
-      ArrayList<ContextFeature> contexts = contextFeatures.get(tier);
-      for (ContextFeature contextFeature : contexts)
+      ContextFeatures contextFeatures = contextTiers.get(tier);
+      if (contextFeatures != null)
       {
          if (VERBOSE)
          {
-            contextFeature.print();
+            contextFeatures.print();
          }
-         for (int i : contextFeature.features)
+         for (int i : contextFeatures.features)
          {
-            if (features.get(i) < contextFeature.value)
-            {
-               features.set(i, contextFeature.value);
-            }
+               features.set(i, contextFeatures.value);
          }
       }
       return(features);
@@ -2379,27 +2423,23 @@ public class Mandala
 
 
    // Update feature contexts.
-   static void updateContexts(ArrayList<CausationTier> step)
+   static void updateContexts(TerminalCausation causation)
    {
       // Attenuate contexts.
       attenuateContexts();
 
       // Add contexts.
-      for (int i = 1, j = step.size(); i < j && i <= MAX_CONTEXT_FEATURE_TIER; i++)
+      ContextFeatures contextFeatures1 = new ContextFeatures(causation, 0);
+      for (int i = 0, j = contextTiers.size(); i < j && i <= MAX_CONTEXT_FEATURE_TIER; i++)
       {
-         CausationTier tier = step.get(i);
-         if (tier.currentChild > 0)
+         ContextFeatures contextFeatures2 = contextTiers.get(i);
+         if (contextFeatures2 != null)
          {
-            ContextFeature            contextFeature = new ContextFeature(tier.causation, i - 1);
-            ArrayList<ContextFeature> contexts       = contextFeatures.get(i - 1);
-            for (ContextFeature feature : contexts)
-            {
-               if (feature.duplicate(contextFeature))
-               {
-                  return;
-               }
-            }
-            contexts.add(contextFeature);
+             contextTiers.set(i, null);        	 
+            contextFeatures1 = new ContextFeatures(contextFeatures1, contextFeatures2, i + 1);
+         } else {
+        	 contextTiers.set(i, contextFeatures1);
+        	 break;
          }
       }
    }
@@ -2408,18 +2448,16 @@ public class Mandala
    // Attenuate feature contexts.
    static void attenuateContexts()
    {
-      for (int i = 0, j = contextFeatures.size(); i < j; i++)
+      for (int i = 0, j = contextTiers.size(); i < j; i++)
       {
-         ArrayList<ContextFeature> contexts    = contextFeatures.get(i);
-         ArrayList<ContextFeature> tmpContexts = new ArrayList<ContextFeature>();
-         for (ContextFeature context : contexts)
+         ContextFeatures contextFeatures    = contextTiers.get(i);
+         if (contextFeatures != null)
          {
-            if (context.attentuate())
+            if (!contextFeatures.attentuate())
             {
-               tmpContexts.add(context);
+               contextTiers.set(i, null);
             }
          }
-         contextFeatures.set(i, tmpContexts);
       }
    }
 

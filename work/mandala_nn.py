@@ -80,7 +80,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_predictable
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -91,11 +91,11 @@ if X_test_shape[0] == 0:
 # Create NN
 model = Sequential()
 model.add(Input((X_train_shape[1],)))
-model.add(Dense(n_hidden[0], activation='relu'))
+model.add(Dense(n_hidden[0], activation='tanh'))
 for i in range(1, len(n_hidden)):
-    model.add(Dense(n_hidden[i], activation='relu'))
-model.add(Dense(y_train_shape[1], activation='sigmoid'))
-model.compile(loss='binary_crossentropy', optimizer='adam')
+    model.add(Dense(n_hidden[i], activation='tanh'))
+model.add(Dense(y_train_shape[1], activation='tanh'))
+model.compile(loss='mse', optimizer='adam')
 if verbose:
     model.summary()
 
@@ -145,20 +145,20 @@ seq = array(y_test)
 y = seq.reshape(y_test_shape[0], y_test_shape[1])
 testErrors = 0
 testTotal = 0
-p = None
+prediction = None
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
-    if p is not None:
+    if i > 0:
+        Xj = X[i - 1].reshape(1, X_test_shape[1])
+        yj = y[i - 1].reshape(1, y_test_shape[1])
         for j in range(n_dimensions, X_test_shape[1]):
-            Xi[0][j] = p[0][j]
+            Xi[0][j] = Xj[0][j] + yj[0][j]
     yi = y[i].reshape(1, y_test_shape[1])
     prediction = model.predict(Xi, verbose=int(verbose))
-    p = None
     if i in y_test_predictable:
-        p = prediction
         yvals = yi[0]
         pvals = prediction[0]
-        for j in range(n_dimensions, len(pvals)):
+        for j in range(n_dimensions, X_test_shape[1]):
             yvals[j] = 0.0
             pvals[j] = 0.0
         ymax = []
