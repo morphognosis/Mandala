@@ -104,12 +104,14 @@ for path in range(X_train_shape[0]):
         ymax = []
         pmax = []
         for j in range(n_features):
-            k = argmax(yvals)
-            ymax.append(k)
-            yvals[k] = 0.0
-            k = argmax(pvals)
-            pmax.append(k)
-            pvals[k] = 0.0
+            yidx = argmax(yvals)
+            if yvals[yidx] >= 0.5:
+                ymax.append(yidx)
+            yvals[yidx] = 0.0
+            pidx = argmax(pvals)
+            if pvals[pidx] >= 0.5:
+                pmax.append(pidx)
+            pvals[pidx] = 0.0
         ymax.sort()
         pmax.sort()
         trainTotal += 1
@@ -135,12 +137,14 @@ for path in range(X_test_shape[0]):
             ymax = []
             pmax = []
             for j in range(n_features):
-                k = argmax(yvals)
-                ymax.append(k)
-                yvals[k] = 0.0
-                k = argmax(pvals)
-                pmax.append(k)
-                pvals[k] = 0.0
+                yidx = argmax(yvals)
+                if yvals[yidx] >= 0.5:
+                    ymax.append(yidx)
+                yvals[yidx] = 0.0
+                pidx = argmax(pvals)
+                if pvals[pidx] >= 0.5:
+                    pmax.append(pidx)
+                pvals[pidx] = 0.0
             ymax.sort()
             pmax.sort()
             testTotal += 1

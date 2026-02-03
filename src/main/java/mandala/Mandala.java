@@ -435,9 +435,9 @@ public class Mandala
       }
 
 
-      // Attenuate value.
+      // Expire value.
       // Return true if not expired, else false.
-      public boolean attentuate()
+      public boolean expire()
       {
          if (featureValueDurations != null)
          {
@@ -2425,8 +2425,18 @@ public class Mandala
    // Update feature contexts.
    static void updateContexts(TerminalCausation causation)
    {
-      // Attenuate contexts.
-      attenuateContexts();
+      // Expire contexts.
+      for (int i = 0, j = contextTiers.size(); i < j; i++)
+      {
+         ContextFeatures contextFeatures    = contextTiers.get(i);
+         if (contextFeatures != null)
+         {
+            if (!contextFeatures.expire())
+            {
+               contextTiers.set(i, null);
+            }
+         }
+      }
 
       // Add contexts.
       ContextFeatures contextFeatures1 = new ContextFeatures(causation, 0);
@@ -2443,24 +2453,6 @@ public class Mandala
          }
       }
    }
-
-
-   // Attenuate feature contexts.
-   static void attenuateContexts()
-   {
-      for (int i = 0, j = contextTiers.size(); i < j; i++)
-      {
-         ContextFeatures contextFeatures    = contextTiers.get(i);
-         if (contextFeatures != null)
-         {
-            if (!contextFeatures.attentuate())
-            {
-               contextTiers.set(i, null);
-            }
-         }
-      }
-   }
-
 
    // Export RNN dataset.
    public static void exportRNNdataset(String filename, float trainFraction, int randomSeed)

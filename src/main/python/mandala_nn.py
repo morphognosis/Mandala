@@ -6,7 +6,7 @@
 
 import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-from numpy import array, argmax
+from numpy import array, argmax, argmin
 from numpy import loadtxt
 from keras.models import Sequential
 from keras.layers import Input, Dense
@@ -112,28 +112,71 @@ trainErrors = 0
 trainTotal = 0
 for i in range(y_train_shape[0]):
     yvals = y[i]
+    yvals = yvals[0:n_dimensions]
     pvals = predictions[i]
-    tvals = []
-    for j in range(len(pvals)):
-        if j < n_dimensions:
-            tvals.append(pvals[j])
-        else:
-            tvals.append(0.0)
-    pvals = tvals
+    pvals = pvals[0:n_dimensions]
     ymax = []
     pmax = []
     for j in range(n_features):
-        k = argmax(yvals)
-        ymax.append(k)
-        yvals[k] = 0.0
-        k = argmax(pvals)
-        pmax.append(k)
-        pvals[k] = 0.0
+        yidx = argmax(yvals)
+        if yvals[yidx] >= 0.5:
+            ymax.append(yidx)
+        yvals[yidx] = 0.0
+        pidx = argmax(pvals)
+        if pvals[pidx] >= 0.5:
+            pmax.append(pidx)
+        pvals[pidx] = 0.0
     ymax.sort()
     pmax.sort()
     trainTotal += 1
     if ymax != pmax:
         trainErrors += 1
+    else:
+        n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
+        for j in range(n_contexts):
+            start = n_dimensions * (j + 1)
+            end = start + n_dimensions
+            yvals = y[i]
+            yvals = yvals[start:end]
+            pvals = predictions[i]
+            pvals = pvals[start:end]
+            ymax = []
+            pmax = []
+            for k in range(n_features):
+                yidx = argmax(yvals)
+                if yvals[yidx] >= 0.5:
+                    ymax.append(yidx)
+                yvals[yidx] = 0.0
+                pidx = argmax(pvals)
+                if pvals[pidx] >= 0.5:
+                    pmax.append(pidx)
+                pvals[pidx] = 0.0
+            ymax.sort()
+            pmax.sort()
+            if ymax != pmax:
+                trainErrors += 1
+                break
+            yvals = y[i]
+            yvals = yvals[start:end]
+            pvals = predictions[i]
+            pvals = pvals[start:end]
+            ymin = []
+            pmin = []
+            for k in range(n_features):
+                yidx = argmin(yvals)
+                if yvals[yidx] <= -0.5:
+                    ymin.append(yidx)
+                yvals[yidx] = 0.0
+                pidx = argmin(pvals)
+                if pvals[pidx] <= -0.5:
+                    pmin.append(pidx)
+                pvals[pidx] = 0.0
+            ymin.sort()
+            pmin.sort()
+            if ymin != pmin:
+                trainErrors += 1
+                break
+
 trainErrorPct = 0
 if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
