@@ -191,11 +191,15 @@ testTotal = 0
 prediction = None
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
-    if i > 0:
-        Xj = X[i - 1].reshape(1, X_test_shape[1])
-        yj = y[i - 1].reshape(1, y_test_shape[1])
+    if i not in y_test_path_begin:
         for j in range(n_dimensions, X_test_shape[1]):
-            Xi[0][j] = Xj[0][j] + yj[0][j]
+            if prediction[0][j] >= 0.5:
+                Xi[0][j] = 1.0
+            elif prediction[0][j] <= -0.5:
+                Xi[0][j] = 0.0
+    else:
+        for j in range(n_dimensions, X_test_shape[1]):
+            Xi[0][j] = 0.0
     yi = y[i].reshape(1, y_test_shape[1])
     prediction = model.predict(Xi, verbose=int(verbose))
     if i in y_test_predictable:
@@ -207,17 +211,20 @@ for i in range(X_test_shape[0]):
         ymax = []
         pmax = []
         for j in range(n_features):
-            k = argmax(yvals)
-            ymax.append(k)
-            yvals[k] = 0.0
-            k = argmax(pvals)
-            pmax.append(k)
-            pvals[k] = 0.0
+            yidx = argmax(yvals)
+            if yvals[yidx] >= 0.5:
+                ymax.append(yidx)
+            yvals[yidx] = 0.0
+            pidx = argmax(pvals)
+            if pvals[pidx] >= 0.5:
+                pmax.append(pidx)
+            pvals[pidx] = 0.0
         ymax.sort()
         pmax.sort()
         testTotal += 1
         if ymax != pmax:
             testErrors += 1
+
 testErrorPct = 0
 if testTotal > 0:
     testErrorPct = (float(testErrors) / float(testTotal)) * 100.0

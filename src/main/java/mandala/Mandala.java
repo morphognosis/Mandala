@@ -529,12 +529,12 @@ public class Mandala
       "      [-numNonterminals <quantity> (default=" + NUM_NONTERMINALS + ")]\n" +
       "      [-numTerminals <quantity> (default=" + NUM_TERMINALS + ")]\n" +
       "      [-numInterstitialTerminals <quantity> (default=" + NUM_INTERSTITIAL_TERMINALS + ", if 0 resort to non-interstitial terminals)]\n" +
-      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-minProductionRightHandSideLength <quantity> (default=" + MIN_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-maxProductionRightHandSideLength <quantity> (default=" + MAX_PRODUCTION_RHS_LENGTH + ")]\n" +
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
       "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
+      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +      
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
@@ -552,6 +552,7 @@ public class Mandala
       "  Load:\n" +
       "    java mandala.Mandala\n" +
       "      -load [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
+      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +      
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
@@ -735,7 +736,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
             continue;
          }
          if (args[i].equals("-minProductionRightHandSideLength"))
@@ -1199,7 +1199,6 @@ public class Mandala
             NUM_NONTERMINALS                   = Utility.loadInt(reader);
             NUM_TERMINALS                      = Utility.loadInt(reader);
             NUM_INTERSTITIAL_TERMINALS         = Utility.loadInt(reader);
-            MAX_INTERSTITIAL_TERMINAL_SEQUENCE = Utility.loadInt(reader);
             MIN_PRODUCTION_RHS_LENGTH          = Utility.loadInt(reader);
             MAX_PRODUCTION_RHS_LENGTH          = Utility.loadInt(reader);
             TERMINAL_PRODUCTION_PROBABILITY    = Utility.loadFloat(reader);
@@ -1308,12 +1307,12 @@ public class Mandala
          System.out.println("NUM_NONTERMINALS=" + NUM_NONTERMINALS);
          System.out.println("NUM_TERMINALS=" + NUM_TERMINALS);
          System.out.println("NUM_INTERSTITIAL_TERMINALS=" + NUM_INTERSTITIAL_TERMINALS);
-         System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
          System.out.println("MIN_PRODUCTION_RHS_LENGTH=" + MIN_PRODUCTION_RHS_LENGTH);
          System.out.println("MAX_PRODUCTION_RHS_LENGTH=" + MAX_PRODUCTION_RHS_LENGTH);
          System.out.println("TERMINAL_PRODUCTION_PROBABILITY=" + TERMINAL_PRODUCTION_PROBABILITY);
          System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
          System.out.println("NUM_FEATURES=" + NUM_FEATURES);
+         System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);         
          System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
          System.out.println("NUM_CAUSATION_PATHS=" + NUM_CAUSATION_PATHS);
          System.out.println("MAX_CONTEXT_FEATURE_TIER=" + MAX_CONTEXT_FEATURE_TIER);
@@ -1364,7 +1363,6 @@ public class Mandala
             Utility.saveInt(writer, NUM_NONTERMINALS, "NUM_NONTERMINALS");
             Utility.saveInt(writer, NUM_TERMINALS, "NUM_TERMINALS");
             Utility.saveInt(writer, NUM_INTERSTITIAL_TERMINALS, "NUM_INTERSTITIAL_TERMINALS");
-            Utility.saveInt(writer, MAX_INTERSTITIAL_TERMINAL_SEQUENCE, "MAX_INTERSTITIAL_TERMINAL_SEQUENCE");
             Utility.saveInt(writer, MIN_PRODUCTION_RHS_LENGTH, "MIN_PRODUCTION_RHS_LENGTH");
             Utility.saveInt(writer, MAX_PRODUCTION_RHS_LENGTH, "MAX_PRODUCTION_RHS_LENGTH");
             Utility.saveFloat(writer, TERMINAL_PRODUCTION_PROBABILITY, "TERMINAL_PRODUCTION_PROBABILITY");
@@ -2191,14 +2189,7 @@ public class Mandala
                         }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
-                           if (yrandomCausation.features.contains(q))
-                           {
-                              y_test_step.add(1.0f);
-                           }
-                           else
-                           {
-                              y_test_step.add(0.0f);
-                           }
+                           y_test_step.add(0.0f);
                         }
                      }
                      else
@@ -2616,14 +2607,7 @@ public class Mandala
                   }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     if (yrandomCausation.features.contains(q))
-                     {
-                        y_test_path.add(1.0f);
-                     }
-                     else
-                     {
-                        y_test_path.add(0.0f);
-                     }
+                     y_test_path.add(0.0f);
                   }
                   sequence++;
                   xid = yid;
