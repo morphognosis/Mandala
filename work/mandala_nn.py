@@ -6,6 +6,7 @@
 
 import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import numpy as np
 from numpy import array, argmax, argmin
 from numpy import loadtxt
 from keras.models import Sequential
@@ -138,7 +139,79 @@ for i in range(X_train_shape[0]):
                 pidxs.append(j)
             if pvals[j] <= -0.5:
                 pidxs.append(-j)
-        print('validate: path =',pathnum,'step =',stepnum,'X:',xidxs,'y:',yidxs,'prediction:',pidxs)
+        xmax = max(xidxs)
+        n = int(xmax / n_dimensions)
+        if xmax % n_dimensions > 0:
+            n = n + 1
+        xlists = []
+        xstr = 'X: ['
+        for j in range(n):
+            xmin = n_dimensions * j
+            xmax = n_dimensions * (j + 1)
+            xsublist = [x for x in xidxs if x >= xmin and x < xmax]
+            xsublist2 = []
+            for k in range(len(xsublist)):
+                xsublist2.append(xsublist[k] - (n_dimensions * j))
+            xsublist = xsublist2
+            xlists.append(xsublist)
+            if j == 0:
+                xstr += 'sense='
+            else:
+                xstr += ', ctx' + str(j - 1) + '='
+            xstr += str(xsublist)
+        xstr += ']'
+        xidxs = xlists
+        sublists = np.array_split(yidxs, len(yidxs) // n_features or 1)
+        yidxs = [list(sublist) for sublist in sublists]
+        n = len(yidxs)
+        ylists = []
+        ystr = 'y: ['
+        for j in range(n):
+            ymin = n_dimensions * j
+            ymax = n_dimensions * (j + 1)
+            ysublist = yidxs[j]
+            ysublist2 = []
+            for k in range(len(ysublist)):
+                v = ysublist[k]
+                if v > 0:
+                    ysublist2.append(v - (n_dimensions * j))
+                elif v < 0:
+                    ysublist2.append(v + (n_dimensions * j))
+            ysublist = ysublist2
+            ylists.append(ysublist)
+            if j == 0:
+                ystr += 'sense='
+            else:
+                ystr += ', ctx' + str(j - 1) + '='
+            ystr += str(ysublist)
+        ystr += ']'
+        yidxs = ylists
+        sublists = np.array_split(pidxs, len(pidxs) // n_features or 1)
+        pidxs = [list(sublist) for sublist in sublists]
+        n = len(pidxs)
+        plists = []
+        pstr = 'predictions: ['
+        for j in range(n):
+            pmin = n_dimensions * j
+            pmax = n_dimensions * (j + 1)
+            psublist = pidxs[j]
+            psublist2 = []
+            for k in range(len(psublist)):
+                v = psublist[k]
+                if v > 0:
+                    psublist2.append(v - (n_dimensions * j))
+                elif v < 0:
+                    psublist2.append(v + (n_dimensions * j))
+            psublist = psublist2
+            plists.append(psublist)
+            if j == 0:
+                pstr += 'sense='
+            else:
+                pstr += ', ctx' + str(j - 1) + '='
+            pstr += str(psublist)
+        pstr += ']'
+        pidxs = plists
+        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep="")
     stepnum = stepnum + 1
     yvals = y[i].copy()
     yvals = yvals[0:n_dimensions]
@@ -259,7 +332,79 @@ for i in range(X_test_shape[0]):
                 pidxs.append(j)
             if pvals[j] <= -0.5:
                 pidxs.append(-j)
-        print('predict: path =',pathnum,'step =',stepnum,'X:',xidxs,'y:',yidxs,'prediction:',pidxs)
+        xmax = max(xidxs)
+        n = int(xmax / n_dimensions)
+        if xmax % n_dimensions > 0:
+            n = n + 1
+        xlists = []
+        xstr = 'X: ['
+        for j in range(n):
+            xmin = n_dimensions * j
+            xmax = n_dimensions * (j + 1)
+            xsublist = [x for x in xidxs if x >= xmin and x < xmax]
+            xsublist2 = []
+            for k in range(len(xsublist)):
+                xsublist2.append(xsublist[k] - (n_dimensions * j))
+            xsublist = xsublist2
+            xlists.append(xsublist)
+            if j == 0:
+                xstr += 'sense='
+            else:
+                xstr += ', ctx' + str(j - 1) + '='
+            xstr += str(xsublist)
+        xstr += ']'
+        xidxs = xlists
+        sublists = np.array_split(yidxs, len(yidxs) // n_features or 1)
+        yidxs = [list(sublist) for sublist in sublists]
+        n = len(yidxs)
+        ylists = []
+        ystr = 'y: ['
+        for j in range(n):
+            ymin = n_dimensions * j
+            ymax = n_dimensions * (j + 1)
+            ysublist = yidxs[j]
+            ysublist2 = []
+            for k in range(len(ysublist)):
+                v = ysublist[k]
+                if v > 0:
+                    ysublist2.append(v - (n_dimensions * j))
+                elif k < 0:
+                    ysublist2.append(v + (n_dimensions * j))
+            ysublist = ysublist2
+            ylists.append(ysublist)
+            if j == 0:
+                ystr += 'sense='
+            else:
+                ystr += ', ctx' + str(j - 1) + '='
+            ystr += str(ysublist)
+        ystr += ']'
+        yidxs = ylists
+        sublists = np.array_split(pidxs, len(pidxs) // n_features or 1)
+        pidxs = [list(sublist) for sublist in sublists]
+        n = len(pidxs)
+        plists = []
+        pstr = 'predictions: ['
+        for j in range(n):
+            pmin = n_dimensions * j
+            pmax = n_dimensions * (j + 1)
+            psublist = pidxs[j]
+            psublist2 = []
+            for k in range(len(psublist)):
+                v = psublist[k]
+                if v > 0:
+                    psublist2.append(v - (n_dimensions * j))
+                elif v < 0:
+                    psublist2.append(v + (n_dimensions * j))
+            psublist = psublist2
+            plists.append(psublist)
+            if j == 0:
+                pstr += 'sense='
+            else:
+                pstr += ', ctx' + str(j - 1) + '='
+            pstr += str(psublist)
+        pstr += ']'
+        pidxs = plists
+        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep="")
     stepnum = stepnum + 1
     if i in y_test_predictable:
         yvals = yi[0].copy()
