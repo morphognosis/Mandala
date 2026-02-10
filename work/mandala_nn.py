@@ -80,7 +80,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -110,7 +110,12 @@ model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbos
 predictions = model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
 trainErrors = 0
 trainTotal = 0
+pathnum = -1
+stepnum = 0
 for i in range(X_train_shape[0]):
+    if i in y_train_path_begin:
+        pathnum = pathnum + 1
+        stepnum = 0
     if verbose:
         xvals = X[i].copy()
         xidxs = []
@@ -133,7 +138,8 @@ for i in range(X_train_shape[0]):
                 pidxs.append(j)
             if pvals[j] <= -0.5:
                 pidxs.append(-j)
-        print('validate:',i,'X:',xidxs,'y:',yidxs,'predictions:',pidxs)
+        print('validate: path =',pathnum,'step =',stepnum,'X:',xidxs,'y:',yidxs,'prediction:',pidxs)
+    stepnum = stepnum + 1
     yvals = y[i].copy()
     yvals = yvals[0:n_dimensions]
     pvals = predictions[i].copy()
@@ -211,6 +217,8 @@ seq = array(y_test)
 y = seq.reshape(y_test_shape[0], y_test_shape[1])
 testErrors = 0
 testTotal = 0
+pathnum = -1
+stepnum = 0
 prediction = None
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
@@ -223,6 +231,8 @@ for i in range(X_test_shape[0]):
             elif prediction[0][j] <= -0.5:
                 Xi[0][j] = 0.0
     else:
+        pathnum = pathnum + 1
+        stepnum = 0
         for j in range(n_dimensions, X_test_shape[1]):
             Xi[0][j] = 0.0
     yi = y[i].reshape(1, y_test_shape[1]).copy()
@@ -235,6 +245,13 @@ for i in range(X_test_shape[0]):
                 xidxs.append(j)
             if xvals[j] <= -0.5:
                 xidxs.append(-j)
+        yvals = yi[0].copy()
+        yidxs = []
+        for j in range(len(yvals)):
+            if yvals[j] >= 0.5:
+                yidxs.append(j)
+            if yvals[j] <= -0.5:
+                yidxs.append(-j)
         pvals = prediction[0].copy()
         pidxs = []
         for j in range(len(pvals)):
@@ -242,7 +259,8 @@ for i in range(X_test_shape[0]):
                 pidxs.append(j)
             if pvals[j] <= -0.5:
                 pidxs.append(-j)
-        print('predict:',i,'X:',xidxs,'prediction:',pidxs)
+        print('predict: path =',pathnum,'step =',stepnum,'X:',xidxs,'y:',yidxs,'prediction:',pidxs)
+    stepnum = stepnum + 1
     if i in y_test_predictable:
         yvals = yi[0].copy()
         yvals = yvals[0:n_dimensions]

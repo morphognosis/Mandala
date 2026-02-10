@@ -1989,6 +1989,8 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
+      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>(); 
+      int                sequence      = 0;      
       int numTrain = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
       for (int i = 0; i < numTrain; i++)
       {
@@ -2012,6 +2014,10 @@ public class Mandala
             TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
             Causation                ycausation         = ystep.get(0).causation;
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
+            if (j == 0)
+            {
+               y_train_path_begin.add(sequence);
+            }                        
             if (VERBOSE)
             {
                System.out.print("X: ");
@@ -2086,6 +2092,7 @@ public class Mandala
             X_train.add(X_train_step);
             y_train.add(y_train_step);
             step++;
+            sequence++;            
          }
          if (VERBOSE)
          {
@@ -2098,9 +2105,9 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
-      ArrayList<Integer> y_path_begin = new ArrayList<Integer>();
+      ArrayList<Integer> y_test_path_begin = new ArrayList<Integer>();
       ArrayList<Integer> y_predictable = new ArrayList<Integer>();
-      int                sequence      = 0;
+      sequence      = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);      
@@ -2123,7 +2130,7 @@ public class Mandala
             {
                 if (pathBegin)
                 {
-                   y_path_begin.add(sequence);
+                   y_test_path_begin.add(sequence);
                    pathBegin = false;
                 }            	
                int xid, yid;
@@ -2210,7 +2217,7 @@ public class Mandala
             }
             if (pathBegin)
             {
-               y_path_begin.add(sequence);
+               y_test_path_begin.add(sequence);
                pathBegin = false;
             }                   
             if (VERBOSE)
@@ -2327,6 +2334,16 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
+         printWriter.print("y_train_path_begin = [");
+         for (int i = 0, j = y_train_path_begin.size(); i < j; i++)
+         {
+            printWriter.print(y_train_path_begin.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");
          printWriter.println("X_test_shape = [ " + X_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_test.size(); i < j; i++)
@@ -2360,9 +2377,9 @@ public class Mandala
          }
          printWriter.println("]");
          printWriter.print("y_test_path_begin = [");
-         for (int i = 0, j = y_path_begin.size(); i < j; i++)
+         for (int i = 0, j = y_test_path_begin.size(); i < j; i++)
          {
-            printWriter.print(y_path_begin.get(i) + "");
+            printWriter.print(y_test_path_begin.get(i) + "");
             if (i < j - 1)
             {
                printWriter.print(",");
