@@ -110,10 +110,33 @@ model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbos
 predictions = model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
 trainErrors = 0
 trainTotal = 0
-for i in range(y_train_shape[0]):
-    yvals = y[i]
+for i in range(X_train_shape[0]):
+    if verbose:
+        xvals = X[i].copy()
+        xidxs = []
+        for j in range(len(xvals)):
+            if xvals[j] >= 0.5:
+                xidxs.append(j)
+            if xvals[j] <= -0.5:
+                xidxs.append(-j)
+        yvals = y[i].copy()
+        yidxs = []
+        for j in range(len(yvals)):
+            if yvals[j] >= 0.5:
+                yidxs.append(j)
+            if yvals[j] <= -0.5:
+                yidxs.append(-j)
+        pvals = predictions[i].copy()
+        pidxs = []
+        for j in range(len(pvals)):
+            if pvals[j] >= 0.5:
+                pidxs.append(j)
+            if pvals[j] <= -0.5:
+                pidxs.append(-j)
+        print('validate:',i,'X:',xidxs,'y:',yidxs,'predictions:',pidxs)
+    yvals = y[i].copy()
     yvals = yvals[0:n_dimensions]
-    pvals = predictions[i]
+    pvals = predictions[i].copy()
     pvals = pvals[0:n_dimensions]
     ymax = []
     pmax = []
@@ -136,9 +159,9 @@ for i in range(y_train_shape[0]):
         for j in range(n_contexts):
             start = n_dimensions * (j + 1)
             end = start + n_dimensions
-            yvals = y[i]
+            yvals = y[i].copy()
             yvals = yvals[start:end]
-            pvals = predictions[i]
+            pvals = predictions[i].copy()
             pvals = pvals[start:end]
             ymax = []
             pmax = []
@@ -156,9 +179,9 @@ for i in range(y_train_shape[0]):
             if ymax != pmax:
                 trainErrors += 1
                 break
-            yvals = y[i]
+            yvals = y[i].copy()
             yvals = yvals[start:end]
-            pvals = predictions[i]
+            pvals = predictions[i].copy()
             pvals = pvals[start:end]
             ymin = []
             pmin = []
@@ -192,7 +215,9 @@ prediction = None
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
     if i not in y_test_path_begin:
+        Xj = X[i - 1].reshape(1, X_test_shape[1])
         for j in range(n_dimensions, X_test_shape[1]):
+            Xi[0][j] = Xj[0][j]
             if prediction[0][j] >= 0.5:
                 Xi[0][j] = 1.0
             elif prediction[0][j] <= -0.5:
@@ -200,14 +225,29 @@ for i in range(X_test_shape[0]):
     else:
         for j in range(n_dimensions, X_test_shape[1]):
             Xi[0][j] = 0.0
-    yi = y[i].reshape(1, y_test_shape[1])
+    yi = y[i].reshape(1, y_test_shape[1]).copy()
     prediction = model.predict(Xi, verbose=int(verbose))
+    if verbose:
+        xvals = Xi[0].copy()
+        xidxs = []
+        for j in range(len(xvals)):
+            if xvals[j] >= 0.5:
+                xidxs.append(j)
+            if xvals[j] <= -0.5:
+                xidxs.append(-j)
+        pvals = prediction[0].copy()
+        pidxs = []
+        for j in range(len(pvals)):
+            if pvals[j] >= 0.5:
+                pidxs.append(j)
+            if pvals[j] <= -0.5:
+                pidxs.append(-j)
+        print('predict:',i,'X:',xidxs,'prediction:',pidxs)
     if i in y_test_predictable:
-        yvals = yi[0]
-        pvals = prediction[0]
-        for j in range(n_dimensions, X_test_shape[1]):
-            yvals[j] = 0.0
-            pvals[j] = 0.0
+        yvals = yi[0].copy()
+        yvals = yvals[0:n_dimensions]
+        pvals = prediction[0].copy()
+        pvals = pvals[0:n_dimensions]
         ymax = []
         pmax = []
         for j in range(n_features):

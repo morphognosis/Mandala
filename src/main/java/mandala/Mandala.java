@@ -2103,7 +2103,7 @@ public class Mandala
       int                sequence      = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
-         CausationPath path = causationPaths.get(i);
+         CausationPath path = causationPaths.get(i);      
          if (VERBOSE)
          {
             path.print();
