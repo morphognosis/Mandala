@@ -94,7 +94,7 @@ y = seq.reshape(y_train_shape[0], y_train_shape[1], y_train_shape[2])
 rnn_model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # Validate.
-predictions = rnn_model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
+predictions = rnn_model.predict(X, batch_size=X_train_shape[0], verbose=0)
 trainErrors = 0
 trainTotal = 0
 for path in range(X_train_shape[0]):
@@ -126,7 +126,7 @@ seq = array(X_test)
 X = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
 seq = array(y_test)
 y = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
-predictions = rnn_model.predict(X, batch_size=X_test_shape[0], verbose=int(verbose))
+predictions = rnn_model.predict(X, batch_size=X_test_shape[0], verbose=0)
 testErrors = 0
 testTotal = 0
 for path in range(X_test_shape[0]):
