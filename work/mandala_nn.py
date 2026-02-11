@@ -23,15 +23,18 @@ n_epochs = 500
 results_filename = 'mandala_nn_results.json'
 
 # Prediction significance threshold
-threshold = 0.1
+threshold = 0.5
+
+# Allow interstitial contexts?
+allow_interstitial_contexts = True
 
 # Verbosity
 verbose = True
 
 # Get options
-usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--allow_interstitial_contexts <True or False> (default=' + str(allow_interstitial_contexts) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hd:f:n:e:r:q",["help","dimensions=","features=","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hd:f:i:n:e:r:q",["help","dimensions=","features=","allow_interstitial_contexts=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -43,6 +46,14 @@ for opt, arg in opts:
      n_dimensions = int(arg)
   elif opt in ("-f", "--features"):
      n_features = int(arg)
+  elif opt in ("-i", "--allow_interstitial_contexts"):
+     if str(arg) == "True" or str(arg) == "true":
+        allow_interstitial_contexts = True
+     elif str(arg) == "False" or str(arg) == "false":
+        allow_interstitial_contexts = False
+     else:
+        print(usage)
+        sys.exit(1)
   elif opt in ("-n", "--neurons"):
      n_neurons = arg
   elif opt in ("-e", "--epochs"):
@@ -121,23 +132,23 @@ for i in range(X_train_shape[0]):
         xvals = X[i].copy()
         xidxs = []
         for j in range(len(xvals)):
-            if xvals[j] >= 0.5:
+            if xvals[j] >= threshold:
                 xidxs.append(j)
-            if xvals[j] <= -0.5:
+            if xvals[j] <= -threshold:
                 xidxs.append(-j)
         yvals = y[i].copy()
         yidxs = []
         for j in range(len(yvals)):
-            if yvals[j] >= 0.5:
+            if yvals[j] >= threshold:
                 yidxs.append(j)
-            if yvals[j] <= -0.5:
+            if yvals[j] <= -threshold:
                 yidxs.append(-j)
         pvals = predictions[i].copy()
         pidxs = []
         for j in range(len(pvals)):
-            if pvals[j] >= 0.5:
+            if pvals[j] >= threshold:
                 pidxs.append(j)
-            if pvals[j] <= -0.5:
+            if pvals[j] <= -threshold:
                 pidxs.append(-j)
         xmax = max(xidxs)
         n = int(xmax / n_dimensions)
@@ -227,11 +238,11 @@ for i in range(X_train_shape[0]):
     pmax = []
     for j in range(n_features):
         yidx = argmax(yvals)
-        if yvals[yidx] >= 0.5:
+        if yvals[yidx] >= threshold:
             ymax.append(yidx)
         yvals[yidx] = 0.0
         pidx = argmax(pvals)
-        if pvals[pidx] >= 0.5:
+        if pvals[pidx] >= threshold:
             pmax.append(pidx)
         pvals[pidx] = 0.0
     ymax.sort()
@@ -255,11 +266,11 @@ for i in range(X_train_shape[0]):
             pmax = []
             for k in range(n_features):
                 yidx = argmax(yvals)
-                if yvals[yidx] >= 0.5:
+                if yvals[yidx] >= threshold:
                     ymax.append(yidx)
                 yvals[yidx] = 0.0
                 pidx = argmax(pvals)
-                if pvals[pidx] >= 0.5:
+                if pvals[pidx] >= threshold:
                     pmax.append(pidx)
                 pvals[pidx] = 0.0
             ymax.sort()
@@ -275,11 +286,11 @@ for i in range(X_train_shape[0]):
             pmin = []
             for k in range(n_features):
                 yidx = argmin(yvals)
-                if yvals[yidx] <= -0.5:
+                if yvals[yidx] <= -threshold:
                     ymin.append(yidx)
                 yvals[yidx] = 0.0
                 pidx = argmin(pvals)
-                if pvals[pidx] <= -0.5:
+                if pvals[pidx] <= -threshold:
                     pmin.append(pidx)
                 pvals[pidx] = 0.0
             ymin.sort()
@@ -312,12 +323,12 @@ for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
     if i not in y_test_path_begin:
         Xj = X[i - 1].reshape(1, X_test_shape[1])
-        if i - 1 not in y_test_interstitial:
+        if allow_interstitial_contexts == True or i - 1 not in y_test_interstitial:
             for j in range(n_dimensions, X_test_shape[1]):
                 Xi[0][j] = Xj[0][j]
-                if prediction[0][j] >= 0.5:
+                if prediction[0][j] >= threshold:
                     Xi[0][j] = 1.0
-                elif prediction[0][j] <= -0.5:
+                elif prediction[0][j] <= -threshold:
                     Xi[0][j] = 0.0
         else:
             for j in range(n_dimensions, X_test_shape[1]):
@@ -333,23 +344,23 @@ for i in range(X_test_shape[0]):
         xvals = Xi[0].copy()
         xidxs = []
         for j in range(len(xvals)):
-            if xvals[j] >= 0.5:
+            if xvals[j] >= threshold:
                 xidxs.append(j)
-            if xvals[j] <= -0.5:
+            if xvals[j] <= -threshold:
                 xidxs.append(-j)
         yvals = yi[0].copy()
         yidxs = []
         for j in range(len(yvals)):
-            if yvals[j] >= 0.5:
+            if yvals[j] >= threshold:
                 yidxs.append(j)
-            if yvals[j] <= -0.5:
+            if yvals[j] <= -threshold:
                 yidxs.append(-j)
         pvals = prediction[0].copy()
         pidxs = []
         for j in range(len(pvals)):
-            if pvals[j] >= 0.5:
+            if pvals[j] >= threshold:
                 pidxs.append(j)
-            if pvals[j] <= -0.5:
+            if pvals[j] <= -threshold:
                 pidxs.append(-j)
         if len(xidxs) == 0:
             xstr = 'X: []'
@@ -451,11 +462,11 @@ for i in range(X_test_shape[0]):
         pmax = []
         for j in range(n_features):
             yidx = argmax(yvals)
-            if yvals[yidx] >= 0.5:
+            if yvals[yidx] >= threshold:
                 ymax.append(yidx)
             yvals[yidx] = 0.0
             pidx = argmax(pvals)
-            if pvals[pidx] >= 0.5:
+            if pvals[pidx] >= threshold:
                 pmax.append(pidx)
             pvals[pidx] = 0.0
         ymax.sort()
