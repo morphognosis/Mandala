@@ -108,7 +108,7 @@ y = seq.reshape(y_train_shape[0], y_train_shape[1])
 model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # Validate
-predictions = model.predict(X, batch_size=X_train_shape[0], verbose=int(verbose))
+predictions = model.predict(X, batch_size=X_train_shape[0], verbose=0)
 trainErrors = 0
 trainTotal = 0
 pathnum = -1
@@ -161,15 +161,18 @@ for i in range(X_train_shape[0]):
             xstr += str(xsublist)
         xstr += ']'
         xidxs = xlists
-        sublists = np.array_split(yidxs, len(yidxs) // n_features or 1)
-        yidxs = [list(sublist) for sublist in sublists]
-        n = len(yidxs)
+        ymax = max(yidxs, key=abs)
+        if ymax < 0:
+            ymax = -ymax
+        n = int(ymax / n_dimensions)
+        if ymax % n_dimensions > 0:
+            n = n + 1
         ylists = []
         ystr = 'y: ['
         for j in range(n):
             ymin = n_dimensions * j
             ymax = n_dimensions * (j + 1)
-            ysublist = yidxs[j]
+            ysublist = [x for x in yidxs if abs(x) >= ymin and abs(x) < ymax]
             ysublist2 = []
             for k in range(len(ysublist)):
                 v = ysublist[k]
@@ -186,15 +189,18 @@ for i in range(X_train_shape[0]):
             ystr += str(ysublist)
         ystr += ']'
         yidxs = ylists
-        sublists = np.array_split(pidxs, len(pidxs) // n_features or 1)
-        pidxs = [list(sublist) for sublist in sublists]
-        n = len(pidxs)
+        pmax = max(pidxs, key=abs)
+        if pmax < 0:
+            pmax = -pmax
+        n = int(pmax / n_dimensions)
+        if pmax % n_dimensions > 0:
+            n = n + 1
         plists = []
         pstr = 'predictions: ['
         for j in range(n):
             pmin = n_dimensions * j
             pmax = n_dimensions * (j + 1)
-            psublist = pidxs[j]
+            psublist = [x for x in pidxs if abs(x) >= pmin and abs(x) < pmax]
             psublist2 = []
             for k in range(len(psublist)):
                 v = psublist[k]
@@ -211,7 +217,7 @@ for i in range(X_train_shape[0]):
             pstr += str(psublist)
         pstr += ']'
         pidxs = plists
-        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep="")
+        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
     yvals = y[i].copy()
     yvals = yvals[0:n_dimensions]
@@ -233,8 +239,11 @@ for i in range(X_train_shape[0]):
     trainTotal += 1
     if ymax != pmax:
         trainErrors += 1
+        if verbose:
+            print(', error')
     else:
         n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
+        error = False
         for j in range(n_contexts):
             start = n_dimensions * (j + 1)
             end = start + n_dimensions
@@ -277,7 +286,13 @@ for i in range(X_train_shape[0]):
             pmin.sort()
             if ymin != pmin:
                 trainErrors += 1
+                error = True
                 break
+        if verbose:
+             if error:
+                 print(', error')
+             else:
+                 print(', ok')
 
 trainErrorPct = 0
 if trainTotal > 0:
@@ -309,7 +324,7 @@ for i in range(X_test_shape[0]):
         for j in range(n_dimensions, X_test_shape[1]):
             Xi[0][j] = 0.0
     yi = y[i].reshape(1, y_test_shape[1]).copy()
-    prediction = model.predict(Xi, verbose=int(verbose))
+    prediction = model.predict(Xi, verbose=0)
     if verbose:
         xvals = Xi[0].copy()
         xidxs = []
@@ -354,21 +369,24 @@ for i in range(X_test_shape[0]):
             xstr += str(xsublist)
         xstr += ']'
         xidxs = xlists
-        sublists = np.array_split(yidxs, len(yidxs) // n_features or 1)
-        yidxs = [list(sublist) for sublist in sublists]
-        n = len(yidxs)
+        ymax = max(yidxs, key=abs)
+        if ymax < 0:
+            ymax = -ymax
+        n = int(ymax / n_dimensions)
+        if ymax % n_dimensions > 0:
+            n = n + 1
         ylists = []
         ystr = 'y: ['
         for j in range(n):
             ymin = n_dimensions * j
             ymax = n_dimensions * (j + 1)
-            ysublist = yidxs[j]
+            ysublist = [x for x in yidxs if abs(x) >= ymin and abs(x) < ymax]
             ysublist2 = []
             for k in range(len(ysublist)):
                 v = ysublist[k]
                 if v > 0:
                     ysublist2.append(v - (n_dimensions * j))
-                elif k < 0:
+                elif v < 0:
                     ysublist2.append(v + (n_dimensions * j))
             ysublist = ysublist2
             ylists.append(ysublist)
@@ -379,15 +397,18 @@ for i in range(X_test_shape[0]):
             ystr += str(ysublist)
         ystr += ']'
         yidxs = ylists
-        sublists = np.array_split(pidxs, len(pidxs) // n_features or 1)
-        pidxs = [list(sublist) for sublist in sublists]
-        n = len(pidxs)
+        pmax = max(pidxs, key=abs)
+        if pmax < 0:
+            pmax = -pmax
+        n = int(pmax / n_dimensions)
+        if pmax % n_dimensions > 0:
+            n = n + 1
         plists = []
         pstr = 'predictions: ['
         for j in range(n):
             pmin = n_dimensions * j
             pmax = n_dimensions * (j + 1)
-            psublist = pidxs[j]
+            psublist = [x for x in pidxs if abs(x) >= pmin and abs(x) < pmax]
             psublist2 = []
             for k in range(len(psublist)):
                 v = psublist[k]
@@ -404,7 +425,7 @@ for i in range(X_test_shape[0]):
             pstr += str(psublist)
         pstr += ']'
         pidxs = plists
-        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep="")
+        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
     if i in y_test_predictable:
         yvals = yi[0].copy()
@@ -427,6 +448,14 @@ for i in range(X_test_shape[0]):
         testTotal += 1
         if ymax != pmax:
             testErrors += 1
+            if verbose:
+                print(', error')
+        else:
+            if verbose:
+                print(', ok')
+    else:
+        if verbose:
+            print()
 
 testErrorPct = 0
 if testTotal > 0:
