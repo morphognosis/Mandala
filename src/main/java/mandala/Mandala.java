@@ -60,9 +60,10 @@ public class Mandala
       // Encode features.
       public static ArrayList<Integer> encodeFeatures(int hierarchy, int id)
       {
-         String             seedString = hierarchy + "_" + id + "_";  
-         Random             r          = new Random(seedString.hashCode());
-         ArrayList<Integer> features   = new ArrayList<Integer>();         
+         String seedString = hierarchy + "_" + id + "_";
+         Random r          = new Random(seedString.hashCode());
+
+         ArrayList<Integer> features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
          {
             int j = 0;
@@ -94,16 +95,18 @@ public class Mandala
          Collections.sort(features);
          return(features);
       }
-      
+
+
       public static ArrayList<Integer> encodeFeatures(ArrayList<Integer> features1, ArrayList<Integer> features2)
       {
          String seedString = "";
+
          for (int i : features1)
          {
-        	 seedString += i + "_";
-         }      
-         Random             r          = new Random(seedString.hashCode());
-         ArrayList<Integer>features = new ArrayList<Integer>();
+            seedString += i + "_";
+         }
+         Random             r        = new Random(seedString.hashCode());
+         ArrayList<Integer> features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
          {
             int j = 0;
@@ -134,7 +137,7 @@ public class Mandala
          }
          Collections.sort(features);
          return(features);
-      }      
+      }
    };
 
    // Terminal causation.
@@ -381,25 +384,27 @@ public class Mandala
       public ArrayList<Integer> features;
       public float              value;
       public int                age;
-	  public int tier;
-	  
+      public int                tier;
+
       // Constructors.
       public ContextFeatures(Causation causation, int tier)
       {
-         features       = Causation.encodeFeatures(causation.hierarchy, causation.id);
-         value          = 1.0f;
-         age            = 0;
-   	  	this.tier = tier;         
+         features  = Causation.encodeFeatures(causation.hierarchy, causation.id);
+         value     = 1.0f;
+         age       = 0;
+         this.tier = tier;
       }
+
 
       public ContextFeatures(ContextFeatures contextFeatures1, ContextFeatures contextFeatures2, int tier)
       {
-         features       = Causation.encodeFeatures(contextFeatures1.features, contextFeatures2.features);
-         value          = 1.0f;
-         age            = 0;
-   	  	this.tier = tier;         
+         features  = Causation.encodeFeatures(contextFeatures1.features, contextFeatures2.features);
+         value     = 1.0f;
+         age       = 0;
+         this.tier = tier;
       }
-      
+
+
       // Duplicate?
       public boolean duplicate(ContextFeatures contextFeatures)
       {
@@ -476,7 +481,7 @@ public class Mandala
          System.out.println(", tier=" + tier + ", value=" + value + ", age=" + age);
       }
    };
-   public static ArrayList < ContextFeatures > contextTiers;
+   public static ArrayList<ContextFeatures> contextTiers;
 
    // Datasets.
    public static String NN_DATASET_FILENAME        = "mandala_nn_dataset.py";
@@ -534,7 +539,7 @@ public class Mandala
       "      [-terminalProductionProbability <probability> (default=" + TERMINAL_PRODUCTION_PROBABILITY + ")]\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
       "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
-      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +      
+      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
@@ -552,7 +557,7 @@ public class Mandala
       "  Load:\n" +
       "    java mandala.Mandala\n" +
       "      -load [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
-      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +      
+      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
@@ -1195,14 +1200,14 @@ public class Mandala
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(MANDALA_FILENAME)));
 
             // Load parameters.
-            NUM_CAUSATION_HIERARCHIES          = Utility.loadInt(reader);
-            NUM_NONTERMINALS                   = Utility.loadInt(reader);
-            NUM_TERMINALS                      = Utility.loadInt(reader);
-            NUM_INTERSTITIAL_TERMINALS         = Utility.loadInt(reader);
-            MIN_PRODUCTION_RHS_LENGTH          = Utility.loadInt(reader);
-            MAX_PRODUCTION_RHS_LENGTH          = Utility.loadInt(reader);
-            TERMINAL_PRODUCTION_PROBABILITY    = Utility.loadFloat(reader);
-            NUM_DIMENSIONS                     = Utility.loadInt(reader);
+            NUM_CAUSATION_HIERARCHIES       = Utility.loadInt(reader);
+            NUM_NONTERMINALS                = Utility.loadInt(reader);
+            NUM_TERMINALS                   = Utility.loadInt(reader);
+            NUM_INTERSTITIAL_TERMINALS      = Utility.loadInt(reader);
+            MIN_PRODUCTION_RHS_LENGTH       = Utility.loadInt(reader);
+            MAX_PRODUCTION_RHS_LENGTH       = Utility.loadInt(reader);
+            TERMINAL_PRODUCTION_PROBABILITY = Utility.loadFloat(reader);
+            NUM_DIMENSIONS                  = Utility.loadInt(reader);
             NUM_FEATURES = Utility.loadInt(reader);
 
             // Load causations.
@@ -1312,7 +1317,7 @@ public class Mandala
          System.out.println("TERMINAL_PRODUCTION_PROBABILITY=" + TERMINAL_PRODUCTION_PROBABILITY);
          System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
          System.out.println("NUM_FEATURES=" + NUM_FEATURES);
-         System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);         
+         System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
          System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
          System.out.println("NUM_CAUSATION_PATHS=" + NUM_CAUSATION_PATHS);
          System.out.println("MAX_CONTEXT_FEATURE_TIER=" + MAX_CONTEXT_FEATURE_TIER);
@@ -1989,9 +1994,9 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
-      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>(); 
-      int                sequence      = 0;      
-      int numTrain = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
+      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();
+      int                sequence           = 0;
+      int                numTrain           = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
       for (int i = 0; i < numTrain; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -2000,7 +2005,7 @@ public class Mandala
             path.print();
             System.out.println("data:");
          }
-         contextTiers = new ArrayList < ContextFeatures > ();
+         contextTiers = new ArrayList<ContextFeatures> ();
          for (int j = 0, k = maxTiers - 1; j < k; j++)
          {
             contextTiers.add(null);
@@ -2017,7 +2022,7 @@ public class Mandala
             if (j == 0)
             {
                y_train_path_begin.add(sequence);
-            }                        
+            }
             if (VERBOSE)
             {
                System.out.print("X: ");
@@ -2027,7 +2032,7 @@ public class Mandala
             }
             ArrayList<Float> X_train_step = new ArrayList<Float>();
             ArrayList<Float> y_train_step = new ArrayList<Float>();
-            ArrayList<ArrayList<Float>> X_contexts = new ArrayList<ArrayList<Float>>();
+            ArrayList < ArrayList < Float >> X_contexts = new ArrayList < ArrayList < Float >> ();
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2054,7 +2059,7 @@ public class Mandala
                   X_contexts.add(X_context);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     X_train_step.add(X_context.get(q));                        
+                     X_train_step.add(X_context.get(q));
                   }
                }
             }
@@ -2085,14 +2090,14 @@ public class Mandala
                   ArrayList<Float> X_context = X_contexts.get(k - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     y_train_step.add(y_context.get(q) - X_context.get(q));                   
+                     y_train_step.add(y_context.get(q) - X_context.get(q));
                   }
                }
             }
             X_train.add(X_train_step);
             y_train.add(y_train_step);
             step++;
-            sequence++;            
+            sequence++;
          }
          if (VERBOSE)
          {
@@ -2105,18 +2110,19 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
-      ArrayList<Integer> y_test_path_begin = new ArrayList<Integer>();
-      ArrayList<Integer> y_predictable = new ArrayList<Integer>();
-      sequence      = 0;
+      ArrayList<Integer> y_test_path_begin   = new ArrayList<Integer>();
+      ArrayList<Integer> y_test_predictable  = new ArrayList<Integer>();
+      ArrayList<Integer> y_test_interstitial = new ArrayList<Integer>();
+      sequence = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
-         CausationPath path = causationPaths.get(i);      
+         CausationPath path = causationPaths.get(i);
          if (VERBOSE)
          {
             path.print();
             System.out.println("data:");
          }
-         int step = 0;
+         int     step      = 0;
          boolean pathBegin = true;
          for (int j = 0, p = path.steps.size() - 1; j < p; j++)
          {
@@ -2128,11 +2134,11 @@ public class Mandala
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-                if (pathBegin)
-                {
-                   y_test_path_begin.add(sequence);
-                   pathBegin = false;
-                }            	
+               if (pathBegin)
+               {
+                  y_test_path_begin.add(sequence);
+                  pathBegin = false;
+               }
                int xid, yid;
                if (NUM_INTERSTITIAL_TERMINALS == 0)
                {
@@ -2210,6 +2216,7 @@ public class Mandala
                   }
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
+                  y_test_interstitial.add(sequence);
                   step++;
                   sequence++;
                   xid = yid;
@@ -2219,7 +2226,7 @@ public class Mandala
             {
                y_test_path_begin.add(sequence);
                pathBegin = false;
-            }                   
+            }
             if (VERBOSE)
             {
                System.out.print("X: ");
@@ -2228,7 +2235,7 @@ public class Mandala
                yterminalCausation.print();
             }
             ArrayList<Float> X_test_step = new ArrayList<Float>();
-            ArrayList<Float> y_test_step = new ArrayList<Float>();         
+            ArrayList<Float> y_test_step = new ArrayList<Float>();
             for (int k = 0; k < maxTiers; k++)
             {
                if (k == 0)
@@ -2249,7 +2256,7 @@ public class Mandala
                {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                      X_test_step.add(0.0f);
+                     X_test_step.add(0.0f);
                   }
                }
             }
@@ -2273,7 +2280,7 @@ public class Mandala
                {
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                      y_test_step.add(0.0f);
+                     y_test_step.add(0.0f);
                   }
                }
             }
@@ -2285,7 +2292,7 @@ public class Mandala
                NonterminalCausation nonterminalCausation = (NonterminalCausation)causationTier.causation;
                if (nonterminalCausation.children.size() > causationTier.currentChild + 1)
                {
-                  y_predictable.add(sequence);
+                  y_test_predictable.add(sequence);
                }
             }
             step++;
@@ -2310,23 +2317,23 @@ public class Mandala
             for (int k = 0, q = X_train_step.size(); k < q; k++)
             {
                printWriter.print(X_train_step.get(k) + "");
-               if ((i != j - 1) || (k != q - 1))              
+               if ((i != j - 1) || (k != q - 1))
                {
                   printWriter.print(",");
                }
             }
             printWriter.println();
-          }
+         }
          printWriter.println("]");
          printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
-         {     	 
+         {
             ArrayList<Float> y_train_step = y_train.get(i);
             for (int k = 0, q = y_train_step.size(); k < q; k++)
             {
                printWriter.print(y_train_step.get(k) + "");
-               if ((i != j - 1) || (k != q - 1))             	   
+               if ((i != j - 1) || (k != q - 1))
                {
                   printWriter.print(",");
                }
@@ -2385,11 +2392,21 @@ public class Mandala
                printWriter.print(",");
             }
          }
-         printWriter.println("]");         
+         printWriter.println("]");
          printWriter.print("y_test_predictable = [");
-         for (int i = 0, j = y_predictable.size(); i < j; i++)
+         for (int i = 0, j = y_test_predictable.size(); i < j; i++)
          {
-            printWriter.print(y_predictable.get(i) + "");
+            printWriter.print(y_test_predictable.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");
+         printWriter.print("y_test_interstitial = [");
+         for (int i = 0, j = y_test_interstitial.size(); i < j; i++)
+         {
+            printWriter.print(y_test_interstitial.get(i) + "");
             if (i < j - 1)
             {
                printWriter.print(",");
@@ -2423,7 +2440,7 @@ public class Mandala
          }
          for (int i : contextFeatures.features)
          {
-               features.set(i, contextFeatures.value);
+            features.set(i, contextFeatures.value);
          }
       }
       return(features);
@@ -2436,7 +2453,7 @@ public class Mandala
       // Expire contexts.
       for (int i = 0, j = contextTiers.size(); i < j; i++)
       {
-         ContextFeatures contextFeatures    = contextTiers.get(i);
+         ContextFeatures contextFeatures = contextTiers.get(i);
          if (contextFeatures != null)
          {
             if (!contextFeatures.expire())
@@ -2453,14 +2470,17 @@ public class Mandala
          ContextFeatures contextFeatures2 = contextTiers.get(i);
          if (contextFeatures2 != null)
          {
-             contextTiers.set(i, null);        	 
+            contextTiers.set(i, null);
             contextFeatures1 = new ContextFeatures(contextFeatures1, contextFeatures2, i + 1);
-         } else {
-        	 contextTiers.set(i, contextFeatures1);
-        	 break;
+         }
+         else
+         {
+            contextTiers.set(i, contextFeatures1);
+            break;
          }
       }
    }
+
 
    // Export RNN dataset.
    public static void exportRNNdataset(String filename, float trainFraction, int randomSeed)

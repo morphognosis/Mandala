@@ -81,7 +81,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -312,12 +312,16 @@ for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
     if i not in y_test_path_begin:
         Xj = X[i - 1].reshape(1, X_test_shape[1])
-        for j in range(n_dimensions, X_test_shape[1]):
-            Xi[0][j] = Xj[0][j]
-            if prediction[0][j] >= 0.5:
-                Xi[0][j] = 1.0
-            elif prediction[0][j] <= -0.5:
-                Xi[0][j] = 0.0
+        if i - 1 not in y_test_interstitial:
+            for j in range(n_dimensions, X_test_shape[1]):
+                Xi[0][j] = Xj[0][j]
+                if prediction[0][j] >= 0.5:
+                    Xi[0][j] = 1.0
+                elif prediction[0][j] <= -0.5:
+                    Xi[0][j] = 0.0
+        else:
+            for j in range(n_dimensions, X_test_shape[1]):
+                Xi[0][j] = Xj[0][j]
     else:
         pathnum = pathnum + 1
         stepnum = 0
@@ -347,84 +351,95 @@ for i in range(X_test_shape[0]):
                 pidxs.append(j)
             if pvals[j] <= -0.5:
                 pidxs.append(-j)
-        xmax = max(xidxs)
-        n = int(xmax / n_dimensions)
-        if xmax % n_dimensions > 0:
-            n = n + 1
-        xlists = []
-        xstr = 'X: ['
-        for j in range(n):
-            xmin = n_dimensions * j
-            xmax = n_dimensions * (j + 1)
-            xsublist = [x for x in xidxs if x >= xmin and x < xmax]
-            xsublist2 = []
-            for k in range(len(xsublist)):
-                xsublist2.append(xsublist[k] - (n_dimensions * j))
-            xsublist = xsublist2
-            xlists.append(xsublist)
-            if j == 0:
-                xstr += 'sense='
-            else:
-                xstr += ', ctx' + str(j - 1) + '='
-            xstr += str(xsublist)
-        xstr += ']'
-        xidxs = xlists
-        ymax = max(yidxs, key=abs)
-        if ymax < 0:
-            ymax = -ymax
-        n = int(ymax / n_dimensions)
-        if ymax % n_dimensions > 0:
-            n = n + 1
-        ylists = []
-        ystr = 'y: ['
-        for j in range(n):
-            ymin = n_dimensions * j
-            ymax = n_dimensions * (j + 1)
-            ysublist = [x for x in yidxs if abs(x) >= ymin and abs(x) < ymax]
-            ysublist2 = []
-            for k in range(len(ysublist)):
-                v = ysublist[k]
-                if v > 0:
-                    ysublist2.append(v - (n_dimensions * j))
-                elif v < 0:
-                    ysublist2.append(v + (n_dimensions * j))
-            ysublist = ysublist2
-            ylists.append(ysublist)
-            if j == 0:
-                ystr += 'sense='
-            else:
-                ystr += ', ctx' + str(j - 1) + '='
-            ystr += str(ysublist)
-        ystr += ']'
-        yidxs = ylists
-        pmax = max(pidxs, key=abs)
-        if pmax < 0:
-            pmax = -pmax
-        n = int(pmax / n_dimensions)
-        if pmax % n_dimensions > 0:
-            n = n + 1
-        plists = []
-        pstr = 'predictions: ['
-        for j in range(n):
-            pmin = n_dimensions * j
-            pmax = n_dimensions * (j + 1)
-            psublist = [x for x in pidxs if abs(x) >= pmin and abs(x) < pmax]
-            psublist2 = []
-            for k in range(len(psublist)):
-                v = psublist[k]
-                if v > 0:
-                    psublist2.append(v - (n_dimensions * j))
-                elif v < 0:
-                    psublist2.append(v + (n_dimensions * j))
-            psublist = psublist2
-            plists.append(psublist)
-            if j == 0:
-                pstr += 'sense='
-            else:
-                pstr += ', ctx' + str(j - 1) + '='
-            pstr += str(psublist)
-        pstr += ']'
-        pidxs = plists
+        if len(xidxs) == 0:
+            xstr = 'X: []'
+        else:
+            xmax = max(xidxs, key=abs)
+            if xmax < 0:
+                xmax = -xmax
+            n = int(xmax / n_dimensions)
+            if xmax % n_dimensions > 0:
+                n = n + 1
+            xlists = []
+            xstr = 'X: ['
+            for j in range(n):
+                xmin = n_dimensions * j
+                xmax = n_dimensions * (j + 1)
+                xsublist = [x for x in xidxs if x >= xmin and x < xmax]
+                xsublist2 = []
+                for k in range(len(xsublist)):
+                    xsublist2.append(xsublist[k] - (n_dimensions * j))
+                xsublist = xsublist2
+                xlists.append(xsublist)
+                if j == 0:
+                    xstr += 'sense='
+                else:
+                    xstr += ', ctx' + str(j - 1) + '='
+                xstr += str(xsublist)
+            xstr += ']'
+            xidxs = xlists
+        if len(yidxs) == 0:
+            ystr = 'y: []'
+        else:
+            ymax = max(yidxs, key=abs)
+            if ymax < 0:
+                ymax = -ymax
+            n = int(ymax / n_dimensions)
+            if ymax % n_dimensions > 0:
+                n = n + 1
+            ylists = []
+            ystr = 'y: ['
+            for j in range(n):
+                ymin = n_dimensions * j
+                ymax = n_dimensions * (j + 1)
+                ysublist = [x for x in yidxs if abs(x) >= ymin and abs(x) < ymax]
+                ysublist2 = []
+                for k in range(len(ysublist)):
+                    v = ysublist[k]
+                    if v > 0:
+                        ysublist2.append(v - (n_dimensions * j))
+                    elif v < 0:
+                        ysublist2.append(v + (n_dimensions * j))
+                ysublist = ysublist2
+                ylists.append(ysublist)
+                if j == 0:
+                    ystr += 'sense='
+                else:
+                    ystr += ', ctx' + str(j - 1) + '='
+                ystr += str(ysublist)
+            ystr += ']'
+            yidxs = ylists
+        if len(pidxs) == 0:
+            pstr = 'predictions: []'
+        else:
+            pmax = max(pidxs, key=abs)
+            if pmax < 0:
+                pmax = -pmax
+            n = int(pmax / n_dimensions)
+            if pmax % n_dimensions > 0:
+                n = n + 1
+            plists = []
+            pstr = 'predictions: ['
+            for j in range(n):
+                pmin = n_dimensions * j
+                pmax = n_dimensions * (j + 1)
+                psublist = [x for x in pidxs if abs(x) >= pmin and abs(x) < pmax]
+                psublist2 = []
+                for k in range(len(psublist)):
+                    v = psublist[k]
+                    if v > 0:
+                        psublist2.append(v - (n_dimensions * j))
+                    elif v < 0:
+                        psublist2.append(v + (n_dimensions * j))
+                psublist = psublist2
+                plists.append(psublist)
+                if j == 0:
+                    pstr += 'sense='
+                else:
+                    pstr += ', ctx' + str(j - 1) + '='
+                pstr += str(psublist)
+            pstr += ']'
+            pidxs = plists
         print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
     if i in y_test_predictable:
