@@ -149,7 +149,7 @@ def summarize_features(title, vals):
             if j == 0:
                 desc += 'sense='
             else:
-                desc += ', ctx' + str(j - 1) + '='
+                desc += ', tier' + str(j - 1) + '='
             desc += str(sublist)
         desc += ']'
         idxs = lists
