@@ -29,7 +29,7 @@ public class Mandala
    public static int   NUM_CAUSATION_HIERARCHIES          = 1;
    public static int   NUM_NONTERMINALS                   = 10;
    public static int   NUM_TERMINALS                      = 20;
-   public static int   NUM_INTERSTITIAL_TERMINALS         = 20;
+   public static int   NUM_INTERSTITIAL_TERMINALS         = 5;
    public static int   MAX_INTERSTITIAL_TERMINAL_SEQUENCE = 10;
    public static int   MIN_PRODUCTION_RHS_LENGTH          = 2;
    public static int   MAX_PRODUCTION_RHS_LENGTH          = 2;
@@ -1994,8 +1994,8 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
-      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();
-      int                sequence           = 0;
+      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();     
+      int                trainCount           = 0;
       int                numTrain           = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
       for (int i = 0; i < numTrain; i++)
       {
@@ -2021,7 +2021,7 @@ public class Mandala
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
             if (j == 0)
             {
-               y_train_path_begin.add(sequence);
+               y_train_path_begin.add(trainCount);
             }
             if (VERBOSE)
             {
@@ -2097,12 +2097,54 @@ public class Mandala
             X_train.add(X_train_step);
             y_train.add(y_train_step);
             step++;
-            sequence++;
+            trainCount++;
          }
          if (VERBOSE)
          {
             System.out.println("training path length=" + step);
-         }
+         }         
+      }
+      ArrayList<Integer> y_train_interstitial = new ArrayList<Integer>();      
+      for (int i = 0; i < NUM_INTERSTITIAL_TERMINALS; i++)
+      {
+          ArrayList<Float> X_train_step = new ArrayList<Float>();
+          ArrayList<Float> y_train_step = new ArrayList<Float>();
+          TerminalCausation xterminalCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, i);          
+          for (int k = 0; k < maxTiers; k++)
+          {
+             if (k == 0)
+             {
+                for (int q = 0; q < NUM_DIMENSIONS; q++)
+                {
+                   if (xterminalCausation.features.contains(q))
+                   {
+                      X_train_step.add(1.0f);
+                   }
+                   else
+                   {
+                      X_train_step.add(0.0f);
+                   }
+                }
+             }
+             else
+             {
+                for (int q = 0; q < NUM_DIMENSIONS; q++)
+                {
+                   X_train_step.add(0.0f);
+                }
+             }
+          }
+          for (int k = 0; k < maxTiers; k++)
+          {
+                for (int q = 0; q < NUM_DIMENSIONS; q++)
+                {
+                   y_train_step.add(0.0f);
+                }
+          }
+          X_train.add(X_train_step);
+          y_train.add(y_train_step);
+          y_train_interstitial.add(trainCount);          
+    	  trainCount++;
       }
       if (VERBOSE)
       {
@@ -2113,7 +2155,7 @@ public class Mandala
       ArrayList<Integer> y_test_path_begin   = new ArrayList<Integer>();
       ArrayList<Integer> y_test_predictable  = new ArrayList<Integer>();
       ArrayList<Integer> y_test_interstitial = new ArrayList<Integer>();
-      sequence = 0;
+      int testCount = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -2136,7 +2178,7 @@ public class Mandala
             {
                if (pathBegin)
                {
-                  y_test_path_begin.add(sequence);
+                  y_test_path_begin.add(testCount);
                   pathBegin = false;
                }
                int xid, yid;
@@ -2160,7 +2202,7 @@ public class Mandala
                {
                   ArrayList<Float>  X_test_step      = new ArrayList<Float>();
                   ArrayList<Float>  y_test_step      = new ArrayList<Float>();
-                  TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
+                  TerminalCausation xrandomCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, xid);
                   if (NUM_INTERSTITIAL_TERMINALS == 0)
                   {
                      yid = randomID.nextInt(NUM_TERMINALS);
@@ -2177,7 +2219,7 @@ public class Mandala
                         yid += (NUM_TERMINALS - 1);
                      }
                   }
-                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
+                  TerminalCausation yrandomCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, yid);
                   if (VERBOSE)
                   {
                      System.out.print("X: *");
@@ -2216,15 +2258,15 @@ public class Mandala
                   }
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
-                  y_test_interstitial.add(sequence);
+                  y_test_interstitial.add(testCount);
                   step++;
-                  sequence++;
+                  testCount++;
                   xid = yid;
                }
             }
             if (pathBegin)
             {
-               y_test_path_begin.add(sequence);
+               y_test_path_begin.add(testCount);
                pathBegin = false;
             }
             if (VERBOSE)
@@ -2292,11 +2334,11 @@ public class Mandala
                NonterminalCausation nonterminalCausation = (NonterminalCausation)causationTier.causation;
                if (nonterminalCausation.children.size() > causationTier.currentChild + 1)
                {
-                  y_test_predictable.add(sequence);
+                  y_test_predictable.add(testCount);
                }
             }
             step++;
-            sequence++;
+            testCount++;
          }
          if (VERBOSE)
          {
@@ -2351,6 +2393,16 @@ public class Mandala
             }
          }
          printWriter.println("]");
+         printWriter.print("y_train_interstitial = [");
+         for (int i = 0, j = y_train_interstitial.size(); i < j; i++)
+         {
+            printWriter.print(y_train_interstitial.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");         
          printWriter.println("X_test_shape = [ " + X_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_test.size(); i < j; i++)
@@ -2606,7 +2658,7 @@ public class Mandala
                }
                for (int n = 0; xid != xcausation.id && n < MAX_INTERSTITIAL_TERMINAL_SEQUENCE; n++)
                {
-                  TerminalCausation xrandomCausation = new TerminalCausation(xcausation.hierarchy, xid);
+                  TerminalCausation xrandomCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, xid);
                   if (NUM_INTERSTITIAL_TERMINALS == 0)
                   {
                      yid = randomID.nextInt(NUM_TERMINALS);
@@ -2623,7 +2675,7 @@ public class Mandala
                         yid += (NUM_TERMINALS - 1);
                      }
                   }
-                  TerminalCausation yrandomCausation = new TerminalCausation(xcausation.hierarchy, yid);
+                  TerminalCausation yrandomCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, yid);
                   if (VERBOSE)
                   {
                      System.out.print("X: *");

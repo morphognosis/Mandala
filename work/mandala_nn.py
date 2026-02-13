@@ -92,7 +92,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, y_train_interstitial, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -140,10 +140,14 @@ def summarize_features(title, vals):
         for j in range(n):
             minval = n_dimensions * j
             maxval = n_dimensions * (j + 1)
-            sublist = [x for x in idxs if x >= minval and x < maxval]
+            sublist = [x for x in idxs if x >= minval and x < maxval or x <= -minval and x > -maxval]
             sublisttmp = []
             for k in range(len(sublist)):
-                sublisttmp.append(sublist[k] - (n_dimensions * j))
+                q = sublist[k]
+                if q > 0:
+                    sublisttmp.append(q - (n_dimensions * j))
+                else:
+                    sublisttmp.append(q + (n_dimensions * j))                
             sublist = sublisttmp
             lists.append(sublist)
             if j == 0:
@@ -192,7 +196,10 @@ for i in range(X_train_shape[0]):
     if ymax != pmax:
         trainErrors += 1
         if verbose:
-            print(', error')
+            if i in y_train_interstitial:
+                print(', interstitial, error')
+            else:
+                print(', error')
     else:
         n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
         error = False
@@ -241,10 +248,16 @@ for i in range(X_train_shape[0]):
                 error = True
                 break
         if verbose:
-             if error:
-                 print(', error')
-             else:
-                 print(', ok')
+            if error:
+                if i in y_train_interstitial:
+                    print(', interstitial, error')
+                else:
+                    print(', error')
+            else:
+                if i in y_train_interstitial:
+                    print(', interstitial, ok')
+                else:
+                    print(', ok')
 
 trainErrorPct = 0
 if trainTotal > 0:
@@ -309,13 +322,22 @@ for i in range(X_test_shape[0]):
         if ymax != pmax:
             testErrors += 1
             if verbose:
-                print(', error')
+                if i in y_test_interstitial:
+                    print(', interstitial, error')
+                else:
+                    print(', error')
         else:
             if verbose:
-                print(', ok')
+                if i in y_test_interstitial:
+                    print(', interstitial, ok')
+                else:
+                    print(', ok')
     else:
         if verbose:
-            print()
+            if i in y_test_interstitial:
+                print(', interstitial')
+            else:
+                print()
 
 testErrorPct = 0
 if testTotal > 0:
