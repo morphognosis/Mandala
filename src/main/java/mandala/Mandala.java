@@ -1994,8 +1994,8 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
-      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();     
-      int                trainCount           = 0;
+      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();
+      int                trainCount         = 0;
       int                numTrain           = (int)((float)numPaths * NN_DATASET_TRAIN_FRACTION);
       for (int i = 0; i < numTrain; i++)
       {
@@ -2102,49 +2102,49 @@ public class Mandala
          if (VERBOSE)
          {
             System.out.println("training path length=" + step);
-         }         
+         }
       }
-      ArrayList<Integer> y_train_interstitial = new ArrayList<Integer>();      
+      ArrayList<Integer> y_train_interstitial = new ArrayList<Integer>();
       for (int i = 0; i < NUM_INTERSTITIAL_TERMINALS; i++)
       {
-          ArrayList<Float> X_train_step = new ArrayList<Float>();
-          ArrayList<Float> y_train_step = new ArrayList<Float>();
-          TerminalCausation xterminalCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, i);          
-          for (int k = 0; k < maxTiers; k++)
-          {
-             if (k == 0)
-             {
-                for (int q = 0; q < NUM_DIMENSIONS; q++)
-                {
-                   if (xterminalCausation.features.contains(q))
-                   {
-                      X_train_step.add(1.0f);
-                   }
-                   else
-                   {
-                      X_train_step.add(0.0f);
-                   }
-                }
-             }
-             else
-             {
-                for (int q = 0; q < NUM_DIMENSIONS; q++)
-                {
-                   X_train_step.add(0.0f);
-                }
-             }
-          }
-          for (int k = 0; k < maxTiers; k++)
-          {
-                for (int q = 0; q < NUM_DIMENSIONS; q++)
-                {
-                   y_train_step.add(0.0f);
-                }
-          }
-          X_train.add(X_train_step);
-          y_train.add(y_train_step);
-          y_train_interstitial.add(trainCount);          
-    	  trainCount++;
+         ArrayList<Float>  X_train_step       = new ArrayList<Float>();
+         ArrayList<Float>  y_train_step       = new ArrayList<Float>();
+         TerminalCausation xterminalCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + i);
+         for (int k = 0; k < maxTiers; k++)
+         {
+            if (k == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (xterminalCausation.features.contains(q))
+                  {
+                     X_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     X_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  X_train_step.add(0.0f);
+               }
+            }
+         }
+         for (int k = 0; k < maxTiers; k++)
+         {
+            for (int q = 0; q < NUM_DIMENSIONS; q++)
+            {
+               y_train_step.add(0.0f);
+            }
+         }
+         X_train.add(X_train_step);
+         y_train.add(y_train_step);
+         y_train_interstitial.add(trainCount);
+         trainCount++;
       }
       if (VERBOSE)
       {
@@ -2155,7 +2155,7 @@ public class Mandala
       ArrayList<Integer> y_test_path_begin   = new ArrayList<Integer>();
       ArrayList<Integer> y_test_predictable  = new ArrayList<Integer>();
       ArrayList<Integer> y_test_interstitial = new ArrayList<Integer>();
-      int testCount = 0;
+      int                testCount           = 0;
       for (int i = numTrain; i < numPaths; i++)
       {
          CausationPath path = causationPaths.get(i);
@@ -2402,7 +2402,7 @@ public class Mandala
                printWriter.print(",");
             }
          }
-         printWriter.println("]");         
+         printWriter.println("]");
          printWriter.println("X_test_shape = [ " + X_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_test.size(); i < j; i++)
