@@ -2145,6 +2145,43 @@ public class Mandala
          y_train.add(y_train_step);
          y_train_interstitial.add(trainCount);
          trainCount++;
+         X_train_step       = new ArrayList<Float>();
+         y_train_step       = new ArrayList<Float>();         
+         for (int k = 0; k < maxTiers; k++)
+         {
+            if (k == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (xterminalCausation.features.contains(q))
+                  {
+                     X_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     X_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  X_train_step.add(1.0f);
+               }
+            }
+         }
+         for (int k = 0; k < maxTiers; k++)
+         {
+            for (int q = 0; q < NUM_DIMENSIONS; q++)
+            {
+               y_train_step.add(0.0f);
+            }
+         }
+         X_train.add(X_train_step);
+         y_train.add(y_train_step);
+         y_train_interstitial.add(trainCount);
+         trainCount++;
       }
       if (VERBOSE)
       {
@@ -2255,7 +2292,7 @@ public class Mandala
                            y_test_step.add(0.0f);
                         }
                      }
-                  }
+                  }        
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   y_test_interstitial.add(testCount);
@@ -2417,7 +2454,7 @@ public class Mandala
                }
             }
             printWriter.println();
-         }
+         }   
          printWriter.println("]");
          printWriter.println("y_test_shape = [ " + y_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("y_test = [");

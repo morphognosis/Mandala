@@ -140,14 +140,14 @@ def summarize_features(title, vals):
         for j in range(n):
             minval = n_dimensions * j
             maxval = n_dimensions * (j + 1)
-            sublist = [x for x in idxs if x >= minval and x < maxval or x <= -minval and x > -maxval]
+            sublist = [val for val in idxs if (val >= minval and val < maxval) or (val <= -minval and val > -maxval)]
             sublisttmp = []
             for k in range(len(sublist)):
-                q = sublist[k]
-                if q > 0:
-                    sublisttmp.append(q - (n_dimensions * j))
+                val = sublist[k]
+                if val > 0:
+                    sublisttmp.append(val - (n_dimensions * j))
                 else:
-                    sublisttmp.append(q + (n_dimensions * j))                
+                    sublisttmp.append(val + (n_dimensions * j))
             sublist = sublisttmp
             lists.append(sublist)
             if j == 0:
@@ -165,8 +165,13 @@ trainErrors = 0
 trainTotal = 0
 pathnum = -1
 stepnum = 0
+first_interstitial = True
 for i in range(X_train_shape[0]):
     if i in y_train_path_begin:
+        pathnum = pathnum + 1
+        stepnum = 0
+    if first_interstitial and i in y_train_interstitial:
+        first_interstitial = False
         pathnum = pathnum + 1
         stepnum = 0
     if verbose:
