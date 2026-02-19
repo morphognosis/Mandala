@@ -25,16 +25,16 @@ results_filename = 'mandala_nn_results.json'
 # Prediction significance threshold
 threshold = 0.5
 
-# Allow interstitial contexts?
-allow_interstitial_contexts = True
+# Prediction validation pattern
+prediction_validation = [1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0]
 
 # Verbosity
 verbose = True
 
 # Get options
-usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--allow_interstitial_contexts <True or False> (default=' + str(allow_interstitial_contexts) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hd:f:i:n:e:r:q",["help","dimensions=","features=","allow_interstitial_contexts=","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hd:f:n:e:r:q",["help","dimensions=","features=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -46,14 +46,6 @@ for opt, arg in opts:
      n_dimensions = int(arg)
   elif opt in ("-f", "--features"):
      n_features = int(arg)
-  elif opt in ("-i", "--allow_interstitial_contexts"):
-     if str(arg) == "True" or str(arg) == "true":
-        allow_interstitial_contexts = True
-     elif str(arg) == "False" or str(arg) == "false":
-        allow_interstitial_contexts = False
-     else:
-        print(usage)
-        sys.exit(1)
   elif opt in ("-n", "--neurons"):
      n_neurons = arg
   elif opt in ("-e", "--epochs"):
@@ -92,7 +84,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, y_train_interstitial, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -165,102 +157,111 @@ trainErrors = 0
 trainTotal = 0
 pathnum = -1
 stepnum = 0
-first_interstitial = True
+prediction_validation_len = len(prediction_validation)
 for i in range(X_train_shape[0]):
     if i in y_train_path_begin:
         pathnum = pathnum + 1
         stepnum = 0
-    if first_interstitial and i in y_train_interstitial:
-        first_interstitial = False
-        pathnum = pathnum + 1
-        stepnum = 0
     if verbose:
         xstr,xidxs = summarize_features('X', X[i].copy())
-        ystr,yidxs = summarize_features('y', y[i].copy())
-        pstr,pidxs = summarize_features('prediction', predictions[i].copy())
+        yvals = y[i].copy()
+        yvals = yvals[prediction_validation_len:]
+        ystr,yidxs = summarize_features('y', yvals)
+        pvals = predictions[i].copy()
+        pvals = pvals[prediction_validation_len:]
+        pstr,pidxs = summarize_features('prediction', pvals)
         print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
-    yvals = y[i].copy()
-    yvals = yvals[0:n_dimensions]
-    pvals = predictions[i].copy()
-    pvals = pvals[0:n_dimensions]
-    ymax = []
-    pmax = []
-    for j in range(n_features):
-        yidx = argmax(yvals)
-        if yvals[yidx] >= threshold:
-            ymax.append(yidx)
-        yvals[yidx] = 0.0
-        pidx = argmax(pvals)
-        if pvals[pidx] >= threshold:
-            pmax.append(pidx)
-        pvals[pidx] = 0.0
-    ymax.sort()
-    pmax.sort()
     trainTotal += 1
-    if ymax != pmax:
+    pvals = predictions[i].copy()
+    pvals = pvals[0:prediction_validation_len]
+    prediction_valid = True
+    for j in range(prediction_validation_len):
+        if pvals[j] >= threshold and prediction_validation[j] >= threshold:
+            pass
+        elif pvals[j] <= -threshold and prediction_validation[j] <= -threshold:
+            pass
+        else:
+            prediction_valid = False
+            break
+    if prediction_valid == False:
         trainErrors += 1
         if verbose:
-            if i in y_train_interstitial:
-                print(', interstitial, error')
-            else:
-                print(', error')
+            print(', invalid')
     else:
-        n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
-        error = False
-        for j in range(n_contexts):
-            start = n_dimensions * (j + 1)
-            end = start + n_dimensions
-            yvals = y[i].copy()
-            yvals = yvals[start:end]
-            pvals = predictions[i].copy()
-            pvals = pvals[start:end]
-            ymax = []
-            pmax = []
-            for k in range(n_features):
-                yidx = argmax(yvals)
-                if yvals[yidx] >= threshold:
-                    ymax.append(yidx)
-                yvals[yidx] = 0.0
-                pidx = argmax(pvals)
-                if pvals[pidx] >= threshold:
-                    pmax.append(pidx)
-                pvals[pidx] = 0.0
-            ymax.sort()
-            pmax.sort()
-            if ymax != pmax:
-                trainErrors += 1
-                break
-            yvals = y[i].copy()
-            yvals = yvals[start:end]
-            pvals = predictions[i].copy()
-            pvals = pvals[start:end]
-            ymin = []
-            pmin = []
-            for k in range(n_features):
-                yidx = argmin(yvals)
-                if yvals[yidx] <= -threshold:
-                    ymin.append(yidx)
-                yvals[yidx] = 0.0
-                pidx = argmin(pvals)
-                if pvals[pidx] <= -threshold:
-                    pmin.append(pidx)
-                pvals[pidx] = 0.0
-            ymin.sort()
-            pmin.sort()
-            if ymin != pmin:
-                trainErrors += 1
-                error = True
-                break
-        if verbose:
-            if error:
-                if i in y_train_interstitial:
-                    print(', interstitial, error')
-                else:
+        start = prediction_validation_len
+        end = start + n_dimensions
+        yvals = y[i].copy()
+        yvals = yvals[start:end]
+        pvals = predictions[i].copy()
+        pvals = pvals[start:end]
+        ymax = []
+        pmax = []
+        for j in range(n_features):
+            yidx = argmax(yvals)
+            if yvals[yidx] >= threshold:
+                ymax.append(yidx)
+            yvals[yidx] = 0.0
+            pidx = argmax(pvals)
+            if pvals[pidx] >= threshold:
+                pmax.append(pidx)
+            pvals[pidx] = 0.0
+        ymax.sort()
+        pmax.sort()
+        if ymax != pmax:
+            trainErrors += 1
+            if verbose:
+                print(', error')
+        else:
+            n_contexts = (int)((y_train_shape[1] - prediction_validation_len) / n_dimensions) - 1
+            error = False
+            for j in range(n_contexts):
+                start = (n_dimensions * (j + 1)) + prediction_validation_len
+                end = start + n_dimensions
+                yvals = y[i].copy()
+                yvals = yvals[start:end]
+                pvals = predictions[i].copy()
+                pvals = pvals[start:end]
+                ymax = []
+                pmax = []
+                for k in range(n_features):
+                    yidx = argmax(yvals)
+                    if yvals[yidx] >= threshold:
+                        ymax.append(yidx)
+                    yvals[yidx] = 0.0
+                    pidx = argmax(pvals)
+                    if pvals[pidx] >= threshold:
+                        pmax.append(pidx)
+                    pvals[pidx] = 0.0
+                ymax.sort()
+                pmax.sort()
+                if ymax != pmax:
+                    trainErrors += 1
+                    break
+                yvals = y[i].copy()
+                yvals = yvals[start:end]
+                pvals = predictions[i].copy()
+                pvals = pvals[start:end]
+                ymin = []
+                pmin = []
+                for k in range(n_features):
+                    yidx = argmin(yvals)
+                    if yvals[yidx] <= -threshold:
+                        ymin.append(yidx)
+                    yvals[yidx] = 0.0
+                    pidx = argmin(pvals)
+                    if pvals[pidx] <= -threshold:
+                        pmin.append(pidx)
+                    pvals[pidx] = 0.0
+                ymin.sort()
+                pmin.sort()
+                if ymin != pmin:
+                    trainErrors += 1
+                    error = True
+                    break
+            if verbose:
+                if error:
                     print(', error')
-            else:
-                if i in y_train_interstitial:
-                    print(', interstitial, ok')
                 else:
                     print(', ok')
 
@@ -277,17 +278,17 @@ testErrors = 0
 testTotal = 0
 pathnum = -1
 stepnum = 0
-prediction = None
+prediction_valid = False
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
     if i not in y_test_path_begin:
         Xj = X[i - 1].reshape(1, X_test_shape[1])
-        if allow_interstitial_contexts == True or i - 1 not in y_test_interstitial:
+        if prediction_valid:
             for j in range(n_dimensions, X_test_shape[1]):
                 Xi[0][j] = Xj[0][j]
-                if prediction[0][j] >= threshold:
+                if prediction[0][j + prediction_validation_len] >= threshold:
                     Xi[0][j] = 1.0
-                elif prediction[0][j] <= -threshold:
+                elif prediction[0][j + prediction_validation_len] <= -threshold:
                     Xi[0][j] = 0.0
         else:
             for j in range(n_dimensions, X_test_shape[1]):
@@ -301,48 +302,66 @@ for i in range(X_test_shape[0]):
     prediction = model.predict(Xi, verbose=0)
     if verbose:
         xstr,xidxs = summarize_features('X', Xi[0].copy())
-        ystr,yidxs = summarize_features('y', yi[0].copy())
-        pstr,pidxs = summarize_features('prediction', prediction[0].copy())
+        yvals = yi[0].copy()
+        yvals = yvals[prediction_validation_len:]
+        ystr,yidxs = summarize_features('y', yvals)
+        pvals = prediction[0].copy()
+        pvals = pvals[prediction_validation_len:]
+        pstr,pidxs = summarize_features('prediction', pvals)
         print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
-    if i in y_test_predictable:
-        yvals = yi[0].copy()
-        yvals = yvals[0:n_dimensions]
+    if i not in y_test_interstitial:
         pvals = prediction[0].copy()
-        pvals = pvals[0:n_dimensions]
-        ymax = []
-        pmax = []
-        for j in range(n_features):
-            yidx = argmax(yvals)
-            if yvals[yidx] >= threshold:
-                ymax.append(yidx)
-            yvals[yidx] = 0.0
-            pidx = argmax(pvals)
-            if pvals[pidx] >= threshold:
-                pmax.append(pidx)
-            pvals[pidx] = 0.0
-        ymax.sort()
-        pmax.sort()
-        testTotal += 1
-        if ymax != pmax:
+        pvals = pvals[0:prediction_validation_len]
+        prediction_valid = True
+        for j in range(prediction_validation_len):
+            if pvals[j] >= threshold and prediction_validation[j] >= threshold:
+                pass
+            elif pvals[j] <= -threshold and prediction_validation[j] <= -threshold:
+                pass
+            else:
+                prediction_valid = False
+                break
+        if prediction_valid == False:
             testErrors += 1
             if verbose:
-                if i in y_test_interstitial:
-                    print(', interstitial, error')
-                else:
-                    print(', error')
+                print(', invalid')
         else:
-            if verbose:
-                if i in y_test_interstitial:
-                    print(', interstitial, ok')
+            if i in y_test_predictable:
+                testTotal += 1
+                start = prediction_validation_len
+                end = start + n_dimensions
+                yvals = yi[0].copy()
+                yvals = yvals[start:end]
+                pvals = prediction[0].copy()
+                pvals = pvals[start:end]
+                ymax = []
+                pmax = []
+                for j in range(n_features):
+                    yidx = argmax(yvals)
+                    if yvals[yidx] >= threshold:
+                        ymax.append(yidx)
+                    yvals[yidx] = 0.0
+                    pidx = argmax(pvals)
+                    if pvals[pidx] >= threshold:
+                        pmax.append(pidx)
+                    pvals[pidx] = 0.0
+                ymax.sort()
+                pmax.sort()
+                if ymax != pmax:
+                    testErrors += 1
+                    if verbose:
+                        print(', error')
                 else:
-                    print(', ok')
-    else:
-        if verbose:
-            if i in y_test_interstitial:
-                print(', interstitial')
+                    if verbose:
+                        print(', ok')
             else:
-                print()
+                if verbose:
+                    print()
+    else:
+        prediction_valid = False
+        if verbose:
+            print(', interstitial')
 
 testErrorPct = 0
 if testTotal > 0:

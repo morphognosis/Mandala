@@ -313,7 +313,7 @@ public class Mandala
       }
 
 
-      // Print..
+      // Print.
       public void print()
       {
          if (causation instanceof TerminalCausation)
@@ -482,6 +482,9 @@ public class Mandala
       }
    };
    public static ArrayList<ContextFeatures> contextTiers;
+
+   // Prediction validation pattern.
+   public static float[] PredictionValidation = { 1.0f, -1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f, -1.0f };
 
    // Datasets.
    public static String NN_DATASET_FILENAME        = "mandala_nn_dataset.py";
@@ -2068,6 +2071,10 @@ public class Mandala
             {
                if (k == 0)
                {
+                  for (int q = 0; q < PredictionValidation.length; q++)
+                  {
+                     y_train_step.add(PredictionValidation[q]);
+                  }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      if (yterminalCausation.features.contains(q))
@@ -2103,85 +2110,6 @@ public class Mandala
          {
             System.out.println("training path length=" + step);
          }
-      }
-      ArrayList<Integer> y_train_interstitial = new ArrayList<Integer>();
-      for (int i = 0; i < NUM_INTERSTITIAL_TERMINALS; i++)
-      {
-         ArrayList<Float>  X_train_step       = new ArrayList<Float>();
-         ArrayList<Float>  y_train_step       = new ArrayList<Float>();
-         TerminalCausation xterminalCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + i);
-         for (int k = 0; k < maxTiers; k++)
-         {
-            if (k == 0)
-            {
-               for (int q = 0; q < NUM_DIMENSIONS; q++)
-               {
-                  if (xterminalCausation.features.contains(q))
-                  {
-                     X_train_step.add(1.0f);
-                  }
-                  else
-                  {
-                     X_train_step.add(0.0f);
-                  }
-               }
-            }
-            else
-            {
-               for (int q = 0; q < NUM_DIMENSIONS; q++)
-               {
-                  X_train_step.add(0.0f);
-               }
-            }
-         }
-         for (int k = 0; k < maxTiers; k++)
-         {
-            for (int q = 0; q < NUM_DIMENSIONS; q++)
-            {
-               y_train_step.add(0.0f);
-            }
-         }
-         X_train.add(X_train_step);
-         y_train.add(y_train_step);
-         y_train_interstitial.add(trainCount);
-         trainCount++;
-         X_train_step       = new ArrayList<Float>();
-         y_train_step       = new ArrayList<Float>();         
-         for (int k = 0; k < maxTiers; k++)
-         {
-            if (k == 0)
-            {
-               for (int q = 0; q < NUM_DIMENSIONS; q++)
-               {
-                  if (xterminalCausation.features.contains(q))
-                  {
-                     X_train_step.add(1.0f);
-                  }
-                  else
-                  {
-                     X_train_step.add(0.0f);
-                  }
-               }
-            }
-            else
-            {
-               for (int q = 0; q < NUM_DIMENSIONS; q++)
-               {
-                  X_train_step.add(1.0f);
-               }
-            }
-         }
-         for (int k = 0; k < maxTiers; k++)
-         {
-            for (int q = 0; q < NUM_DIMENSIONS; q++)
-            {
-               y_train_step.add(0.0f);
-            }
-         }
-         X_train.add(X_train_step);
-         y_train.add(y_train_step);
-         y_train_interstitial.add(trainCount);
-         trainCount++;
       }
       if (VERBOSE)
       {
@@ -2279,6 +2207,10 @@ public class Mandala
                               X_test_step.add(0.0f);
                            }
                         }
+                        for (int q = 0; q < PredictionValidation.length; q++)
+                        {
+                           y_test_step.add(0.0f);
+                        }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
                            y_test_step.add(0.0f);
@@ -2292,7 +2224,7 @@ public class Mandala
                            y_test_step.add(0.0f);
                         }
                      }
-                  }        
+                  }
                   X_test.add(X_test_step);
                   y_test.add(y_test_step);
                   y_test_interstitial.add(testCount);
@@ -2343,6 +2275,10 @@ public class Mandala
             {
                if (k == 0)
                {
+                  for (int q = 0; q < PredictionValidation.length; q++)
+                  {
+                     y_test_step.add(PredictionValidation[q]);
+                  }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      if (yterminalCausation.features.contains(q))
@@ -2404,7 +2340,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (PredictionValidation.length + (maxTiers * NUM_DIMENSIONS)) + " ]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
@@ -2430,16 +2366,6 @@ public class Mandala
             }
          }
          printWriter.println("]");
-         printWriter.print("y_train_interstitial = [");
-         for (int i = 0, j = y_train_interstitial.size(); i < j; i++)
-         {
-            printWriter.print(y_train_interstitial.get(i) + "");
-            if (i < j - 1)
-            {
-               printWriter.print(",");
-            }
-         }
-         printWriter.println("]");
          printWriter.println("X_test_shape = [ " + X_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_test.size(); i < j; i++)
@@ -2454,9 +2380,9 @@ public class Mandala
                }
             }
             printWriter.println();
-         }   
+         }
          printWriter.println("]");
-         printWriter.println("y_test_shape = [ " + y_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_test_shape = [ " + y_test.size() + ", " + (PredictionValidation.length + (maxTiers * NUM_DIMENSIONS)) + " ]");
          printWriter.println("y_test = [");
          for (int i = 0, j = y_test.size(); i < j; i++)
          {
