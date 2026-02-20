@@ -374,9 +374,9 @@ public class Mandala
    // Maximum context feature tier.
    public static int MAX_CONTEXT_FEATURE_TIER = 5;
 
-   // Feature value durations.
-   public static String             FEATURE_VALUE_DURATION_TYPE = "maximum";
-   public static ArrayList<Integer> featureValueDurations;
+   // Context tier value durations.
+   public static String             TIER_VALUE_DURATION_TYPE = "maximum";
+   public static ArrayList<Integer> tierValueDurations;
 
    // Context features.
    public static class ContextFeatures
@@ -444,9 +444,9 @@ public class Mandala
       // Return true if not expired, else false.
       public boolean expire()
       {
-         if (featureValueDurations != null)
+         if (tierValueDurations != null)
          {
-            int duration = featureValueDurations.get(tier);
+            int duration = tierValueDurations.get(tier);
             if (age >= duration)
             {
                value = 0.0f;
@@ -547,7 +547,7 @@ public class Mandala
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
-      "      [-featureValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + FEATURE_VALUE_DURATION_TYPE + ")]\n" +
+      "      [-tierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -565,7 +565,7 @@ public class Mandala
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
-      "      [-featureValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + FEATURE_VALUE_DURATION_TYPE + ")]\n" +
+      "      [-tierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -969,20 +969,20 @@ public class Mandala
             }
             continue;
          }
-         if (args[i].equals("-featureValueDurationType"))
+         if (args[i].equals("-tierValueDurationType"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid featureValueDurationType option");
+               System.err.println("Invalid tierValueDurationType option");
                System.err.println(Usage);
                System.exit(1);
             }
-            FEATURE_VALUE_DURATION_TYPE = new String(args[i]);
-            if (!FEATURE_VALUE_DURATION_TYPE.equals("minimum") && !FEATURE_VALUE_DURATION_TYPE.equals("expected") &&
-                !FEATURE_VALUE_DURATION_TYPE.equals("maximum"))
+            TIER_VALUE_DURATION_TYPE = new String(args[i]);
+            if (!TIER_VALUE_DURATION_TYPE.equals("minimum") && !TIER_VALUE_DURATION_TYPE.equals("expected") &&
+                !TIER_VALUE_DURATION_TYPE.equals("maximum"))
             {
-               System.err.println("Invalid featureValueDurationType option");
+               System.err.println("Invalid tierValueDurationType option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1324,7 +1324,7 @@ public class Mandala
          System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
          System.out.println("NUM_CAUSATION_PATHS=" + NUM_CAUSATION_PATHS);
          System.out.println("MAX_CONTEXT_FEATURE_TIER=" + MAX_CONTEXT_FEATURE_TIER);
-         System.out.println("FEATURE_VALUE_DURATION_TYPE=" + FEATURE_VALUE_DURATION_TYPE);
+         System.out.println("TIER_VALUE_DURATION_TYPE=" + TIER_VALUE_DURATION_TYPE);
          System.out.println("NN_DATASET_TRAIN_FRACTION=" + NN_DATASET_TRAIN_FRACTION);
          System.out.println("NN_NEURONS=" + NN_NEURONS);
          System.out.println("NN_EPOCHS=" + NN_EPOCHS);
@@ -1779,7 +1779,7 @@ public class Mandala
          System.err.println("analysis requires cause/effect structure");
          return;
       }
-      featureValueDurations = new ArrayList<Integer>();
+      tierValueDurations = new ArrayList<Integer>();
       ArrayList < ArrayList < Integer >> hierarchyTiers = new ArrayList < ArrayList < Integer >> ();
       int maxTier = 0;
       for (int i = 0, j = causationHierarchies.size(); i < j; i++)
@@ -1832,11 +1832,11 @@ public class Mandala
                int root_expected = spanCausation(causation, 1);
                int root_max      = spanCausation(causation, 2);
                int tier          = getTier(causation);
-               if (FEATURE_VALUE_DURATION_TYPE.equals("minimum"))
+               if (TIER_VALUE_DURATION_TYPE.equals("minimum"))
                {
                   durationAccums[tier] += root_min;
                }
-               else if (FEATURE_VALUE_DURATION_TYPE.equals("expected"))
+               else if (TIER_VALUE_DURATION_TYPE.equals("expected"))
                {
                   durationAccums[tier] += root_expected;
                }
@@ -1870,7 +1870,7 @@ public class Mandala
       for (int i = 0; i <= maxTier; i++)
       {
          int duration = (int)((float)durationAccums[i] / (float)durationCounts[i]);
-         featureValueDurations.add(duration);
+         tierValueDurations.add(duration);
          if (VERBOSE)
          {
             System.out.println("tier=" + i + ", duration=" + duration);
@@ -2877,6 +2877,19 @@ public class Mandala
          System.err.println("Cannot create " + NN_FILENAME);
          System.exit(1);
       }
+      String durations = null;
+      if (tierValueDurations != null)
+      {
+         durations = "";
+         for (int i = 0, j = tierValueDurations.size(); i < j; i++)
+         {
+            durations += tierValueDurations.get(i) + "";
+            if (i < j - 1)
+            {
+               durations += ",";
+            }
+         }
+      }
       new File(NN_RESULTS_FILENAME).delete();
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
@@ -2885,6 +2898,11 @@ public class Mandala
       commandList.add(NUM_DIMENSIONS + "");
       commandList.add("--features");
       commandList.add(NUM_FEATURES + "");
+      if (durations != null)
+      {
+         commandList.add("--tier_value_durations");
+         commandList.add(durations);
+      }
       commandList.add("--neurons");
       commandList.add(NN_NEURONS);
       commandList.add("--epochs");
