@@ -16,7 +16,7 @@ import sys, getopt
 # Parameters
 n_dimensions = 64
 n_features = 3
-tier_value_durations = None
+tier_value_durations = '1,12,24,36,48,72'
 n_neurons = '128,128,128'
 n_epochs = 500
 
@@ -292,6 +292,9 @@ seq = array(X_test)
 X = seq.reshape(X_test_shape[0], X_test_shape[1])
 seq = array(y_test)
 y = seq.reshape(y_test_shape[0], y_test_shape[1])
+expiration_counters = None
+if tier_durations != None:
+    expiration_counters = [0] * n_dimensions * len(tier_durations)
 testErrors = 0
 testTotal = 0
 pathnum = -1
@@ -300,22 +303,38 @@ prediction_valid = False
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
     if i not in y_test_path_begin:
+        if expiration_counters != None:
+            for j in range(len(expiration_counters)):
+                if expiration_counters[j] > 0:
+                    expiration_counters[j] -= 1
         Xj = X[i - 1].reshape(1, X_test_shape[1])
+        for j in range(n_dimensions, X_test_shape[1]):
+            if expiration_counters != None:
+                if expiration_counters[j - n_dimensions] > 0:
+                    Xi[0][j] = Xj[0][j]
+                else:
+                    Xi[0][j] = 0.0
+            else:
+                Xi[0][j] = Xj[0][j]
         if prediction_valid:
             for j in range(n_dimensions, X_test_shape[1]):
-                Xi[0][j] = Xj[0][j]
                 if prediction[0][j + prediction_validation_len] >= threshold:
                     Xi[0][j] = 1.0
+                    if expiration_counters != None:
+                        k = int((j - n_dimensions) / n_dimensions)
+                        expiration_counters[j - n_dimensions] = tier_durations[k]
                 elif prediction[0][j + prediction_validation_len] <= -threshold:
                     Xi[0][j] = 0.0
-        else:
-            for j in range(n_dimensions, X_test_shape[1]):
-                Xi[0][j] = Xj[0][j]
+                    if expiration_counters != None:
+                        expiration_counters[j - n_dimensions] = 0
     else:
         pathnum = pathnum + 1
         stepnum = 0
         for j in range(n_dimensions, X_test_shape[1]):
             Xi[0][j] = 0.0
+        if expiration_counters != None:
+            for j in range(len(expiration_counters)):
+                expiration_counters[j] = 0
     yi = y[i].reshape(1, y_test_shape[1]).copy()
     prediction = model.predict(Xi, verbose=0)
     if verbose:
