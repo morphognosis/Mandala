@@ -371,8 +371,8 @@ public class Mandala
    };
    public static ArrayList<CausationPath> causationPaths;
 
-   // Maximum context feature tier.
-   public static int MAX_CONTEXT_FEATURE_TIER = 5;
+   // Maximum context tier.
+   public static int MAX_CONTEXT_TIER = 5;
 
    // Context tier value durations.
    public static String             TIER_VALUE_DURATION_TYPE = "maximum";
@@ -546,8 +546,8 @@ public class Mandala
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
-      "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
-      "      [-tierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
+      "      [-maxContextTier <value> (default=" + MAX_CONTEXT_TIER + ")]\n" +
+      "      [-contextTierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -564,8 +564,8 @@ public class Mandala
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
       "      [-numCausationPaths <quantity> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
-      "      [-maxContextFeatureTier <value> (default=" + MAX_CONTEXT_FEATURE_TIER + ")]\n" +
-      "      [-tierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
+      "      [-maxContextTier <value> (default=" + MAX_CONTEXT_TIER + ")]\n" +
+      "      [-contextTierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -943,38 +943,38 @@ public class Mandala
             }
             continue;
          }
-         if (args[i].equals("-maxContextFeatureTier"))
+         if (args[i].equals("-maxContextTier"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid maxContextFeatureTier option");
+               System.err.println("Invalid maxContextTier option");
                System.err.println(Usage);
                System.exit(1);
             }
             try
             {
-               MAX_CONTEXT_FEATURE_TIER = Integer.parseInt(args[i]);
+               MAX_CONTEXT_TIER = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
-               System.err.println("Invalid maxContextFeatureTier option");
+               System.err.println("Invalid maxContextTier option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (MAX_CONTEXT_FEATURE_TIER < -1)
+            if (MAX_CONTEXT_TIER < -1)
             {
-               System.err.println("Invalid maxContextFeatureTier option");
+               System.err.println("Invalid maxContextTier option");
                System.err.println(Usage);
                System.exit(1);
             }
             continue;
-         }
-         if (args[i].equals("-tierValueDurationType"))
+         }         
+         if (args[i].equals("-contextTierValueDurationType"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid tierValueDurationType option");
+               System.err.println("Invalid contextTierValueDurationType option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -982,7 +982,7 @@ public class Mandala
             if (!TIER_VALUE_DURATION_TYPE.equals("minimum") && !TIER_VALUE_DURATION_TYPE.equals("expected") &&
                 !TIER_VALUE_DURATION_TYPE.equals("maximum"))
             {
-               System.err.println("Invalid tierValueDurationType option");
+               System.err.println("Invalid contextTierValueDurationType option");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1323,7 +1323,7 @@ public class Mandala
          System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
          System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
          System.out.println("NUM_CAUSATION_PATHS=" + NUM_CAUSATION_PATHS);
-         System.out.println("MAX_CONTEXT_FEATURE_TIER=" + MAX_CONTEXT_FEATURE_TIER);
+         System.out.println("MAX_CONTEXT_TIER=" + MAX_CONTEXT_TIER);
          System.out.println("TIER_VALUE_DURATION_TYPE=" + TIER_VALUE_DURATION_TYPE);
          System.out.println("NN_DATASET_TRAIN_FRACTION=" + NN_DATASET_TRAIN_FRACTION);
          System.out.println("NN_NEURONS=" + NN_NEURONS);
@@ -2480,7 +2480,7 @@ public class Mandala
 
       // Add contexts.
       ContextFeatures contextFeatures1 = new ContextFeatures(causation, 0);
-      for (int i = 0, j = contextTiers.size(); i < j && i <= MAX_CONTEXT_FEATURE_TIER; i++)
+      for (int i = 0, j = contextTiers.size(); i < j && i <= MAX_CONTEXT_TIER; i++)
       {
          ContextFeatures contextFeatures2 = contextTiers.get(i);
          if (contextFeatures2 != null)
