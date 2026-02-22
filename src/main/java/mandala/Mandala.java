@@ -2900,7 +2900,7 @@ public class Mandala
       commandList.add(NUM_FEATURES + "");
       if (durations != null)
       {
-         commandList.add("--tier_value_durations");
+         commandList.add("--context_tier_value_durations");
          commandList.add(durations);
       }
       commandList.add("--neurons");

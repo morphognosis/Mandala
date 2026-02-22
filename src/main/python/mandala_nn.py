@@ -16,7 +16,7 @@ import sys, getopt
 # Parameters
 n_dimensions = 64
 n_features = 3
-tier_value_durations = '1,12,24,36,48,72'
+context_tier_value_durations = '1,12,24,36,48,72'
 n_neurons = '128,128,128'
 n_epochs = 500
 
@@ -33,9 +33,9 @@ prediction_validation = [1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0]
 verbose = True
 
 # Get options
-usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--tier_value_durations <number of durations> (default=' + str(tier_value_durations) + ', comma-separated list of tier value durations)] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--context_tier_value_durations <number of durations> (default=' + str(context_tier_value_durations) + ', comma-separated list of durations or None)] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hd:f:t:n:e:r:q",["help","dimensions=","features=","tier_value_durations=","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hd:f:t:n:e:r:q",["help","dimensions=","features=","context_tier_value_durations=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -47,8 +47,8 @@ for opt, arg in opts:
      n_dimensions = int(arg)
   elif opt in ("-f", "--features"):
      n_features = int(arg)
-  elif opt in ("-t", "--tier_value_durations"):
-     tier_value_durations = arg
+  elif opt in ("-t", "--context_tier_value_durations"):
+     context_tier_value_durations = arg
   elif opt in ("-n", "--neurons"):
      n_neurons = arg
   elif opt in ("-e", "--epochs"):
@@ -70,20 +70,23 @@ if n_features > n_dimensions:
     print(usage, sep='')
     sys.exit(1)
 tier_durations = None
-if tier_value_durations != None:
-    t_list = tier_value_durations.split(",")
-    if len(t_list) == 0:
-        print(usage, sep='')
-        sys.exit(1)
-    tier_durations = []
-    for i in t_list:
-        if i.isnumeric() == False:
+if context_tier_value_durations != None:
+    if context_tier_value_durations == 'None' or context_tier_value_durations == 'none':
+        context_tier_value_durations = None
+    else:
+        t_list = context_tier_value_durations.split(",")
+        if len(t_list) == 0:
             print(usage, sep='')
             sys.exit(1)
-        if int(i) < 0:
-            print(usage, sep='')
-            sys.exit(1)
-        tier_durations.append(int(i))
+        tier_durations = []
+        for i in t_list:
+            if i.isnumeric() == False:
+                print(usage, sep='')
+                sys.exit(1)
+            if int(i) < 0:
+                print(usage, sep='')
+                sys.exit(1)
+            tier_durations.append(int(i))
 n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
@@ -108,6 +111,9 @@ if X_train_shape[0] == 0:
     sys.exit(1)
 if X_test_shape[0] == 0:
     print('Empty test dataset')
+    sys.exit(1)
+if tier_durations != None and X_test_shape[1] - n_dimensions > len(tier_durations * n_dimensions):
+    print('Too few context_tier_value_durations:', context_tier_value_durations)
     sys.exit(1)
 
 # Create NN
