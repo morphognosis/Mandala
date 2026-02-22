@@ -968,7 +968,7 @@ public class Mandala
                System.exit(1);
             }
             continue;
-         }         
+         }
          if (args[i].equals("-contextTierValueDurationType"))
          {
             i++;
@@ -2428,6 +2428,23 @@ public class Mandala
             }
          }
          printWriter.println("]");
+         if (tierValueDurations != null)
+         {
+            printWriter.print("context_tier_value_durations = [");
+            for (int i = 0, j = tierValueDurations.size(); i < j; i++)
+            {
+               printWriter.print(tierValueDurations.get(i) + "");
+               if (i < j - 1)
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println("]");
+         }
+         else
+         {
+            printWriter.print("context_tier_value_durations = None");
+         }
          printWriter.close();
       }
       catch (IOException e)
@@ -2877,19 +2894,6 @@ public class Mandala
          System.err.println("Cannot create " + NN_FILENAME);
          System.exit(1);
       }
-      String durations = null;
-      if (tierValueDurations != null)
-      {
-         durations = "";
-         for (int i = 0, j = tierValueDurations.size(); i < j; i++)
-         {
-            durations += tierValueDurations.get(i) + "";
-            if (i < j - 1)
-            {
-               durations += ",";
-            }
-         }
-      }
       new File(NN_RESULTS_FILENAME).delete();
       ArrayList<String> commandList = new ArrayList<>();
       commandList.add("python");
@@ -2898,11 +2902,6 @@ public class Mandala
       commandList.add(NUM_DIMENSIONS + "");
       commandList.add("--features");
       commandList.add(NUM_FEATURES + "");
-      if (durations != null)
-      {
-         commandList.add("--context_tier_value_durations");
-         commandList.add(durations);
-      }
       commandList.add("--neurons");
       commandList.add(NN_NEURONS);
       commandList.add("--epochs");

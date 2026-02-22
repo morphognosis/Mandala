@@ -72,3 +72,4 @@ y_test = [
 y_test_path_begin = [0,15]
 y_test_predictable = [10,14,17,22]
 y_test_interstitial = [0,1,2,3,4,5,6,7,8,9,12,13,15,16,19,20,21]
+context_tier_value_durations = [1,12,24,48]
