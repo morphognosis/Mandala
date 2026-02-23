@@ -1727,7 +1727,7 @@ public class Mandala
 	            System.out.println("path=" + j + ", hierarchy=" + path.hierarchy + ", id=" + path.id);
 	            for (int k = 0; k < path.steps.size(); k++)
 	            {
-	               System.out.println("step=" + j);
+	               System.out.println("step=" + k);
 	               ArrayList<CausationTier> step = path.steps.get(k);
 	               for (int q = 0; q < step.size(); q++)
 	               {
