@@ -31,8 +31,6 @@ Usage:
       [-numNonterminals <quantity> (default=10)]
       [-numTerminals <quantity> (default=20)]
       [-numInterstitialTerminals <quantity> (default=5, if 0 resort to non-interstitial terminals)]
-      [-minProductionRightHandSideLength <quantity> (default=2)]
-      [-maxProductionRightHandSideLength <quantity> (default=2)]
       [-terminalProductionProbability <probability> (default=0.25)]
       [-numDimensions <quantity> (default=64)]
       [-numFeatures <quantity> (default=3)]
