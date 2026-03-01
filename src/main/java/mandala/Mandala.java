@@ -2108,12 +2108,12 @@ public class Mandala
             TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
             Causation                ycausation         = ystep.get(0).causation;
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
+            if (k == 0)
+            {
+               y_test_path_begin.add(testCount);
+            }
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
-               if (step == 0)
-               {
-                  y_test_path_begin.add(testCount);
-               }
                int xid, yid;
                if (NUM_INTERSTITIAL_TERMINALS == 0)
                {
@@ -2201,10 +2201,6 @@ public class Mandala
                   testCount++;
                   xid = yid;
                }
-            }
-            if (step == 0)
-            {
-               y_test_path_begin.add(testCount);
             }
             if (VERBOSE)
             {
