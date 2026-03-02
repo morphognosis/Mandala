@@ -14,17 +14,17 @@ maxCausationHierarchies=3
 minNumNonterminals=10
 incrNumNonterminals=5
 maxNumNonterminals=20
-minNumTerminals=20
+minNumTerminals=10
 incrNumTerminals=5
-maxNumTerminals=30
+maxNumTerminals=20
 minTerminalProductionProbability=.25
 incrTerminalProductionProbability=.25
 maxTerminalProductionProbability=.75
-minFeatureValueDurationType=0
-incrFeatureValueDurationType=1
-maxFeatureValueDurationType=2
+minContextTierValueDurationType=0
+incrContextTierValueDurationType=1
+maxContextTierValueDurationType=2
 
-echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,feature_value_duration_type,nn_error_pct,rnn_error_pct > mandala_test_results.csv
+echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,nn_error_pct,rnn_error_pct > mandala_test_results.csv
 
 for causationHierarchies in $(seq $minCausationHierarchies $incrCausationHierarchies $maxCausationHierarchies)
 do
@@ -34,22 +34,22 @@ do
   do
    for terminalProductionProbability in $(seq $minTerminalProductionProbability $incrTerminalProductionProbability $maxTerminalProductionProbability)
    do
-    for featureValueDurationType in $(seq $minFeatureValueDurationType $incrFeatureValueDurationType $maxFeatureValueDurationType)
+    for contextTierValueDurationType in $(seq $minContextTierValueDurationType $incrContextTierValueDurationType $maxContextTierValueDurationType)
     do
      > mandala_tmp_nn.txt
      > mandala_tmp_rnn.txt
      for i in $(seq $runs)
      do
-      if [ $featureValueDurationType -eq 0 ]
+      if [ $contextTierValueDurationType -eq 0 ]
       then
        type=minimum
-      elif [ $featureValueDurationType -eq 1 ]
+      elif [ $contextTierValueDurationType -eq 1 ]
       then
        type=expected
       else
        type=maximum
       fi
-      ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -terminalProductionProbability $terminalProductionProbability -featureValueDurationType $type > mandala_tmp.txt
+      ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -terminalProductionProbability $terminalProductionProbability -contextTierValueDurationType $type > mandala_tmp.txt
       grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | head -1 >> mandala_tmp_nn.txt
       grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | tail -1 >> mandala_tmp_rnn.txt
       rm mandala_tmp.txt
