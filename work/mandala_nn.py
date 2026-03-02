@@ -23,7 +23,7 @@ n_epochs = 500
 results_filename = 'mandala_nn_results.json'
 
 # Prediction significance threshold
-threshold = 0.5
+threshold = 0.25
 
 # Prediction validation pattern
 prediction_validation = [1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0]

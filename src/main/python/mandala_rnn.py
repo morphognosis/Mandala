@@ -12,7 +12,7 @@ results_filename = 'mandala_rnn_results.json'
 verbose = True
 
 # Prediction significance threshold
-threshold = 0.5
+threshold = 0.25
 
 # Get options.
 import os
