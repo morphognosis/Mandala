@@ -1,4 +1,2 @@
 causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,nn_error_pct,rnn_error_pct
-1,10,10,0.25,minimum,0,0
-1,10,10,0.25,expected,0,0
-1,10,10,0.25,maximum,0,0
+2,10,10,0.25,minimum,0,0

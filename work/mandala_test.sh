@@ -8,9 +8,6 @@ fi
 runs=$1
 
 # Parameters:
-minCausationHierarchies=1
-incrCausationHierarchies=1
-maxCausationHierarchies=3
 minNumNonterminals=10
 incrNumNonterminals=5
 maxNumNonterminals=20
@@ -26,7 +23,7 @@ maxContextTierValueDurationType=2
 
 echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,nn_error_pct,rnn_error_pct > mandala_test_results.csv
 
-for causationHierarchies in $(seq $minCausationHierarchies $incrCausationHierarchies $maxCausationHierarchies)
+for causationHierarchies in 2 1 3
 do
  for numNonterminals in $(seq $minNumNonterminals $incrNumNumNonterminals $maxNumNonterminals)
  do
@@ -49,7 +46,9 @@ do
       else
        type=maximum
       fi
-      ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -terminalProductionProbability $terminalProductionProbability -contextTierValueDurationType $type > mandala_tmp.txt
+      random=$RANDOM
+      echo ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -numTerminals $numTerminals -terminalProductionProbability $terminalProductionProbability -contextTierValueDurationType $type -randomSeed $random
+      ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -numTerminals $numTerminals -terminalProductionProbability $terminalProductionProbability -contextTierValueDurationType $type -randomSeed $random > mandala_tmp.txt
       grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | head -1 >> mandala_tmp_nn.txt
       grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | tail -1 >> mandala_tmp_rnn.txt
       rm mandala_tmp.txt
