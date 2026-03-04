@@ -2355,7 +2355,7 @@ public class Mandala
                   {
                      for (int q = 0; q < PredictionValidation.length; q++)
                      {
-                        y_test_step.add(0.0f);
+                        y_test_step.add(PredictionValidation[q]);
                      }
                      for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
