@@ -329,7 +329,7 @@ for i in range(X_test_shape[0]):
         pstr,pidxs = summarize_features('prediction', pvals)
         print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
-    if i not in y_test_interstitial:
+    if i in y_test_predictable:
         pvals = prediction[0].copy()
         pvals = pvals[0:prediction_validation_len]
         prediction_valid = True
@@ -346,41 +346,41 @@ for i in range(X_test_shape[0]):
             if verbose:
                 print(', invalid')
         else:
-            if i in y_test_predictable:
-                testTotal += 1
-                start = prediction_validation_len
-                end = start + n_dimensions
-                yvals = yi[0].copy()
-                yvals = yvals[start:end]
-                pvals = prediction[0].copy()
-                pvals = pvals[start:end]
-                ymax = []
-                pmax = []
-                for j in range(n_features):
-                    yidx = argmax(yvals)
-                    if yvals[yidx] >= threshold:
-                        ymax.append(yidx)
-                    yvals[yidx] = 0.0
-                    pidx = argmax(pvals)
-                    if pvals[pidx] >= threshold:
-                        pmax.append(pidx)
-                    pvals[pidx] = 0.0
-                ymax.sort()
-                pmax.sort()
-                if ymax != pmax:
-                    testErrors += 1
-                    if verbose:
-                        print(', error')
-                else:
-                    if verbose:
-                        print(', ok')
+            testTotal += 1
+            start = prediction_validation_len
+            end = start + n_dimensions
+            yvals = yi[0].copy()
+            yvals = yvals[start:end]
+            pvals = prediction[0].copy()
+            pvals = pvals[start:end]
+            ymax = []
+            pmax = []
+            for j in range(n_features):
+                yidx = argmax(yvals)
+                if yvals[yidx] >= threshold:
+                    ymax.append(yidx)
+                yvals[yidx] = 0.0
+                pidx = argmax(pvals)
+                if pvals[pidx] >= threshold:
+                    pmax.append(pidx)
+                pvals[pidx] = 0.0
+            ymax.sort()
+            pmax.sort()
+            if ymax != pmax:
+                prediction_valid = False
+                testErrors += 1
+                if verbose:
+                    print(', error')
             else:
                 if verbose:
-                    print()
+                    print(', ok')
     else:
         prediction_valid = False
         if verbose:
-            print(', interstitial')
+            if i in y_test_interstitial:
+                print(', interstitial')
+            else:
+                print()
 
 testErrorPct = 0
 if testTotal > 0:
