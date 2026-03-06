@@ -25,8 +25,8 @@ results_filename = 'mandala_nn_results.json'
 # Prediction significance threshold
 threshold = 0.25
 
-# Prediction validation pattern
-prediction_validation = [1.0, -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0]
+# Prediction validation length
+prediction_validation_len = 8
 
 # Verbosity
 verbose = True
@@ -157,7 +157,6 @@ trainErrors = 0
 trainTotal = 0
 pathnum = -1
 stepnum = 0
-prediction_validation_len = len(prediction_validation)
 for i in range(X_train_shape[0]):
     if i in y_train_path_begin:
         pathnum = pathnum + 1
@@ -173,13 +172,15 @@ for i in range(X_train_shape[0]):
         print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
     trainTotal += 1
+    yvals = y[i].copy()
+    yvals = yvals[0:prediction_validation_len]
     pvals = predictions[i].copy()
     pvals = pvals[0:prediction_validation_len]
     prediction_valid = True
     for j in range(prediction_validation_len):
-        if pvals[j] >= threshold and prediction_validation[j] >= threshold:
+        if yvals[j] >= threshold and pvals[j] >= threshold:
             pass
-        elif pvals[j] <= -threshold and prediction_validation[j] <= -threshold:
+        elif yvals[j] <= -threshold and pvals[j] <= -threshold:
             pass
         else:
             prediction_valid = False
@@ -281,7 +282,7 @@ testErrors = 0
 testTotal = 0
 pathnum = -1
 stepnum = 0
-prediction_valid = False
+prediction_valid_count = 0
 for i in range(X_test_shape[0]):
     Xi = X[i].reshape(1, X_test_shape[1])
     if i not in y_test_path_begin:
@@ -298,7 +299,8 @@ for i in range(X_test_shape[0]):
                     Xi[0][j] = 0.0
             else:
                 Xi[0][j] = Xj[0][j]
-        if prediction_valid:
+        if prediction_valid_count > 0:
+            prediction_valid_count -= 1
             for j in range(n_dimensions, X_test_shape[1]):
                 if prediction[0][j + prediction_validation_len] >= threshold:
                     Xi[0][j] = 1.0
@@ -310,6 +312,7 @@ for i in range(X_test_shape[0]):
                     if expiration_counters != None:
                         expiration_counters[j - n_dimensions] = 0
     else:
+        prediction_valid_count = 0
         pathnum = pathnum + 1
         stepnum = 0
         for j in range(n_dimensions, X_test_shape[1]):
@@ -329,58 +332,88 @@ for i in range(X_test_shape[0]):
         pstr,pidxs = summarize_features('prediction', pvals)
         print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
-    if i in y_test_predictable:
-        pvals = prediction[0].copy()
-        pvals = pvals[0:prediction_validation_len]
+    if prediction_valid_count == 0:
         prediction_valid = True
-        for j in range(prediction_validation_len):
-            if pvals[j] >= threshold and prediction_validation[j] >= threshold:
-                pass
-            elif pvals[j] <= -threshold and prediction_validation[j] <= -threshold:
-                pass
+        vvals = prediction[0].copy()
+        vvals = vvals[0:prediction_validation_len]
+        xvals = Xi[0].copy()
+        xvals = xvals[0:n_dimensions]
+        xmax = []
+        for j in range(n_dimensions):
+            xidx = argmax(xvals)
+            if xvals[xidx] >= threshold:
+                xmax.append(xidx)
+                xvals[xidx] = 0.0
             else:
-                prediction_valid = False
                 break
-        if prediction_valid == False:
-            testErrors += 1
-            if verbose:
-                print(', invalid')
+        xmax.sort()
+        if len(xmax) != n_features:
+            prediction_valid = False
         else:
+            vidxs = []
+            for j in range(len(xmax)):
+                vidxs.append(xmax[j] % prediction_validation_len)
+            vidxs = list(set(vidxs))
+            for j in range(len(vidxs)):
+                vidx = vidxs[j]
+                if vvals[vidx] < threshold:
+                    prediction_valid = False
+                    break
+                else:
+                    vvals[vidx] = -1.0
+            if prediction_valid == True:
+                for j in range(prediction_validation_len):
+                    if vvals[j] >= threshold:
+                        prediction_valid = False
+                        break
+        if prediction_valid == True:
+            prediction_valid_count = 2
             testTotal += 1
             start = prediction_validation_len
             end = start + n_dimensions
             yvals = yi[0].copy()
             yvals = yvals[start:end]
-            pvals = prediction[0].copy()
-            pvals = pvals[start:end]
             ymax = []
-            pmax = []
             for j in range(n_features):
                 yidx = argmax(yvals)
                 if yvals[yidx] >= threshold:
                     ymax.append(yidx)
-                yvals[yidx] = 0.0
+                    yvals[yidx] = 0.0
+                else:
+                    break
+            ymax.sort()
+            pvals = prediction[0].copy()
+            pvals = pvals[start:end]
+            pmax = []
+            for j in range(n_dimensions):
                 pidx = argmax(pvals)
                 if pvals[pidx] >= threshold:
                     pmax.append(pidx)
-                pvals[pidx] = 0.0
-            ymax.sort()
+                    pvals[pidx] = 0.0
+                else:
+                    break
             pmax.sort()
             if ymax != pmax:
-                prediction_valid = False
                 testErrors += 1
                 if verbose:
                     print(', error')
             else:
                 if verbose:
                     print(', ok')
-    else:
-        prediction_valid = False
-        if verbose:
-            if i in y_test_interstitial:
-                print(', interstitial')
+        else:
+            if i in y_test_predictable:
+                testErrors += 1
+                if verbose:
+                    print(', invalid')
+            elif i in y_test_interstitial:
+                if verbose:
+                    print(', interstitial')
             else:
-                print()
+                if verbose:
+                    print()
+    else:
+        if verbose:
+            print(', effect')
 
 testErrorPct = 0
 if testTotal > 0:

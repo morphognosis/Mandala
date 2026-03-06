@@ -7,6 +7,8 @@ then
 fi
 runs=$1
 
+echo "Results written to mandala_test_results.csv"
+
 # Parameters:
 minNumNonterminals=10
 incrNumNonterminals=5
@@ -25,7 +27,7 @@ echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_pr
 
 for causationHierarchies in 2 1 3
 do
- for numNonterminals in $(seq $minNumNonterminals $incrNumNumNonterminals $maxNumNonterminals)
+ for numNonterminals in $(seq $minNumNonterminals $incrNumNonterminals $maxNumNonterminals)
  do
   for numTerminals in $(seq $minNumTerminals $incrNumTerminals $maxNumTerminals)
   do
