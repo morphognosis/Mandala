@@ -347,25 +347,22 @@ for i in range(X_test_shape[0]):
             else:
                 break
         xmax.sort()
-        if len(xmax) != n_features:
-            prediction_valid = False
-        else:
-            vidxs = []
-            for j in range(len(xmax)):
-                vidxs.append(xmax[j] % prediction_validation_len)
-            vidxs = list(set(vidxs))
-            for j in range(len(vidxs)):
-                vidx = vidxs[j]
-                if vvals[vidx] < threshold:
+        vidxs = []
+        for j in range(len(xmax)):
+            vidxs.append(xmax[j] % prediction_validation_len)
+        vidxs = list(set(vidxs))
+        for j in range(len(vidxs)):
+            vidx = vidxs[j]
+            if vvals[vidx] < threshold:
+                prediction_valid = False
+                break
+            else:
+                vvals[vidx] = -1.0
+        if prediction_valid == True:
+            for j in range(prediction_validation_len):
+                if vvals[j] >= threshold:
                     prediction_valid = False
                     break
-                else:
-                    vvals[vidx] = -1.0
-            if prediction_valid == True:
-                for j in range(prediction_validation_len):
-                    if vvals[j] >= threshold:
-                        prediction_valid = False
-                        break
         if prediction_valid == True:
             prediction_valid_count = 2
             testTotal += 1
@@ -385,7 +382,7 @@ for i in range(X_test_shape[0]):
             pvals = prediction[0].copy()
             pvals = pvals[start:end]
             pmax = []
-            for j in range(n_dimensions):
+            for j in range(n_features):
                 pidx = argmax(pvals)
                 if pvals[pidx] >= threshold:
                     pmax.append(pidx)

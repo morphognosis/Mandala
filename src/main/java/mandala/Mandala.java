@@ -328,7 +328,7 @@ public class Mandala
    };
 
    // Causation paths.
-   public static int NUM_CAUSATION_PATHS = 20;
+   public static int NUM_CAUSATION_PATHS = 2;
 
    public static class CausationPath
    {
@@ -1604,15 +1604,23 @@ public class Mandala
          causationPaths = new ArrayList < ArrayList < CausationPath >> ();
          for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
          {
+            ArrayList<Causation>     causationHierarchy = causationHierarchies.get(i);
             ArrayList<CausationPath> paths = new ArrayList<CausationPath>();
             causationPaths.add(paths);
+            int n = (int)((float)NUM_CAUSATION_PATHS * NN_DATASET_TRAIN_FRACTION);
             for (int j = 0; j < NUM_CAUSATION_PATHS; j++)
             {
-               ArrayList<Causation> causationHierarchy = causationHierarchies.get(i);
-               Causation            root = causationHierarchy.get(0);
+               Causation root = causationHierarchy.get(0);
                if (j > 0)
                {
-                  root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
+                  if (j == n)
+                  {
+                     root = causationHierarchy.get(n);
+                  }
+                  else
+                  {
+                     root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
+                  }
                }
                paths.add(new CausationPath(i, root.id));
             }
@@ -2022,9 +2030,9 @@ public class Mandala
                      {
                         y_train_step.add(-1.0f);
                      }
-                     for (int q = 0, r =  xterminalCausation.features.size(); q < r; q++)
+                     for (int q = 0, r = xterminalCausation.features.size(); q < r; q++)
                      {
-                    	 y_train_step.set(xterminalCausation.features.get(q) % PredictionValidationLength, 1.0f);
+                        y_train_step.set(xterminalCausation.features.get(q) % PredictionValidationLength, 1.0f);
                      }
                      for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
@@ -2079,6 +2087,7 @@ public class Mandala
          {
             System.out.println("path=" + i);
          }
+         y_test_path_begin.add(testCount);
          ArrayList<Integer> pathIdxs = new ArrayList<Integer>();
          for (int j = 0; j < NUM_CAUSATION_HIERARCHIES; j++)
          {
@@ -2112,10 +2121,6 @@ public class Mandala
             TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
             Causation                ycausation         = ystep.get(0).causation;
             TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
-            if (k == 0)
-            {
-               y_test_path_begin.add(testCount);
-            }
             if ((xstep.size() > 1) && (xstep.get(1).currentChild == 0))
             {
                int xid, yid;
@@ -2183,7 +2188,7 @@ public class Mandala
                         for (int q = 0; q < PredictionValidationLength; q++)
                         {
                            y_test_step.add(0.0f);
-                        }                        
+                        }
                         for (int q = 0; q < NUM_DIMENSIONS; q++)
                         {
                            y_test_step.add(0.0f);
@@ -2247,10 +2252,10 @@ public class Mandala
                   {
                      y_test_step.add(-1.0f);
                   }
-                  for (int q = 0, r =  xterminalCausation.features.size(); q < r; q++)
+                  for (int q = 0, r = xterminalCausation.features.size(); q < r; q++)
                   {
-                 	 y_test_step.set(xterminalCausation.features.get(q) % PredictionValidationLength, 1.0f);
-                  }                  
+                     y_test_step.set(xterminalCausation.features.get(q) % PredictionValidationLength, 1.0f);
+                  }
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      if (yterminalCausation.features.contains(q))
@@ -2347,10 +2352,10 @@ public class Mandala
                      {
                         y_test_step.add(-1.0f);
                      }
-                     for (int q = 0, r =  xterminalCausation.features.size(); q < r; q++)
+                     for (int q = 0, r = xterminalCausation.features.size(); q < r; q++)
                      {
-                    	 y_test_step.set(xterminalCausation.features.get(q) % PredictionValidationLength, 1.0f);
-                     }                     
+                        y_test_step.set(xterminalCausation.features.get(q) % PredictionValidationLength, 1.0f);
+                     }
                      for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
                         if (yterminalCausation.features.contains(q))
