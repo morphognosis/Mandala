@@ -1615,7 +1615,7 @@ public class Mandala
                {
                   if (j == n)
                   {
-                     root = causationHierarchy.get(n);
+                     root = causationHierarchy.get(0);
                   }
                   else
                   {
