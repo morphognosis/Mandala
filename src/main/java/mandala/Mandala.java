@@ -760,7 +760,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((TERMINAL_PRODUCTION_PROBABILITY < 0.0f) || (TERMINAL_PRODUCTION_PROBABILITY > 1.0f))
+            if ((TERMINAL_PRODUCTION_PROBABILITY <= 0.0f) || (TERMINAL_PRODUCTION_PROBABILITY > 1.0f))
             {
                System.err.println("Invalid terminalProductionProbability option");
                System.err.println(Usage);
@@ -948,7 +948,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((NN_DATASET_TRAIN_FRACTION < 0.0f) || (NN_DATASET_TRAIN_FRACTION > 1.0f))
+            if ((NN_DATASET_TRAIN_FRACTION <= 0.0f) || (NN_DATASET_TRAIN_FRACTION >= 1.0f))
             {
                System.err.println("Invalid NNdatasetTrainFraction option");
                System.err.println(Usage);
@@ -1018,7 +1018,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            if ((RNN_DATASET_TRAIN_FRACTION < 0.0f) || (RNN_DATASET_TRAIN_FRACTION > 1.0f))
+            if ((RNN_DATASET_TRAIN_FRACTION <= 0.0f) || (RNN_DATASET_TRAIN_FRACTION >= 1.0f))
             {
                System.err.println("Invalid RNNdatasetTrainFraction option");
                System.err.println(Usage);
