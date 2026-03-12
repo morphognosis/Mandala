@@ -23,9 +23,9 @@ minContextTierValueDurationType=0
 incrContextTierValueDurationType=1
 maxContextTierValueDurationType=2
 
-echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,mandala_error_pct,rnn_error_pct > mandala_test_results.csv
+echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,nn_error_pct,rnn_error_pct > mandala_test_results.csv
 
-for causationHierarchies in 2 1 3
+for causationHierarchies in 3
 do
  for numNonterminals in $(seq $minNumNonterminals $incrNumNonterminals $maxNumNonterminals)
  do
@@ -56,11 +56,11 @@ do
       rm mandala_tmp.txt
      done
      echo -n ${causationHierarchies},${numNonterminals},${numTerminals},${terminalProductionProbability},${type} >> mandala_test_results.csv
-     mandala_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn.txt`
+     nn_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn.txt`
      rnn_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_rnn.txt`
      rm mandala_tmp_nn.txt
      rm mandala_tmp_rnn.txt
-     echo ,${mandala_error},${rnn_error} >> mandala_test_results.csv
+     echo ,${nn_error},${rnn_error} >> mandala_test_results.csv
     done
    done
   done

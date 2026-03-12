@@ -19,7 +19,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
+import java.util.SplittableRandom;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +60,7 @@ public class Mandala
       public static ArrayList<Integer> encodeFeatures(int hierarchy, int id)
       {
          String seedString = hierarchy + "_" + id + "_";
-         Random r          = new Random(seedString.hashCode());
+         SplittableRandom r          = new SplittableRandom(seedString.hashCode());
 
          ArrayList<Integer> features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
@@ -103,7 +104,7 @@ public class Mandala
          {
             seedString += i + "_";
          }
-         Random             r        = new Random(seedString.hashCode());
+         SplittableRandom             r        = new SplittableRandom(seedString.hashCode());
          ArrayList<Integer> features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
          {
@@ -521,7 +522,7 @@ public class Mandala
 
    // Random numbers.
    public static int    RANDOM_SEED = 45;
-   public static Random randomizer  = null;
+   public static SplittableRandom randomizer  = null;
 
    // Verbosity.
    public static boolean VERBOSE = true;
@@ -1222,7 +1223,7 @@ public class Mandala
       else
       {
          // Generate causations.
-         randomizer           = new Random(RANDOM_SEED);
+         randomizer           = new SplittableRandom(RANDOM_SEED);
          causationHierarchies = new ArrayList < ArrayList < Causation >> ();
          for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
          {
@@ -1281,7 +1282,7 @@ public class Mandala
       }
 
       // Generate causation paths.
-      randomizer = new Random(RANDOM_SEED);
+      randomizer = new SplittableRandom(RANDOM_SEED);
       generateCausationPaths();
 
       // Analyze causations.
@@ -1402,7 +1403,7 @@ public class Mandala
       NonterminalCausation parent = open.get(n);
 
       open.remove(n);
-      if (randomizer.nextFloat() < TERMINAL_PRODUCTION_PROBABILITY)
+      if (randomizer.nextDouble() < (double)TERMINAL_PRODUCTION_PROBABILITY)
       {
          expandTerminal(parent, terminalInstances);
       }
@@ -1925,7 +1926,7 @@ public class Mandala
       {
          System.out.println("export NN dataset");
       }
-      Random random   = new Random(randomSeed);
+      SplittableRandom random   = new SplittableRandom(randomSeed);
       int    maxTiers = 0;
       for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
       {
@@ -2606,7 +2607,7 @@ public class Mandala
          System.out.println("export RNN dataset");
          System.out.println("training dataset:");
       }
-      Random random = new Random(randomSeed);
+      SplittableRandom random = new SplittableRandom(randomSeed);
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
       int maxPathLength = 0;

@@ -23,7 +23,7 @@ n_epochs = 500
 results_filename = 'mandala_nn_results.json'
 
 # Prediction significance threshold
-threshold = 0.25
+threshold = 0.85
 
 # Prediction validation length
 prediction_validation_len = 8
@@ -151,6 +151,14 @@ def summarize_features(title, vals):
         idxs = lists
     return desc, idxs
 
+# Summarize signature
+def summarize_signature(vals):
+    idxs = []
+    for j in range(len(vals)):
+        if vals[j] >= threshold:
+            idxs.append(j)
+    return str(idxs)
+
 # Validate
 predictions = model.predict(X, batch_size=X_train_shape[0], verbose=0)
 trainErrors = 0
@@ -164,12 +172,13 @@ for i in range(X_train_shape[0]):
     if verbose:
         xstr,xidxs = summarize_features('X', X[i].copy())
         yvals = y[i].copy()
+        sstr = summarize_signature(yvals[0:prediction_validation_len])
         yvals = yvals[prediction_validation_len:]
         ystr,yidxs = summarize_features('y', yvals)
         pvals = predictions[i].copy()
         pvals = pvals[prediction_validation_len:]
         pstr,pidxs = summarize_features('prediction', pvals)
-        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
+        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', signature: ',sstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
     trainTotal += 1
     yvals = y[i].copy()
@@ -325,12 +334,13 @@ for i in range(X_test_shape[0]):
     if verbose:
         xstr,xidxs = summarize_features('X', Xi[0].copy())
         yvals = yi[0].copy()
+        sstr = summarize_signature(yvals[0:prediction_validation_len])
         yvals = yvals[prediction_validation_len:]
         ystr,yidxs = summarize_features('y', yvals)
         pvals = prediction[0].copy()
         pvals = pvals[prediction_validation_len:]
         pstr,pidxs = summarize_features('prediction', pvals)
-        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr,sep='',end='')
+        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', signature: ',sstr,', ',ystr,', ',pstr,sep='',end='')
     stepnum = stepnum + 1
     if prediction_valid_count == 0:
         prediction_valid = True
@@ -363,7 +373,8 @@ for i in range(X_test_shape[0]):
                 if vvals[j] >= threshold:
                     prediction_valid = False
                     break
-        if prediction_valid == True:
+        if i in y_test_predictable:       # flibber
+        #if prediction_valid == True:
             prediction_valid_count = 2
             testTotal += 1
             start = prediction_validation_len
