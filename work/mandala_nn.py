@@ -25,9 +25,6 @@ results_filename = 'mandala_nn_results.json'
 # Prediction significance threshold
 threshold = 0.85
 
-# Prediction validation length
-prediction_validation_len = 8
-
 # Verbosity
 verbose = True
 
@@ -84,7 +81,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial, context_tier_value_durations
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_signature_train_shape, y_signature_train_shape, X_signature_train, y_signature_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial, context_tier_value_durations
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -92,23 +89,45 @@ if X_test_shape[0] == 0:
     print('Empty test dataset')
     sys.exit(1)
 
-# Create NN
-model = Sequential()
-model.add(Input((X_train_shape[1],)))
-model.add(Dense(n_hidden[0], activation='tanh'))
+# Create prediction NN
+prediction_model = Sequential()
+prediction_model.add(Input((X_train_shape[1],)))
+prediction_model.add(Dense(n_hidden[0], activation='tanh'))
 for i in range(1, len(n_hidden)):
-    model.add(Dense(n_hidden[i], activation='tanh'))
-model.add(Dense(y_train_shape[1], activation='tanh'))
-model.compile(loss='mse', optimizer='adam')
+    prediction_model.add(Dense(n_hidden[i], activation='tanh'))
+prediction_model.add(Dense(y_train_shape[1], activation='tanh'))
+prediction_model.compile(loss='mse', optimizer='adam')
 if verbose:
-    model.summary()
+    prediction_model.summary()
 
-# Train
+# Create signature NN
+signature_model = Sequential()
+signature_model.add(Input((X_signature_train_shape[1],)))
+signature_model.add(Dense(n_hidden[0], activation='tanh'))
+for i in range(1, len(n_hidden)):
+    signature_model.add(Dense(n_hidden[i], activation='tanh'))
+signature_model.add(Dense(y_signature_train_shape[1], activation='tanh'))
+signature_model.compile(loss='mse', optimizer='adam')
+if verbose:
+    signature_model.summary()
+
+# Train prediction model
+if verbose:
+    print('train prediction model')
 seq = array(X_train)
-X = seq.reshape(X_train_shape[0], X_train_shape[1])
+X_train_seq = seq.reshape(X_train_shape[0], X_train_shape[1])
 seq = array(y_train)
-y = seq.reshape(y_train_shape[0], y_train_shape[1])
-model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
+y_train_seq = seq.reshape(y_train_shape[0], y_train_shape[1])
+prediction_model.fit(X_train_seq, y_train_seq, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
+
+# Train signature model
+if verbose:
+    print('train signature model')
+seq = array(X_signature_train)
+X_signature_seq = seq.reshape(X_signature_train_shape[0], X_signature_train_shape[1])
+seq = array(y_signature_train)
+y_signature_seq = seq.reshape(y_signature_train_shape[0], y_signature_train_shape[1])
+signature_model.fit(X_signature_seq, y_signature_seq, epochs=n_epochs, batch_size=X_signature_train_shape[0], verbose=int(verbose))
 
 # Summarize features
 def summarize_features(title, vals):
@@ -159,113 +178,119 @@ def summarize_signature(vals):
             idxs.append(j)
     return str(idxs)
 
+# Check signature validity
+def signature_valid(xvals, pvals):
+    xmax = []
+    for i in range(n_dimensions):
+        xidx = argmax(xvals)
+        if xvals[xidx] >= threshold:
+            xmax.append(xidx)
+            xvals[xidx] = 0.0
+        else:
+            break
+    xmax.sort()
+    pidxs = []
+    n = len(pvals)
+    for i in range(len(xmax)):
+        pidxs.append(xmax[i] % n)
+    pidxs = list(set(pidxs))
+    for i in range(len(pidxs)):
+        pidx = pidxs[i]
+        if pvals[pidx] < threshold:
+            return False
+        else:
+            pvals[pidx] = -1.0
+    if signature_valid == True:
+        for i in range(n):
+            if pvals[i] >= threshold:
+                return False
+    return True
+
+# Check tier max values prediction
+def tier_max_prediction(yvals, pvals):
+    ymax = []
+    pmax = []
+    for i in range(n_features):
+        yidx = argmax(yvals)
+        if yvals[yidx] >= threshold:
+            ymax.append(yidx)
+        yvals[yidx] = 0.0
+        pidx = argmax(pvals)
+        if pvals[pidx] >= threshold:
+            pmax.append(pidx)
+        pvals[pidx] = 0.0
+    ymax.sort()
+    pmax.sort()
+    if ymax != pmax:
+        return False
+    else:
+        return True
+
+# Check tier min values prediction
+def tier_min_prediction(yvals, pvals):
+    ymin = []
+    pmin = []
+    for i in range(n_features):
+        yidx = argmin(yvals)
+        if yvals[yidx] <= -threshold:
+            ymin.append(yidx)
+        yvals[yidx] = 0.0
+        pidx = argmin(pvals)
+        if pvals[pidx] <= -threshold:
+            pmin.append(pidx)
+        pvals[pidx] = 0.0
+    ymin.sort()
+    pmin.sort()
+    if ymin != pmin:
+        return False
+    else:
+        return True
+
 # Validate
-predictions = model.predict(X, batch_size=X_train_shape[0], verbose=0)
+if verbose:
+    print('validate training')
+predictions = prediction_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
 trainErrors = 0
 trainTotal = 0
 pathnum = -1
 stepnum = 0
 for i in range(X_train_shape[0]):
     if i in y_train_path_begin:
-        pathnum = pathnum + 1
+        pathnum += 1
         stepnum = 0
+    sxvals = X_train_seq[i].copy()
+    sxvals = sxvals[0:n_dimensions]
+    signature_prediction = signature_model.predict(array([sxvals]), verbose=0)
     if verbose:
-        xstr,xidxs = summarize_features('X', X[i].copy())
-        yvals = y[i].copy()
-        sstr = summarize_signature(yvals[0:prediction_validation_len])
-        yvals = yvals[prediction_validation_len:]
-        ystr,yidxs = summarize_features('y', yvals)
-        pvals = predictions[i].copy()
-        pvals = pvals[prediction_validation_len:]
-        pstr,pidxs = summarize_features('prediction', pvals)
+        sstr = summarize_signature(signature_prediction[0])
+        xstr,xidxs = summarize_features('X', X_train_seq[i].copy())
+        ystr,yidxs = summarize_features('y', y_train_seq[i].copy())
+        pstr,pidxs = summarize_features('prediction', predictions[i].copy())
         print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', signature: ',sstr,', ',ystr,', ',pstr,sep='',end='')
-    stepnum = stepnum + 1
+    stepnum += 1
     trainTotal += 1
-    yvals = y[i].copy()
-    yvals = yvals[0:prediction_validation_len]
-    pvals = predictions[i].copy()
-    pvals = pvals[0:prediction_validation_len]
-    prediction_valid = True
-    for j in range(prediction_validation_len):
-        if yvals[j] >= threshold and pvals[j] >= threshold:
-            pass
-        elif yvals[j] <= -threshold and pvals[j] <= -threshold:
-            pass
-        else:
-            prediction_valid = False
-            break
-    if prediction_valid == False:
+    if signature_valid(sxvals, signature_prediction.copy()[0]) == False:
         trainErrors += 1
         if verbose:
             print(', invalid')
     else:
-        start = prediction_validation_len
-        end = start + n_dimensions
-        yvals = y[i].copy()
-        yvals = yvals[start:end]
-        pvals = predictions[i].copy()
-        pvals = pvals[start:end]
-        ymax = []
-        pmax = []
-        for j in range(n_features):
-            yidx = argmax(yvals)
-            if yvals[yidx] >= threshold:
-                ymax.append(yidx)
-            yvals[yidx] = 0.0
-            pidx = argmax(pvals)
-            if pvals[pidx] >= threshold:
-                pmax.append(pidx)
-            pvals[pidx] = 0.0
-        ymax.sort()
-        pmax.sort()
-        if ymax != pmax:
+        start = 0
+        end = n_dimensions
+        if tier_max_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
             trainErrors += 1
             if verbose:
                 print(', error')
         else:
-            n_contexts = (int)((y_train_shape[1] - prediction_validation_len) / n_dimensions) - 1
+            n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
             error = False
             for j in range(n_contexts):
-                start = (n_dimensions * (j + 1)) + prediction_validation_len
+                start = (n_dimensions * (j + 1))
                 end = start + n_dimensions
-                yvals = y[i].copy()
-                yvals = yvals[start:end]
-                pvals = predictions[i].copy()
-                pvals = pvals[start:end]
-                ymax = []
-                pmax = []
-                for k in range(n_features):
-                    yidx = argmax(yvals)
-                    if yvals[yidx] >= threshold:
-                        ymax.append(yidx)
-                    yvals[yidx] = 0.0
-                    pidx = argmax(pvals)
-                    if pvals[pidx] >= threshold:
-                        pmax.append(pidx)
-                    pvals[pidx] = 0.0
-                ymax.sort()
-                pmax.sort()
-                if ymax != pmax:
+                if tier_max_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
                     trainErrors += 1
+                    error = True
                     break
-                yvals = y[i].copy()
-                yvals = yvals[start:end]
-                pvals = predictions[i].copy()
-                pvals = pvals[start:end]
-                ymin = []
-                pmin = []
-                for k in range(n_features):
-                    yidx = argmin(yvals)
-                    if yvals[yidx] <= -threshold:
-                        ymin.append(yidx)
-                    yvals[yidx] = 0.0
-                    pidx = argmin(pvals)
-                    if pvals[pidx] <= -threshold:
-                        pmin.append(pidx)
-                    pvals[pidx] = 0.0
-                ymin.sort()
-                pmin.sort()
-                if ymin != pmin:
+                if tier_min_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
                     trainErrors += 1
                     error = True
                     break
@@ -280,6 +305,8 @@ if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
 
 # Predict
+if verbose:
+    print('predict')
 seq = array(X_test)
 X = seq.reshape(X_test_shape[0], X_test_shape[1])
 seq = array(y_test)
@@ -311,18 +338,18 @@ for i in range(X_test_shape[0]):
         if prediction_valid_count > 0:
             prediction_valid_count -= 1
             for j in range(n_dimensions, X_test_shape[1]):
-                if prediction[0][j + prediction_validation_len] >= threshold:
+                if prediction[0][j] >= threshold:
                     Xi[0][j] = 1.0
                     if expiration_counters != None:
                         k = int((j - n_dimensions) / n_dimensions)
                         expiration_counters[j - n_dimensions] = context_tier_value_durations[k]
-                elif prediction[0][j + prediction_validation_len] <= -threshold:
+                elif prediction[0][j] <= -threshold:
                     Xi[0][j] = 0.0
                     if expiration_counters != None:
                         expiration_counters[j - n_dimensions] = 0
     else:
         prediction_valid_count = 0
-        pathnum = pathnum + 1
+        pathnum += 1
         stepnum = 0
         for j in range(n_dimensions, X_test_shape[1]):
             Xi[0][j] = 0.0
@@ -330,78 +357,24 @@ for i in range(X_test_shape[0]):
             for j in range(len(expiration_counters)):
                 expiration_counters[j] = 0
     yi = y[i].reshape(1, y_test_shape[1]).copy()
-    prediction = model.predict(Xi, verbose=0)
+    prediction = prediction_model.predict(Xi, verbose=0)
+    sxvals = Xi[0].copy()
+    sxvals = sxvals[0:n_dimensions]
+    signature_prediction = signature_model.predict(array([sxvals]), verbose=0)
     if verbose:
+        sstr = summarize_signature(signature_prediction[0])
         xstr,xidxs = summarize_features('X', Xi[0].copy())
-        yvals = yi[0].copy()
-        sstr = summarize_signature(yvals[0:prediction_validation_len])
-        yvals = yvals[prediction_validation_len:]
-        ystr,yidxs = summarize_features('y', yvals)
-        pvals = prediction[0].copy()
-        pvals = pvals[prediction_validation_len:]
-        pstr,pidxs = summarize_features('prediction', pvals)
+        ystr,yidxs = summarize_features('y', yi[0].copy())
+        pstr,pidxs = summarize_features('prediction', prediction[0].copy())
         print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', signature: ',sstr,', ',ystr,', ',pstr,sep='',end='')
-    stepnum = stepnum + 1
+    stepnum += 1
     if prediction_valid_count == 0:
-        prediction_valid = True
-        vvals = prediction[0].copy()
-        vvals = vvals[0:prediction_validation_len]
-        xvals = Xi[0].copy()
-        xvals = xvals[0:n_dimensions]
-        xmax = []
-        for j in range(n_dimensions):
-            xidx = argmax(xvals)
-            if xvals[xidx] >= threshold:
-                xmax.append(xidx)
-                xvals[xidx] = 0.0
-            else:
-                break
-        xmax.sort()
-        vidxs = []
-        for j in range(len(xmax)):
-            vidxs.append(xmax[j] % prediction_validation_len)
-        vidxs = list(set(vidxs))
-        for j in range(len(vidxs)):
-            vidx = vidxs[j]
-            if vvals[vidx] < threshold:
-                prediction_valid = False
-                break
-            else:
-                vvals[vidx] = -1.0
-        if prediction_valid == True:
-            for j in range(prediction_validation_len):
-                if vvals[j] >= threshold:
-                    prediction_valid = False
-                    break
-        if i in y_test_predictable:       # flibber
-        #if prediction_valid == True:
+        if signature_valid(sxvals, signature_prediction.copy()[0]) == True:
             prediction_valid_count = 2
             testTotal += 1
-            start = prediction_validation_len
-            end = start + n_dimensions
-            yvals = yi[0].copy()
-            yvals = yvals[start:end]
-            ymax = []
-            for j in range(n_features):
-                yidx = argmax(yvals)
-                if yvals[yidx] >= threshold:
-                    ymax.append(yidx)
-                    yvals[yidx] = 0.0
-                else:
-                    break
-            ymax.sort()
-            pvals = prediction[0].copy()
-            pvals = pvals[start:end]
-            pmax = []
-            for j in range(n_features):
-                pidx = argmax(pvals)
-                if pvals[pidx] >= threshold:
-                    pmax.append(pidx)
-                    pvals[pidx] = 0.0
-                else:
-                    break
-            pmax.sort()
-            if ymax != pmax:
+            start = 0
+            end = n_dimensions
+            if tier_max_prediction(yi[0].copy()[start:end], prediction[0].copy()[start:end]) == False:
                 testErrors += 1
                 if verbose:
                     print(', error')
