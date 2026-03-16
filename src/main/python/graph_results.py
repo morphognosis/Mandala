@@ -6,7 +6,7 @@ Installation:
     pip install pandas matplotlib numpy
 
 Usage:
-    python chart.py
+    python graph_results.py [--results_csv <file name>] [--independent_column <column name:category_name_0,category_name_1,...>] [--graph_png <file name>]
 """
 
 import pandas as pd
