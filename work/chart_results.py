@@ -6,7 +6,7 @@ Installation:
     pip install pandas matplotlib numpy
 
 Usage:
-    python graph_results.py [--results_csv <file name>] [--independent_column <column name:category_name_0,category_name_1,...>] [--graph_png <file name>]
+    python chart_results.py [--results_csv <file name>] [--independent_column <column name:category_name_0,category_name_1,...>] [--x_axis_label <string> (default=independent column)] [--graph_png <file name>]
 """
 
 import pandas as pd
@@ -21,7 +21,7 @@ xlabel = None
 graph_png = 'mandala_rnn_comparison.png'
 
 # Get options
-usage = 'graph_results.py [--results_csv <file name> (default=' + results_csv + ')] [--independent_column <column name with category names appended> (example=causation_hierarchies:1,2,3)] [--x_axis_label <string> (default=independent column)] [--graph_png <file name> (default=' + graph_png + ')]'
+usage = 'chart_results.py [--results_csv <file name> (default=' + results_csv + ')] [--independent_column <column name with category names appended> (example=causation_hierarchies:1,2,3)] [--x_axis_label <string> (default=independent column)] [--graph_png <file name> (default=' + graph_png + ')]'
 try:
   opts, args = getopt.getopt(sys.argv[1:],"hf:c:x:g:",["help","results_csv=","independent_column=","x_axis_label=","graph_png="])
 except getopt.GetoptError:
@@ -90,9 +90,7 @@ if independent_column != None:
     # Customize the chart
     ax.set_ylabel('Average Error Percentage (%)', fontsize=12, fontweight='bold')
     #ax.set_title('Mandala vs RNN: Average Error', fontsize=14, fontweight='bold', pad=20)
-    if xlabel == None:
-        ax.set_xlabel(independent_column, fontsize=12, fontweight='bold')
-    else:
+    if xlabel != None:
         ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(data[independent_column].str.capitalize())

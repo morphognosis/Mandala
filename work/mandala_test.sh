@@ -7,7 +7,10 @@ then
 fi
 runs=$1
 
-echo "Results written to mandala_test_results.csv"
+results_file_name="mandala_test_results_"
+results_file_name+=$(date +"%Y-%m-%d_%H-%M-%S")
+results_file_name+=".csv"
+echo "Results written to" $results_file_name
 
 # Parameters:
 minNumNonterminals=10
@@ -23,7 +26,7 @@ minContextTierValueDurationType=0
 incrContextTierValueDurationType=1
 maxContextTierValueDurationType=2
 
-echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,mandala_error_pct,rnn_error_pct > mandala_test_results.csv
+echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,mandala_error_pct,rnn_error_pct > $results_file_name
 
 for causationHierarchies in 1 2 3
 do
@@ -55,12 +58,12 @@ do
       grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | tail -1 >> mandala_tmp_rnn.txt
       rm mandala_tmp.txt
      done
-     echo -n ${causationHierarchies},${numNonterminals},${numTerminals},${terminalProductionProbability},${type} >> mandala_test_results.csv
+     echo -n ${causationHierarchies},${numNonterminals},${numTerminals},${terminalProductionProbability},${type} >> $results_file_name
      mandala_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn.txt`
      rnn_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_rnn.txt`
      rm mandala_tmp_nn.txt
      rm mandala_tmp_rnn.txt
-     echo ,${mandala_error},${rnn_error} >> mandala_test_results.csv
+     echo ,${mandala_error},${rnn_error} >> $results_file_name
     done
    done
   done
