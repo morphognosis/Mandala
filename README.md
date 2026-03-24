@@ -1,15 +1,14 @@
 # Mandala: Contextual learning for interruption tolerance and multitasking.
 
-This project is an effort to combine the Morphognosis and Mona neural network models into 
-a comprehensive model for learning and behavior called Mandala. Mona features a contextual 
-causation learning with goal-directed motivation. Morphognosis features contextual multilayer 
-perceptron (MLP) learning. Mandala achieves this by externally accumulating tiers of temporal 
-states that are fed into an MLP at each time step. Natural environments abound in event 
-streams that require interruption tolerance and multitasking. Mandala affords multitasking 
-as it is robust in the presence of intervening events representing overlaid causation streams, 
-a capability that conventional recurrent artificial neural networks (RNNs) struggle with. 
-In addition, externally accumulating temporal information discretely labels hierarchical 
-cause-and-effect relationships that can be used for augmented processing. In the case of Mona, 
+This project is an effort to combine the Morphognosis and Mona neural network models into a comprehensive 
+model for learning and behavior called Mandala. Mona features a contextual causation learning with 
+goal-directed motivation. Morphognosis features contextual multilayer perceptron (MLP) learning. 
+Mandala achieves this by accumulating contextual tiers of temporal states that are fed into an MLP 
+at each time step. Natural environments abound in event streams that require interruption tolerance 
+and multitasking. Mandala affords multitasking as it is robust in the presence of intervening events 
+from overlaid causation chains, a capability that conventional recurrent artificial neural networks (RNNs) 
+struggle with. The results bear this out. In addition, accumulating temporal information discretely labels 
+hierarchical cause-and-effect relationships that can be used for augmented processing. In the case of Mona, 
 channeling motivation through the network for the purpose of goal-seeking requires this feature.
 
 Mona:
