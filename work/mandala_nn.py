@@ -200,10 +200,9 @@ def signature_valid(xvals, pvals):
             return False
         else:
             pvals[pidx] = -1.0
-    if signature_valid == True:
-        for i in range(n):
-            if pvals[i] >= threshold:
-                return False
+    for i in range(n):
+        if pvals[i] >= threshold:
+            return False
     return True
 
 # Check tier max values prediction

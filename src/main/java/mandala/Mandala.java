@@ -104,6 +104,10 @@ public class Mandala
          {
             seedString += i + "_";
          }
+         for (int i : features2)
+         {
+            seedString += i + "_";
+         }
          SplittableRandom   r        = new SplittableRandom(seedString.hashCode());
          ArrayList<Integer> features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
