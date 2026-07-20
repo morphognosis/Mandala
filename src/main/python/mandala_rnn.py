@@ -12,7 +12,7 @@ results_filename = 'mandala_rnn_results.json'
 verbose = True
 
 # Prediction significance threshold
-threshold = 0.25
+threshold = 0.5
 
 # Get options.
 import os
@@ -105,11 +105,11 @@ for path in range(X_train_shape[0]):
         pmax = []
         for j in range(n_features):
             yidx = argmax(yvals)
-            if yvals[yidx] >= 0.5:
+            if yvals[yidx] >= threshold:
                 ymax.append(yidx)
             yvals[yidx] = 0.0
             pidx = argmax(pvals)
-            if pvals[pidx] >= 0.5:
+            if pvals[pidx] >= threshold:
                 pmax.append(pidx)
             pvals[pidx] = 0.0
         ymax.sort()
@@ -138,11 +138,11 @@ for path in range(X_test_shape[0]):
             pmax = []
             for j in range(n_features):
                 yidx = argmax(yvals)
-                if yvals[yidx] >= 0.5:
+                if yvals[yidx] >= threshold:
                     ymax.append(yidx)
                 yvals[yidx] = 0.0
                 pidx = argmax(pvals)
-                if pvals[pidx] >= 0.5:
+                if pvals[pidx] >= threshold:
                     pmax.append(pidx)
                 pvals[pidx] = 0.0
             ymax.sort()
