@@ -68,7 +68,8 @@ if independent_column != None:
         'mandala_error_pct': 'mean',
         'rnn_error_pct': 'mean'
     }).reset_index()
-    data = data.sort_values(independent_column)
+    category_order = {name: i for i, name in enumerate(categories)}
+    data = data.sort_values(independent_column, key=lambda col: col.map(category_order))
 
     # Create the bar chart
     fig, ax = plt.subplots(figsize=(10, 6))

@@ -564,7 +564,6 @@ public class Mandala
       "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
       "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
-      "      [-numCausationPaths <quantity per hierarchy> (default=" + NUM_CAUSATION_PATHS + ")]\n" +
       "      [-maxContextTier <value> (default=" + MAX_CONTEXT_TIER + ")]\n" +
       "      [-contextTierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNdatasetTrainFraction <fraction> (default=" + NN_DATASET_TRAIN_FRACTION + ")]\n" +
@@ -888,6 +887,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
+            gotNew = true;
             continue;
          }
          if (args[i].equals("-maxContextTier"))
@@ -1457,7 +1457,7 @@ public class Mandala
                }
                parent.children = new ArrayList<Causation>();
                expandTerminal(parent, terminalInstances);
-               return;
+               break;
             }
          }
       }

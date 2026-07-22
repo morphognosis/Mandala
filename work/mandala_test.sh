@@ -2,13 +2,20 @@
 
 if [ "$1" = "" ]
 then
-   echo "Usage: mandala_test.sh <number of runs>"
+   echo "Usage: mandala_test.sh <number of runs> [<causation hierarchy>]"
    exit 1
 fi
 runs=$1
 
 results_file_name="mandala_test_results_"
 results_file_name+=$(date +"%Y-%m-%d_%H-%M-%S")
+hierarchies="1 2 3"
+if [ "$2" != "" ]
+then
+   hierarchies=$2
+   results_file_name+="_"
+   results_file_name+=$hierarchies
+fi
 results_file_name+=".csv"
 echo "Results written to" $results_file_name
 
@@ -28,7 +35,7 @@ maxContextTierValueDurationType=2
 
 echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,mandala_error_pct,rnn_error_pct > $results_file_name
 
-for causationHierarchies in 1 2 3
+for causationHierarchies in $hierarchies
 do
  for numNonterminals in $(seq $minNumNonterminals $incrNumNonterminals $maxNumNonterminals)
  do

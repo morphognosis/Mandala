@@ -58,7 +58,6 @@ Usage:
       [-maxInterstitialTerminalSequence <length> (default=10)]
       [-exportCausationsGraph [<file name> (Graphviz dot format, default=mandala_causations.dot)]
           [-treeFormat "true" | "false" (default=true)]]
-      [-numCausationPaths <quantity per hierarchy> (default=2)]
       [-maxContextTier <value> (default=5)]
       [-contextTierValueDurationType "minimum" | "expected" | "maximum" (default=maximum)]
       [-NNdatasetTrainFraction <fraction> (default=0.5)]
