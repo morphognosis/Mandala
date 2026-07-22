@@ -1612,21 +1612,23 @@ public class Mandala
             ArrayList<Causation>     causationHierarchy = causationHierarchies.get(i);
             ArrayList<CausationPath> paths = new ArrayList<CausationPath>();
             causationPaths.add(paths);
-            int n = (int)((float)NUM_CAUSATION_PATHS * NN_DATASET_TRAIN_FRACTION);
-            for (int j = 0; j < NUM_CAUSATION_PATHS; j++)
+            Causation root = causationHierarchy.get(0);
+            paths.add(new CausationPath(i, root.id));
+            for (int j = 1, k = NUM_CAUSATION_PATHS - 1, n = causationHierarchy.size(); j < k; j++)
             {
-               Causation root = causationHierarchy.get(0);
-               if (j > 0)
+               if (n == 1)
                {
-                  if (j == n)
-                  {
-                     root = causationHierarchy.get(0);
-                  }
-                  else
-                  {
-                     root = causationHierarchy.get(randomizer.nextInt(causationHierarchy.size()));
-                  }
+                  root = causationHierarchy.get(0);
                }
+               else
+               {
+                  root = causationHierarchy.get(randomizer.nextInt(n - 1) + 1);
+               }
+               paths.add(new CausationPath(i, root.id));
+            }
+            if (NUM_CAUSATION_PATHS > 1)
+            {
+               root = causationHierarchy.get(0);
                paths.add(new CausationPath(i, root.id));
             }
          }
@@ -3105,7 +3107,12 @@ public class Mandala
       try
       {
          process = processBuilder.start();
-         process.waitFor();
+         int exitCode = process.waitFor();
+         if (exitCode != 0)
+         {
+            System.err.println(NN_FILENAME + " exited with code = " + exitCode);
+            System.exit(1);
+         }
       }
       catch (InterruptedException e) {}
       catch (IOException e)
@@ -3293,7 +3300,12 @@ public class Mandala
       try
       {
          process = processBuilder.start();
-         process.waitFor();
+         int exitCode = process.waitFor();
+         if (exitCode != 0)
+         {
+            System.err.println(NN_FILENAME + " exited with code = " + exitCode);
+            System.exit(1);
+         }
       }
       catch (InterruptedException e) {}
       catch (IOException e)
