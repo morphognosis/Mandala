@@ -4,8 +4,10 @@
 # imports mandala_nn_dataset.py
 # results written to mandala_nn_results.json
 
-import os
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import logging, os
+logging.disable(logging.WARNING)
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import numpy as np
 from numpy import array, argmax, argmin
 from numpy import loadtxt

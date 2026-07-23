@@ -4,6 +4,11 @@
 # imports mandala_rnn_dataset.py
 # results written to mandala_rnn_results.json
 
+import logging, os
+logging.disable(logging.WARNING)
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+
 # Default parameters.
 n_features = 3
 n_neurons = '128'
@@ -15,8 +20,6 @@ verbose = True
 threshold = 0.5
 
 # Get options.
-import os
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import getopt
 import sys
 usage = 'usage: python mandala_rnn.py [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
