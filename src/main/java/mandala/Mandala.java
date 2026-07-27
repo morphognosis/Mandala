@@ -1953,7 +1953,7 @@ public class Mandala
 
       if (VERBOSE)
       {
-         System.out.println("training dataset:");
+         System.out.println("train dataset:");
       }
       ArrayList < ArrayList < Float >> X_train           = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train           = new ArrayList < ArrayList < Float >> ();
@@ -2082,7 +2082,7 @@ public class Mandala
             }
             if (VERBOSE)
             {
-               System.out.println("training path length=" + step);
+               System.out.println("train path length=" + step);
             }
          }
       }
@@ -2627,7 +2627,7 @@ public class Mandala
       if (VERBOSE)
       {
          System.out.println("export RNN dataset");
-         System.out.println("training dataset:");
+         System.out.println("train dataset:");
       }
       SplittableRandom random = new SplittableRandom(randomSeed);
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
@@ -2693,7 +2693,7 @@ public class Mandala
             }
             if (VERBOSE)
             {
-               System.out.println("training path length=" + pathLength);
+               System.out.println("train path length=" + pathLength);
             }
          }
       }
