@@ -1,5 +1,7 @@
 // For conditions of distribution and use, see copyright notice in LICENSE.txt.
 
+// Mandala coder.
+
 package mandala;
 
 import java.util.ArrayList;
@@ -151,11 +153,9 @@ public class MandalaCoder
          effect_data.putRow(i, Nd4j.createFromArray(vals));
       }
       effect_data.putRow(dataset_size - 1, Nd4j.createFromArray(accum_vals));
-      mandalaCoderNN.trainDataset    = new DataSet(cause_data, effect_data);
       mandalaCoderNN.trainCauseData  = cause_data;
       mandalaCoderNN.trainEffectData = effect_data;
-      mandalaCoderNN.testCauseData   = cause_data;
-      mandalaCoderNN.testEffectData  = effect_data;
+      mandalaCoderNN.trainDataset    = new DataSet(cause_data, effect_data);
 
       // Build network.
       mandalaCoderNN.build();
@@ -164,6 +164,6 @@ public class MandalaCoder
       mandalaCoderNN.train(100);
 
       // Test.
-      mandalaCoderNN.test();
+      mandalaCoderNN.validate();
    }
 }
