@@ -52,6 +52,7 @@ Usage:
       [-randomSeed <seed> (default=45)]
       [-quiet]
       [-save [<file name> (default=mandala.dat)]
+      [-copyTask <copy delay> (copy sequence task)]   
   Load:
     java mandala.Mandala
       -load [<file name> (default=mandala.dat)]
@@ -68,6 +69,7 @@ Usage:
       [-RNNepochs <number of epochs> (default=500)]
       [-randomSeed <seed> (default=45)]
       [-quiet]
+      [-copyTask <copy delay> (copy sequence task)] 
   Help:
     java mandala.Mandala -help
 Exit codes:

@@ -83,7 +83,7 @@ if n_epochs < 0:
     sys.exit(1)
 
 # Import dataset
-from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, X_signature_train_shape, y_signature_train_shape, X_signature_train, y_signature_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_predictable, y_test_interstitial, context_tier_value_durations
+from mandala_nn_dataset import X_train_shape, y_train_shape, X_train, y_train, y_train_path_begin, X_test_shape, y_test_shape, X_test, y_test, y_test_path_begin, y_test_prediction, y_test_interstitial, context_tier_value_durations
 if X_train_shape[0] == 0:
     print('Empty train dataset')
     sys.exit(1)
@@ -102,17 +102,6 @@ prediction_model.compile(loss='mse', optimizer='adam')
 if verbose:
     prediction_model.summary()
 
-# Create signature NN
-signature_model = Sequential()
-signature_model.add(Input((X_signature_train_shape[1],)))
-signature_model.add(Dense(n_hidden[0], activation='tanh'))
-for i in range(1, len(n_hidden)):
-    signature_model.add(Dense(n_hidden[i], activation='tanh'))
-signature_model.add(Dense(y_signature_train_shape[1], activation='tanh'))
-signature_model.compile(loss='mse', optimizer='adam')
-if verbose:
-    signature_model.summary()
-
 # Train prediction model
 if verbose:
     print('train prediction model')
@@ -121,15 +110,6 @@ X_train_seq = seq.reshape(X_train_shape[0], X_train_shape[1])
 seq = array(y_train)
 y_train_seq = seq.reshape(y_train_shape[0], y_train_shape[1])
 prediction_model.fit(X_train_seq, y_train_seq, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
-
-# Train signature model
-if verbose:
-    print('train signature model')
-seq = array(X_signature_train)
-X_signature_seq = seq.reshape(X_signature_train_shape[0], X_signature_train_shape[1])
-seq = array(y_signature_train)
-y_signature_seq = seq.reshape(y_signature_train_shape[0], y_signature_train_shape[1])
-signature_model.fit(X_signature_seq, y_signature_seq, epochs=n_epochs, batch_size=X_signature_train_shape[0], verbose=int(verbose))
 
 # Summarize features
 def summarize_features(title, vals):
@@ -172,43 +152,8 @@ def summarize_features(title, vals):
         idxs = lists
     return desc, idxs
 
-# Summarize signature
-def summarize_signature(vals):
-    idxs = []
-    for j in range(len(vals)):
-        if vals[j] >= threshold:
-            idxs.append(j)
-    return str(idxs)
-
-# Check signature validity
-def signature_valid(xvals, pvals):
-    xmax = []
-    for i in range(n_dimensions):
-        xidx = argmax(xvals)
-        if xvals[xidx] >= threshold:
-            xmax.append(xidx)
-            xvals[xidx] = 0.0
-        else:
-            break
-    xmax.sort()
-    pidxs = []
-    n = len(pvals)
-    for i in range(len(xmax)):
-        pidxs.append(xmax[i] % n)
-    pidxs = list(set(pidxs))
-    for i in range(len(pidxs)):
-        pidx = pidxs[i]
-        if pvals[pidx] < threshold:
-            return False
-        else:
-            pvals[pidx] = -1.0
-    for i in range(n):
-        if pvals[i] >= threshold:
-            return False
-    return True
-
-# Check tier max values prediction
-def tier_max_prediction(yvals, pvals):
+# Compare max values
+def max_match(yvals, pvals):
     ymax = []
     pmax = []
     for i in range(n_features):
@@ -259,47 +204,38 @@ for i in range(X_train_shape[0]):
     if i in y_train_path_begin:
         pathnum += 1
         stepnum = 0
-    sxvals = X_train_seq[i].copy()
-    sxvals = sxvals[0:n_dimensions]
-    signature_prediction = signature_model.predict(array([sxvals]), verbose=0)
     if verbose:
-        sstr = summarize_signature(signature_prediction[0])
         xstr,xidxs = summarize_features('X', X_train_seq[i].copy())
         ystr,yidxs = summarize_features('y', y_train_seq[i].copy())
         pstr,pidxs = summarize_features('prediction', predictions[i].copy())
-        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', signature: ',sstr,', ',ystr,', ',pstr,sep='',end='')
+        print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr, sep='',end='')
     stepnum += 1
     trainTotal += 1
-    if signature_valid(sxvals, signature_prediction.copy()[0]) == False:
+    start = 0
+    end = n_dimensions
+    if max_match(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
         trainErrors += 1
         if verbose:
-            print(', invalid')
+            print(', error')
     else:
-        start = 0
-        end = n_dimensions
-        if tier_max_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
-            trainErrors += 1
-            if verbose:
+        n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
+        error = False
+        for j in range(n_contexts):
+            start = (n_dimensions * (j + 1))
+            end = start + n_dimensions
+            if max_match(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
+                trainErrors += 1
+                error = True
+                break
+            if tier_min_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
+                trainErrors += 1
+                error = True
+                break
+        if verbose:
+            if error:
                 print(', error')
-        else:
-            n_contexts = (int)(y_train_shape[1] / n_dimensions) - 1
-            error = False
-            for j in range(n_contexts):
-                start = (n_dimensions * (j + 1))
-                end = start + n_dimensions
-                if tier_max_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
-                    trainErrors += 1
-                    error = True
-                    break
-                if tier_min_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
-                    trainErrors += 1
-                    error = True
-                    break
-            if verbose:
-                if error:
-                    print(', error')
-                else:
-                    print(', ok')
+            else:
+                print(', ok')
 
 trainErrorPct = 0
 if trainTotal > 0:
@@ -359,34 +295,28 @@ for i in range(X_test_shape[0]):
                 expiration_counters[j] = 0
     yi = y[i].reshape(1, y_test_shape[1]).copy()
     prediction = prediction_model.predict(Xi, verbose=0)
-    sxvals = Xi[0].copy()
-    sxvals = sxvals[0:n_dimensions]
-    signature_prediction = signature_model.predict(array([sxvals]), verbose=0)
     if verbose:
-        sstr = summarize_signature(signature_prediction[0])
         xstr,xidxs = summarize_features('X', Xi[0].copy())
         ystr,yidxs = summarize_features('y', yi[0].copy())
         pstr,pidxs = summarize_features('prediction', prediction[0].copy())
-        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', signature: ',sstr,', ',ystr,', ',pstr,sep='',end='')
+        print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr, sep='', end='')
     stepnum += 1
+    if i in y_test_prediction:
+        testTotal += 1
     if prediction_valid_count == 0:
-        if signature_valid(sxvals, signature_prediction.copy()[0]) == True:
+        if max_match(yi[0].copy()[0:n_dimensions], prediction[0].copy()[0:n_dimensions]) == True:
             prediction_valid_count = 2
-            testTotal += 1
-            start = 0
-            end = n_dimensions
-            if tier_max_prediction(yi[0].copy()[start:end], prediction[0].copy()[start:end]) == False:
+            if i in y_test_prediction:
+                if verbose:
+                    print(', ok')
+            else:
+                if verbose:
+                    print(', unexpected')
+        else:
+            if i in y_test_prediction:
                 testErrors += 1
                 if verbose:
                     print(', error')
-            else:
-                if verbose:
-                    print(', ok')
-        else:
-            if i in y_test_predictable:
-                testErrors += 1
-                if verbose:
-                    print(', invalid')
             elif i in y_test_interstitial:
                 if verbose:
                     print(', interstitial')

@@ -61,7 +61,6 @@ public class Mandala
       {
          String           seedString = hierarchy + "_" + id + "_";
          SplittableRandom r          = new SplittableRandom(seedString.hashCode());
-
          ArrayList<Integer> features = new ArrayList<Integer>();
          for (int i = 0; i < NUM_FEATURES; i++)
          {
@@ -486,9 +485,6 @@ public class Mandala
    };
    public static ArrayList<ContextFeatures> contextTiers;
 
-   // Prediction signature length.
-   public static int PredictionSignatureLength = 8;
-
    // Datasets.
    public static String NN_DATASET_FILENAME        = "mandala_nn_dataset.py";
    public static float  NN_DATASET_TRAIN_FRACTION  = 0.5f;
@@ -530,6 +526,13 @@ public class Mandala
 
    // Verbosity.
    public static boolean VERBOSE = true;
+   
+   // Copy task.
+   // Output a previous input sequence.
+   public static boolean copyTask = false;
+   public static int copyDelay = 0;
+   public static int copyTaskID = -1;
+   public static ArrayList<Integer> copyDelimiter;
 
    // Usage.
    public static final String Usage =
@@ -558,6 +561,7 @@ public class Mandala
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
       "      [-save [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
+      "      [-copyTask <copy delay> (copy sequence task)]\n" +      
       "  Load:\n" +
       "    java mandala.Mandala\n" +
       "      -load [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
@@ -574,6 +578,7 @@ public class Mandala
       "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
+      "      [-copyTask <copy delay> (copy sequence task)]\n" +       
       "  Help:\n" +
       "    java mandala.Mandala -help\n" +
       "Exit codes:\n" +
@@ -1100,6 +1105,28 @@ public class Mandala
             VERBOSE = false;
             continue;
          }
+         if (args[i].equals("-copyTask"))
+         {
+             i++;
+             if (i >= args.length)
+             {
+                System.err.println("Invalid copyTask option");
+                System.err.println(Usage);
+                System.exit(1);
+             }
+             try
+             {
+                copyDelay = Integer.parseInt(args[i]);
+             }
+             catch (NumberFormatException e) {
+                System.err.println("Invalid copyTask option");
+                System.err.println(Usage);
+                System.exit(1);
+             }    	 
+            copyTask = true;            
+            copyDelimiter = Causation.encodeFeatures(0, copyTaskID);
+            continue;
+         }         
          if (args[i].equals("-help") || args[i].equals("-h") || args[i].equals("-?"))
          {
             System.out.println(Usage);
@@ -1957,8 +1984,6 @@ public class Mandala
       }
       ArrayList < ArrayList < Float >> X_train           = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train           = new ArrayList < ArrayList < Float >> ();
-      ArrayList < ArrayList < Float >> X_signature_train = new ArrayList < ArrayList < Float >> ();
-      ArrayList < ArrayList < Float >> y_signature_train = new ArrayList < ArrayList < Float >> ();
       ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();
       int                trainCount         = 0;
       for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
@@ -1999,8 +2024,6 @@ public class Mandala
                }
                ArrayList<Float> X_train_step           = new ArrayList<Float>();
                ArrayList<Float> y_train_step           = new ArrayList<Float>();
-               ArrayList<Float> X_signature_train_step = new ArrayList<Float>();
-               ArrayList<Float> y_signature_train_step = new ArrayList<Float>();
                ArrayList < ArrayList < Float >> X_contexts = new ArrayList < ArrayList < Float >> ();
                for (int t = 0; t < maxTiers; t++)
                {
@@ -2011,12 +2034,10 @@ public class Mandala
                         if (xterminalCausation.features.contains(q))
                         {
                            X_train_step.add(1.0f);
-                           X_signature_train_step.add(1.0f);
                         }
                         else
                         {
                            X_train_step.add(0.0f);
-                           X_signature_train_step.add(0.0f);
                         }
                      }
                   }
@@ -2039,14 +2060,6 @@ public class Mandala
                {
                   if (t == 0)
                   {
-                     for (int q = 0; q < PredictionSignatureLength; q++)
-                     {
-                        y_signature_train_step.add(-1.0f);
-                     }
-                     for (int q = 0, r = xterminalCausation.features.size(); q < r; q++)
-                     {
-                        y_signature_train_step.set(xterminalCausation.features.get(q) % PredictionSignatureLength, 1.0f);
-                     }
                      for (int q = 0; q < NUM_DIMENSIONS; q++)
                      {
                         if (yterminalCausation.features.contains(q))
@@ -2075,8 +2088,6 @@ public class Mandala
                }
                X_train.add(X_train_step);
                y_train.add(y_train_step);
-               X_signature_train.add(X_signature_train_step);
-               y_signature_train.add(y_signature_train_step);
                step++;
                trainCount++;
             }
@@ -2093,7 +2104,7 @@ public class Mandala
       ArrayList < ArrayList < Float >> X_test = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_test = new ArrayList < ArrayList < Float >> ();
       ArrayList<Integer> y_test_path_begin   = new ArrayList<Integer>();
-      ArrayList<Integer> y_test_predictable  = new ArrayList<Integer>();
+      ArrayList<Integer> y_test_prediction  = new ArrayList<Integer>();
       ArrayList<Integer> y_test_interstitial = new ArrayList<Integer>();
       int                testCount           = 0;
       for (int i = (int)((float)NUM_CAUSATION_PATHS * NN_DATASET_TRAIN_FRACTION); i < NUM_CAUSATION_PATHS; i++)
@@ -2281,7 +2292,7 @@ public class Mandala
             }
             X_test.add(X_test_step);
             y_test.add(y_test_step);
-            y_test_predictable.add(testCount);
+            y_test_prediction.add(testCount);
             step++;
             testCount++;
             pathIdxs.set(h, pathIdxs.get(h) + 1);
@@ -2431,38 +2442,6 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("X_signature_train_shape = [ " + X_signature_train.size() + ", " + NUM_DIMENSIONS + " ]");
-         printWriter.println("X_signature_train = [");
-         for (int i = 0, j = X_signature_train.size(); i < j; i++)
-         {
-            ArrayList<Float> X_signature_train_step = X_signature_train.get(i);
-            for (int k = 0, q = X_signature_train_step.size(); k < q; k++)
-            {
-               printWriter.print(X_signature_train_step.get(k) + "");
-               if ((i != j - 1) || (k != q - 1))
-               {
-                  printWriter.print(",");
-               }
-            }
-            printWriter.println();
-         }
-         printWriter.println("]");
-         printWriter.println("y_signature_train_shape = [ " + y_signature_train.size() + ", " + PredictionSignatureLength + " ]");
-         printWriter.println("y_signature_train = [");
-         for (int i = 0, j = y_signature_train.size(); i < j; i++)
-         {
-            ArrayList<Float> y_signature_train_step = y_signature_train.get(i);
-            for (int k = 0, q = y_signature_train_step.size(); k < q; k++)
-            {
-               printWriter.print(y_signature_train_step.get(k) + "");
-               if ((i != j - 1) || (k != q - 1))
-               {
-                  printWriter.print(",");
-               }
-            }
-            printWriter.println();
-         }
-         printWriter.println("]");
          printWriter.print("y_train_path_begin = [");
          for (int i = 0, j = y_train_path_begin.size(); i < j; i++)
          {
@@ -2515,10 +2494,10 @@ public class Mandala
             }
          }
          printWriter.println("]");
-         printWriter.print("y_test_predictable = [");
-         for (int i = 0, j = y_test_predictable.size(); i < j; i++)
+         printWriter.print("y_test_prediction = [");
+         for (int i = 0, j = y_test_prediction.size(); i < j; i++)
          {
-            printWriter.print(y_test_predictable.get(i) + "");
+            printWriter.print(y_test_prediction.get(i) + "");
             if (i < j - 1)
             {
                printWriter.print(",");
