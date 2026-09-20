@@ -2,7 +2,7 @@
 
 if [ "$1" = "" ]
 then
-   echo "Usage: mandala_test.sh <number of runs> [<causation hierarchy>]"
+   echo "Usage: mandala_test.sh <number of runs> [<causation hierarchies>]"
    exit 1
 fi
 runs=$1
@@ -33,7 +33,7 @@ minContextTierValueDurationType=0
 incrContextTierValueDurationType=1
 maxContextTierValueDurationType=2
 
-echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,mandala_error_pct,rnn_error_pct > $results_file_name
+echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,context_tier_value_duration_type,mandala_error_pct,rnn_error_pct,attention_error_pct > $results_file_name
 
 for causationHierarchies in $hierarchies
 do
@@ -47,6 +47,7 @@ do
     do
      > mandala_tmp_nn.txt
      > mandala_tmp_rnn.txt
+     > mandala_tmp_attention.txt
      for i in $(seq $runs)
      do
       if [ $contextTierValueDurationType -eq 0 ]
@@ -61,16 +62,19 @@ do
       random=$RANDOM
       echo ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -numTerminals $numTerminals -terminalProductionProbability $terminalProductionProbability -contextTierValueDurationType $type -randomSeed $random
       ./mandala.sh -numCausationHierarchies $causationHierarchies -numNonterminals $numNonterminals -numTerminals $numTerminals -terminalProductionProbability $terminalProductionProbability -contextTierValueDurationType $type -randomSeed $random > mandala_tmp.txt
-      grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | head -1 >> mandala_tmp_nn.txt
-      grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | tail -1 >> mandala_tmp_rnn.txt
+      grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | sed -n '1p' >> mandala_tmp_nn.txt
+      grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | sed -n '2p' >> mandala_tmp_rnn.txt
+      grep "Test prediction errors" mandala_tmp.txt | cut -d"(" -f2 | cut -d"%" -f1 | sed -n '3p' >> mandala_tmp_attention.txt
       rm mandala_tmp.txt
      done
      echo -n ${causationHierarchies},${numNonterminals},${numTerminals},${terminalProductionProbability},${type} >> $results_file_name
      mandala_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn.txt`
      rnn_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_rnn.txt`
+     attention_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_attention.txt`
      rm mandala_tmp_nn.txt
      rm mandala_tmp_rnn.txt
-     echo ,${mandala_error},${rnn_error} >> $results_file_name
+     rm mandala_tmp_attention.txt
+     echo ,${mandala_error},${rnn_error},${attention_error} >> $results_file_name
     done
    done
   done

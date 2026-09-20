@@ -500,6 +500,11 @@ public class Mandala
    public static String RNN_NEURONS          = "128";
    public static int    RNN_EPOCHS           = 500;
    public static String RNN_RESULTS_FILENAME = "mandala_rnn_results.json";
+   public static String ATTENTION_FILENAME         = "mandala_attention.py";
+   public static String ATTENTION_NEURONS          = "128";
+   public static int    ATTENTION_HEADS            = 4;
+   public static int    ATTENTION_EPOCHS           = 500;
+   public static String ATTENTION_RESULTS_FILENAME = "mandala_attention_results.json";
 
    // Learning results.
    public static class LearningResults
@@ -558,6 +563,9 @@ public class Mandala
       "      [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
       "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
+      "      [-Attentionneurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=" + ATTENTION_NEURONS + ")]\n" +
+      "      [-Attentionheads <number of attention heads> (default=" + ATTENTION_HEADS + ")]\n" +
+      "      [-Attentionepochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
       "      [-save [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
@@ -576,9 +584,12 @@ public class Mandala
       "      [-RNNdatasetTrainFraction <fraction> (default=" + RNN_DATASET_TRAIN_FRACTION + ")]\n" +
       "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
       "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
+      "      [-Attentionneurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=" + ATTENTION_NEURONS + ")]\n" +
+      "      [-Attentionheads <number of attention heads> (default=" + ATTENTION_HEADS + ")]\n" +
+      "      [-Attentionepochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
-      "      [-copyTask <copy delay> (copy sequence task)]\n" +       
+      "      [-copyTask <copy delay> (copy sequence task)]\n" +
       "  Help:\n" +
       "    java mandala.Mandala -help\n" +
       "Exit codes:\n" +
@@ -1080,6 +1091,76 @@ public class Mandala
             }
             continue;
          }
+         if (args[i].equals("-Attentionneurons"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid Attentionneurons option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            ATTENTION_NEURONS = args[i].replaceAll("\\s", "");
+            if (ATTENTION_NEURONS.isEmpty())
+            {
+               System.err.println("Invalid Attentionneurons option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-Attentionheads"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid Attentionheads option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               ATTENTION_HEADS = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid Attentionheads option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (ATTENTION_HEADS < 1)
+            {
+               System.err.println("Invalid Attentionheads option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
+         if (args[i].equals("-Attentionepochs"))
+         {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid Attentionepochs option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               ATTENTION_EPOCHS = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+               System.err.println("Invalid Attentionepochs option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (ATTENTION_EPOCHS < 0)
+            {
+               System.err.println("Invalid Attentionepochs option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            continue;
+         }
          if (args[i].equals("-randomSeed"))
          {
             i++;
@@ -1301,6 +1382,9 @@ public class Mandala
          System.out.println("RNN_DATASET_TRAIN_FRACTION=" + RNN_DATASET_TRAIN_FRACTION);
          System.out.println("RNN_NEURONS=" + RNN_NEURONS);
          System.out.println("RNN_EPOCHS=" + RNN_EPOCHS);
+         System.out.println("ATTENTION_NEURONS=" + ATTENTION_NEURONS);
+         System.out.println("ATTENTION_HEADS=" + ATTENTION_HEADS);
+         System.out.println("ATTENTION_EPOCHS=" + ATTENTION_EPOCHS);
          System.out.println("RANDOM_SEED=" + RANDOM_SEED);
          System.out.println("MANDALA_FILENAME=" + MANDALA_FILENAME);
          printCausations();
@@ -1326,6 +1410,7 @@ public class Mandala
       // Learn causations.
       learnCausationsNN(NN_DATASET_FILENAME);
       learnCausationsRNN(RNN_DATASET_FILENAME);
+      learnCausationsAttention(RNN_DATASET_FILENAME);
 
       // Save?
       if (gotSave)
@@ -3416,6 +3501,201 @@ public class Mandala
       catch (Exception e)
       {
          System.err.println("Cannot read results file " + RNN_RESULTS_FILENAME + ":" + e.getMessage());
+         System.exit(1);
+      }
+      return(results);
+   }
+
+
+   // Learn causations with attention.
+   public static LearningResults learnCausationsAttention(String filename)
+   {
+      if (VERBOSE)
+      {
+         System.out.println("Learn Attention");
+      }
+      try
+      {
+         InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(ATTENTION_FILENAME);
+         if (in == null)
+         {
+            System.err.println("Cannot access " + ATTENTION_FILENAME);
+            System.exit(1);
+         }
+         File             pythonScript = new File(ATTENTION_FILENAME);
+         FileOutputStream out          = new FileOutputStream(pythonScript);
+         byte[] buffer = new byte[1024];
+         int bytesRead;
+         while ((bytesRead = in.read(buffer)) != -1)
+         {
+            out.write(buffer, 0, bytesRead);
+         }
+         out.close();
+      }
+      catch (Exception e)
+      {
+         System.err.println("Cannot create " + ATTENTION_FILENAME);
+         System.exit(1);
+      }
+      new File(ATTENTION_RESULTS_FILENAME).delete();
+      ArrayList<String> commandList = new ArrayList<>();
+      commandList.add("python");
+      commandList.add(ATTENTION_FILENAME);
+      commandList.add("--features");
+      commandList.add(NUM_FEATURES + "");
+      commandList.add("--neurons");
+      commandList.add(ATTENTION_NEURONS);
+      commandList.add("--heads");
+      commandList.add(ATTENTION_HEADS + "");
+      commandList.add("--epochs");
+      commandList.add(ATTENTION_EPOCHS + "");
+      if (!VERBOSE)
+      {
+         commandList.add("--quiet");
+      }
+      ProcessBuilder processBuilder = new ProcessBuilder(commandList);
+      processBuilder.inheritIO();
+      Process process;
+      try
+      {
+         process = processBuilder.start();
+         int exitCode = process.waitFor();
+         if (exitCode != 0)
+         {
+            System.err.println(ATTENTION_FILENAME + " exited with code = " + exitCode);
+            System.exit(1);
+         }
+      }
+      catch (InterruptedException e) {}
+      catch (IOException e)
+      {
+         System.err.println("Cannot run " + ATTENTION_FILENAME + ":" + e.getMessage());
+         System.exit(1);
+      }
+      if (VERBOSE)
+      {
+         System.out.println("Results written to " + ATTENTION_RESULTS_FILENAME);
+      }
+
+      // Fetch the results.
+      LearningResults results = new LearningResults();
+      try
+      {
+         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(ATTENTION_RESULTS_FILENAME)));
+         String         json;
+         if ((json = br.readLine()) != null)
+         {
+            JSONObject jObj = null;
+            try
+            {
+               jObj = new JSONObject(json);
+            }
+            catch (JSONException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            String train_prediction_errors = jObj.getString("train_prediction_errors");
+            if ((train_prediction_errors == null) || train_prediction_errors.isEmpty())
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.train_prediction_errors = Integer.parseInt(train_prediction_errors);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            String train_total_predictions = jObj.getString("train_total_predictions");
+            if ((train_total_predictions == null) || train_total_predictions.isEmpty())
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.train_total_predictions = Integer.parseInt(train_total_predictions);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            String train_error_pct = jObj.getString("train_error_pct");
+            if ((train_error_pct == null) || train_error_pct.isEmpty())
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.train_error_pct = Float.parseFloat(train_error_pct);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            String test_prediction_errors = jObj.getString("test_prediction_errors");
+            if ((test_prediction_errors == null) || test_prediction_errors.isEmpty())
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.test_prediction_errors = Integer.parseInt(test_prediction_errors);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            String test_total_predictions = jObj.getString("test_total_predictions");
+            if ((test_total_predictions == null) || test_total_predictions.isEmpty())
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.test_total_predictions = Integer.parseInt(test_total_predictions);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            String test_error_pct = jObj.getString("test_error_pct");
+            if ((test_error_pct == null) || test_error_pct.isEmpty())
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+            try
+            {
+               results.test_error_pct = Float.parseFloat(test_error_pct);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Error parsing results file " + ATTENTION_RESULTS_FILENAME);
+               System.exit(1);
+            }
+         }
+         else
+         {
+            System.err.println("Cannot read results file " + ATTENTION_RESULTS_FILENAME);
+            System.exit(1);
+         }
+         br.close();
+      }
+      catch (Exception e)
+      {
+         System.err.println("Cannot read results file " + ATTENTION_RESULTS_FILENAME + ":" + e.getMessage());
          System.exit(1);
       }
       return(results);

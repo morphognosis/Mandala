@@ -33,7 +33,7 @@ Usage:
       [-numCausationHierarchies <quantity> (default=1)]
       [-numNonterminals <quantity> (default=10)]
       [-numTerminals <quantity> (default=20)]
-      [-numInterstitialTerminals <quantity> (default=5, if 0 resort to non-interstitial terminals)]
+      [-numInterstitialTerminals <quantity> (default=10, if 0 resort to non-interstitial terminals)]
       [-terminalProductionProbability <probability> (default=0.25)]
       [-numDimensions <quantity> (default=64)]
       [-numFeatures <quantity> (default=3)]
@@ -49,10 +49,13 @@ Usage:
       [-RNNdatasetTrainFraction <fraction> (default=0.5)]
       [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=128)]
       [-RNNepochs <number of epochs> (default=500)]
+      [-Attentionneurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=128)]
+      [-Attentionheads <number of attention heads> (default=4)]
+      [-Attentionepochs <number of epochs> (default=500)]
       [-randomSeed <seed> (default=45)]
       [-quiet]
       [-save [<file name> (default=mandala.dat)]
-      [-copyTask <copy delay> (copy sequence task)]   
+      [-copyTask <copy delay> (copy sequence task)]
   Load:
     java mandala.Mandala
       -load [<file name> (default=mandala.dat)]
@@ -67,9 +70,12 @@ Usage:
       [-RNNdatasetTrainFraction <fraction> (default=0.5)]
       [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=128)]
       [-RNNepochs <number of epochs> (default=500)]
+      [-Attentionneurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=128)]
+      [-Attentionheads <number of attention heads> (default=4)]
+      [-Attentionepochs <number of epochs> (default=500)]
       [-randomSeed <seed> (default=45)]
       [-quiet]
-      [-copyTask <copy delay> (copy sequence task)] 
+      [-copyTask <copy delay> (copy sequence task)]
   Help:
     java mandala.Mandala -help
 Exit codes:

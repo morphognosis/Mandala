@@ -66,22 +66,25 @@ if independent_column != None:
     df[independent_column] = df[independent_column].astype(str)
     data = df.groupby(independent_column).agg({
         'mandala_error_pct': 'mean',
-        'rnn_error_pct': 'mean'
+        'rnn_error_pct': 'mean',
+        'attention_error_pct': 'mean'
     }).reset_index()
     category_order = {name: i for i, name in enumerate(categories)}
     data = data.sort_values(independent_column, key=lambda col: col.map(category_order))
 
     # Create the bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
-    
+
     # Create bars
     x = np.arange(len(data))
-    width = 0.35
-    bar1 = ax.bar(x - width/2, data['mandala_error_pct'], width,
+    width = 0.25
+    bar1 = ax.bar(x - width, data['mandala_error_pct'], width,
                    label='Mandala Error %', color='#2E86AB', alpha=0.8)
-    bar2 = ax.bar(x + width/2, data['rnn_error_pct'], width,
+    bar2 = ax.bar(x, data['rnn_error_pct'], width,
                    label='RNN Error %', color='#A23B72', alpha=0.8)
-    for bars in [ bar1, bar2 ]:
+    bar3 = ax.bar(x + width, data['attention_error_pct'], width,
+                   label='Attention Error %', color='#F18F01', alpha=0.8)
+    for bars in [ bar1, bar2, bar3 ]:
         for bar in bars:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height,
@@ -103,30 +106,34 @@ if independent_column != None:
 
     # Print summary
     print("\nSummary Statistics:")
-    print(f"{independent_column:<15} {'Mandala Avg':<15} {'RNN Avg':<15} {'Difference':<15}")
-    print("-" * 60)
+    print(f"{independent_column:<15} {'Mandala Avg':<15} {'RNN Avg':<15} {'Attention Avg':<15} {'RNN Diff':<15} {'Attention Diff':<15}")
+    print("-" * 90)
     for _, row in data.iterrows():
-        diff = row['rnn_error_pct'] - row['mandala_error_pct']
+        rnn_diff = row['rnn_error_pct'] - row['mandala_error_pct']
+        attention_diff = row['attention_error_pct'] - row['mandala_error_pct']
         print(f"{row[independent_column]:<15} "
               f"{row['mandala_error_pct']:>10.2f}%    "
               f"{row['rnn_error_pct']:>10.2f}%    "
-              f"{diff:>10.2f}%")
+              f"{row['attention_error_pct']:>10.2f}%    "
+              f"{rnn_diff:>10.2f}%    "
+              f"{attention_diff:>10.2f}%")
 
 else:
 
     # Calculate overall averages
     mandala_avg = df['mandala_error_pct'].mean()
     rnn_avg = df['rnn_error_pct'].mean()
-    
+    attention_avg = df['attention_error_pct'].mean()
+
     # Create simple data
-    labels = ['Mandala', 'RNN']
-    values = [mandala_avg, rnn_avg]
-    
+    labels = ['Mandala', 'RNN', 'Attention']
+    values = [mandala_avg, rnn_avg, attention_avg]
+
     # Create the bar chart
     fig, ax = plt.subplots(figsize=(8, 6))
 
     # Create bars
-    bars = ax.bar(labels, values, color=['#2E86AB', '#A23B72'], alpha=0.8, width=0.5)
+    bars = ax.bar(labels, values, color=['#2E86AB', '#A23B72', '#F18F01'], alpha=0.8, width=0.5)
     for bar in bars:
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
@@ -148,11 +155,14 @@ print("Chart saved to:", graph_png)
 # Overall statistics
 overall_mandala = df['mandala_error_pct'].mean()
 overall_rnn = df['rnn_error_pct'].mean()
+overall_attention = df['attention_error_pct'].mean()
 print("\n" + "=" * 60)
 print(f"Overall Average:")
-print(f"  Mandala: {overall_mandala:.2f}%")
-print(f"  RNN:     {overall_rnn:.2f}%")
+print(f"  Mandala:   {overall_mandala:.2f}%")
+print(f"  RNN:       {overall_rnn:.2f}%")
+print(f"  Attention: {overall_attention:.2f}%")
 print(f"  RNN performs {overall_rnn - overall_mandala:.2f}% worse than Mandala")
+print(f"  Attention performs {overall_attention - overall_mandala:.2f}% worse than Mandala")
 
 # Show figure
 plt.tight_layout()
