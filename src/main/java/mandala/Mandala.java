@@ -1202,14 +1202,6 @@ public class Mandala
                }
                causationHierarchies.add(causations);
             }
-
-            // Load causation paths.
-            causationPaths = new ArrayList<CausationPath> ();
-            for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
-            {
-               causationPaths.add(new CausationPath(Utility.loadInt(reader), Utility.loadInt(reader)));
-            }
-
             reader.close();
          }
          catch (Exception e)
@@ -1243,7 +1235,6 @@ public class Mandala
             }
             causationHierarchies.add(causations);
          }
-         causationPaths = null;
       }
 
       // Print parameters and causations.
@@ -1353,15 +1344,6 @@ public class Mandala
                   }
                }
             }
-
-            // Save causation paths.
-            for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
-            {
-               CausationPath path = causationPaths.get(i);
-               Utility.saveInt(writer, path.hierarchy, "hierarchy");
-               Utility.saveInt(writer, path.id, "id");
-            }
-
             writer.close();
          }
          catch (Exception e)
@@ -1604,29 +1586,26 @@ public class Mandala
    // Generate causation paths.
    public static void generateCausationPaths()
    {
-      if (causationPaths == null)
+      causationPaths = new ArrayList<CausationPath> ();
+      for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
       {
-         causationPaths = new ArrayList<CausationPath> ();
-         for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+         ArrayList<Causation> causationHierarchy = causationHierarchies.get(i);
+         Causation            root = causationHierarchy.get(0);
+         CausationPath        path = new CausationPath(i, root.id);
+         causationPaths.add(path);
+         ArrayList<CausationTier> step = new ArrayList<CausationTier>();
+         step.add(new CausationTier(root, 0));
+         while (root instanceof NonterminalCausation)
          {
-            ArrayList<Causation> causationHierarchy = causationHierarchies.get(i);
-            Causation            root = causationHierarchy.get(0);
-            CausationPath        path = new CausationPath(i, root.id);
-            causationPaths.add(path);
-            ArrayList<CausationTier> step = new ArrayList<CausationTier>();
+            NonterminalCausation nonterminal = (NonterminalCausation)root;
+            root = nonterminal.children.get(0);
             step.add(new CausationTier(root, 0));
-            while (root instanceof NonterminalCausation)
-            {
-               NonterminalCausation nonterminal = (NonterminalCausation)root;
-               root = nonterminal.children.get(0);
-               step.add(new CausationTier(root, 0));
-            }
-            path.add(step);
-            while (stepCausationPath(path, 0)) {}
-            for (ArrayList<CausationTier> s : path.steps)
-            {
-               Collections.reverse(s);
-            }
+         }
+         path.add(step);
+         while (stepCausationPath(path, 0)) {}
+         for (ArrayList<CausationTier> s : path.steps)
+         {
+            Collections.reverse(s);
          }
       }
 
@@ -1901,9 +1880,9 @@ public class Mandala
       for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
       {
          CausationPath path = causationPaths.get(i);
-         for (int k = 0; k < path.steps.size(); k++)
+         for (int j = 0; j < path.steps.size(); j++)
          {
-            ArrayList<CausationTier> step = path.steps.get(k);
+            ArrayList<CausationTier> step = path.steps.get(j);
             if (step.size() > maxTiers)
             {
                maxTiers = step.size();
