@@ -528,9 +528,13 @@ public class Mandala
    // Verbosity.
    public static boolean VERBOSE = true;
 
-   // Copy task.
+   // Copy memory task.
    // Output a previous input sequence.
-   public static boolean copyTask = false;
+   public static boolean           copyTask = false;
+   public static TerminalCausation emptyCausation;
+   public static TerminalCausation BOScausation;
+   public static TerminalCausation separatorCausation;
+   public static TerminalCausation EOScausation;
 
    // Usage.
    public static final String Usage =
@@ -1280,8 +1284,12 @@ public class Mandala
       if (copyTask)
       {
          // Export copy memory task datasets.
-         exportCopyNNdataset(NN_DATASET_FILENAME, RANDOM_SEED);
-         exportCopyRNNdataset(RNN_DATASET_FILENAME, RANDOM_SEED);
+         emptyCausation     = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS);
+         BOScausation       = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
+         separatorCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
+         EOScausation       = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);
+         exportNNcopyDataset(NN_DATASET_FILENAME, RANDOM_SEED);
+         exportRNNcopyDataset(RNN_DATASET_FILENAME, RANDOM_SEED);
       }
       else
       {
@@ -2506,7 +2514,7 @@ public class Mandala
    {
       if (VERBOSE)
       {
-         System.out.println("export RNN dataset");
+         System.out.println("export RNN/attention dataset");
          System.out.println("train dataset:");
       }
       SplittableRandom random = new SplittableRandom(randomSeed);
@@ -2918,21 +2926,342 @@ public class Mandala
       }
       catch (IOException e)
       {
-         System.err.println("Cannot write NN dataset to file " + filename);
+         System.err.println("Cannot write RNN/attention dataset to file " + filename);
          System.exit(1);
       }
    }
 
 
    // Export NN dataset for copy memory task.
-   public static void exportCopyNNdataset(String filename, int randomSeed)
+   public static void exportNNcopyDataset(String filename, int randomSeed)
    {
    }
 
 
    // Export RNN/attention dataset for copy memory task.
-   public static void exportCopyRNNdataset(String filename, int randomSeed)
+   public static void exportRNNcopyDataset(String filename, int randomSeed)
    {
+      if (VERBOSE)
+      {
+         System.out.println("export RNN/attention copy memory dataset");
+         System.out.println("train/test dataset:");
+      }
+      SplittableRandom random = new SplittableRandom(randomSeed);
+      ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
+      ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
+      int maxPathLength = 0;
+      for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+      {
+         CausationPath path = causationPaths.get(i);
+         if (VERBOSE)
+         {
+            path.print();
+            System.out.println("data:");
+         }
+         ArrayList<Float> X_train_path = new ArrayList<Float> ();
+         ArrayList<Float> y_train_path = new ArrayList<Float> ();
+         if (VERBOSE)
+         {
+            System.out.print("X: ");
+            BOScausation.print();
+            System.out.print("y: ");
+            emptyCausation.print();
+         }
+         for (int q = 0; q < NUM_DIMENSIONS; q++)
+         {
+            if (BOScausation.features.contains(q))
+            {
+               X_train_path.add(1.0f);
+            }
+            else
+            {
+               X_train_path.add(0.0f);
+            }
+         }
+         for (int q = 0; q < NUM_DIMENSIONS; q++)
+         {
+            if (emptyCausation.features.contains(q))
+            {
+               y_train_path.add(1.0f);
+            }
+            else
+            {
+               y_train_path.add(0.0f);
+            }
+         }
+         for (int j = 0, k = path.steps.size(); j < k; j++)
+         {
+            ArrayList<CausationTier> xstep              = path.steps.get(j);
+            Causation                xcausation         = xstep.get(0).causation;
+            TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
+            if (VERBOSE)
+            {
+               System.out.print("X: ");
+               xterminalCausation.print();
+               System.out.print("y: ");
+               emptyCausation.print();
+            }
+            for (int q = 0; q < NUM_DIMENSIONS; q++)
+            {
+               if (xterminalCausation.features.contains(q))
+               {
+                  X_train_path.add(1.0f);
+               }
+               else
+               {
+                  X_train_path.add(0.0f);
+               }
+            }
+            for (int q = 0; q < NUM_DIMENSIONS; q++)
+            {
+               if (emptyCausation.features.contains(q))
+               {
+                  y_train_path.add(1.0f);
+               }
+               else
+               {
+                  y_train_path.add(0.0f);
+               }
+            }
+         }
+         ArrayList<CausationTier> ystep              = path.steps.get(0);
+         Causation                ycausation         = ystep.get(0).causation;
+         TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
+         if (VERBOSE)
+         {
+            System.out.print("X: ");
+            separatorCausation.print();
+            System.out.print("y: ");
+            yterminalCausation.print();
+         }
+         for (int q = 0; q < NUM_DIMENSIONS; q++)
+         {
+            if (separatorCausation.features.contains(q))
+            {
+               X_train_path.add(1.0f);
+            }
+            else
+            {
+               X_train_path.add(0.0f);
+            }
+         }
+         for (int q = 0; q < NUM_DIMENSIONS; q++)
+         {
+            if (yterminalCausation.features.contains(q))
+            {
+               y_train_path.add(1.0f);
+            }
+            else
+            {
+               y_train_path.add(0.0f);
+            }
+         }
+         for (int j = 0, k = path.steps.size() - 1; j < k; j++)
+         {
+            ArrayList<CausationTier> xstep = path.steps.get(j);
+            ystep = path.steps.get(j + 1);
+            Causation         xcausation         = xstep.get(0).causation;
+            TerminalCausation xterminalCausation = (TerminalCausation)xcausation;
+            ycausation         = ystep.get(0).causation;
+            yterminalCausation = (TerminalCausation)ycausation;
+            if (VERBOSE)
+            {
+               System.out.print("X: ");
+               xterminalCausation.print();
+               System.out.print("y: ");
+               yterminalCausation.print();
+            }
+            for (int q = 0; q < NUM_DIMENSIONS; q++)
+            {
+               if (xterminalCausation.features.contains(q))
+               {
+                  X_train_path.add(1.0f);
+               }
+               else
+               {
+                  X_train_path.add(0.0f);
+               }
+            }
+            for (int q = 0; q < NUM_DIMENSIONS; q++)
+            {
+               if (yterminalCausation.features.contains(q))
+               {
+                  y_train_path.add(1.0f);
+               }
+               else
+               {
+                  y_train_path.add(0.0f);
+               }
+            }
+         }
+         ArrayList<CausationTier> xstep              = path.steps.get(path.steps.size() - 1);
+         Causation                xcausation         = xstep.get(0).causation;
+         TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
+         if (VERBOSE)
+         {
+            System.out.print("X: ");
+            BOScausation.print();
+            System.out.print("y: ");
+            EOScausation.print();
+         }
+         for (int q = 0; q < NUM_DIMENSIONS; q++)
+         {
+            if (xterminalCausation.features.contains(q))
+            {
+               X_train_path.add(1.0f);
+            }
+            else
+            {
+               X_train_path.add(0.0f);
+            }
+         }
+         for (int q = 0; q < NUM_DIMENSIONS; q++)
+         {
+            if (EOScausation.features.contains(q))
+            {
+               y_train_path.add(1.0f);
+            }
+            else
+            {
+               y_train_path.add(0.0f);
+            }
+         }
+         X_train.add(X_train_path);
+         y_train.add(y_train_path);
+         int pathLength = X_train_path.size() / NUM_DIMENSIONS;
+         if (pathLength > maxPathLength)
+         {
+            maxPathLength = pathLength;
+         }
+         if (VERBOSE)
+         {
+            System.out.println("path length=" + pathLength);
+         }
+      }
+      try
+      {
+         System.setProperty("line.separator", "\n");
+         FileWriter  fileWriter  = new FileWriter(filename);
+         PrintWriter printWriter = new PrintWriter(fileWriter);
+         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("X_train = [");
+         for (int i = 0, j = X_train.size(); i < j; i++)
+         {
+            ArrayList<Float> X_train_path = X_train.get(i);
+            for (int k = 0, p = X_train_path.size(), q = (maxPathLength * NUM_DIMENSIONS); k < q; k++)
+            {
+               if (k < p)
+               {
+                  printWriter.print(X_train_path.get(k) + "");
+               }
+               else
+               {
+                  printWriter.print("0.0");
+               }
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("y_train = [");
+         for (int i = 0, j = y_train.size(); i < j; i++)
+         {
+            ArrayList<Float> y_train_path = y_train.get(i);
+            for (int k = 0, p = y_train_path.size(), q = (maxPathLength * NUM_DIMENSIONS); k < q; k++)
+            {
+               if (k < p)
+               {
+                  printWriter.print(y_train_path.get(k) + "");
+               }
+               else
+               {
+                  printWriter.print("0.0");
+               }
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("X_test_shape = [ " + X_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("X_test = [");
+         for (int i = 0, j = X_train.size(); i < j; i++)
+         {
+            ArrayList<Float> X_train_path = X_train.get(i);
+            for (int k = 0, p = X_train_path.size(), q = (maxPathLength * NUM_DIMENSIONS); k < q; k++)
+            {
+               if (k < p)
+               {
+                  printWriter.print(X_train_path.get(k) + "");
+               }
+               else
+               {
+                  printWriter.print("0.0");
+               }
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_test_shape = [ " + y_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("y_test = [");
+         for (int i = 0, j = y_train.size(); i < j; i++)
+         {
+            ArrayList<Float> y_train_path = y_train.get(i);
+            for (int k = 0, p = y_train_path.size(), q = (maxPathLength * NUM_DIMENSIONS); k < q; k++)
+            {
+               if (k < p)
+               {
+                  printWriter.print(y_train_path.get(k) + "");
+               }
+               else
+               {
+                  printWriter.print("0.0");
+               }
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_test_predictable = [");
+         for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+         {
+            printWriter.print("[");
+            for (int k = 0, q = maxPathLength - 1; k < q; k++)
+            {
+               printWriter.print(k + "");
+               if (k != q - 1)
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.print("]");
+            if (i < NUM_CAUSATION_HIERARCHIES - 1)
+            {
+               printWriter.print(",");
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.close();
+      }
+      catch (IOException e)
+      {
+         System.err.println("Cannot write RNN/attention dataset to file " + filename);
+         System.exit(1);
+      }
    }
 
 
