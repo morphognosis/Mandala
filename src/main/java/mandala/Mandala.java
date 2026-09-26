@@ -1993,7 +1993,7 @@ public class Mandala
                {
                   if (VERBOSE)
                   {
-                     System.out.println("get tier context for y, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+                     System.out.println("get tier context for y, terminal id=" + yterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> y_context = getTierContext(t - 1);
                   ArrayList<Float> X_context = X_contexts.get(t - 1);
@@ -2935,6 +2935,582 @@ public class Mandala
    // Export NN dataset for copy memory task.
    public static void exportNNcopyDataset(String filename, int randomSeed)
    {
+      if (VERBOSE)
+      {
+         System.out.println("export NN copy memory dataset");
+      }
+      int maxTiers = 0;
+      for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+      {
+         CausationPath path = causationPaths.get(i);
+         for (int j = 0; j < path.steps.size(); j++)
+         {
+            ArrayList<CausationTier> step = path.steps.get(j);
+            if (step.size() > maxTiers)
+            {
+               maxTiers = step.size();
+            }
+         }
+      }
+
+      if (VERBOSE)
+      {
+         System.out.println("train/test dataset:");
+      }
+      ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
+      ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
+      ArrayList<Integer> y_train_path_begin = new ArrayList<Integer>();
+      int                trainCount         = 0;
+      for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+      {
+         CausationPath path = causationPaths.get(i);
+         if (VERBOSE)
+         {
+            path.print();
+            System.out.println("data:");
+         }
+         contextTiers = new ArrayList<ContextFeatures> ();
+         for (int j = 0, k = maxTiers - 1; j < k; j++)
+         {
+            contextTiers.add(null);
+         }
+         int step = 0;
+         y_train_path_begin.add(trainCount);
+         if (VERBOSE)
+         {
+            System.out.print("X: ");
+            BOScausation.print();
+            System.out.print("y: ");
+            emptyCausation.print();
+         }
+         ArrayList<Float> X_train_step = new ArrayList<Float>();
+         ArrayList<Float> y_train_step = new ArrayList<Float>();
+         ArrayList < ArrayList < Float >> X_contexts = new ArrayList < ArrayList < Float >> ();
+         for (int t = 0; t < maxTiers; t++)
+         {
+            if (t == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (BOScausation.features.contains(q))
+                  {
+                     X_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     X_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               if (VERBOSE)
+               {
+                  System.out.println("get tier context for X, terminal id=" + BOScausation.id + ", tier=" + (t - 1) + ", step=" + step);
+               }
+               ArrayList<Float> X_context = getTierContext(t - 1);
+               X_contexts.add(X_context);
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  X_train_step.add(X_context.get(q));
+               }
+            }
+         }
+         updateContexts(BOScausation);
+         for (int t = 0; t < maxTiers; t++)
+         {
+            if (t == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (emptyCausation.features.contains(q))
+                  {
+                     y_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     y_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               if (VERBOSE)
+               {
+                  System.out.println("get tier context for y, terminal id=" + emptyCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+               }
+               ArrayList<Float> y_context = getTierContext(t - 1);
+               ArrayList<Float> X_context = X_contexts.get(t - 1);
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  y_train_step.add(y_context.get(q) - X_context.get(q));
+               }
+            }
+         }
+         X_train.add(X_train_step);
+         y_train.add(y_train_step);
+         step++;
+         trainCount++;
+         for (int j = 0, k = path.steps.size(); j < k; j++)
+         {
+            ArrayList<CausationTier> xstep              = path.steps.get(j);
+            Causation                xcausation         = xstep.get(0).causation;
+            TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
+            if (VERBOSE)
+            {
+               System.out.print("X: ");
+               xterminalCausation.print();
+               System.out.print("y: ");
+               emptyCausation.print();
+            }
+            X_train_step = new ArrayList<Float>();
+            y_train_step = new ArrayList<Float>();
+            X_contexts   = new ArrayList < ArrayList < Float >> ();
+            for (int t = 0; t < maxTiers; t++)
+            {
+               if (t == 0)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (xterminalCausation.features.contains(q))
+                     {
+                        X_train_step.add(1.0f);
+                     }
+                     else
+                     {
+                        X_train_step.add(0.0f);
+                     }
+                  }
+               }
+               else
+               {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+                  }
+                  ArrayList<Float> X_context = getTierContext(t - 1);
+                  X_contexts.add(X_context);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_train_step.add(X_context.get(q));
+                  }
+               }
+            }
+            updateContexts(xterminalCausation);
+            for (int t = 0; t < maxTiers; t++)
+            {
+               if (t == 0)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (emptyCausation.features.contains(q))
+                     {
+                        y_train_step.add(1.0f);
+                     }
+                     else
+                     {
+                        y_train_step.add(0.0f);
+                     }
+                  }
+               }
+               else
+               {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context for y, terminal id=" + emptyCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+                  }
+                  ArrayList<Float> y_context = getTierContext(t - 1);
+                  ArrayList<Float> X_context = X_contexts.get(t - 1);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     y_train_step.add(y_context.get(q) - X_context.get(q));
+                  }
+               }
+            }
+            X_train.add(X_train_step);
+            y_train.add(y_train_step);
+            step++;
+            trainCount++;
+         }
+         ArrayList<CausationTier> ystep              = path.steps.get(0);
+         Causation                ycausation         = ystep.get(0).causation;
+         TerminalCausation        yterminalCausation = (TerminalCausation)ycausation;
+         if (VERBOSE)
+         {
+            System.out.print("X: ");
+            separatorCausation.print();
+            System.out.print("y: ");
+            yterminalCausation.print();
+         }
+         X_train_step = new ArrayList<Float>();
+         y_train_step = new ArrayList<Float>();
+         X_contexts   = new ArrayList < ArrayList < Float >> ();
+         for (int t = 0; t < maxTiers; t++)
+         {
+            if (t == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (separatorCausation.features.contains(q))
+                  {
+                     X_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     X_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               if (VERBOSE)
+               {
+                  System.out.println("get tier context for X, terminal id=" + separatorCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+               }
+               ArrayList<Float> X_context = getTierContext(t - 1);
+               X_contexts.add(X_context);
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  X_train_step.add(X_context.get(q));
+               }
+            }
+         }
+         updateContexts(separatorCausation);
+         for (int t = 0; t < maxTiers; t++)
+         {
+            if (t == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (yterminalCausation.features.contains(q))
+                  {
+                     y_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     y_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               if (VERBOSE)
+               {
+                  System.out.println("get tier context for y, terminal id=" + yterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+               }
+               ArrayList<Float> y_context = getTierContext(t - 1);
+               ArrayList<Float> X_context = X_contexts.get(t - 1);
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  y_train_step.add(y_context.get(q) - X_context.get(q));
+               }
+            }
+         }
+         X_train.add(X_train_step);
+         y_train.add(y_train_step);
+         step++;
+         trainCount++;
+         for (int j = 0, k = path.steps.size() - 1; j < k; j++)
+         {
+            ArrayList<CausationTier> xstep = path.steps.get(j);
+            ystep = path.steps.get(j + 1);
+            Causation         xcausation         = xstep.get(0).causation;
+            TerminalCausation xterminalCausation = (TerminalCausation)xcausation;
+            ycausation         = ystep.get(0).causation;
+            yterminalCausation = (TerminalCausation)ycausation;
+            if (VERBOSE)
+            {
+               System.out.print("X: ");
+               xterminalCausation.print();
+               System.out.print("y: ");
+               yterminalCausation.print();
+            }
+            X_train_step = new ArrayList<Float>();
+            y_train_step = new ArrayList<Float>();
+            X_contexts   = new ArrayList < ArrayList < Float >> ();
+            for (int t = 0; t < maxTiers; t++)
+            {
+               if (t == 0)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (xterminalCausation.features.contains(q))
+                     {
+                        X_train_step.add(1.0f);
+                     }
+                     else
+                     {
+                        X_train_step.add(0.0f);
+                     }
+                  }
+               }
+               else
+               {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+                  }
+                  ArrayList<Float> X_context = getTierContext(t - 1);
+                  X_contexts.add(X_context);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     X_train_step.add(X_context.get(q));
+                  }
+               }
+            }
+            updateContexts(xterminalCausation);
+            for (int t = 0; t < maxTiers; t++)
+            {
+               if (t == 0)
+               {
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     if (yterminalCausation.features.contains(q))
+                     {
+                        y_train_step.add(1.0f);
+                     }
+                     else
+                     {
+                        y_train_step.add(0.0f);
+                     }
+                  }
+               }
+               else
+               {
+                  if (VERBOSE)
+                  {
+                     System.out.println("get tier context for y, terminal id=" + yterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+                  }
+                  ArrayList<Float> y_context = getTierContext(t - 1);
+                  ArrayList<Float> X_context = X_contexts.get(t - 1);
+                  for (int q = 0; q < NUM_DIMENSIONS; q++)
+                  {
+                     y_train_step.add(y_context.get(q) - X_context.get(q));
+                  }
+               }
+            }
+            X_train.add(X_train_step);
+            y_train.add(y_train_step);
+            step++;
+            trainCount++;
+         }
+         ArrayList<CausationTier> xstep              = path.steps.get(path.steps.size() - 1);
+         Causation                xcausation         = xstep.get(0).causation;
+         TerminalCausation        xterminalCausation = (TerminalCausation)xcausation;
+         if (VERBOSE)
+         {
+            System.out.print("X: ");
+            xterminalCausation.print();
+            System.out.print("y: ");
+            EOScausation.print();
+         }
+         X_train_step = new ArrayList<Float>();
+         y_train_step = new ArrayList<Float>();
+         X_contexts   = new ArrayList < ArrayList < Float >> ();
+         for (int t = 0; t < maxTiers; t++)
+         {
+            if (t == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (xterminalCausation.features.contains(q))
+                  {
+                     X_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     X_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               if (VERBOSE)
+               {
+                  System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
+               }
+               ArrayList<Float> X_context = getTierContext(t - 1);
+               X_contexts.add(X_context);
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  X_train_step.add(X_context.get(q));
+               }
+            }
+         }
+         updateContexts(xterminalCausation);
+         for (int t = 0; t < maxTiers; t++)
+         {
+            if (t == 0)
+            {
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  if (EOScausation.features.contains(q))
+                  {
+                     y_train_step.add(1.0f);
+                  }
+                  else
+                  {
+                     y_train_step.add(0.0f);
+                  }
+               }
+            }
+            else
+            {
+               if (VERBOSE)
+               {
+                  System.out.println("get tier context for y, terminal id=" + EOScausation.id + ", tier=" + (t - 1) + ", step=" + step);
+               }
+               ArrayList<Float> y_context = getTierContext(t - 1);
+               ArrayList<Float> X_context = X_contexts.get(t - 1);
+               for (int q = 0; q < NUM_DIMENSIONS; q++)
+               {
+                  y_train_step.add(y_context.get(q) - X_context.get(q));
+               }
+            }
+         }
+         X_train.add(X_train_step);
+         y_train.add(y_train_step);
+         step++;
+         trainCount++;
+      }
+      try
+      {
+         System.setProperty("line.separator", "\n");
+         FileWriter  fileWriter  = new FileWriter(filename);
+         PrintWriter printWriter = new PrintWriter(fileWriter);
+         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_train = [");
+         for (int i = 0, j = X_train.size(); i < j; i++)
+         {
+            ArrayList<Float> X_train_step = X_train.get(i);
+            for (int k = 0, q = X_train_step.size(); k < q; k++)
+            {
+               printWriter.print(X_train_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_train = [");
+         for (int i = 0, j = y_train.size(); i < j; i++)
+         {
+            ArrayList<Float> y_train_step = y_train.get(i);
+            for (int k = 0, q = y_train_step.size(); k < q; k++)
+            {
+               printWriter.print(y_train_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.print("y_train_path_begin = [");
+         for (int i = 0, j = y_train_path_begin.size(); i < j; i++)
+         {
+            printWriter.print(y_train_path_begin.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");
+         printWriter.println("X_test_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_test = [");
+         for (int i = 0, j = X_train.size(); i < j; i++)
+         {
+            ArrayList<Float> X_test_step = X_train.get(i);
+            for (int k = 0, q = X_test_step.size(); k < q; k++)
+            {
+               printWriter.print(X_test_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.println("y_test_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_test = [");
+         for (int i = 0, j = y_train.size(); i < j; i++)
+         {
+            ArrayList<Float> y_test_step = y_train.get(i);
+            for (int k = 0, q = y_test_step.size(); k < q; k++)
+            {
+               printWriter.print(y_test_step.get(k) + "");
+               if ((i != j - 1) || (k != q - 1))
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println();
+         }
+         printWriter.println("]");
+         printWriter.print("y_test_path_begin = [");
+         for (int i = 0, j = y_train_path_begin.size(); i < j; i++)
+         {
+            printWriter.print(y_train_path_begin.get(i) + "");
+            if (i < j - 1)
+            {
+               printWriter.print(",");
+            }
+         }
+         printWriter.println("]");
+         printWriter.print("y_test_prediction = [");
+         for (int i = 0, j = y_train.size() - 1; i < j; i++)
+         {
+            boolean prediction = true;
+            for (int p = 0, q = y_train_path_begin.size(); p < q; p++)
+            {
+               int n = y_train_path_begin.get(p);
+               if (i == n - 1)
+               {
+                  prediction = false;
+                  break;
+               }
+            }
+            if (prediction)
+            {
+               printWriter.print(i + "");
+               if (i < j - 1)
+               {
+                  printWriter.print(",");
+               }
+            }
+         }
+         printWriter.println("]");
+         printWriter.println("y_test_interstitial = []");
+         if (tierValueDurations != null)
+         {
+            printWriter.print("context_tier_value_durations = [");
+            for (int i = 0, j = tierValueDurations.size(); i < j; i++)
+            {
+               printWriter.print(tierValueDurations.get(i) + "");
+               if (i < j - 1)
+               {
+                  printWriter.print(",");
+               }
+            }
+            printWriter.println("]");
+         }
+         else
+         {
+            printWriter.print("context_tier_value_durations = None");
+         }
+         printWriter.close();
+         printWriter.close();
+      }
+      catch (IOException e)
+      {
+         System.err.println("Cannot write NN dataset to file " + filename);
+         System.exit(1);
+      }
    }
 
 
@@ -2946,7 +3522,6 @@ public class Mandala
          System.out.println("export RNN/attention copy memory dataset");
          System.out.println("train/test dataset:");
       }
-      SplittableRandom random = new SplittableRandom(randomSeed);
       ArrayList < ArrayList < Float >> X_train = new ArrayList < ArrayList < Float >> ();
       ArrayList < ArrayList < Float >> y_train = new ArrayList < ArrayList < Float >> ();
       int maxPathLength = 0;
@@ -3100,7 +3675,7 @@ public class Mandala
          if (VERBOSE)
          {
             System.out.print("X: ");
-            BOScausation.print();
+            xterminalCausation.print();
             System.out.print("y: ");
             EOScausation.print();
          }
@@ -3658,7 +4233,7 @@ public class Mandala
    {
       if (VERBOSE)
       {
-         System.out.println("Learn Attention");
+         System.out.println("Learn attention");
       }
       try
       {
