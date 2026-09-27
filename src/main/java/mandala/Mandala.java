@@ -2319,7 +2319,7 @@ public class Mandala
          System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
-         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_train_shape = [" + X_train.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("X_train = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
          {
@@ -2335,7 +2335,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_train_shape = [" + y_train.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
@@ -2361,7 +2361,7 @@ public class Mandala
             }
          }
          printWriter.println("]");
-         printWriter.println("X_test_shape = [ " + X_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_test_shape = [" + X_test.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_test.size(); i < j; i++)
          {
@@ -2377,7 +2377,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_test_shape = [ " + y_test.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_test_shape = [" + y_test.size() + "," + (maxTiers * NUM_DIMENSIONS) + " ]");
          printWriter.println("y_test = [");
          for (int i = 0, j = y_test.size(); i < j; i++)
          {
@@ -2809,7 +2809,7 @@ public class Mandala
          System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
-         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("X_train_shape = [" + X_train.size() + ", " + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("X_train = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
          {
@@ -2832,7 +2832,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("y_train_shape = [" + y_train.size() + "," + maxPathLength + ", " + NUM_DIMENSIONS + "]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
@@ -2855,7 +2855,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("X_test_shape = [ " + X_test.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("X_test_shape = [" + X_test.size() + "," + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_test.size(); i < j; i++)
          {
@@ -2878,7 +2878,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_test_shape = [ " + y_test.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("y_test_shape = [" + y_test.size() + "," + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("y_test = [");
          for (int i = 0, j = y_test.size(); i < j; i++)
          {
@@ -3373,12 +3373,13 @@ public class Mandala
          step++;
          trainCount++;
       }
+      
       try
       {
          System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
-         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_train_shape = [" + X_train.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("X_train = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
          {
@@ -3394,7 +3395,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_train_shape = [" + y_train.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
@@ -3420,7 +3421,7 @@ public class Mandala
             }
          }
          printWriter.println("]");
-         printWriter.println("X_test_shape = [ " + X_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("X_test_shape = [" + X_train.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
          {
@@ -3436,7 +3437,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_test_shape = [ " + y_train.size() + ", " + (maxTiers * NUM_DIMENSIONS) + " ]");
+         printWriter.println("y_test_shape = [" + y_train.size() + "," + (maxTiers * NUM_DIMENSIONS) + "]");
          printWriter.println("y_test = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
@@ -3718,7 +3719,7 @@ public class Mandala
          System.setProperty("line.separator", "\n");
          FileWriter  fileWriter  = new FileWriter(filename);
          PrintWriter printWriter = new PrintWriter(fileWriter);
-         printWriter.println("X_train_shape = [ " + X_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("X_train_shape = [" + X_train.size() + "," + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("X_train = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
          {
@@ -3741,7 +3742,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_train_shape = [ " + y_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("y_train_shape = [" + y_train.size() + "," + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("y_train = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
@@ -3764,7 +3765,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("X_test_shape = [ " + X_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("X_test_shape = [" + X_train.size() + "," + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("X_test = [");
          for (int i = 0, j = X_train.size(); i < j; i++)
          {
@@ -3787,7 +3788,7 @@ public class Mandala
             printWriter.println();
          }
          printWriter.println("]");
-         printWriter.println("y_test_shape = [ " + y_train.size() + ", " + maxPathLength + ", " + NUM_DIMENSIONS + " ]");
+         printWriter.println("y_test_shape = [" + y_train.size() + "," + maxPathLength + "," + NUM_DIMENSIONS + "]");
          printWriter.println("y_test = [");
          for (int i = 0, j = y_train.size(); i < j; i++)
          {
