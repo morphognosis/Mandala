@@ -96,29 +96,35 @@ seq = array(y_train)
 y = seq.reshape(y_train_shape[0], y_train_shape[1], y_train_shape[2])
 rnn_model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
+# Sensor features match?
+def sensor_match(avals, bvals, dimensions):
+    amax = []
+    for i in range(dimensions):
+        if avals[i] >= threshold:
+            amax.append(i)
+    if len(amax) != n_features:
+        return False
+    amax.sort()
+    bmax = []
+    for i in range(dimensions):
+        if bvals[i] >= threshold:
+            bmax.append(i)
+    if len(bmax) != n_features:
+        return False
+    bmax.sort()
+    if amax != bmax:
+        return False
+    else:
+        return True
+
 # Validate.
 predictions = rnn_model.predict(X, batch_size=X_train_shape[0], verbose=0)
 trainErrors = 0
 trainTotal = 0
 for path in range(X_train_shape[0]):
     for step in range(X_train_shape[1]):
-        yvals = y[path][step]
-        pvals = predictions[path][step]
-        ymax = []
-        pmax = []
-        for j in range(n_features):
-            yidx = argmax(yvals)
-            if yvals[yidx] >= threshold:
-                ymax.append(yidx)
-            yvals[yidx] = 0.0
-            pidx = argmax(pvals)
-            if pvals[pidx] >= threshold:
-                pmax.append(pidx)
-            pvals[pidx] = 0.0
-        ymax.sort()
-        pmax.sort()
         trainTotal += 1
-        if ymax != pmax:
+        if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
             trainErrors += 1
 trainErrorPct = 0
 if trainTotal > 0:
@@ -135,23 +141,8 @@ testTotal = 0
 for path in range(X_test_shape[0]):
     for step in range(X_test_shape[1]):
         if step in y_test_predictable[path]:
-            yvals = y[path][step]
-            pvals = predictions[path][step]
-            ymax = []
-            pmax = []
-            for j in range(n_features):
-                yidx = argmax(yvals)
-                if yvals[yidx] >= threshold:
-                    ymax.append(yidx)
-                yvals[yidx] = 0.0
-                pidx = argmax(pvals)
-                if pvals[pidx] >= threshold:
-                    pmax.append(pidx)
-                pvals[pidx] = 0.0
-            ymax.sort()
-            pmax.sort()
             testTotal += 1
-            if ymax != pmax:
+            if sensor_match(y[path][step], predictions[path][step], X_test_shape[2]) == False:
                 testErrors += 1
 testErrorPct = 0
 if testTotal > 0:

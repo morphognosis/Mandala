@@ -35,8 +35,8 @@ public class Mandala
    public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.25f;
 
    // Sizes.
-   public static int NUM_DIMENSIONS = 64;
-   public static int NUM_FEATURES   = 3;
+   public static int NUM_DIMENSIONS = 128;
+   public static int NUM_FEATURES   = 6;
 
    // Save/load file name.
    public static String MANDALA_FILENAME = "mandala.dat";
@@ -308,7 +308,7 @@ public class Mandala
       public Causation causation;
       public int       currentChild;
 
-      // COnstructor.
+      // Constructor.
       public CausationTier(Causation causation, int currentChild)
       {
          this.causation    = causation;
@@ -531,6 +531,7 @@ public class Mandala
    // Copy memory task.
    // Output a previous input sequence.
    public static boolean           copyTask = false;
+   public static int               copyLength;
    public static TerminalCausation emptyCausation;
    public static TerminalCausation BOScausation;
    public static TerminalCausation separatorCausation;
@@ -563,7 +564,7 @@ public class Mandala
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
       "      [-save [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
-      "      [-copyTask (copy memory task)]\n" +
+      "      [-copyTask <copy length> (copy memory task)]\n" +
       "  Load:\n" +
       "    java mandala.Mandala\n" +
       "      -load [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
@@ -581,7 +582,7 @@ public class Mandala
       "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
-      "      [-copyTask (copy memory task)]\n" +
+      "      [-copyTask <copy length> (copy memory task)]\n" +
       "  Help:\n" +
       "    java mandala.Mandala -help\n" +
       "Exit codes:\n" +
@@ -1087,7 +1088,8 @@ public class Mandala
             {
                RANDOM_SEED = Integer.parseInt(args[i]);
             }
-            catch (NumberFormatException e) {
+            catch (NumberFormatException e)
+            {
                System.err.println("Invalid randomSeed option");
                System.err.println(Usage);
                System.exit(1);
@@ -1101,6 +1103,29 @@ public class Mandala
          }
          if (args[i].equals("-copyTask"))
          {
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid copyTask option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               copyLength = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Invalid copyTask option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (copyLength <= 0)
+            {
+               System.err.println("Invalid copyTask option");
+               System.err.println(Usage);
+               System.exit(1);
+            }
             copyTask = true;
             continue;
          }
@@ -1288,8 +1313,25 @@ public class Mandala
          BOScausation       = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
          separatorCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
          EOScausation       = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);
+         ArrayList<CausationPath> paths = causationPaths;
+         causationPaths = new ArrayList<CausationPath>();
+         for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+         {
+            CausationPath path = new CausationPath(i, 0);
+            causationPaths.add(path);
+            path.steps.clear();
+            for (int j = 0; j < copyLength; j++)
+            {
+               ArrayList<CausationTier> step = new ArrayList<CausationTier>();
+               path.steps.add(step);
+               TerminalCausation causation = new TerminalCausation(i, randomizer.nextInt(NUM_TERMINALS));
+               CausationTier     tier      = new CausationTier(causation, j);
+               step.add(tier);
+            }
+         }
          exportNNcopyDataset(NN_DATASET_FILENAME, RANDOM_SEED);
          exportRNNcopyDataset(RNN_DATASET_FILENAME, RANDOM_SEED);
+         causationPaths = paths;
       }
       else
       {
@@ -2939,18 +2981,22 @@ public class Mandala
       {
          System.out.println("export NN copy memory dataset");
       }
-      int maxTiers = 0;
+      int maxPathLength = 0;
       for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
       {
          CausationPath path = causationPaths.get(i);
-         for (int j = 0; j < path.steps.size(); j++)
+         if (maxPathLength < path.steps.size())
          {
-            ArrayList<CausationTier> step = path.steps.get(j);
-            if (step.size() > maxTiers)
-            {
-               maxTiers = step.size();
-            }
+            maxPathLength = path.steps.size();
          }
+      }
+      int maxTiers = 0;
+      for ( ; (int)Math.pow(2.0, (double)maxTiers) < maxPathLength; maxTiers++) {}
+      maxTiers++;
+      tierValueDurations = new ArrayList<Integer>();
+      for (int i = 0; i < maxTiers; i++)
+      {
+         tierValueDurations.add(maxPathLength);
       }
 
       if (VERBOSE)
@@ -3373,7 +3419,7 @@ public class Mandala
          step++;
          trainCount++;
       }
-      
+
       try
       {
          System.setProperty("line.separator", "\n");
@@ -3487,24 +3533,16 @@ public class Mandala
          }
          printWriter.println("]");
          printWriter.println("y_test_interstitial = []");
-         if (tierValueDurations != null)
+         printWriter.print("context_tier_value_durations = [");
+         for (int i = 0; i < maxTiers; i++)
          {
-            printWriter.print("context_tier_value_durations = [");
-            for (int i = 0, j = tierValueDurations.size(); i < j; i++)
+            printWriter.print(copyLength + "");
+            if (i < maxTiers - 1)
             {
-               printWriter.print(tierValueDurations.get(i) + "");
-               if (i < j - 1)
-               {
-                  printWriter.print(",");
-               }
+               printWriter.print(",");
             }
-            printWriter.println("]");
          }
-         else
-         {
-            printWriter.print("context_tier_value_durations = None");
-         }
-         printWriter.close();
+         printWriter.println("]");
          printWriter.close();
       }
       catch (IOException e)

@@ -25,7 +25,7 @@ n_epochs = 500
 results_filename = 'mandala_nn_results.json'
 
 # Prediction significance threshold
-threshold = 0.85
+threshold = 0.5
 
 # Verbosity
 verbose = True
@@ -152,42 +152,52 @@ def summarize_features(title, vals):
         idxs = lists
     return desc, idxs
 
-# Compare max values
-def max_match(yvals, pvals):
-    ymax = []
-    pmax = []
-    for i in range(n_features):
-        yidx = argmax(yvals)
-        if yvals[yidx] >= threshold:
-            ymax.append(yidx)
-        yvals[yidx] = 0.0
-        pidx = argmax(pvals)
-        if pvals[pidx] >= threshold:
-            pmax.append(pidx)
-        pvals[pidx] = 0.0
-    ymax.sort()
-    pmax.sort()
-    if ymax != pmax:
+# Sensor features match?
+def sensor_match(avals, bvals):
+    amax = []
+    for i in range(n_dimensions):
+        if avals[i] >= threshold:
+            amax.append(i)
+    if len(amax) != n_features:
+        return False
+    amax.sort()
+    bmax = []
+    for i in range(n_dimensions):
+        if bvals[i] >= threshold:
+            bmax.append(i)
+    if len(bmax) != n_features:
+        return False
+    bmax.sort()
+    if amax != bmax:
         return False
     else:
         return True
 
-# Check tier min values prediction
-def tier_min_prediction(yvals, pvals):
-    ymin = []
-    pmin = []
-    for i in range(n_features):
-        yidx = argmin(yvals)
-        if yvals[yidx] <= -threshold:
-            ymin.append(yidx)
-        yvals[yidx] = 0.0
-        pidx = argmin(pvals)
-        if pvals[pidx] <= -threshold:
-            pmin.append(pidx)
-        pvals[pidx] = 0.0
-    ymin.sort()
-    pmin.sort()
-    if ymin != pmin:
+# Tier features match?
+def tier_match(avals, bvals):
+    amax = []
+    for i in range(n_dimensions):
+        if avals[i] >= threshold:
+            amax.append(i)
+    amax.sort()
+    bmax = []
+    for i in range(n_dimensions):
+        if bvals[i] >= threshold:
+            bmax.append(i)
+    bmax.sort()
+    if amax != bmax:
+        return False
+    amin = []
+    for i in range(n_dimensions):
+        if avals[i] <= -threshold:
+            amin.append(i)
+    amin.sort()
+    bmin = []
+    for i in range(n_dimensions):
+        if bvals[i] <= -threshold:
+            bmin.append(i)
+    bmin.sort()
+    if amin != bmin:
         return False
     else:
         return True
@@ -205,15 +215,15 @@ for i in range(X_train_shape[0]):
         pathnum += 1
         stepnum = 0
     if verbose:
-        xstr,xidxs = summarize_features('X', X_train_seq[i].copy())
-        ystr,yidxs = summarize_features('y', y_train_seq[i].copy())
-        pstr,pidxs = summarize_features('prediction', predictions[i].copy())
+        xstr,xidxs = summarize_features('X', X_train_seq[i])
+        ystr,yidxs = summarize_features('y', y_train_seq[i])
+        pstr,pidxs = summarize_features('prediction', predictions[i])
         print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr, sep='',end='')
     stepnum += 1
     trainTotal += 1
     start = 0
     end = n_dimensions
-    if max_match(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
+    if sensor_match(y_train_seq[i][start:end], predictions[i][start:end]) == False:
         trainErrors += 1
         if verbose:
             print(', error')
@@ -223,11 +233,7 @@ for i in range(X_train_shape[0]):
         for j in range(n_contexts):
             start = (n_dimensions * (j + 1))
             end = start + n_dimensions
-            if max_match(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
-                trainErrors += 1
-                error = True
-                break
-            if tier_min_prediction(y_train_seq[i].copy()[start:end], predictions[i].copy()[start:end]) == False:
+            if tier_match(y_train_seq[i][start:end], predictions[i][start:end]) == False:
                 trainErrors += 1
                 error = True
                 break
@@ -296,15 +302,15 @@ for i in range(X_test_shape[0]):
     yi = y[i].reshape(1, y_test_shape[1]).copy()
     prediction = prediction_model.predict(Xi, verbose=0)
     if verbose:
-        xstr,xidxs = summarize_features('X', Xi[0].copy())
-        ystr,yidxs = summarize_features('y', yi[0].copy())
-        pstr,pidxs = summarize_features('prediction', prediction[0].copy())
+        xstr,xidxs = summarize_features('X', Xi[0])
+        ystr,yidxs = summarize_features('y', yi[0])
+        pstr,pidxs = summarize_features('prediction', prediction[0])
         print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr, sep='', end='')
     stepnum += 1
     if i in y_test_prediction:
         testTotal += 1
     if prediction_valid_count == 0:
-        if max_match(yi[0].copy()[0:n_dimensions], prediction[0].copy()[0:n_dimensions]) == True:
+        if sensor_match(yi[0][0:n_dimensions], prediction[0][0:n_dimensions]) == True:
             prediction_valid_count = 2
             if i in y_test_prediction:
                 if verbose:
