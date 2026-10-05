@@ -89,7 +89,7 @@ if verbose:
     rnn_model.summary()
 
 # Train.
-from numpy import array, argmax
+from numpy import array
 seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
 seq = array(y_train)

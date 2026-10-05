@@ -39,8 +39,7 @@ Usage:
       [-numFeatures <quantity> (default=3)]
       [-maxInterstitialTerminalSequence <length> (default=10)]
       [-exportCausationsGraph [<file name> (Graphviz dot format, default=mandala_causations.dot)]
-          [-treeFormat "true" | "false" (default=true)]]
-      [-maxContextTier <value> (default=5)]
+          [-graphFormat "tree" | "dag" (default=tree)]]
       [-contextTierValueDurationType "minimum" | "expected" | "maximum" (default=maximum)]
       [-NNneurons<number of neurons> (comma-separated for additional layers) (default=128,128,128)]
       [-NNepochs <number of epochs> (default=500)]
@@ -52,14 +51,12 @@ Usage:
       [-randomSeed <seed> (default=45)]
       [-quiet]
       [-save [<file name> (default=mandala.dat)]
-      [-copyTask <copy length> (copy memory task)]
   Load:
     java mandala.Mandala
       -load [<file name> (default=mandala.dat)]
       [-maxInterstitialTerminalSequence <length> (default=10)]
       [-exportCausationsGraph [<file name> (Graphviz dot format, default=mandala_causations.dot)]
-          [-treeFormat "true" | "false" (default=true)]]
-      [-maxContextTier <value> (default=5)]
+          [-graphFormat "tree" | "dag" (default=tree)]]
       [-contextTierValueDurationType "minimum" | "expected" | "maximum" (default=maximum)]
       [-NNneurons<number of neurons> (comma-separated for additional layers) (default=128,128,128)]
       [-NNepochs <number of epochs> (default=500)]
@@ -70,7 +67,20 @@ Usage:
       [-AttentionEpochs <number of epochs> (default=500)]
       [-randomSeed <seed> (default=45)]
       [-quiet]
-      [-copyTask <copy length> (copy memory task)]
+  Copy memory task:
+    java mandala.Mandala
+      -copyTask <copy length> <number of characters> <number of strings>
+      [-numDimensions <quantity> (default=64)]
+      [-numFeatures <quantity> (default=3)]
+      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=128,128,128)]
+      [-NNepochs <number of epochs> (default=500)]
+      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=128)]
+      [-RNNepochs <number of epochs> (default=500)]
+      [-AttentionNeurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=128)]
+      [-AttentionHeads <number of attention heads> (default=4)]
+      [-AttentionEpochs <number of epochs> (default=500)]
+      [-randomSeed <seed> (default=45)]
+      [-quiet]
   Help:
     java mandala.Mandala -help
 Exit codes:

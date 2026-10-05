@@ -35,8 +35,8 @@ public class Mandala
    public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.25f;
 
    // Sizes.
-   public static int NUM_DIMENSIONS = 128;
-   public static int NUM_FEATURES   = 6;
+   public static int NUM_DIMENSIONS = 64;
+   public static int NUM_FEATURES   = 3;
 
    // Save/load file name.
    public static String MANDALA_FILENAME = "mandala.dat";
@@ -299,8 +299,8 @@ public class Mandala
    public static ArrayList < ArrayList < Causation >> causationHierarchies;
 
    // Causations graph.
-   public static String  CAUSATIONS_GRAPH_FILENAME = "mandala_causations.dot";
-   public static boolean TREE_FORMAT = true;
+   public static String CAUSATIONS_GRAPH_FILENAME = "mandala_causations.dot";
+   public static String GRAPH_FORMAT = "tree";
 
    // Causation paths.
    public static class CausationTier
@@ -370,9 +370,6 @@ public class Mandala
       }
    };
    public static ArrayList<CausationPath> causationPaths;
-
-   // Maximum context tier.
-   public static int MAX_CONTEXT_TIER = 5;
 
    // Context tier value durations.
    public static String             TIER_VALUE_DURATION_TYPE = "maximum";
@@ -532,6 +529,8 @@ public class Mandala
    // Output a previous input sequence.
    public static boolean           copyTask = false;
    public static int               copyLength;
+   public static int               numCopyCharacters;
+   public static int               numCopyStrings;
    public static TerminalCausation emptyCausation;
    public static TerminalCausation BOScausation;
    public static TerminalCausation separatorCausation;
@@ -551,8 +550,7 @@ public class Mandala
       "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
       "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
-      "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
-      "      [-maxContextTier <value> (default=" + MAX_CONTEXT_TIER + ")]\n" +
+      "          [-graphFormat \"tree\" | \"dag\" (default=" + GRAPH_FORMAT + ")]]\n" +
       "      [-contextTierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -564,14 +562,12 @@ public class Mandala
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
       "      [-save [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
-      "      [-copyTask <copy length> (copy memory task)]\n" +
       "  Load:\n" +
       "    java mandala.Mandala\n" +
       "      -load [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
       "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
       "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
-      "          [-treeFormat \"true\" | \"false\" (default=" + TREE_FORMAT + ")]]\n" +
-      "      [-maxContextTier <value> (default=" + MAX_CONTEXT_TIER + ")]\n" +
+      "          [-graphFormat \"tree\" | \"dag\" (default=" + GRAPH_FORMAT + ")]]\n" +
       "      [-contextTierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
@@ -582,7 +578,20 @@ public class Mandala
       "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
-      "      [-copyTask <copy length> (copy memory task)]\n" +
+      "  Copy memory task:\n" +
+      "    java mandala.Mandala\n" +
+      "      -copyTask <copy length> <number of characters> <number of strings>\n" +
+      "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
+      "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
+      "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
+      "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
+      "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
+      "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
+      "      [-AttentionNeurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=" + ATTENTION_NEURONS + ")]\n" +
+      "      [-AttentionHeads <number of attention heads> (default=" + ATTENTION_HEADS + ")]\n" +
+      "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
+      "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
+      "      [-quiet]\n" +
       "  Help:\n" +
       "    java mandala.Mandala -help\n" +
       "Exit codes:\n" +
@@ -596,7 +605,10 @@ public class Mandala
       boolean gotLoad = false;
       boolean gotSave = false;
       boolean gotExportCausationsGraph = false;
-      boolean gotTreeFormat            = false;
+      boolean gotGraphFormat           = false;
+      boolean gotDimensions            = false;
+      boolean gotFeatures = false;
+      boolean gotNonCopy  = false;
 
       for (int i = 0; i < args.length; i++)
       {
@@ -607,7 +619,8 @@ public class Mandala
                i++;
                MANDALA_FILENAME = args[i];
             }
-            gotLoad = true;
+            gotLoad    = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-save"))
@@ -617,8 +630,9 @@ public class Mandala
                i++;
                MANDALA_FILENAME = args[i];
             }
-            gotSave = true;
-            gotNew  = true;
+            gotSave    = true;
+            gotNew     = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-numCausationHierarchies"))
@@ -645,7 +659,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotNew     = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-numNonterminals"))
@@ -672,7 +687,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotNew     = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-numTerminals"))
@@ -699,7 +715,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotNew     = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-numInterstitialTerminals"))
@@ -726,7 +743,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotNew     = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-maxInterstitialTerminalSequence"))
@@ -753,6 +771,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-terminalProductionProbability"))
@@ -779,7 +798,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotNew     = true;
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-numDimensions"))
@@ -806,7 +826,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotDimensions = true;
             continue;
          }
          if (args[i].equals("-numFeatures"))
@@ -833,7 +853,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew = true;
+            gotFeatures = true;
             continue;
          }
          if (args[i].equals("-exportCausationsGraph"))
@@ -844,58 +864,34 @@ public class Mandala
                CAUSATIONS_GRAPH_FILENAME = args[i];
             }
             gotExportCausationsGraph = true;
+            gotNonCopy = true;
             continue;
          }
-         if (args[i].equals("-treeFormat"))
+         if (args[i].equals("-graphFormat"))
          {
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid treeFormat option");
+               System.err.println("Invalid graphFormat option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (args[i].equals("true"))
+            if (args[i].equals("tree"))
             {
-               TREE_FORMAT = true;
+               GRAPH_FORMAT = "tree";
             }
-            else if (args[i].equals("false"))
+            else if (args[i].equals("dag"))
             {
-               TREE_FORMAT = false;
+               GRAPH_FORMAT = "dag";
             }
             else
             {
-               System.err.println("Invalid treeFormat option");
+               System.err.println("Invalid graphFormat option");
                System.err.println(Usage);
                System.exit(1);
             }
-            gotTreeFormat = true;
-            continue;
-         }
-         if (args[i].equals("-maxContextTier"))
-         {
-            i++;
-            if (i >= args.length)
-            {
-               System.err.println("Invalid maxContextTier option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            try
-            {
-               MAX_CONTEXT_TIER = Integer.parseInt(args[i]);
-            }
-            catch (NumberFormatException e) {
-               System.err.println("Invalid maxContextTier option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
-            if (MAX_CONTEXT_TIER < -1)
-            {
-               System.err.println("Invalid maxContextTier option");
-               System.err.println(Usage);
-               System.exit(1);
-            }
+            gotGraphFormat = true;
+            gotNonCopy     = true;
             continue;
          }
          if (args[i].equals("-contextTierValueDurationType"))
@@ -915,6 +911,7 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
+            gotNonCopy = true;
             continue;
          }
          if (args[i].equals("-NNneurons"))
@@ -1106,7 +1103,7 @@ public class Mandala
             i++;
             if (i >= args.length)
             {
-               System.err.println("Invalid copyTask option");
+               System.err.println("Invalid copyTask length");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1116,13 +1113,59 @@ public class Mandala
             }
             catch (NumberFormatException e)
             {
-               System.err.println("Invalid copyTask option");
+               System.err.println("Invalid copyTask length");
                System.err.println(Usage);
                System.exit(1);
             }
             if (copyLength <= 0)
             {
-               System.err.println("Invalid copyTask option");
+               System.err.println("Invalid copyTask length");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid copyTask number of characters");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               numCopyCharacters = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Invalid copyTask number of characters");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (numCopyCharacters <= 0)
+            {
+               System.err.println("Invalid copyTask number of characters");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            i++;
+            if (i >= args.length)
+            {
+               System.err.println("Invalid copyTask number of strings");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            try
+            {
+               numCopyStrings = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e)
+            {
+               System.err.println("Invalid copyTask number of strings");
+               System.err.println(Usage);
+               System.exit(1);
+            }
+            if (numCopyStrings <= 0)
+            {
+               System.err.println("Invalid copyTask number of strings");
                System.err.println(Usage);
                System.exit(1);
             }
@@ -1145,12 +1188,22 @@ public class Mandala
          System.err.println(Usage);
          System.exit(1);
       }
+      if (gotLoad && (gotSave || gotDimensions || gotFeatures))
+      {
+         System.err.println(Usage);
+         System.exit(1);
+      }
+      if (copyTask && gotNonCopy)
+      {
+         System.err.println(Usage);
+         System.exit(1);
+      }
       if (NUM_DIMENSIONS < NUM_FEATURES)
       {
          System.err.println(Usage);
          System.exit(1);
       }
-      if (!gotExportCausationsGraph && gotTreeFormat)
+      if (!gotExportCausationsGraph && gotGraphFormat)
       {
          System.err.println(Usage);
          System.exit(1);
@@ -1164,6 +1217,62 @@ public class Mandala
             System.out.print(arg + " ");
          }
          System.out.println();
+      }
+
+      // Copy memory task?
+      if (copyTask)
+      {
+         // Print options and parameters.
+         if (VERBOSE)
+         {
+            System.out.println("options:");
+            System.out.println("copy length=" + copyLength);
+            System.out.println("number of characters=" + numCopyCharacters);
+            System.out.println("number of strings=" + numCopyStrings);
+            System.out.println("parameters:");
+            System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
+            System.out.println("NN_NEURONS=" + NN_NEURONS);
+            System.out.println("NN_EPOCHS=" + NN_EPOCHS);
+            System.out.println("RNN_NEURONS=" + RNN_NEURONS);
+            System.out.println("RNN_EPOCHS=" + RNN_EPOCHS);
+            System.out.println("ATTENTION_NEURONS=" + ATTENTION_NEURONS);
+            System.out.println("ATTENTION_HEADS=" + ATTENTION_HEADS);
+            System.out.println("ATTENTION_EPOCHS=" + ATTENTION_EPOCHS);
+            System.out.println("RANDOM_SEED=" + RANDOM_SEED);
+         }
+
+         // Export copy memory task datasets.
+         randomizer                = new SplittableRandom(RANDOM_SEED);
+         emptyCausation            = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS);
+         BOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
+         separatorCausation        = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
+         EOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);
+         causationPaths            = new ArrayList<CausationPath>();
+         NUM_CAUSATION_HIERARCHIES = numCopyStrings;
+         NUM_TERMINALS             = numCopyCharacters;
+         for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+         {
+            CausationPath path = new CausationPath(i, 0);
+            causationPaths.add(path);
+            path.steps.clear();
+            for (int j = 0; j < copyLength; j++)
+            {
+               ArrayList<CausationTier> step = new ArrayList<CausationTier>();
+               path.steps.add(step);
+               TerminalCausation causation = new TerminalCausation(i, randomizer.nextInt(NUM_TERMINALS));
+               CausationTier     tier      = new CausationTier(causation, j);
+               step.add(tier);
+            }
+         }
+         exportNNcopyDataset(NN_DATASET_FILENAME, RANDOM_SEED);
+         exportRNNcopyDataset(RNN_DATASET_FILENAME, RANDOM_SEED);
+
+         // Learn copy task.
+         learnCausationsNN(NN_DATASET_FILENAME);
+         learnCausationsRNN(RNN_DATASET_FILENAME);
+         learnCausationsAttention(RNN_DATASET_FILENAME);
+
+         System.exit(0);
       }
 
       // Load?
@@ -1278,8 +1387,7 @@ public class Mandala
          System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
          System.out.println("NUM_FEATURES=" + NUM_FEATURES);
          System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
-         System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", TREE_FORMAT=" + TREE_FORMAT);
-         System.out.println("MAX_CONTEXT_TIER=" + MAX_CONTEXT_TIER);
+         System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", GRAPH_FORMAT=" + GRAPH_FORMAT);
          System.out.println("TIER_VALUE_DURATION_TYPE=" + TIER_VALUE_DURATION_TYPE);
          System.out.println("NN_NEURONS=" + NN_NEURONS);
          System.out.println("NN_EPOCHS=" + NN_EPOCHS);
@@ -1296,49 +1404,19 @@ public class Mandala
       // Export causations graph.
       if (gotExportCausationsGraph)
       {
-         exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME, TREE_FORMAT);
+         exportCausationsGraph(CAUSATIONS_GRAPH_FILENAME, GRAPH_FORMAT);
       }
 
       // Generate causation paths.
       randomizer = new SplittableRandom(RANDOM_SEED);
       generateCausationPaths();
 
-      // Analyze causations.
-      analyzeCausations();
+      // Set tier value durations.
+      setTierValueDurations();
 
-      if (copyTask)
-      {
-         // Export copy memory task datasets.
-         emptyCausation     = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS);
-         BOScausation       = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
-         separatorCausation = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
-         EOScausation       = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);
-         ArrayList<CausationPath> paths = causationPaths;
-         causationPaths = new ArrayList<CausationPath>();
-         for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
-         {
-            CausationPath path = new CausationPath(i, 0);
-            causationPaths.add(path);
-            path.steps.clear();
-            for (int j = 0; j < copyLength; j++)
-            {
-               ArrayList<CausationTier> step = new ArrayList<CausationTier>();
-               path.steps.add(step);
-               TerminalCausation causation = new TerminalCausation(i, randomizer.nextInt(NUM_TERMINALS));
-               CausationTier     tier      = new CausationTier(causation, j);
-               step.add(tier);
-            }
-         }
-         exportNNcopyDataset(NN_DATASET_FILENAME, RANDOM_SEED);
-         exportRNNcopyDataset(RNN_DATASET_FILENAME, RANDOM_SEED);
-         causationPaths = paths;
-      }
-      else
-      {
-         // Export causation datasets.
-         exportNNdataset(NN_DATASET_FILENAME, RANDOM_SEED);
-         exportRNNdataset(RNN_DATASET_FILENAME, RANDOM_SEED);
-      }
+      // Export causation datasets.
+      exportNNdataset(NN_DATASET_FILENAME, RANDOM_SEED);
+      exportRNNdataset(RNN_DATASET_FILENAME, RANDOM_SEED);
 
       // Learn causations.
       learnCausationsNN(NN_DATASET_FILENAME);
@@ -1544,7 +1622,7 @@ public class Mandala
 
 
    // Export causations graph (Graphviz dot format).
-   public static void exportCausationsGraph(String filename, boolean treeFormat)
+   public static void exportCausationsGraph(String filename, String graphFormat)
    {
       try
       {
@@ -1568,7 +1646,7 @@ public class Mandala
             {
                edges.add("h" + i + " -> h" + i + "_nt" + root.id);
             }
-            listGraph(i, root, "", vertices, edges);
+            listGraph(i, root, "", vertices, edges, graphFormat);
             for (String vertex : vertices)
             {
                printWriter.println(vertex);
@@ -1590,7 +1668,7 @@ public class Mandala
 
 
    // List graph elements.
-   private static void listGraph(int hierarchy, Causation vertex, String pathPrefix, HashSet<String> vertices, HashSet<String> edges)
+   private static void listGraph(int hierarchy, Causation vertex, String pathPrefix, HashSet<String> vertices, HashSet<String> edges, String graphFormat)
    {
       if (vertex instanceof TerminalCausation)
       {
@@ -1615,7 +1693,7 @@ public class Mandala
          {
             Causation child           = nonTerminal.children.get(i);
             String    childPathPrefix = "";
-            if (TREE_FORMAT)
+            if (graphFormat.equals("tree"))
             {
                childPathPrefix = new String(pathPrefix) + vertex.id + "_" + i + "_";
             }
@@ -1627,7 +1705,7 @@ public class Mandala
             {
                edges.add("h" + hierarchy + "_nt" + pathPrefix + vertex.id + " -> h" + hierarchy + "_nt" + childPathPrefix + child.id + " [label=\"" + i + "\"];");
             }
-            listGraph(hierarchy, child, childPathPrefix, vertices, edges);
+            listGraph(hierarchy, child, childPathPrefix, vertices, edges, graphFormat);
          }
       }
    }
@@ -1722,12 +1800,12 @@ public class Mandala
    }
 
 
-   // Analyze causations.
-   public static void analyzeCausations()
+   // Set tier value durations.
+   public static void setTierValueDurations()
    {
       if (VERBOSE)
       {
-         System.out.println("analyze causations");
+         System.out.println("set tier value durations");
       }
       tierValueDurations = new ArrayList<Integer>();
       ArrayList < ArrayList < Integer >> hierarchyTiers = new ArrayList < ArrayList < Integer >> ();
@@ -1815,7 +1893,7 @@ public class Mandala
       }
       if (VERBOSE)
       {
-         System.out.println("feature value durations:");
+         System.out.println("tier value durations:");
       }
       for (int i = 0; i <= maxTier; i++)
       {
@@ -2534,7 +2612,7 @@ public class Mandala
 
       // Add contexts.
       ContextFeatures contextFeatures1 = new ContextFeatures(causation, 0);
-      for (int i = 0, j = contextTiers.size(); i < j && i <= MAX_CONTEXT_TIER; i++)
+      for (int i = 0, j = contextTiers.size(); i < j; i++)
       {
          ContextFeatures contextFeatures2 = contextTiers.get(i);
          if (contextFeatures2 != null)
@@ -2990,6 +3068,7 @@ public class Mandala
             maxPathLength = path.steps.size();
          }
       }
+      maxPathLength = (maxPathLength * 2) + 3;
       int maxTiers = 0;
       for ( ; (int)Math.pow(2.0, (double)maxTiers) < maxPathLength; maxTiers++) {}
       maxTiers++;
@@ -3536,7 +3615,7 @@ public class Mandala
          printWriter.print("context_tier_value_durations = [");
          for (int i = 0; i < maxTiers; i++)
          {
-            printWriter.print(copyLength + "");
+            printWriter.print(maxPathLength + "");
             if (i < maxTiers - 1)
             {
                printWriter.print(",");

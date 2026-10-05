@@ -9,7 +9,7 @@ logging.disable(logging.WARNING)
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import numpy as np
-from numpy import array, argmax, argmin
+from numpy import array
 from numpy import loadtxt
 from keras.models import Sequential
 from keras.layers import Input, Dense
