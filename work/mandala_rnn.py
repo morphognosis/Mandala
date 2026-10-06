@@ -97,22 +97,24 @@ y = seq.reshape(y_train_shape[0], y_train_shape[1], y_train_shape[2])
 rnn_model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # Sensor features match?
-def sensor_match(avals, bvals, dimensions):
-    amax = []
+def sensor_match(yvals, pvals, dimensions):
+    ymax = []
     for i in range(dimensions):
-        if avals[i] >= threshold:
-            amax.append(i)
-    if len(amax) != n_features:
+        if yvals[i] >= threshold:
+            ymax.append(i)
+    if len(ymax) == 0:
+        return True
+    if len(ymax) != n_features:
         return False
-    amax.sort()
-    bmax = []
+    ymax.sort()
+    pmax = []
     for i in range(dimensions):
-        if bvals[i] >= threshold:
-            bmax.append(i)
-    if len(bmax) != n_features:
+        if pvals[i] >= threshold:
+            pmax.append(i)
+    if len(pmax) != n_features:
         return False
-    bmax.sort()
-    if amax != bmax:
+    pmax.sort()
+    if pmax != pmax:
         return False
     else:
         return True

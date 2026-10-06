@@ -1243,13 +1243,13 @@ public class Mandala
 
          // Export copy memory task datasets.
          randomizer                = new SplittableRandom(RANDOM_SEED);
-         emptyCausation            = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS);
-         BOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
-         separatorCausation        = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
-         EOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);
          causationPaths            = new ArrayList<CausationPath>();
          NUM_CAUSATION_HIERARCHIES = numCopyStrings;
          NUM_TERMINALS             = numCopyCharacters;
+         emptyCausation            = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS);
+         BOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
+         separatorCausation        = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
+         EOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);         
          for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
          {
             CausationPath path = new CausationPath(i, 0);
