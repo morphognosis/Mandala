@@ -141,7 +141,7 @@ def sensor_match(yvals, pvals, dimensions):
     if len(pmax) != n_features:
         return False
     pmax.sort()
-    if pmax != pmax:
+    if ymax != pmax:
         return False
     else:
         return True
