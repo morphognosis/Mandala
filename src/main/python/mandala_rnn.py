@@ -89,7 +89,7 @@ if verbose:
     rnn_model.summary()
 
 # Train.
-from numpy import array
+from numpy import array, argmax
 seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
 seq = array(y_train)
@@ -102,8 +102,6 @@ def sensor_match(yvals, pvals, dimensions):
     for i in range(dimensions):
         if yvals[i] >= threshold:
             ymax.append(i)
-    if len(ymax) == 0:
-        return True
     if len(ymax) != n_features:
         return False
     ymax.sort()
@@ -125,9 +123,11 @@ trainErrors = 0
 trainTotal = 0
 for path in range(X_train_shape[0]):
     for step in range(X_train_shape[1]):
-        trainTotal += 1
-        if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
-            trainErrors += 1
+        n = argmax(y[path][step])
+        if y[path][step][n] >= threshold:
+            trainTotal += 1
+            if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
+                trainErrors += 1
 trainErrorPct = 0
 if trainTotal > 0:
     trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
