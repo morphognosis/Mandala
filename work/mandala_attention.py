@@ -116,7 +116,7 @@ if verbose:
     attention_model.summary()
 
 # Train.
-from numpy import array, argmax
+from numpy import array
 seq = array(X_train)
 X = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
 seq = array(y_train)
@@ -150,8 +150,7 @@ trainErrors = 0
 trainTotal = 0
 for path in range(X_train_shape[0]):
     for step in range(X_train_shape[1]):
-        n = argmax(y[path][step])
-        if y[path][step][n] >= threshold:
+        if y[path][step].max() >= threshold:
             trainTotal += 1
             if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
                 trainErrors += 1
