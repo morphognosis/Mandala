@@ -92,8 +92,8 @@ if independent_column != None:
                     ha='center', va='bottom', fontsize=9)
     
     # Customize the chart
+    ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
     ax.set_ylabel('Average Error Percentage (%)', fontsize=12, fontweight='bold')
-    #ax.set_title('Mandala vs RNN: Average Error', fontsize=14, fontweight='bold', pad=20)
     if xlabel != None:
         ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
     ax.set_xticks(x)
@@ -141,8 +141,8 @@ else:
                 ha='center', va='bottom', fontsize=12, fontweight='bold')
 
     # Customize the chart
+    ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
     ax.set_ylabel('Average Error Percentage (%)', fontsize=12, fontweight='bold')
-    #ax.set_title('Mandala vs RNN: Overall Average Error', fontsize=14, fontweight='bold', pad=20)
     if xlabel != None:
         ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
