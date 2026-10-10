@@ -16,8 +16,8 @@ from keras.layers import Input, Dense
 import sys, getopt
 
 # Parameters
-n_dimensions = 64
-n_features = 3
+n_dimensions = 128
+n_features = 6
 n_neurons = '128,128,128'
 n_epochs = 500
 

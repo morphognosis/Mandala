@@ -10,7 +10,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 # Default parameters.
-n_features = 3
+n_features = 6
 n_neurons = '128'
 n_epochs = 500
 results_filename = 'mandala_rnn_results.json'

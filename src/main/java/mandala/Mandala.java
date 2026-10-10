@@ -35,8 +35,8 @@ public class Mandala
    public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.25f;
 
    // Sizes.
-   public static int NUM_DIMENSIONS = 64;
-   public static int NUM_FEATURES   = 3;
+   public static int NUM_DIMENSIONS = 128;
+   public static int NUM_FEATURES   = 6;
 
    // Save/load file name.
    public static String MANDALA_FILENAME = "mandala.dat";
