@@ -94,7 +94,8 @@ if independent_column != None:
     # Customize the chart
     ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
     ax.set_ylabel('Average Error Percentage (%)', fontsize=12, fontweight='bold')
-    xlabel = independent_column
+    if xlabel == None:
+        xlabel = independent_column
     ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(data[independent_column].str.capitalize())
