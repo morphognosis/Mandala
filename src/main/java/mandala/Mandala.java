@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.SplittableRandom;
+import java.util.TreeMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +38,10 @@ public class Mandala
    // Sizes.
    public static int NUM_DIMENSIONS = 128;
    public static int NUM_FEATURES   = 6;
+
+   // Feature encoding.
+   public static ArrayList<Integer> tierFeatureDispenser = new ArrayList<Integer>();
+   public static ArrayList < TreeMap < Integer, Integer >> tierFeatureMap = new ArrayList < TreeMap < Integer, Integer >> ();
 
    // Save/load file name.
    public static String MANDALA_FILENAME = "mandala.dat";
@@ -59,86 +64,144 @@ public class Mandala
       // Encode features.
       public static ArrayList<Integer> encodeFeatures(int hierarchy, int id)
       {
-         String           seedString = hierarchy + "_" + id + "_";
-         SplittableRandom r          = new SplittableRandom(seedString.hashCode());
+         String idString = hierarchy + "_" + id + "_";
 
          ArrayList<Integer> features = new ArrayList<Integer>();
-         for (int i = 0; i < NUM_FEATURES; i++)
+         if (NUM_FEATURES == 1)
          {
-            int j = 0;
-            int k = 100;
-            for ( ; j < k; j++)
+            int idKey = idString.hashCode();
+            if (tierFeatureMap.size() == 0)
             {
-               int n = r.nextInt(NUM_DIMENSIONS);
-               int p = 0;
-               int q = features.size();
-               for ( ; p < q; p++)
+               tierFeatureMap.add(new TreeMap<Integer, Integer>());
+            }
+            TreeMap<Integer, Integer> map = tierFeatureMap.get(0);
+            Integer feature = map.get(idKey);
+            if (feature == null)
+            {
+               if (tierFeatureDispenser.size() == 0)
                {
-                  if (features.get(p) == n)
+                  tierFeatureDispenser.add(0);
+               }
+               feature = tierFeatureDispenser.get(0);
+               if (feature == NUM_DIMENSIONS)
+               {
+                  System.err.println("Cannot encode features");
+                  System.exit(1);
+               }
+               tierFeatureDispenser.set(0, feature + 1);
+               map.put(idKey, feature);
+            }
+            features.add(feature);
+         }
+         else
+         {
+            SplittableRandom r = new SplittableRandom(idString.hashCode());
+            for (int i = 0; i < NUM_FEATURES; i++)
+            {
+               int j = 0;
+               int k = 100;
+               for ( ; j < k; j++)
+               {
+                  int n = r.nextInt(NUM_DIMENSIONS);
+                  int p = 0;
+                  int q = features.size();
+                  for ( ; p < q; p++)
                   {
+                     if (features.get(p) == n)
+                     {
+                        break;
+                     }
+                  }
+                  if (p == q)
+                  {
+                     features.add(n);
                      break;
                   }
                }
-               if (p == q)
+               if (j == k)
                {
-                  features.add(n);
-                  break;
+                  System.err.println("Cannot encode features");
+                  System.exit(1);
                }
             }
-            if (j == k)
-            {
-               System.err.println("Cannot encode features");
-               System.exit(1);
-            }
+            Collections.sort(features);
          }
-         Collections.sort(features);
          return(features);
       }
 
 
-      public static ArrayList<Integer> encodeFeatures(ArrayList<Integer> features1, ArrayList<Integer> features2)
+      public static ArrayList<Integer> encodeFeatures(int tier, ArrayList<Integer> features1, ArrayList<Integer> features2)
       {
-         String seedString = "";
+         String idString = "";
 
          for (int i : features1)
          {
-            seedString += i + "_";
+            idString += i + "_";
          }
          for (int i : features2)
          {
-            seedString += i + "_";
+            idString += i + "_";
          }
-         SplittableRandom   r        = new SplittableRandom(seedString.hashCode());
          ArrayList<Integer> features = new ArrayList<Integer>();
-         for (int i = 0; i < NUM_FEATURES; i++)
+         if (NUM_FEATURES == 1)
          {
-            int j = 0;
-            int k = 100;
-            for ( ; j < k; j++)
+            int idKey = idString.hashCode();
+            while (tierFeatureMap.size() <= tier)
             {
-               int n = r.nextInt(NUM_DIMENSIONS);
-               int p = 0;
-               int q = features.size();
-               for ( ; p < q; p++)
+               tierFeatureMap.add(new TreeMap<Integer, Integer>());
+            }
+            TreeMap<Integer, Integer> map = tierFeatureMap.get(tier);
+            Integer feature = map.get(idKey);
+            if (feature == null)
+            {
+               while (tierFeatureDispenser.size() <= tier)
                {
-                  if (features.get(p) == n)
+                  tierFeatureDispenser.add(0);
+               }
+               feature = tierFeatureDispenser.get(tier);
+               if (feature == NUM_DIMENSIONS)
+               {
+                  System.err.println("Cannot encode features");
+                  System.exit(1);
+               }
+               tierFeatureDispenser.set(tier, feature + 1);
+               map.put(idKey, feature);
+            }
+            features.add(feature);
+         }
+         else
+         {
+            SplittableRandom r = new SplittableRandom(idString.hashCode());
+            for (int i = 0; i < NUM_FEATURES; i++)
+            {
+               int j = 0;
+               int k = 100;
+               for ( ; j < k; j++)
+               {
+                  int n = r.nextInt(NUM_DIMENSIONS);
+                  int p = 0;
+                  int q = features.size();
+                  for ( ; p < q; p++)
                   {
+                     if (features.get(p) == n)
+                     {
+                        break;
+                     }
+                  }
+                  if (p == q)
+                  {
+                     features.add(n);
                      break;
                   }
                }
-               if (p == q)
+               if (j == k)
                {
-                  features.add(n);
-                  break;
+                  System.err.println("Cannot encode features");
+                  System.exit(1);
                }
             }
-            if (j == k)
-            {
-               System.err.println("Cannot encode features");
-               System.exit(1);
-            }
+            Collections.sort(features);
          }
-         Collections.sort(features);
          return(features);
       }
    };
@@ -395,7 +458,7 @@ public class Mandala
 
       public ContextFeatures(ContextFeatures contextFeatures1, ContextFeatures contextFeatures2, int tier)
       {
-         features  = Causation.encodeFeatures(contextFeatures1.features, contextFeatures2.features);
+         features  = Causation.encodeFeatures(tier, contextFeatures1.features, contextFeatures2.features);
          value     = 1.0f;
          age       = 0;
          this.tier = tier;
@@ -1249,7 +1312,7 @@ public class Mandala
          emptyCausation            = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS);
          BOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 1);
          separatorCausation        = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 2);
-         EOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);         
+         EOScausation              = new TerminalCausation(NUM_CAUSATION_HIERARCHIES, NUM_TERMINALS + 3);
          for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
          {
             CausationPath path = new CausationPath(i, 0);
