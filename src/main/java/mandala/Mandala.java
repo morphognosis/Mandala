@@ -43,9 +43,6 @@ public class Mandala
    public static ArrayList<Integer> tierFeatureDispenser = new ArrayList<Integer>();
    public static ArrayList < TreeMap < Integer, Integer >> tierFeatureMap = new ArrayList < TreeMap < Integer, Integer >> ();
 
-   // Save/load file name.
-   public static String MANDALA_FILENAME = "mandala.dat";
-
    // Causation.
    public static class Causation
    {
@@ -624,23 +621,6 @@ public class Mandala
       "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
-      "      [-save [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
-      "  Load:\n" +
-      "    java mandala.Mandala\n" +
-      "      -load [<file name> (default=" + MANDALA_FILENAME + ")]\n" +
-      "      [-maxInterstitialTerminalSequence <length> (default=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE + ")]\n" +
-      "      [-exportCausationsGraph [<file name> (Graphviz dot format, default=" + CAUSATIONS_GRAPH_FILENAME + ")]\n" +
-      "          [-graphFormat \"tree\" | \"dag\" (default=" + GRAPH_FORMAT + ")]]\n" +
-      "      [-contextTierValueDurationType \"minimum\" | \"expected\" | \"maximum\" (default=" + TIER_VALUE_DURATION_TYPE + ")]\n" +
-      "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
-      "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
-      "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
-      "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
-      "      [-AttentionNeurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=" + ATTENTION_NEURONS + ")]\n" +
-      "      [-AttentionHeads <number of attention heads> (default=" + ATTENTION_HEADS + ")]\n" +
-      "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
-      "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
-      "      [-quiet]\n" +
       "  Copy memory task:\n" +
       "    java mandala.Mandala\n" +
       "      -copyTask <copy length> <number of characters> <number of strings>\n" +
@@ -664,40 +644,12 @@ public class Mandala
    // Main.
    public static void main(String[] args)
    {
-      boolean gotNew  = false;
-      boolean gotLoad = false;
-      boolean gotSave = false;
+      boolean gotNonCopy = false;
       boolean gotExportCausationsGraph = false;
       boolean gotGraphFormat           = false;
-      boolean gotDimensions            = false;
-      boolean gotFeatures = false;
-      boolean gotNonCopy  = false;
 
       for (int i = 0; i < args.length; i++)
       {
-         if (args[i].equals("-load"))
-         {
-            if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
-            {
-               i++;
-               MANDALA_FILENAME = args[i];
-            }
-            gotLoad    = true;
-            gotNonCopy = true;
-            continue;
-         }
-         if (args[i].equals("-save"))
-         {
-            if (((i + 1) < args.length) && !args[(i + 1)].startsWith("-"))
-            {
-               i++;
-               MANDALA_FILENAME = args[i];
-            }
-            gotSave    = true;
-            gotNew     = true;
-            gotNonCopy = true;
-            continue;
-         }
          if (args[i].equals("-numCausationHierarchies"))
          {
             i++;
@@ -722,7 +674,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew     = true;
             gotNonCopy = true;
             continue;
          }
@@ -750,7 +701,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew     = true;
             gotNonCopy = true;
             continue;
          }
@@ -778,7 +728,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew     = true;
             gotNonCopy = true;
             continue;
          }
@@ -806,7 +755,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew     = true;
             gotNonCopy = true;
             continue;
          }
@@ -861,7 +809,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotNew     = true;
             gotNonCopy = true;
             continue;
          }
@@ -889,7 +836,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotDimensions = true;
             continue;
          }
          if (args[i].equals("-numFeatures"))
@@ -916,7 +862,6 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            gotFeatures = true;
             continue;
          }
          if (args[i].equals("-exportCausationsGraph"))
@@ -1246,16 +1191,6 @@ public class Mandala
       }
 
       // Validate options.
-      if (gotLoad && gotNew)
-      {
-         System.err.println(Usage);
-         System.exit(1);
-      }
-      if (gotLoad && (gotSave || gotDimensions || gotFeatures))
-      {
-         System.err.println(Usage);
-         System.exit(1);
-      }
       if (copyTask && gotNonCopy)
       {
          System.err.println(Usage);
@@ -1338,104 +1273,28 @@ public class Mandala
          System.exit(0);
       }
 
-      // Load?
-      if (gotLoad)
+      // Generate causations.
+      randomizer           = new SplittableRandom(RANDOM_SEED);
+      causationHierarchies = new ArrayList < ArrayList < Causation >> ();
+      for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
       {
-         try
+         ArrayList<Causation> causations = new ArrayList<Causation>();
+         if (NUM_NONTERMINALS > 0)
          {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(MANDALA_FILENAME)));
-
-            // Load parameters.
-            NUM_CAUSATION_HIERARCHIES       = Utility.loadInt(reader);
-            NUM_NONTERMINALS                = Utility.loadInt(reader);
-            NUM_TERMINALS                   = Utility.loadInt(reader);
-            NUM_INTERSTITIAL_TERMINALS      = Utility.loadInt(reader);
-            TERMINAL_PRODUCTION_PROBABILITY = Utility.loadFloat(reader);
-            NUM_DIMENSIONS                  = Utility.loadInt(reader);
-            NUM_FEATURES = Utility.loadInt(reader);
-
-            // Load causations.
-            causationHierarchies = new ArrayList < ArrayList < Causation >> ();
-            for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
+            ArrayList<NonterminalCausation> nonterminalInstances = generateCausationHierarchy(i);
+            for (NonterminalCausation causation : nonterminalInstances)
             {
-               ArrayList<Causation> causations = new ArrayList<Causation>();
-               if (NUM_NONTERMINALS > 0)
+               if (causation != null)
                {
-                  ArrayList<NonterminalCausation> nonterminalInstances = new ArrayList<NonterminalCausation>();
-                  for (int j = 0; j < NUM_NONTERMINALS; j++)
-                  {
-                     nonterminalInstances.add(new NonterminalCausation(i, j));
-                  }
-                  ArrayList<TerminalCausation> terminalInstances = new ArrayList<TerminalCausation>();
-                  for (int j = 0; j < NUM_TERMINALS; j++)
-                  {
-                     terminalInstances.add(new TerminalCausation(i, j));
-                  }
-                  int k = Utility.loadInt(reader);
-                  for (int j = 0; j < k; j++)
-                  {
-                     int id = Utility.loadInt(reader);
-                     NonterminalCausation nonterminalCausation = nonterminalInstances.get(id);
-                     causations.add(nonterminalCausation);
-                     if (Utility.loadInt(reader) == 0)
-                     {
-                        for (int p = 0, q = Utility.loadInt(reader); p < q; p++)
-                        {
-                           NonterminalCausation child = nonterminalInstances.get(Utility.loadInt(reader));
-                           nonterminalCausation.children.add(child);
-                           child.parents.add(nonterminalCausation);
-                        }
-                     }
-                     else
-                     {
-                        for (int p = 0, q = Utility.loadInt(reader); p < q; p++)
-                        {
-                           TerminalCausation child = terminalInstances.get(Utility.loadInt(reader));
-                           nonterminalCausation.children.add(child);
-                           child.parents.add(nonterminalCausation);
-                        }
-                     }
-                  }
-               }
-               else if (NUM_TERMINALS > 0)
-               {
-                  causations.add(new TerminalCausation(i, 0));
-               }
-               causationHierarchies.add(causations);
-            }
-            reader.close();
-         }
-         catch (Exception e)
-         {
-            System.err.println("Error loading file " + MANDALA_FILENAME + ":" + e.getMessage());
-            System.exit(1);
-         }
-      }
-      else
-      {
-         // Generate causations.
-         randomizer           = new SplittableRandom(RANDOM_SEED);
-         causationHierarchies = new ArrayList < ArrayList < Causation >> ();
-         for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
-         {
-            ArrayList<Causation> causations = new ArrayList<Causation>();
-            if (NUM_NONTERMINALS > 0)
-            {
-               ArrayList<NonterminalCausation> nonterminalInstances = generateCausationHierarchy(i);
-               for (NonterminalCausation causation : nonterminalInstances)
-               {
-                  if (causation != null)
-                  {
-                     causations.add((Causation)causation);
-                  }
+                  causations.add((Causation)causation);
                }
             }
-            else if (NUM_TERMINALS > 0)
-            {
-               causations.add(new TerminalCausation(i, 0));
-            }
-            causationHierarchies.add(causations);
          }
+         else if (NUM_TERMINALS > 0)
+         {
+            causations.add(new TerminalCausation(i, 0));
+         }
+         causationHierarchies.add(causations);
       }
 
       // Print parameters and causations.
@@ -1460,7 +1319,6 @@ public class Mandala
          System.out.println("ATTENTION_HEADS=" + ATTENTION_HEADS);
          System.out.println("ATTENTION_EPOCHS=" + ATTENTION_EPOCHS);
          System.out.println("RANDOM_SEED=" + RANDOM_SEED);
-         System.out.println("MANDALA_FILENAME=" + MANDALA_FILENAME);
          printCausations();
       }
 
@@ -1485,64 +1343,6 @@ public class Mandala
       learnCausationsNN(NN_DATASET_FILENAME);
       learnCausationsRNN(RNN_DATASET_FILENAME);
       learnCausationsAttention(RNN_DATASET_FILENAME);
-
-      // Save?
-      if (gotSave)
-      {
-         try
-         {
-            System.setProperty("line.separator", "\n");
-            FileWriter  fileWriter = new FileWriter(MANDALA_FILENAME);
-            PrintWriter writer     = new PrintWriter(fileWriter);
-
-            // Save parameters.
-            Utility.saveInt(writer, NUM_CAUSATION_HIERARCHIES, "NUM_CAUSATION_HIERARCHIES");
-            Utility.saveInt(writer, NUM_NONTERMINALS, "NUM_NONTERMINALS");
-            Utility.saveInt(writer, NUM_TERMINALS, "NUM_TERMINALS");
-            Utility.saveInt(writer, NUM_INTERSTITIAL_TERMINALS, "NUM_INTERSTITIAL_TERMINALS");
-            Utility.saveFloat(writer, TERMINAL_PRODUCTION_PROBABILITY, "TERMINAL_PRODUCTION_PROBABILITY");
-            Utility.saveInt(writer, NUM_DIMENSIONS, "NUM_DIMENSIONS");
-            Utility.saveInt(writer, NUM_FEATURES, "NUM_FEATURES");
-
-            // Save causations.
-            for (int i = 0; i < NUM_CAUSATION_HIERARCHIES; i++)
-            {
-               ArrayList<Causation> causations = causationHierarchies.get(i);
-               if (NUM_NONTERMINALS > 0)
-               {
-                  Utility.saveInt(writer, causations.size(), "number of nonterminals, hierarchy=" + i);
-                  for (int j = 0, k = causations.size(); j < k; j++)
-                  {
-                     NonterminalCausation nonterminalCausation = (NonterminalCausation)causations.get(j);
-                     Utility.saveInt(writer, nonterminalCausation.id, "nonterminalCausation id");
-                     for (int p = 0, q = nonterminalCausation.children.size(); p < q; p++)
-                     {
-                        Causation child = nonterminalCausation.children.get(p);
-                        if (p == 0)
-                        {
-                           if (child instanceof NonterminalCausation)
-                           {
-                              Utility.saveInt(writer, 0, "nonterminal children type");
-                           }
-                           else
-                           {
-                              Utility.saveInt(writer, 1, "terminal children type");
-                           }
-                           Utility.saveInt(writer, nonterminalCausation.children.size(), "children size");
-                        }
-                        Utility.saveInt(writer, child.id, "child id");
-                     }
-                  }
-               }
-            }
-            writer.close();
-         }
-         catch (Exception e)
-         {
-            System.err.println("Error saving to file " + MANDALA_FILENAME + ":" + e.getMessage());
-            System.exit(1);
-         }
-      }
 
       System.exit(0);
    }

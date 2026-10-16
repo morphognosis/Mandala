@@ -50,23 +50,6 @@ Usage:
       [-AttentionEpochs <number of epochs> (default=500)]
       [-randomSeed <seed> (default=45)]
       [-quiet]
-      [-save [<file name> (default=mandala.dat)]
-  Load:
-    java mandala.Mandala
-      -load [<file name> (default=mandala.dat)]
-      [-maxInterstitialTerminalSequence <length> (default=10)]
-      [-exportCausationsGraph [<file name> (Graphviz dot format, default=mandala_causations.dot)]
-          [-graphFormat "tree" | "dag" (default=tree)]]
-      [-contextTierValueDurationType "minimum" | "expected" | "maximum" (default=maximum)]
-      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=128,128,128)]
-      [-NNepochs <number of epochs> (default=500)]
-      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=128)]
-      [-RNNepochs <number of epochs> (default=500)]
-      [-AttentionNeurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=128)]
-      [-AttentionHeads <number of attention heads> (default=4)]
-      [-AttentionEpochs <number of epochs> (default=500)]
-      [-randomSeed <seed> (default=45)]
-      [-quiet]
   Copy memory task:
     java mandala.Mandala
       -copyTask <copy length> <number of characters> <number of strings>
