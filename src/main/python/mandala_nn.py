@@ -17,23 +17,21 @@ import sys, getopt
 
 # Parameters
 n_dimensions = 128
-n_features = 6
+n_features = 1
 n_neurons = '128,128,128'
 n_epochs = 500
+threshold = 0.75
 
 # Results file name
 results_filename = 'mandala_nn_results.json'
-
-# Prediction significance threshold
-threshold = 0.5
 
 # Verbosity
 verbose = True
 
 # Get options
-usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'mandala_nn.py [--dimensions <number of dimensions> (default=' + str(n_dimensions) + ')] [--features <number of features> (default=' + str(n_features) + ')] [--threshold <activation threshold> (default=' + str(threshold) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of neurons per layer)] [--epochs <epochs>] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hd:f:n:e:r:q",["help","dimensions=","features=","neurons=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hd:f:t:n:e:r:q",["help","dimensions=","features=","threshold=","neurons=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -45,6 +43,8 @@ for opt, arg in opts:
      n_dimensions = int(arg)
   elif opt in ("-f", "--features"):
      n_features = int(arg)
+  elif opt in ("-t", "--threshold"):
+     threshold = float(arg)
   elif opt in ("-n", "--neurons"):
      n_neurons = arg
   elif opt in ("-e", "--epochs"):
@@ -125,9 +125,7 @@ def summarize_features(title, vals):
         maxval = max(idxs, key=abs)
         if maxval < 0:
             maxval = -maxval
-        n = int(maxval / n_dimensions)
-        if maxval % n_dimensions > 0:
-            n = n + 1
+        n = int(maxval / n_dimensions) + 1
         lists = []
         desc = title + ': ['
         for j in range(n):
@@ -214,6 +212,8 @@ for i in range(X_train_shape[0]):
     if i in y_train_path_begin:
         pathnum += 1
         stepnum = 0
+        if verbose:
+            print('validate: begin path', pathnum)
     if verbose:
         xstr,xidxs = summarize_features('X', X_train_seq[i])
         ystr,yidxs = summarize_features('y', y_train_seq[i])
