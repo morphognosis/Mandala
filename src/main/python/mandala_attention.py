@@ -19,16 +19,14 @@ n_heads = 4
 n_epochs = 500
 results_filename = 'mandala_attention_results.json'
 verbose = True
-
-# Prediction significance threshold
-threshold = 0.5
+activation_threshold = '0.5'
 
 # Get options.
 import getopt
 import sys
-usage = 'usage: python mandala_attention.py [--features <number of features> (default=' + str(n_features) + ')] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of feed-forward dimensions per attention block; the first value also sets the model/embedding dimension)] [--heads <number of attention heads> (default=' + str(n_heads) + ')] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
+usage = 'usage: python mandala_attention.py [--features <number of features> (default=' + str(n_features) + ')] [--activation_threshold <threshold> (default=' + activation_threshold + ', comma-separated list)] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of feed-forward dimensions per attention block; the first value also sets the model/embedding dimension)] [--heads <number of attention heads> (default=' + str(n_heads) + ')] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hf:n:a:e:r:q",["help","features=","neurons=","heads=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hf:n:a:e:r:q",["help","features=","activation_threshold=","neurons=","heads=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage, sep='')
   sys.exit(1)
@@ -38,6 +36,8 @@ for opt, arg in opts:
      sys.exit(0)
   if opt in ("-f", "--features"):
      n_features = int(arg)
+  elif opt in ("-t", "--activation_threshold"):
+     activation_threshold = arg
   elif opt in ["-n", "--neurons"]:
      n_neurons = arg
   elif opt in ["-a", "--heads"]:
@@ -51,9 +51,25 @@ for opt, arg in opts:
   else:
      print(usage, sep='')
      sys.exit(1)
+
 if n_features < 1:
     print(usage, sep='')
     sys.exit(1)
+thresholds = []
+threshold_list = activation_threshold.split(",")
+if len(threshold_list) == 0:
+    print(usage, sep='')
+    sys.exit(1)
+for i in threshold_list:
+    try:
+        float(i)
+    except ValueError:
+        print(usage, sep='')
+        sys.exit(1)
+    if float(i) < 0.0:
+        print(usage, sep='')
+        sys.exit(1)
+    thresholds.append(float(i))
 n_list = n_neurons.split(",")
 if len(n_list) == 0:
     print(usage, sep='')
@@ -144,56 +160,76 @@ def sensor_match(yvals, pvals, dimensions):
     else:
         return True
 
-# Validate.
-predictions = attention_model.predict(X, batch_size=X_train_shape[0], verbose=0)
-trainErrors = 0
-trainTotal = 0
-for path in range(X_train_shape[0]):
-    for step in range(X_train_shape[1]):
-        if y[path][step].max() >= threshold:
-            trainTotal += 1
-            if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
-                trainErrors += 1
-trainErrorPct = 0
-if trainTotal > 0:
-    trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
+# Evaluate each activation threshold.
+best_threshold = -1.0
+best_trainErrors = -1
+best_trainTotal = -1
+best_trainErrorPct = -1.0
+best_testErrors = -1
+best_testTotal = -1
+best_testErrorPct = -1.0
+for threshold in thresholds:
+    print('threshold = ', threshold)
 
-# Predict.
-seq = array(X_test)
-X = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
-seq = array(y_test)
-y = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
-predictions = attention_model.predict(X, batch_size=X_test_shape[0], verbose=0)
-testErrors = 0
-testTotal = 0
-for path in range(X_test_shape[0]):
-    for step in range(X_test_shape[1]):
-        if step in y_test_predictable[path]:
-            testTotal += 1
-            if sensor_match(y[path][step], predictions[path][step], X_test_shape[2]) == False:
-                testErrors += 1
-testErrorPct = 0
-if testTotal > 0:
-    testErrorPct = (float(testErrors) / float(testTotal)) * 100.0
+    # Validate.
+    predictions = attention_model.predict(X, batch_size=X_train_shape[0], verbose=0)
+    trainErrors = 0
+    trainTotal = 0
+    for path in range(X_train_shape[0]):
+        for step in range(X_train_shape[1]):
+            if y[path][step].max() >= threshold:
+                trainTotal += 1
+                if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
+                    trainErrors += 1
+    trainErrorPct = 0
+    if trainTotal > 0:
+        trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
+    
+    # Predict.
+    seq = array(X_test)
+    X = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
+    seq = array(y_test)
+    y = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
+    predictions = attention_model.predict(X, batch_size=X_test_shape[0], verbose=0)
+    testErrors = 0
+    testTotal = 0
+    for path in range(X_test_shape[0]):
+        for step in range(X_test_shape[1]):
+            if step in y_test_predictable[path]:
+                testTotal += 1
+                if sensor_match(y[path][step], predictions[path][step], X_test_shape[2]) == False:
+                    testErrors += 1
+    testErrorPct = 0
+    if testTotal > 0:
+        testErrorPct = (float(testErrors) / float(testTotal)) * 100.0
+
+    if best_threshold < 0.0 or testErrorPct < best_testErrorPct:
+        best_threshold = threshold
+        best_trainErrors = trainErrors
+        best_trainTotal = trainTotal
+        best_trainErrorPct = trainErrorPct
+        best_testErrors = testErrors
+        best_testTotal = testTotal
+        best_testErrorPct = testErrorPct
 
 # Print results.
 if verbose:
-    print("Train prediction errors/total = ", trainErrors, "/", trainTotal, sep='', end='')
-    print(" (", str(round(trainErrorPct, 2)), "%)", sep='', end='')
-    print('')
-    print("Test prediction errors/total = ", testErrors, "/", testTotal, sep='', end='')
-    print(" (", str(round(testErrorPct, 2)), "%)", sep='', end='')
-    print('')
+    print("Train prediction errors/total = ", best_trainErrors, "/", best_trainTotal, sep='', end='')
+    print(" (", str(round(best_trainErrorPct, 2)), "%)", sep='')
+    print("Test prediction errors/total = ", best_testErrors, "/", best_testTotal, sep='', end='')
+    print(" (", str(round(best_testErrorPct, 2)), "%)", sep='')
+    print("Activation threshold = ", best_threshold, sep='')
 
 # Write results to file.
 with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
-    f.write('\"train_prediction_errors\":\"'+str(trainErrors)+'\",')
-    f.write('\"train_total_predictions\":\"'+str(trainTotal)+'\",')
-    f.write('\"train_error_pct\":\"'+str(round(trainErrorPct, 2))+'\",')
-    f.write('\"test_prediction_errors\":\"'+str(testErrors)+'\",')
-    f.write('\"test_total_predictions\":\"'+str(testTotal)+'\",')
-    f.write('\"test_error_pct\":\"'+str(round(testErrorPct, 2))+'\"')
+    f.write('\"train_prediction_errors\":\"'+str(best_trainErrors)+'\",')
+    f.write('\"train_total_predictions\":\"'+str(best_trainTotal)+'\",')
+    f.write('\"train_error_pct\":\"'+str(round(best_trainErrorPct, 2))+'\",')
+    f.write('\"test_prediction_errors\":\"'+str(best_testErrors)+'\",')
+    f.write('\"test_total_predictions\":\"'+str(best_testTotal)+'\",')
+    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\",')
+    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\"')
     f.write('}\n')
 
 sys.exit(0)

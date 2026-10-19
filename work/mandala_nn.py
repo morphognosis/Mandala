@@ -56,6 +56,7 @@ for opt, arg in opts:
   else:
      print(usage)
      sys.exit(1)
+
 if n_dimensions < 1:
     print(usage, sep='')
     sys.exit(1)
@@ -65,7 +66,6 @@ if n_features < 1:
 if n_features > n_dimensions:
     print(usage, sep='')
     sys.exit(1)
-
 thresholds = []
 threshold_list = activation_threshold.split(",")
 if len(threshold_list) == 0:
