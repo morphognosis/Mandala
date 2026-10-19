@@ -225,7 +225,7 @@ best_testErrors = -1
 best_testTotal = -1
 best_testErrorPct = -1.0
 for threshold in thresholds:
-    print('threshold = ', threshold)
+    print('threshold =', threshold)
 
     # Validate
     if verbose:

@@ -107,10 +107,10 @@ if verbose:
 # Train.
 from numpy import array
 seq = array(X_train)
-X = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
+X_train_seq = seq.reshape(X_train_shape[0], X_train_shape[1], X_train_shape[2])
 seq = array(y_train)
-y = seq.reshape(y_train_shape[0], y_train_shape[1], y_train_shape[2])
-rnn_model.fit(X, y, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
+y_train_seq = seq.reshape(y_train_shape[0], y_train_shape[1], y_train_shape[2])
+rnn_model.fit(X_train_seq, y_train_seq, epochs=n_epochs, batch_size=X_train_shape[0], verbose=int(verbose))
 
 # Sensor features match?
 def sensor_match(yvals, pvals, dimensions):
@@ -142,17 +142,17 @@ best_testErrors = -1
 best_testTotal = -1
 best_testErrorPct = -1.0
 for threshold in thresholds:
-    print('threshold = ', threshold)
+    print('threshold =', threshold)
 
     # Validate.
-    predictions = rnn_model.predict(X, batch_size=X_train_shape[0], verbose=0)
+    predictions = rnn_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
     trainErrors = 0
     trainTotal = 0
     for path in range(X_train_shape[0]):
         for step in range(X_train_shape[1]):
-            if y[path][step].max() >= threshold:
+            if y_train_seq[path][step].max() >= threshold:
                 trainTotal += 1
-                if sensor_match(y[path][step], predictions[path][step], X_train_shape[2]) == False:
+                if sensor_match(y_train_seq[path][step], predictions[path][step], X_train_shape[2]) == False:
                     trainErrors += 1
     trainErrorPct = 0
     if trainTotal > 0:
