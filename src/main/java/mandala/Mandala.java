@@ -512,17 +512,9 @@ public class Mandala
                value = 0.0f;
                return(true);
             }
-            else
-            {
-               age++;
-               return(false);
-            }
          }
-         else
-         {
-            value = 0.0f;
-            return(true);
-         }
+         age++;
+         return(false);
       }
 
 

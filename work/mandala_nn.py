@@ -114,7 +114,7 @@ prediction_model.add(Dense(n_hidden[0], activation='relu'))
 for i in range(1, len(n_hidden)):
     prediction_model.add(Dense(n_hidden[i], activation='relu'))
 prediction_model.add(Dense(y_train_shape[1], activation='tanh'))
-prediction_model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
+prediction_model.compile(loss='mse', optimizer='adam')
 if verbose:
     prediction_model.summary()
 
@@ -139,10 +139,7 @@ def summarize_features(title, vals):
         desc = title + ': []'
     else:
         maxval = max(idxs, key=abs)
-        if maxval < 0:
-            maxval = -maxval
         n = int(maxval / n_dimensions) + 1
-        idxlists = []
         desc = title + ': ['
         for j in range(n):
             minval = n_dimensions * j
@@ -156,7 +153,6 @@ def summarize_features(title, vals):
                     idxliststr.append(str(idx - (n_dimensions * j)))
                 else:
                     idxliststr.append(('-' + str(idx - (n_dimensions * j))))
-            idxlists.append(idxlist)
             if j == 0:
                 desc += 'sense='
             else:
@@ -164,8 +160,7 @@ def summarize_features(title, vals):
             desc += str(idxliststr)
         desc += ']'
         desc=desc.replace("'","")
-        idxs = idxlists
-    return desc, idxs
+    return desc
 
 # Sensor features match?
 def sensor_match(avals, bvals):
@@ -246,9 +241,9 @@ for threshold in thresholds:
             if verbose:
                 print('validate: begin path', pathnum)
         if verbose:
-            xstr,xidxs = summarize_features('X', X_train_seq[i])
-            ystr,yidxs = summarize_features('y', y_train_seq[i])
-            pstr,pidxs = summarize_features('prediction', predictions[i])
+            xstr = summarize_features('X', X_train_seq[i])
+            ystr = summarize_features('y', y_train_seq[i])
+            pstr = summarize_features('prediction', predictions[i])
             print('validate: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr, sep='',end='')
         stepnum += 1
         trainTotal += 1
@@ -333,16 +328,13 @@ for threshold in thresholds:
         yi = y[i].reshape(1, y_test_shape[1])
         prediction = prediction_model(Xi, training=False).numpy()
         if verbose:
-            xstr,xidxs = summarize_features('X', Xi[0])
-            ystr,yidxs = summarize_features('y', yi[0])
-            pstr,pidxs = summarize_features('prediction', prediction[0])
+            xstr = summarize_features('X', Xi[0])
+            ystr = summarize_features('y', yi[0])
+            pstr = summarize_features('prediction', prediction[0])
             print('predict: path = ',pathnum,', step = ',stepnum,', ',xstr,', ',ystr,', ',pstr, sep='', end='')
         stepnum += 1
         if i in y_test_prediction:
             testTotal += 1
-            if verbose:
-                mse, accuracy = prediction_model.evaluate(Xi, yi, verbose=0)
-                print(', MSE = ', mse, ', accuracy = ', accuracy, sep='', end='')
         if prediction_valid_count == 0:
             if sensor_match(yi[0][0:n_dimensions], prediction[0][0:n_dimensions]) == True:
                 prediction_valid_count = 2
