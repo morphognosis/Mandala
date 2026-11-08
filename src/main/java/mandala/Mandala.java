@@ -36,8 +36,8 @@ public class Mandala
    public static float TERMINAL_PRODUCTION_PROBABILITY    = 0.25f;
 
    // Sizes.
-   public static int NUM_DIMENSIONS = 128;
-   public static int NUM_FEATURES   = 6;
+   public static int NUM_DIMENSIONS = 256;
+   public static int NUM_FEATURES   = 1;
 
    // Feature encoding.
    public static ArrayList<Integer> tierFeatureDispenser = new ArrayList<Integer>();
@@ -442,6 +442,7 @@ public class Mandala
       public float              value;
       public int                age;
       public int                tier;
+      public boolean            valid;
 
       // Constructors.
       public ContextFeatures(Causation causation, int tier)
@@ -450,6 +451,7 @@ public class Mandala
          value     = 1.0f;
          age       = 0;
          this.tier = tier;
+         valid     = true;
       }
 
 
@@ -459,6 +461,7 @@ public class Mandala
          value     = 1.0f;
          age       = 0;
          this.tier = tier;
+         valid     = true;
       }
 
 
@@ -498,7 +501,7 @@ public class Mandala
 
 
       // Expire value.
-      // Return true if not expired, else false.
+      // Return true if expired, else false.
       public boolean expire()
       {
          if (tierValueDurations != null)
@@ -507,18 +510,18 @@ public class Mandala
             if (age >= duration)
             {
                value = 0.0f;
-               return(false);
+               return(true);
             }
             else
             {
                age++;
-               return(true);
+               return(false);
             }
          }
          else
          {
             value = 0.0f;
-            return(false);
+            return(true);
          }
       }
 
@@ -535,7 +538,7 @@ public class Mandala
                System.out.print(",");
             }
          }
-         System.out.println(", tier=" + tier + ", value=" + value + ", age=" + age);
+         System.out.println(", tier=" + tier + ", value=" + value + ", age=" + age + ", valid=" + valid);
       }
    };
    public static ArrayList<ContextFeatures> contextTiers;
@@ -545,41 +548,44 @@ public class Mandala
    public static String RNN_DATASET_FILENAME = "mandala_rnn_dataset.py";
 
    // Learners.
-   public static String NN_FILENAME             = "mandala_nn.py";
-   public static String NN_ACTIVATION_THRESHOLD = "0.75";
-   public static String NN_NEURONS                     = "128,128,128";
-   public static int    NN_EPOCHS                      = 500;
-   public static String NN_RESULTS_FILENAME            = "mandala_nn_results.json";
-   public static String RNN_FILENAME                   = "mandala_rnn.py";
-   public static String RNN_ACTIVATION_THRESHOLD       = "0.5";
-   public static String RNN_NEURONS                    = "128";
-   public static int    RNN_EPOCHS                     = 500;
-   public static String RNN_RESULTS_FILENAME           = "mandala_rnn_results.json";
-   public static String ATTENTION_FILENAME             = "mandala_attention.py";
-   public static String ATTENTION_ACTIVATION_THRESHOLD = "0.5";
-   public static String ATTENTION_NEURONS              = "128";
-   public static int    ATTENTION_HEADS                = 4;
-   public static int    ATTENTION_EPOCHS               = 500;
-   public static String ATTENTION_RESULTS_FILENAME     = "mandala_attention_results.json";
+   public static String NN_FILENAME                       = "mandala_nn.py";
+   public static String NN_ACTIVATION_THRESHOLD           = "0.4";
+   public static String NN_COPY_TASK_ACTIVATION_THRESHOLD = "0.1";
+   public static String NN_NEURONS                               = "1024,1024,1024";
+   public static int    NN_EPOCHS                                = 500;
+   public static String NN_RESULTS_FILENAME                      = "mandala_nn_results.json";
+   public static String RNN_FILENAME                             = "mandala_rnn.py";
+   public static String RNN_ACTIVATION_THRESHOLD                 = "0.35";
+   public static String RNN_COPY_TASK_ACTIVATION_THRESHOLD       = "0.35";
+   public static String RNN_NEURONS                              = "1024";
+   public static int    RNN_EPOCHS                               = 500;
+   public static String RNN_RESULTS_FILENAME                     = "mandala_rnn_results.json";
+   public static String ATTENTION_FILENAME                       = "mandala_attention.py";
+   public static String ATTENTION_ACTIVATION_THRESHOLD           = "0.12";
+   public static String ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD = "0.25";
+   public static String ATTENTION_NEURONS                        = "1024";
+   public static int    ATTENTION_HEADS                          = 4;
+   public static int    ATTENTION_EPOCHS                         = 500;
+   public static String ATTENTION_RESULTS_FILENAME               = "mandala_attention_results.json";
 
    // Learning results.
    public static class LearningResults
    {
+      public float activation_threshold;
       public int   train_prediction_errors;
       public int   train_total_predictions;
       public float train_error_pct;
       public int   test_prediction_errors;
       public int   test_total_predictions;
       public float test_error_pct;
-      public float activation_threshold;
 
       public void print()
       {
+         System.out.println("Activation threshold = " + activation_threshold);
          System.out.println("Train prediction errors/total = " + train_prediction_errors + "/" + train_total_predictions);
          System.out.println(" (" + train_error_pct + "%)");
          System.out.print("Test prediction errors/total = " + test_prediction_errors + "/" + test_total_predictions);
          System.out.println(" (" + test_error_pct + "%)");
-         System.out.println("Activation threshold = " + activation_threshold);
       }
    };
 
@@ -634,13 +640,13 @@ public class Mandala
       "      -copyTask <copy length> <number of characters> <number of strings>\n" +
       "      [-numDimensions <quantity> (default=" + NUM_DIMENSIONS + ")]\n" +
       "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
-      "      [-NNactivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + NN_ACTIVATION_THRESHOLD + ")]\n" +
+      "      [-NNactivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + NN_COPY_TASK_ACTIVATION_THRESHOLD + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
       "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
-      "      [-RNNactivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + RNN_ACTIVATION_THRESHOLD + ")]\n" +
+      "      [-RNNactivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + RNN_COPY_TASK_ACTIVATION_THRESHOLD + ")]\n" +
       "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
       "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
-      "      [-AttentionActivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + ATTENTION_ACTIVATION_THRESHOLD + ")]\n" +
+      "      [-AttentionActivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD + ")]\n" +
       "      [-AttentionNeurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=" + ATTENTION_NEURONS + ")]\n" +
       "      [-AttentionHeads <number of attention heads> (default=" + ATTENTION_HEADS + ")]\n" +
       "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
@@ -656,8 +662,11 @@ public class Mandala
    public static void main(String[] args)
    {
       boolean gotNonCopy = false;
-      boolean gotExportCausationsGraph = false;
-      boolean gotGraphFormat           = false;
+      boolean gotExportCausationsGraph     = false;
+      boolean gotGraphFormat               = false;
+      String  NNactivationThreshold        = null;
+      String  RNNactivationThreshold       = null;
+      String  AttentionActivationThreshold = null;
 
       for (int i = 0; i < args.length; i++)
       {
@@ -942,8 +951,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            NN_ACTIVATION_THRESHOLD = args[i].replaceAll("\\s", "");
-            if (NN_ACTIVATION_THRESHOLD.isEmpty())
+            NNactivationThreshold = args[i].replaceAll("\\s", "");
+            if (NNactivationThreshold.isEmpty())
             {
                System.err.println("Invalid NNactivationThreshold option");
                System.err.println(Usage);
@@ -1004,8 +1013,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            RNN_ACTIVATION_THRESHOLD = args[i].replaceAll("\\s", "");
-            if (RNN_ACTIVATION_THRESHOLD.isEmpty())
+            RNNactivationThreshold = args[i].replaceAll("\\s", "");
+            if (RNNactivationThreshold.isEmpty())
             {
                System.err.println("Invalid RNNactivationThreshold option");
                System.err.println(Usage);
@@ -1066,8 +1075,8 @@ public class Mandala
                System.err.println(Usage);
                System.exit(1);
             }
-            ATTENTION_ACTIVATION_THRESHOLD = args[i].replaceAll("\\s", "");
-            if (ATTENTION_ACTIVATION_THRESHOLD.isEmpty())
+            AttentionActivationThreshold = args[i].replaceAll("\\s", "");
+            if (AttentionActivationThreshold.isEmpty())
             {
                System.err.println("Invalid AttentionActivationThreshold option");
                System.err.println(Usage);
@@ -1285,6 +1294,19 @@ public class Mandala
       // Copy memory task?
       if (copyTask)
       {
+         if (NNactivationThreshold != null)
+         {
+            NN_COPY_TASK_ACTIVATION_THRESHOLD = NNactivationThreshold;
+         }
+         if (RNNactivationThreshold != null)
+         {
+            RNN_COPY_TASK_ACTIVATION_THRESHOLD = RNNactivationThreshold;
+         }
+         if (AttentionActivationThreshold != null)
+         {
+            ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD = AttentionActivationThreshold;
+         }
+
          // Print options and parameters.
          if (VERBOSE)
          {
@@ -1294,10 +1316,13 @@ public class Mandala
             System.out.println("number of strings=" + numCopyStrings);
             System.out.println("parameters:");
             System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
+            System.out.println("NN_COPY_TASK_ACTIVATION_THRESHOLD=" + NN_COPY_TASK_ACTIVATION_THRESHOLD);
             System.out.println("NN_NEURONS=" + NN_NEURONS);
             System.out.println("NN_EPOCHS=" + NN_EPOCHS);
+            System.out.println("RNN_COPY_TASK_ACTIVATION_THRESHOLD=" + RNN_COPY_TASK_ACTIVATION_THRESHOLD);
             System.out.println("RNN_NEURONS=" + RNN_NEURONS);
             System.out.println("RNN_EPOCHS=" + RNN_EPOCHS);
+            System.out.println("ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD=" + ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD);
             System.out.println("ATTENTION_NEURONS=" + ATTENTION_NEURONS);
             System.out.println("ATTENTION_HEADS=" + ATTENTION_HEADS);
             System.out.println("ATTENTION_EPOCHS=" + ATTENTION_EPOCHS);
@@ -1362,6 +1387,19 @@ public class Mandala
          causationHierarchies.add(causations);
       }
 
+      if (NNactivationThreshold != null)
+      {
+         NN_ACTIVATION_THRESHOLD = NNactivationThreshold;
+      }
+      if (RNNactivationThreshold != null)
+      {
+         RNN_ACTIVATION_THRESHOLD = RNNactivationThreshold;
+      }
+      if (AttentionActivationThreshold != null)
+      {
+         ATTENTION_ACTIVATION_THRESHOLD = AttentionActivationThreshold;
+      }
+
       // Print parameters and causations.
       if (VERBOSE)
       {
@@ -1376,10 +1414,13 @@ public class Mandala
          System.out.println("MAX_INTERSTITIAL_TERMINAL_SEQUENCE=" + MAX_INTERSTITIAL_TERMINAL_SEQUENCE);
          System.out.println("CAUSATIONS_GRAPH_FILENAME=" + CAUSATIONS_GRAPH_FILENAME + ", GRAPH_FORMAT=" + GRAPH_FORMAT);
          System.out.println("TIER_VALUE_DURATION_TYPE=" + TIER_VALUE_DURATION_TYPE);
+         System.out.println("NN_ACTIVATION_THRESHOLD=" + NN_ACTIVATION_THRESHOLD);
          System.out.println("NN_NEURONS=" + NN_NEURONS);
          System.out.println("NN_EPOCHS=" + NN_EPOCHS);
+         System.out.println("RNN_ACTIVATION_THRESHOLD=" + RNN_ACTIVATION_THRESHOLD);
          System.out.println("RNN_NEURONS=" + RNN_NEURONS);
          System.out.println("RNN_EPOCHS=" + RNN_EPOCHS);
+         System.out.println("ATTENTION_ACTIVATION_THRESHOLD=" + ATTENTION_ACTIVATION_THRESHOLD);
          System.out.println("ATTENTION_NEURONS=" + ATTENTION_NEURONS);
          System.out.println("ATTENTION_HEADS=" + ATTENTION_HEADS);
          System.out.println("ATTENTION_EPOCHS=" + ATTENTION_EPOCHS);
@@ -1989,7 +2030,6 @@ public class Mandala
             }
             ArrayList<Float> X_train_step = new ArrayList<Float>();
             ArrayList<Float> y_train_step = new ArrayList<Float>();
-            ArrayList < ArrayList < Float >> X_contexts = new ArrayList < ArrayList < Float >> ();
             for (int t = 0; t < maxTiers; t++)
             {
                if (t == 0)
@@ -2013,7 +2053,6 @@ public class Mandala
                      System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> X_context = getTierContext(t - 1);
-                  X_contexts.add(X_context);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      X_train_step.add(X_context.get(q));
@@ -2044,10 +2083,9 @@ public class Mandala
                      System.out.println("get tier context for y, terminal id=" + yterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> y_context = getTierContext(t - 1);
-                  ArrayList<Float> X_context = X_contexts.get(t - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     y_train_step.add(y_context.get(q) - X_context.get(q));
+                     y_train_step.add(y_context.get(q));
                   }
                }
             }
@@ -2513,9 +2551,20 @@ public class Mandala
          {
             contextFeatures.print();
          }
-         for (int i : contextFeatures.features)
+         if (contextFeatures.valid)
          {
-            features.set(i, contextFeatures.value);
+            for (int i : contextFeatures.features)
+            {
+               features.set(i, contextFeatures.value);
+            }
+         }
+         else
+         {
+            for (int i : contextFeatures.features)
+            {
+               features.set(i, -1.0f);
+            }
+            contextTiers.set(tier, null);
          }
       }
       return(features);
@@ -2525,33 +2574,34 @@ public class Mandala
    // Update feature contexts.
    static void updateContexts(TerminalCausation causation)
    {
+      // Add contexts.
+      ContextFeatures contextFeatures1 = new ContextFeatures(causation, 0);
+
+      for (int i = 0, j = contextTiers.size(); i < j; i++)
+      {
+         ContextFeatures contextFeatures2 = contextTiers.get(i);
+         if (contextFeatures2 != null)
+         {
+            contextFeatures1       = new ContextFeatures(contextFeatures1, contextFeatures2, i + 1);
+            contextFeatures2.valid = false;
+         }
+         else
+         {
+            contextTiers.set(i, contextFeatures1);
+            break;
+         }
+      }
+
       // Expire contexts.
       for (int i = 0, j = contextTiers.size(); i < j; i++)
       {
          ContextFeatures contextFeatures = contextTiers.get(i);
          if (contextFeatures != null)
          {
-            if (!contextFeatures.expire())
+            if (contextFeatures.expire())
             {
-               contextTiers.set(i, null);
+               contextFeatures.valid = false;
             }
-         }
-      }
-
-      // Add contexts.
-      ContextFeatures contextFeatures1 = new ContextFeatures(causation, 0);
-      for (int i = 0, j = contextTiers.size(); i < j; i++)
-      {
-         ContextFeatures contextFeatures2 = contextTiers.get(i);
-         if (contextFeatures2 != null)
-         {
-            contextTiers.set(i, null);
-            contextFeatures1 = new ContextFeatures(contextFeatures1, contextFeatures2, i + 1);
-         }
-         else
-         {
-            contextTiers.set(i, contextFeatures1);
-            break;
          }
       }
    }
@@ -3038,7 +3088,6 @@ public class Mandala
          }
          ArrayList<Float> X_train_step = new ArrayList<Float>();
          ArrayList<Float> y_train_step = new ArrayList<Float>();
-         ArrayList < ArrayList < Float >> X_contexts = new ArrayList < ArrayList < Float >> ();
          for (int t = 0; t < maxTiers; t++)
          {
             if (t == 0)
@@ -3062,7 +3111,6 @@ public class Mandala
                   System.out.println("get tier context for X, terminal id=" + BOScausation.id + ", tier=" + (t - 1) + ", step=" + step);
                }
                ArrayList<Float> X_context = getTierContext(t - 1);
-               X_contexts.add(X_context);
                for (int q = 0; q < NUM_DIMENSIONS; q++)
                {
                   X_train_step.add(X_context.get(q));
@@ -3093,10 +3141,9 @@ public class Mandala
                   System.out.println("get tier context for y, terminal id=" + emptyCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                }
                ArrayList<Float> y_context = getTierContext(t - 1);
-               ArrayList<Float> X_context = X_contexts.get(t - 1);
                for (int q = 0; q < NUM_DIMENSIONS; q++)
                {
-                  y_train_step.add(y_context.get(q) - X_context.get(q));
+                  y_train_step.add(y_context.get(q));
                }
             }
          }
@@ -3118,7 +3165,6 @@ public class Mandala
             }
             X_train_step = new ArrayList<Float>();
             y_train_step = new ArrayList<Float>();
-            X_contexts   = new ArrayList < ArrayList < Float >> ();
             for (int t = 0; t < maxTiers; t++)
             {
                if (t == 0)
@@ -3142,7 +3188,6 @@ public class Mandala
                      System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> X_context = getTierContext(t - 1);
-                  X_contexts.add(X_context);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      X_train_step.add(X_context.get(q));
@@ -3173,10 +3218,9 @@ public class Mandala
                      System.out.println("get tier context for y, terminal id=" + emptyCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> y_context = getTierContext(t - 1);
-                  ArrayList<Float> X_context = X_contexts.get(t - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     y_train_step.add(y_context.get(q) - X_context.get(q));
+                     y_train_step.add(y_context.get(q));
                   }
                }
             }
@@ -3197,7 +3241,6 @@ public class Mandala
          }
          X_train_step = new ArrayList<Float>();
          y_train_step = new ArrayList<Float>();
-         X_contexts   = new ArrayList < ArrayList < Float >> ();
          for (int t = 0; t < maxTiers; t++)
          {
             if (t == 0)
@@ -3221,7 +3264,6 @@ public class Mandala
                   System.out.println("get tier context for X, terminal id=" + separatorCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                }
                ArrayList<Float> X_context = getTierContext(t - 1);
-               X_contexts.add(X_context);
                for (int q = 0; q < NUM_DIMENSIONS; q++)
                {
                   X_train_step.add(X_context.get(q));
@@ -3252,10 +3294,9 @@ public class Mandala
                   System.out.println("get tier context for y, terminal id=" + yterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                }
                ArrayList<Float> y_context = getTierContext(t - 1);
-               ArrayList<Float> X_context = X_contexts.get(t - 1);
                for (int q = 0; q < NUM_DIMENSIONS; q++)
                {
-                  y_train_step.add(y_context.get(q) - X_context.get(q));
+                  y_train_step.add(y_context.get(q));
                }
             }
          }
@@ -3280,7 +3321,6 @@ public class Mandala
             }
             X_train_step = new ArrayList<Float>();
             y_train_step = new ArrayList<Float>();
-            X_contexts   = new ArrayList < ArrayList < Float >> ();
             for (int t = 0; t < maxTiers; t++)
             {
                if (t == 0)
@@ -3304,7 +3344,6 @@ public class Mandala
                      System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> X_context = getTierContext(t - 1);
-                  X_contexts.add(X_context);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
                      X_train_step.add(X_context.get(q));
@@ -3335,10 +3374,9 @@ public class Mandala
                      System.out.println("get tier context for y, terminal id=" + yterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                   }
                   ArrayList<Float> y_context = getTierContext(t - 1);
-                  ArrayList<Float> X_context = X_contexts.get(t - 1);
                   for (int q = 0; q < NUM_DIMENSIONS; q++)
                   {
-                     y_train_step.add(y_context.get(q) - X_context.get(q));
+                     y_train_step.add(y_context.get(q));
                   }
                }
             }
@@ -3359,7 +3397,6 @@ public class Mandala
          }
          X_train_step = new ArrayList<Float>();
          y_train_step = new ArrayList<Float>();
-         X_contexts   = new ArrayList < ArrayList < Float >> ();
          for (int t = 0; t < maxTiers; t++)
          {
             if (t == 0)
@@ -3383,7 +3420,6 @@ public class Mandala
                   System.out.println("get tier context for X, terminal id=" + xterminalCausation.id + ", tier=" + (t - 1) + ", step=" + step);
                }
                ArrayList<Float> X_context = getTierContext(t - 1);
-               X_contexts.add(X_context);
                for (int q = 0; q < NUM_DIMENSIONS; q++)
                {
                   X_train_step.add(X_context.get(q));
@@ -3414,10 +3450,9 @@ public class Mandala
                   System.out.println("get tier context for y, terminal id=" + EOScausation.id + ", tier=" + (t - 1) + ", step=" + step);
                }
                ArrayList<Float> y_context = getTierContext(t - 1);
-               ArrayList<Float> X_context = X_contexts.get(t - 1);
                for (int q = 0; q < NUM_DIMENSIONS; q++)
                {
-                  y_train_step.add(y_context.get(q) - X_context.get(q));
+                  y_train_step.add(y_context.get(q));
                }
             }
          }
@@ -3925,7 +3960,14 @@ public class Mandala
       commandList.add("--features");
       commandList.add(NUM_FEATURES + "");
       commandList.add("--activation_threshold");
-      commandList.add(NN_ACTIVATION_THRESHOLD);
+      if (copyTask)
+      {
+         commandList.add(NN_COPY_TASK_ACTIVATION_THRESHOLD);
+      }
+      else
+      {
+         commandList.add(NN_ACTIVATION_THRESHOLD);
+      }
       commandList.add("--neurons");
       commandList.add(NN_NEURONS);
       commandList.add("--epochs");
@@ -4135,7 +4177,14 @@ public class Mandala
       commandList.add("--features");
       commandList.add(NUM_FEATURES + "");
       commandList.add("--activation_threshold");
-      commandList.add(RNN_ACTIVATION_THRESHOLD);
+      if (copyTask)
+      {
+         commandList.add(RNN_COPY_TASK_ACTIVATION_THRESHOLD);
+      }
+      else
+      {
+         commandList.add(RNN_ACTIVATION_THRESHOLD);
+      }
       commandList.add("--neurons");
       commandList.add(RNN_NEURONS);
       commandList.add("--epochs");
@@ -4345,7 +4394,14 @@ public class Mandala
       commandList.add("--features");
       commandList.add(NUM_FEATURES + "");
       commandList.add("--activation_threshold");
-      commandList.add(ATTENTION_ACTIVATION_THRESHOLD);
+      if (copyTask)
+      {
+         commandList.add(ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD);
+      }
+      else
+      {
+         commandList.add(ATTENTION_ACTIVATION_THRESHOLD);
+      }
       commandList.add("--neurons");
       commandList.add(ATTENTION_NEURONS);
       commandList.add("--heads");

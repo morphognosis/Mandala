@@ -14,19 +14,19 @@ os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 # Default parameters.
 n_features = 1
-n_neurons = '128'
+n_neurons = '1024'
 n_heads = 4
 n_epochs = 500
 results_filename = 'mandala_attention_results.json'
 verbose = True
-activation_threshold = '0.5'
+activation_threshold = '0.25'
 
 # Get options.
 import getopt
 import sys
 usage = 'usage: python mandala_attention.py [--features <number of features> (default=' + str(n_features) + ')] [--activation_threshold <threshold> (default=' + activation_threshold + ', comma-separated list)] [--neurons <number of neurons> (default=' + n_neurons + ', comma-separated list of feed-forward dimensions per attention block; the first value also sets the model/embedding dimension)] [--heads <number of attention heads> (default=' + str(n_heads) + ')] [--epochs <number of epochs> (default=' + str(n_epochs) + ')] [--results_filename <filename> (default=' + results_filename + ')] [--quiet (quiet)]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hf:n:a:e:r:q",["help","features=","activation_threshold=","neurons=","heads=","epochs=","results_filename=","quiet"])
+  opts, args = getopt.getopt(sys.argv[1:],"hf:t:n:a:e:r:q",["help","features=","activation_threshold=","neurons=","heads=","epochs=","results_filename=","quiet"])
 except getopt.GetoptError:
   print(usage, sep='')
   sys.exit(1)
@@ -117,17 +117,23 @@ positions = tf.range(start=0, limit=seq_len, delta=1)
 position_embedding = layers.Embedding(input_dim=seq_len, output_dim=d_model)(positions)
 x = x + position_embedding
 
+# Pre-LayerNorm blocks (normalize before each sublayer, residual path left untouched):
+# post-LN failed to fit long copy-task sequences within the epoch budget.
 key_dim = max(1, d_model // n_heads)
 for ffn_dim in n_hidden:
-    attention_out = layers.MultiHeadAttention(num_heads=n_heads, key_dim=key_dim)(x, x, use_causal_mask=True)
-    x = layers.LayerNormalization(epsilon=1e-6)(x + attention_out)
-    ffn = layers.Dense(ffn_dim, activation='relu')(x)
-    ffn = layers.Dense(d_model)(ffn)
-    x = layers.LayerNormalization(epsilon=1e-6)(x + ffn)
-outputs = layers.Dense(y_train_shape[2])(x)
+    h = layers.LayerNormalization(epsilon=1e-6)(x)
+    x = x + layers.MultiHeadAttention(num_heads=n_heads, key_dim=key_dim)(h, h, use_causal_mask=True)
+    h = layers.LayerNormalization(epsilon=1e-6)(x)
+    ffn = layers.Dense(ffn_dim, activation='relu')(h)
+    x = x + layers.Dense(d_model)(ffn)
+x = layers.LayerNormalization(epsilon=1e-6)(x)
+
+# Targets are sparse binary feature vectors: sigmoid outputs with binary cross-entropy
+# give much stronger gradients than linear outputs with MSE.
+outputs = layers.Dense(y_train_shape[2], activation='sigmoid')(x)
 
 attention_model = models.Model(inputs=inputs, outputs=outputs)
-attention_model.compile(loss='mean_squared_error', optimizer='adam')
+attention_model.compile(loss='binary_crossentropy', optimizer='adam')
 if verbose:
     attention_model.summary()
 
@@ -160,6 +166,14 @@ def sensor_match(yvals, pvals, dimensions):
     else:
         return True
 
+# Predict.
+train_predictions = attention_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
+seq = array(X_test)
+X_test_seq = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
+seq = array(y_test)
+y_test_seq = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
+test_predictions = attention_model.predict(X_test_seq, batch_size=X_test_shape[0], verbose=0)
+
 # Evaluate each activation threshold.
 best_threshold = -1.0
 best_trainErrors = -1
@@ -172,7 +186,7 @@ for threshold in thresholds:
     print('threshold =', threshold)
 
     # Validate.
-    predictions = attention_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
+    predictions = train_predictions
     trainErrors = 0
     trainTotal = 0
     for path in range(X_train_shape[0]):
@@ -186,11 +200,8 @@ for threshold in thresholds:
         trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
     
     # Predict.
-    seq = array(X_test)
-    X = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
-    seq = array(y_test)
-    y = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
-    predictions = attention_model.predict(X, batch_size=X_test_shape[0], verbose=0)
+    y = y_test_seq
+    predictions = test_predictions
     testErrors = 0
     testTotal = 0
     for path in range(X_test_shape[0]):
@@ -214,22 +225,22 @@ for threshold in thresholds:
 
 # Print results.
 if verbose:
+    print("Activation threshold = ", best_threshold, sep='')
     print("Train prediction errors/total = ", best_trainErrors, "/", best_trainTotal, sep='', end='')
     print(" (", str(round(best_trainErrorPct, 2)), "%)", sep='')
     print("Test prediction errors/total = ", best_testErrors, "/", best_testTotal, sep='', end='')
     print(" (", str(round(best_testErrorPct, 2)), "%)", sep='')
-    print("Activation threshold = ", best_threshold, sep='')
 
 # Write results to file.
 with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
+    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\",')
     f.write('\"train_prediction_errors\":\"'+str(best_trainErrors)+'\",')
     f.write('\"train_total_predictions\":\"'+str(best_trainTotal)+'\",')
     f.write('\"train_error_pct\":\"'+str(round(best_trainErrorPct, 2))+'\",')
     f.write('\"test_prediction_errors\":\"'+str(best_testErrors)+'\",')
     f.write('\"test_total_predictions\":\"'+str(best_testTotal)+'\",')
-    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\",')
-    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\"')
+    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\"')
     f.write('}\n')
 
 sys.exit(0)

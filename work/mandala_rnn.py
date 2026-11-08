@@ -11,11 +11,11 @@ os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 # Default parameters.
 n_features = 1
-n_neurons = '128'
+n_neurons = '1024'
 n_epochs = 500
 results_filename = 'mandala_rnn_results.json'
 verbose = True
-activation_threshold = '0.5'
+activation_threshold = '0.35'
 
 # Get options.
 import getopt
@@ -133,6 +133,14 @@ def sensor_match(yvals, pvals, dimensions):
     else:
         return True
 
+# Predict.
+train_predictions = rnn_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
+seq = array(X_test)
+X_test_seq = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
+seq = array(y_test)
+y_test_seq = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
+test_predictions = rnn_model.predict(X_test_seq, batch_size=X_test_shape[0], verbose=0)
+
 # Evaluate each activation threshold.
 best_threshold = -1.0
 best_trainErrors = -1
@@ -145,7 +153,7 @@ for threshold in thresholds:
     print('threshold =', threshold)
 
     # Validate.
-    predictions = rnn_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
+    predictions = train_predictions
     trainErrors = 0
     trainTotal = 0
     for path in range(X_train_shape[0]):
@@ -159,11 +167,8 @@ for threshold in thresholds:
         trainErrorPct = (float(trainErrors) / float(trainTotal)) * 100.0
 
     # Predict.
-    seq = array(X_test)
-    X = seq.reshape(X_test_shape[0], X_test_shape[1], X_test_shape[2])
-    seq = array(y_test)
-    y = seq.reshape(y_test_shape[0], y_test_shape[1], y_test_shape[2])
-    predictions = rnn_model.predict(X, batch_size=X_test_shape[0], verbose=0)
+    y = y_test_seq
+    predictions = test_predictions
     testErrors = 0
     testTotal = 0
     for path in range(X_test_shape[0]):
@@ -187,22 +192,22 @@ for threshold in thresholds:
 
 # Print results.
 if verbose:
+    print("Activation threshold = ", best_threshold, sep='')
     print("Train prediction errors/total = ", best_trainErrors, "/", best_trainTotal, sep='', end='')
     print(" (", str(round(best_trainErrorPct, 2)), "%)", sep='')
     print("Test prediction errors/total = ", best_testErrors, "/", best_testTotal, sep='', end='')
     print(" (", str(round(best_testErrorPct, 2)), "%)", sep='')
-    print("Activation threshold = ", best_threshold, sep='')
 
 # Write results to file.
 with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
+    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\",')
     f.write('\"train_prediction_errors\":\"'+str(best_trainErrors)+'\",')
     f.write('\"train_total_predictions\":\"'+str(best_trainTotal)+'\",')
     f.write('\"train_error_pct\":\"'+str(round(best_trainErrorPct, 2))+'\",')
     f.write('\"test_prediction_errors\":\"'+str(best_testErrors)+'\",')
     f.write('\"test_total_predictions\":\"'+str(best_testTotal)+'\",')
-    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\",')
-    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\"')
+    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\"')
     f.write('}\n')
 
 sys.exit(0)

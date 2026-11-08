@@ -16,11 +16,11 @@ from keras.layers import Input, Dense
 import sys, getopt
 
 # Parameters
-n_dimensions = 128
+n_dimensions = 256
 n_features = 1
-n_neurons = '128,128,128'
+n_neurons = '1024,1024,1024'
 n_epochs = 500
-activation_threshold = '0.75'
+activation_threshold = '0.4'
 
 # Results file name
 results_filename = 'mandala_nn_results.json'
@@ -110,11 +110,11 @@ if X_test_shape[0] == 0:
 # Create prediction NN
 prediction_model = Sequential()
 prediction_model.add(Input((X_train_shape[1],)))
-prediction_model.add(Dense(n_hidden[0], activation='tanh'))
+prediction_model.add(Dense(n_hidden[0], activation='relu'))
 for i in range(1, len(n_hidden)):
-    prediction_model.add(Dense(n_hidden[i], activation='tanh'))
+    prediction_model.add(Dense(n_hidden[i], activation='relu'))
 prediction_model.add(Dense(y_train_shape[1], activation='tanh'))
-prediction_model.compile(loss='mse', optimizer='adam')
+prediction_model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
 if verbose:
     prediction_model.summary()
 
@@ -134,7 +134,7 @@ def summarize_features(title, vals):
         if vals[j] >= threshold:
             idxs.append(j)
         if vals[j] <= -threshold:
-            idxs.append(-j)
+            idxs.append(j)
     if len(idxs) == 0:
         desc = title + ': []'
     else:
@@ -142,28 +142,29 @@ def summarize_features(title, vals):
         if maxval < 0:
             maxval = -maxval
         n = int(maxval / n_dimensions) + 1
-        lists = []
+        idxlists = []
         desc = title + ': ['
         for j in range(n):
             minval = n_dimensions * j
             maxval = n_dimensions * (j + 1)
-            sublist = [val for val in idxs if (val >= minval and val < maxval) or (val <= -minval and val > -maxval)]
-            sublisttmp = []
-            for k in range(len(sublist)):
-                val = sublist[k]
-                if val > 0:
-                    sublisttmp.append(val - (n_dimensions * j))
+            idxlist = [idx for idx in idxs if (idx >= minval and idx < maxval)]
+            idxliststr = []
+            for k in range(len(idxlist)):
+                idx = idxlist[k]
+                val = vals[idx]
+                if val >= 0:
+                    idxliststr.append(str(idx - (n_dimensions * j)))
                 else:
-                    sublisttmp.append(val + (n_dimensions * j))
-            sublist = sublisttmp
-            lists.append(sublist)
+                    idxliststr.append(('-' + str(idx - (n_dimensions * j))))
+            idxlists.append(idxlist)
             if j == 0:
                 desc += 'sense='
             else:
                 desc += ', tier' + str(j - 1) + '='
-            desc += str(sublist)
+            desc += str(idxliststr)
         desc += ']'
-        idxs = lists
+        desc=desc.replace("'","")
+        idxs = idxlists
     return desc, idxs
 
 # Sensor features match?
@@ -216,6 +217,9 @@ def tier_match(avals, bvals):
     else:
         return True
 
+# Training predictions
+train_predictions = prediction_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
+
 # Evaluate each activation threshold
 best_threshold = -1.0
 best_trainErrors = -1
@@ -230,7 +234,7 @@ for threshold in thresholds:
     # Validate
     if verbose:
         print('validate training')
-    predictions = prediction_model.predict(X_train_seq, batch_size=X_train_shape[0], verbose=0)
+    predictions = train_predictions
     trainErrors = 0
     trainTotal = 0
     pathnum = -1
@@ -326,8 +330,8 @@ for threshold in thresholds:
             if expiration_counters != None:
                 for j in range(len(expiration_counters)):
                     expiration_counters[j] = 0
-        yi = y[i].reshape(1, y_test_shape[1]).copy()
-        prediction = prediction_model.predict(Xi, verbose=0)
+        yi = y[i].reshape(1, y_test_shape[1])
+        prediction = prediction_model(Xi, training=False).numpy()
         if verbose:
             xstr,xidxs = summarize_features('X', Xi[0])
             ystr,yidxs = summarize_features('y', yi[0])
@@ -336,6 +340,9 @@ for threshold in thresholds:
         stepnum += 1
         if i in y_test_prediction:
             testTotal += 1
+            if verbose:
+                mse, accuracy = prediction_model.evaluate(Xi, yi, verbose=0)
+                print(', MSE = ', mse, ', accuracy = ', accuracy, sep='', end='')
         if prediction_valid_count == 0:
             if sensor_match(yi[0][0:n_dimensions], prediction[0][0:n_dimensions]) == True:
                 prediction_valid_count = 2
@@ -375,22 +382,22 @@ for threshold in thresholds:
 
 # Print results.
 if verbose:
+    print("Activation threshold = ", best_threshold, sep='')
     print("Train prediction errors/total = ", best_trainErrors, "/", best_trainTotal, sep='', end='')
     print(" (", str(round(best_trainErrorPct, 2)), "%)", sep='')
     print("Test prediction errors/total = ", best_testErrors, "/", best_testTotal, sep='', end='')
     print(" (", str(round(best_testErrorPct, 2)), "%)", sep='')
-    print("Activation threshold = ", best_threshold, sep='')
 
 # Write results to file.
 with open(results_filename, 'w', newline='\n') as f:
     f.write('{')
+    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\",')
     f.write('\"train_prediction_errors\":\"'+str(best_trainErrors)+'\",')
     f.write('\"train_total_predictions\":\"'+str(best_trainTotal)+'\",')
     f.write('\"train_error_pct\":\"'+str(round(best_trainErrorPct, 2))+'\",')
     f.write('\"test_prediction_errors\":\"'+str(best_testErrors)+'\",')
     f.write('\"test_total_predictions\":\"'+str(best_testTotal)+'\",')
-    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\",')
-    f.write('\"activation_threshold\":\"'+str(round(best_threshold, 2))+'\"')
+    f.write('\"test_error_pct\":\"'+str(round(best_testErrorPct, 2))+'\"')
     f.write('}\n')
 
 sys.exit(0)
