@@ -545,12 +545,14 @@ public class Mandala
    public static String NN_COPY_TASK_ACTIVATION_THRESHOLD = "0.1";
    public static String NN_NEURONS                               = "1024,1024,1024";
    public static int    NN_EPOCHS                                = 500;
+   public static int    NN_COPY_TASK_EPOCHS                      = 2000;
    public static String NN_RESULTS_FILENAME                      = "mandala_nn_results.json";
    public static String RNN_FILENAME                             = "mandala_rnn.py";
    public static String RNN_ACTIVATION_THRESHOLD                 = "0.35";
    public static String RNN_COPY_TASK_ACTIVATION_THRESHOLD       = "0.35";
    public static String RNN_NEURONS                              = "1024";
    public static int    RNN_EPOCHS                               = 500;
+   public static int    RNN_COPY_TASK_EPOCHS                     = 2000;
    public static String RNN_RESULTS_FILENAME                     = "mandala_rnn_results.json";
    public static String ATTENTION_FILENAME                       = "mandala_attention.py";
    public static String ATTENTION_ACTIVATION_THRESHOLD           = "0.12";
@@ -558,6 +560,7 @@ public class Mandala
    public static String ATTENTION_NEURONS                        = "1024";
    public static int    ATTENTION_HEADS                          = 4;
    public static int    ATTENTION_EPOCHS                         = 500;
+   public static int    ATTENTION_COPY_TASK_EPOCHS               = 2000;
    public static String ATTENTION_RESULTS_FILENAME               = "mandala_attention_results.json";
 
    // Learning results.
@@ -634,14 +637,14 @@ public class Mandala
       "      [-numFeatures <quantity> (default=" + NUM_FEATURES + ")]\n" +
       "      [-NNactivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + NN_COPY_TASK_ACTIVATION_THRESHOLD + ")]\n" +
       "      [-NNneurons<number of neurons> (comma-separated for additional layers) (default=" + NN_NEURONS + ")]\n" +
-      "      [-NNepochs <number of epochs> (default=" + NN_EPOCHS + ")]\n" +
+      "      [-NNepochs <number of epochs> (default=" + NN_COPY_TASK_EPOCHS + ")]\n" +
       "      [-RNNactivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + RNN_COPY_TASK_ACTIVATION_THRESHOLD + ")]\n" +
       "      [-RNNneurons <number of neurons> (comma-separated for additional layers) (default=" + RNN_NEURONS + ")]\n" +
-      "      [-RNNepochs <number of epochs> (default=" + RNN_EPOCHS + ")]\n" +
+      "      [-RNNepochs <number of epochs> (default=" + RNN_COPY_TASK_EPOCHS + ")]\n" +
       "      [-AttentionActivationThreshold <threshold> (comma-separated for additional thresholds) (default=" + ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD + ")]\n" +
       "      [-AttentionNeurons <number of neurons> (comma-separated feed-forward widths per attention block, first also sets model dimension) (default=" + ATTENTION_NEURONS + ")]\n" +
       "      [-AttentionHeads <number of attention heads> (default=" + ATTENTION_HEADS + ")]\n" +
-      "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_EPOCHS + ")]\n" +
+      "      [-AttentionEpochs <number of epochs> (default=" + ATTENTION_COPY_TASK_EPOCHS + ")]\n" +
       "      [-randomSeed <seed> (default=" + RANDOM_SEED + ")]\n" +
       "      [-quiet]\n" +
       "  Help:\n" +
@@ -659,6 +662,9 @@ public class Mandala
       String  NNactivationThreshold        = null;
       String  RNNactivationThreshold       = null;
       String  AttentionActivationThreshold = null;
+      int     NNepochs        = -1;
+      int     RNNepochs       = -1;
+      int     AttentionEpochs = -1;
 
       for (int i = 0; i < args.length; i++)
       {
@@ -981,14 +987,14 @@ public class Mandala
             }
             try
             {
-               NN_EPOCHS = Integer.parseInt(args[i]);
+               NNepochs = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
                System.err.println("Invalid NNepochs option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (NN_EPOCHS < 0)
+            if (NNepochs < 0)
             {
                System.err.println("Invalid NNepochs option");
                System.err.println(Usage);
@@ -1043,14 +1049,14 @@ public class Mandala
             }
             try
             {
-               RNN_EPOCHS = Integer.parseInt(args[i]);
+               RNNepochs = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
                System.err.println("Invalid RNNepochs option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (RNN_EPOCHS < 0)
+            if (RNNepochs < 0)
             {
                System.err.println("Invalid RNNepochs option");
                System.err.println(Usage);
@@ -1131,14 +1137,14 @@ public class Mandala
             }
             try
             {
-               ATTENTION_EPOCHS = Integer.parseInt(args[i]);
+               AttentionEpochs = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
                System.err.println("Invalid AttentionEpochs option");
                System.err.println(Usage);
                System.exit(1);
             }
-            if (ATTENTION_EPOCHS < 0)
+            if (AttentionEpochs < 0)
             {
                System.err.println("Invalid AttentionEpochs option");
                System.err.println(Usage);
@@ -1298,6 +1304,18 @@ public class Mandala
          {
             ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD = AttentionActivationThreshold;
          }
+         if (NNepochs != -1)
+         {
+            NN_COPY_TASK_EPOCHS = NNepochs;
+         }
+         if (RNNepochs != -1)
+         {
+            RNN_COPY_TASK_EPOCHS = RNNepochs;
+         }
+         if (AttentionEpochs != -1)
+         {
+            ATTENTION_COPY_TASK_EPOCHS = AttentionEpochs;
+         }
 
          // Print options and parameters.
          if (VERBOSE)
@@ -1310,14 +1328,14 @@ public class Mandala
             System.out.println("NUM_DIMENSIONS=" + NUM_DIMENSIONS);
             System.out.println("NN_COPY_TASK_ACTIVATION_THRESHOLD=" + NN_COPY_TASK_ACTIVATION_THRESHOLD);
             System.out.println("NN_NEURONS=" + NN_NEURONS);
-            System.out.println("NN_EPOCHS=" + NN_EPOCHS);
+            System.out.println("NN_COPY_TASK_EPOCHS=" + NN_COPY_TASK_EPOCHS);
             System.out.println("RNN_COPY_TASK_ACTIVATION_THRESHOLD=" + RNN_COPY_TASK_ACTIVATION_THRESHOLD);
             System.out.println("RNN_NEURONS=" + RNN_NEURONS);
-            System.out.println("RNN_EPOCHS=" + RNN_EPOCHS);
+            System.out.println("RNN_COPY_TASK_EPOCHS=" + RNN_COPY_TASK_EPOCHS);
             System.out.println("ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD=" + ATTENTION_COPY_TASK_ACTIVATION_THRESHOLD);
             System.out.println("ATTENTION_NEURONS=" + ATTENTION_NEURONS);
             System.out.println("ATTENTION_HEADS=" + ATTENTION_HEADS);
-            System.out.println("ATTENTION_EPOCHS=" + ATTENTION_EPOCHS);
+            System.out.println("ATTENTION_COPY_TASK_EPOCHS=" + ATTENTION_COPY_TASK_EPOCHS);
             System.out.println("RANDOM_SEED=" + RANDOM_SEED);
          }
 
@@ -1390,6 +1408,18 @@ public class Mandala
       if (AttentionActivationThreshold != null)
       {
          ATTENTION_ACTIVATION_THRESHOLD = AttentionActivationThreshold;
+      }
+      if (NNepochs != -1)
+      {
+         NN_EPOCHS = NNepochs;
+      }
+      if (RNNepochs != -1)
+      {
+         RNN_EPOCHS = RNNepochs;
+      }
+      if (AttentionEpochs != -1)
+      {
+         ATTENTION_EPOCHS = AttentionEpochs;
       }
 
       // Print parameters and causations.
@@ -3963,7 +3993,14 @@ public class Mandala
       commandList.add("--neurons");
       commandList.add(NN_NEURONS);
       commandList.add("--epochs");
-      commandList.add(NN_EPOCHS + "");
+      if (copyTask)
+      {
+         commandList.add(NN_COPY_TASK_EPOCHS + "");
+      }
+      else
+      {
+         commandList.add(NN_EPOCHS + "");
+      }
       if (!VERBOSE)
       {
          commandList.add("--quiet");
@@ -4180,7 +4217,14 @@ public class Mandala
       commandList.add("--neurons");
       commandList.add(RNN_NEURONS);
       commandList.add("--epochs");
-      commandList.add(RNN_EPOCHS + "");
+      if (copyTask)
+      {
+         commandList.add(RNN_COPY_TASK_EPOCHS + "");
+      }
+      else
+      {
+         commandList.add(RNN_EPOCHS + "");
+      }
       if (!VERBOSE)
       {
          commandList.add("--quiet");
@@ -4399,7 +4443,14 @@ public class Mandala
       commandList.add("--heads");
       commandList.add(ATTENTION_HEADS + "");
       commandList.add("--epochs");
-      commandList.add(ATTENTION_EPOCHS + "");
+      if (copyTask)
+      {
+         commandList.add(ATTENTION_COPY_TASK_EPOCHS + "");
+      }
+      else
+      {
+         commandList.add(ATTENTION_EPOCHS + "");
+      }
       if (!VERBOSE)
       {
          commandList.add("--quiet");
