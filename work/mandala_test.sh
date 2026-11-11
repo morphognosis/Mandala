@@ -38,7 +38,7 @@ minMaxInterstitialTerminalSequence=0
 incrMaxInterstitialTerminalSequence=5
 maxMaxInterstitialTerminalSequence=10
 
-echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,max_interstitial_terminal_sequence,mandala_activation_threshold,rnn_activation_threshold,attention_activation_threshold,mandala_train_error_pct,rnn_train_error_pct,attention_train_error_pct,mandala_test_error_pct,rnn_test_error_pct,attention_test_error_pct > $results_file_name
+echo causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,max_interstitial_terminal_sequence,mandala_activation_threshold,rnn_activation_threshold,attention_activation_threshold,mandala_train_error_pct,rnn_train_error_pct,attention_train_error_pct,mandala_test_error_pct,mandala_test_stdev,rnn_test_error_pct,rnn_test_stdev,attention_test_error_pct,attention_test_stdev > $results_file_name
 
 for causationHierarchies in $hierarchies
 do
@@ -85,6 +85,9 @@ do
      mandala_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn_test_errors.txt`
      rnn_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_rnn_test_errors.txt`
      attention_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_attention_test_errors.txt`
+     mandala_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_nn_test_errors.txt`
+     rnn_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_rnn_test_errors.txt`
+     attention_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_attention_test_errors.txt`
      rm mandala_tmp_nn_threshold.txt
      rm mandala_tmp_rnn_threshold.txt
      rm mandala_tmp_attention_threshold.txt
@@ -94,7 +97,7 @@ do
      rm mandala_tmp_nn_test_errors.txt
      rm mandala_tmp_rnn_test_errors.txt
      rm mandala_tmp_attention_test_errors.txt
-     echo ,${mandala_threshold},${rnn_threshold},${attention_threshold},${mandala_train_error},${rnn_train_error},${attention_train_error},${mandala_test_error},${rnn_test_error},${attention_test_error} >> $results_file_name
+     echo ,${mandala_threshold},${rnn_threshold},${attention_threshold},${mandala_train_error},${rnn_train_error},${attention_train_error},${mandala_test_error},${mandala_test_stdev},${rnn_test_error},${rnn_test_stdev},${attention_test_error},${attention_test_stdev} >> $results_file_name
     done
    done
   done
