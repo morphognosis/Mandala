@@ -48,7 +48,7 @@ do
      for i in $(seq $runs)
      do
       random=$RANDOM
-      echo ./mandala.sh $args -copyTask $length $characters $strings -randomSeed $random
+      #echo ./mandala.sh $args -copyTask $length $characters $strings -randomSeed $random
       ./mandala.sh $args -copyTask $length $characters $strings -randomSeed $random > mandala_tmp.txt
       grep "Activation threshold" mandala_tmp.txt | cut -d" " -f4 | sed -n '1p' >> mandala_tmp_nn_threshold.txt
       grep "Activation threshold" mandala_tmp.txt | cut -d" " -f4 | sed -n '2p' >> mandala_tmp_rnn_threshold.txt
@@ -83,6 +83,7 @@ do
      rm mandala_tmp_rnn_test_errors.txt
      rm mandala_tmp_attention_test_errors.txt
      echo ${length},${characters},${strings},${mandala_threshold},${rnn_threshold},${attention_threshold},${mandala_train_error},${rnn_train_error},${attention_train_error},${mandala_test_error},${mandala_test_stdev},${rnn_test_error},${rnn_test_stdev},${attention_test_error},${attention_test_stdev} >> $results_file_name
+     cat $results_file_name
   done
  done
 done

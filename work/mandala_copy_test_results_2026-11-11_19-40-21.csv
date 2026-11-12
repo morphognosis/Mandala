@@ -1,0 +1,5 @@
+length,characters,strings,mandala_activation_threshold,rnn_activation_threshold,attention_activation_threshold,mandala_train_error_pct,rnn_train_error_pct,attention_train_error_pct,mandala_test_error_pct,mandala_test_stdev,rnn_test_error_pct,rnn_test_stdev,attention_test_error_pct,attention_test_stdev
+50,20,1,0.1,0.35,0.25,0,11.568,5.196,0,0,11.386,17.6583,5.148,11.2083
+100,20,1,0.1,0.35,0.25,0.05,40.594,12.178,0,0,40.349,18.2421,12.09,15.7618
+150,20,1,0.1,0.35,0.25,0,49.703,4.868,0,0,49.535,2.00848,4.85,15.337
+200,20,1,0.1,0.35,0.25,8.483,49.9,14.303,5.561,17.5854,49.777,0.56364,14.266,18.1286
