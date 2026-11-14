@@ -25,7 +25,7 @@ results_file_name+=".csv"
 echo "Results written to" $results_file_name
 
 # Parameters:
-minNumNonterminals=12
+minNumNonterminals=20
 incrNumNonterminals=5
 maxNumNonterminals=20
 minNumTerminals=15
