@@ -18,10 +18,10 @@ import sys,getopt
 results_csv = 'mandala_test_results.csv'
 independent_column = None
 xlabel = None
-graph_png = 'mandala_rnn_comparison.png'
+graph_png = None
 
 # Get options
-usage = 'chart_results.py [--results_csv <file name> (default=' + results_csv + ')] [--independent_column <column name with category names appended> (example=causation_hierarchies:1,2,3)] [--x_axis_label <string> (default=no label)] [--graph_png <file name> (default=' + graph_png + ')]'
+usage = 'chart_results.py [--results_csv <file name> (default=' + results_csv + ')] [--independent_column <column name with category names appended> (example=causation_hierarchies:1,2,3)] [--x_axis_label <string> (default=no label)] [--graph_png <file name>]'
 try:
   opts, args = getopt.getopt(sys.argv[1:],"hf:c:x:g:",["help","results_csv=","independent_column=","x_axis_label=","graph_png="])
 except getopt.GetoptError:
@@ -149,9 +149,10 @@ else:
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     ax.set_axisbelow(True)
 
-# Save the figure
-plt.savefig(graph_png, dpi=300, bbox_inches='tight')
-print("Chart saved to:", graph_png)
+# Save the figure?
+if graph_png != None:
+    plt.savefig(graph_png, dpi=300, bbox_inches='tight')
+    print("Chart saved to:", graph_png)
 
 # Overall statistics
 overall_mandala = df['mandala_test_error_pct'].mean()
