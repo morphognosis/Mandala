@@ -541,7 +541,7 @@ public class Mandala
 
    // Learners.
    public static String NN_FILENAME                       = "mandala_nn.py";
-   public static String NN_ACTIVATION_THRESHOLD           = "0.4";
+   public static String NN_ACTIVATION_THRESHOLD           = "0.85";
    public static String NN_COPY_TASK_ACTIVATION_THRESHOLD = "0.1";
    public static String NN_NEURONS                               = "1024,1024,1024";
    public static int    NN_EPOCHS                                = 500;

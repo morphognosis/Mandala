@@ -1,0 +1,3 @@
+causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,max_interstitial_terminal_sequence,mandala_activation_threshold,rnn_activation_threshold,attention_activation_threshold,mandala_train_error_pct,rnn_train_error_pct,attention_train_error_pct,mandala_test_error_pct,mandala_test_stdev,rnn_test_error_pct,rnn_test_stdev,attention_test_error_pct,attention_test_stdev
+3,10,10,0.25,0,0.1,0.35,0.1,4.22,100,5.9,31.826,16.7339,100,0,41.072,37.723
+3,10,10,0.25,5,0.1,0.35,0.1,0.272,100,0.342,39.36,23.6833,100,0,83.724,34.3952
