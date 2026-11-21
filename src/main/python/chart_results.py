@@ -16,14 +16,15 @@ import sys,getopt
 
 # Options
 results_csv = 'mandala_test_results.csv'
+no_title = False
 independent_column = None
 xlabel = None
 graph_png = None
 
 # Get options
-usage = 'chart_results.py [--results_csv <file name> (default=' + results_csv + ')] [--independent_column <column name with category names appended> (example=causation_hierarchies:1,2,3)] [--x_axis_label <string> (default=no label)] [--graph_png <file name>]'
+usage = 'chart_results.py [--results_csv <file name> (default=' + results_csv + ')] [--no-title] [--independent_column <column name with category names appended> (example=causation_hierarchies:1,2,3)] [--x_axis_label <string> (default=no label)] [--graph_png <file name>]'
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"hf:c:x:g:",["help","results_csv=","independent_column=","x_axis_label=","graph_png="])
+  opts, args = getopt.getopt(sys.argv[1:],"hnf:c:x:g:",["help","no_title","results_csv=","independent_column=","x_axis_label=","graph_png="])
 except getopt.GetoptError:
   print(usage)
   sys.exit(1)
@@ -33,6 +34,8 @@ for opt, arg in opts:
      sys.exit(0)
   if opt in ("-f", "--results_csv"):
      results_csv = arg
+  elif opt in ("-n", "--no_title"):
+     no_title = True
   elif opt in ("-c", "--independent_column"):
      independent_column = arg
   elif opt in ("-x", "--x_axis_label"):
@@ -92,9 +95,10 @@ if independent_column != None:
                     ha='center', va='bottom', fontsize=9)
     
     # Customize the chart
-    ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
+    if no_title == False:
+        ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
     ax.set_ylabel('Average Error Percentage (%)', fontsize=12, fontweight='bold')
-    if xlabel == None:
+    if xlabel != None:
         xlabel = independent_column
     ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
     ax.set_xticks(x)
@@ -142,7 +146,8 @@ else:
                 ha='center', va='bottom', fontsize=12, fontweight='bold')
 
     # Customize the chart
-    ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
+    if no_title == False:
+        ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
     ax.set_ylabel('Average Error Percentage (%)', fontsize=12, fontweight='bold')
     if xlabel != None:
         ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
