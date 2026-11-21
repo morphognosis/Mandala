@@ -20,7 +20,7 @@ n_dimensions = 256
 n_features = 1
 n_neurons = '1024,1024,1024'
 n_epochs = 500
-activation_threshold = '0.4'
+activation_threshold = '0.85'
 
 # Results file name
 results_filename = 'mandala_nn_results.json'

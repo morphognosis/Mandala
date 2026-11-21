@@ -22,7 +22,8 @@ Honey bees forage for flower nectar cooperatively.
 See: http://tom.portegys.com/research.html#honey_bees
 
 Build with Eclipse project or build.sh/build.bat and export to bin/mandala.jar to run with scripts in the work directory.
-Test with mandala_test.sh which creates mandala_test_results.csv, and mandala_copy_test.sh for the memory copy task.
+Test with mandala_test.sh which creates mandala_test_results_<datetime>.csv, and mandala_copy_test.sh for the memory copy task.
+Chart results with chart_results.py.
 
 Requires java, python, and the keras machine learning package.
 
