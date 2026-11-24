@@ -11,7 +11,6 @@ if [ "$2" != "" ]
 then
    args=$2
 fi
-
 results_file_name="mandala_copy_test_results_"
 results_file_name+=$(date +"%Y-%m-%d_%H-%M-%S")
 results_file_name+=".csv"
@@ -69,10 +68,25 @@ do
      attention_train_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_attention_train_errors.txt`
      mandala_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn_test_errors.txt`
      rnn_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_rnn_test_errors.txt`
-     attention_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_attention_test_errors.txt`
-     mandala_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_nn_test_errors.txt`
-     rnn_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_rnn_test_errors.txt`
-     attention_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_attention_test_errors.txt`
+     attention_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_attention_test_errors.txt`    
+     if [ `cat mandala_tmp_nn_test_errors.txt | wc -l` -gt 1 ]
+     then
+       mandala_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_nn_test_errors.txt`
+     else
+       mandala_test_stdev=0
+     fi
+     if [ `cat mandala_tmp_rnn_test_errors.txt | wc -l` -gt 1 ]
+     then
+       rnn_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_rnn_test_errors.txt`
+     else
+       rnn_test_stdev=0
+     fi
+     if [ `cat mandala_tmp_attention_test_errors.txt | wc -l` -gt 1 ]
+     then
+       attention_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_attention_test_errors.txt`
+     else
+       attention_test_stdev=0
+     fi
      rm mandala_tmp_nn_threshold.txt
      rm mandala_tmp_rnn_threshold.txt
      rm mandala_tmp_attention_threshold.txt

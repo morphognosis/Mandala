@@ -2,27 +2,26 @@
 
 if [ "$1" = "" ]
 then
-   echo "Usage: mandala_test.sh <number of runs> [<causation hierarchies> [args]]"
+   echo "Usage: mandala_test.sh <number of runs> [<causation hierarchies> or \"all\" [args]]"
    exit 1
 fi
 runs=$1
-
 results_file_name="mandala_test_results_"
 results_file_name+=$(date +"%Y-%m-%d_%H-%M-%S")
 hierarchies="1 2 3"
-if [ "$2" != "" ]
+if [ "$2" != "" -a "$2" != "all" ]
 then
    hierarchies=$2
    results_file_name+="_"
    results_file_name+=$hierarchies
 fi
+results_file_name+=".csv"
+echo "Results written to" $results_file_name
 args=""
 if [ "$3" != "" ]
 then
    args=$3
 fi
-results_file_name+=".csv"
-echo "Results written to" $results_file_name
 
 # Parameters:
 minNumNonterminals=10
@@ -33,7 +32,7 @@ incrNumTerminals=5
 maxNumTerminals=20
 minTerminalProductionProbability=.25
 incrTerminalProductionProbability=.25
-maxTerminalProductionProbability=.75
+maxTerminalProductionProbability=.5
 minMaxInterstitialTerminalSequence=0
 incrMaxInterstitialTerminalSequence=5
 maxMaxInterstitialTerminalSequence=10
@@ -85,9 +84,24 @@ do
      mandala_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_nn_test_errors.txt`
      rnn_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_rnn_test_errors.txt`
      attention_test_error=`awk '{ total += $1; count++ } END { print total/count }' mandala_tmp_attention_test_errors.txt`
-     mandala_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_nn_test_errors.txt`
-     rnn_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_rnn_test_errors.txt`
-     attention_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_attention_test_errors.txt`
+     if [ `cat mandala_tmp_nn_test_errors.txt | wc -l` -gt 1 ]
+     then
+       mandala_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_nn_test_errors.txt`
+     else
+       mandala_test_stdev=0
+     fi
+     if [ `cat mandala_tmp_rnn_test_errors.txt | wc -l` -gt 1 ]
+     then
+       rnn_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_rnn_test_errors.txt`
+     else
+       rnn_test_stdev=0
+     fi
+     if [ `cat mandala_tmp_attention_test_errors.txt | wc -l` -gt 1 ]
+     then
+       attention_test_stdev=`awk '{sum+=$0;a[NR]=$0}END{for(i in a)y+=(a[i]-(sum/NR))^2;print sqrt(y/(NR-1))}' mandala_tmp_attention_test_errors.txt`
+     else
+       attention_test_stdev=0
+     fi
      rm mandala_tmp_nn_threshold.txt
      rm mandala_tmp_rnn_threshold.txt
      rm mandala_tmp_attention_threshold.txt
