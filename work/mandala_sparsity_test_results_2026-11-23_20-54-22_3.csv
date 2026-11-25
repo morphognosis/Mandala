@@ -1,0 +1,7 @@
+causation_hierarchies,num_nonterminals,num_terminals,terminal_production_probability,max_interstitial_terminal_sequence,activation_threshold,one_features_train_error_pct,three_features_train_error_pct,five_features_train_error_pct,one_features_test_error_pct,one_features_test_stdev,three_features_test_error_pct,three_features_test_stdev,five_features_test_error_pct,five_features_test_stdev
+3,10,10,0.25,0,0.85,1.544,4.06,0.846,46.398,40.2104,5.958,7.30834,14.536,7.9483
+3,10,10,0.25,5,0.85,1.786,0,0,12.318,14.3135,17.55,10.2382,14.128,21.1078
+3,10,10,0.25,10,0.85,0.788,0,0,3.65,3.98579,6.544,6.16975,8.328,12.4542
+3,10,10,0.50,0,0.85,0.988,0,0,6.61,10.3178,15.778,16.7846,4,8.94427
+3,10,10,0.50,5,0.85,0,0,0,10.478,16.6348,17.556,24.8005,0,0
+3,10,10,0.50,10,0.85,0,0.47,0,6.264,11.4188,5.926,10.8495,18.08,21.9583
