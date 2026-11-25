@@ -99,11 +99,10 @@ if independent_column != None:
         ax.set_title(results_csv, fontsize=14, fontweight='bold', pad=20)
     ax.set_ylabel('Average error percentage (%)', fontsize=12, fontweight='bold')
     if xlabel != None:
-        xlabel = independent_column
-    ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
+        ax.set_xlabel(xlabel, fontsize=12, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(data[independent_column].str.capitalize())
-    ax.legend(loc='upper right', fontsize=11)
+    ax.legend(loc='upper left', fontsize=11)
 
     # Add grid
     ax.grid(axis='y', alpha=0.3, linestyle='--')
